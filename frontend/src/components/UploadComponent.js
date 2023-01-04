@@ -12,12 +12,34 @@ import LoadingComponent from "./subcomponents/LoadingComponent.js"
 
 import CryptoJS from 'crypto-js'
 
-
 const UploadComponent = () => {
 
     // info box use state
     const [info, setInfo] = useState("")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     // upload function
     const upload = () => {
 
@@ -39,6 +61,7 @@ const UploadComponent = () => {
 
             } else if (imgGallery.length === 0) {
                 
+
                 // set info
                 setInfo(<p className="info-text">Error: gallery is empty!</p>)
 

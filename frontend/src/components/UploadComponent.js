@@ -2,13 +2,13 @@
 import { useState } from "react";
 
 // application config
-import {API_URL, API_TOKEN} from "../config.js"
+import {API_URL, API_TOKEN, ENCRYPTION_TOKEN} from "../config.js"
 
 // libs
 import $ from 'jquery'; 
 
 // app components
-import LoadingComponent from "./LoadingComponent.js"
+import LoadingComponent from "./subcomponents/LoadingComponent.js"
 
 import CryptoJS from 'crypto-js'
 
@@ -70,10 +70,10 @@ const UploadComponent = () => {
                         var imgFinalGallery = imgGallery
                         
                         // encrypt image
-                        var encryptedImage = CryptoJS.AES.encrypt(base64, "1234").toString()
+                        var encryptedImage = CryptoJS.AES.encrypt(base64, ENCRYPTION_TOKEN).toString()
 
                         // encrypt image name
-                        var encryptedImageName = CryptoJS.AES.encrypt(imgName, "1234").toString()
+                        var encryptedImageName = CryptoJS.AES.encrypt(imgName, ENCRYPTION_TOKEN).toString()
 
                         // send upload request with jquery
                         $.ajax({

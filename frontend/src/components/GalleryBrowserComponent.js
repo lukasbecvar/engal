@@ -2,11 +2,11 @@
 import { useState } from "react";
 
 // app components
-import LoadingComponent from "./LoadingComponent.js"
+import LoadingComponent from "./subcomponents/LoadingComponent.js"
 import ImageComponent from "./subcomponents/ImageComponent.js";
 
 // application config
-import {API_URL, API_TOKEN, MAX_ITEMS_PER_PAGE} from "../config.js"
+import {API_URL, API_TOKEN, MAX_ITEMS_PER_PAGE, ENCRYPTION_TOKEN} from "../config.js"
 
 // light gallery
 import LightGallery from 'lightgallery/react';
@@ -72,10 +72,10 @@ const GalleryBrowserComponent = () => {
             let imageID = imagesList[i].id
 
             // decrypt image
-            let image = "data:image/jpg;base64," +  CryptoJS.AES.decrypt(imagesList[i].content, "1234").toString(CryptoJS.enc.Utf8)
+            let image = "data:image/jpg;base64," +  CryptoJS.AES.decrypt(imagesList[i].content, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8)
 
             // get image name
-            let imageName = CryptoJS.AES.decrypt(imagesList[i].name, "1234").toString(CryptoJS.enc.Utf8)
+            let imageName = CryptoJS.AES.decrypt(imagesList[i].name, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8)
 
             // get image gallery name
             let imageGallery = imagesList[i].gallery 

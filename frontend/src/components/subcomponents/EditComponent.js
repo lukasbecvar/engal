@@ -5,7 +5,7 @@ import { useState } from "react";
 import {API_URL, API_TOKEN} from "../../config.js"
 
 // app components
-import LoadingComponent from "../LoadingComponent.js"
+import LoadingComponent from "../subcomponents/LoadingComponent.js"
 
 const EditComponent = () => {
 

@@ -6,3 +6,6 @@ export const API_TOKEN = "1234"
 
 // maximum items can loaded on page
 export const MAX_ITEMS_PER_PAGE = 30
+
+// media encryption token (encrypt & decrypt only in client)
+export const ENCRYPTION_TOKEN = "1234"

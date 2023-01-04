@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 // import app components
-import LoadingComponent from "../LoadingComponent.js";
+import LoadingComponent from "../subcomponents/LoadingComponent.js";
 
 const APINotRunning = () => {
 

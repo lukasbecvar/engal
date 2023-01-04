@@ -9,6 +9,7 @@ Self-hosted end-to-end encryption gallery for desktop or phone
 
 ## TODOS
 Comons
+- [ ] Video functions
 - [ ] User system (register, login, separated images for each user)
 
 Backend - API

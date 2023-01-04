@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 // app components
-import LoadingComponent from "./LoadingComponent.js"
+import LoadingComponent from "./subcomponents/LoadingComponent.js"
  
 // application config
 import {API_URL, API_TOKEN,} from "../config.js"

@@ -11,7 +11,7 @@ echo "\033[33m\033[1m##\033[0m                                                  
 echo "\033[33m\033[1m##\033[0m   \033[33m1    -   Start dev server\033[0m        \033[33m2   -   Build production\033[0m            \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
-echo "\033[33m\033[1m##\033[0m   \033[33m4    -   Run installer\033[0m                                               \033[33m\033[1m##\033[0m"
+echo "\033[33m\033[1m##\033[0m   \033[33m3    -   Run installer\033[0m                                               \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m############################################################################\033[0m"
 echo "\033[33m\033[1m##\033[0m   \033[33m0    -   Exit panel\033[0m                                                  \033[33m\033[1m##\033[0m"
@@ -32,7 +32,7 @@ case $selector in
 	2*) # run build structure
 		sh scripts/build_prod.sh
 	;;	
-	4*) # run components installer
+	3*) # run components installer
 		sh scripts/install.sh
 	;;
 	0*) # exit this panel

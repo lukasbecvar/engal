@@ -10,6 +10,9 @@ import $ from 'jquery';
 // app components
 import LoadingComponent from "./LoadingComponent.js"
 
+import CryptoJS from 'crypto-js'
+
+
 const UploadComponent = () => {
 
     // info box use state
@@ -66,11 +69,17 @@ const UploadComponent = () => {
                         // init gallery name
                         var imgFinalGallery = imgGallery
                         
+                        // encrypt image
+                        var encryptedImage = CryptoJS.AES.encrypt(base64, "1234").toString()
+
+                        // encrypt image name
+                        var encryptedImageName = CryptoJS.AES.encrypt(imgName, "1234").toString()
+
                         // send upload request with jquery
                         $.ajax({
                             type: "POST",
                             url: API_URL + '?token=' + API_TOKEN + '&action=upload',
-                            data: {"name": imgName, "gallery": imgFinalGallery, "content": base64},
+                            data: {"name": encryptedImageName, "gallery": imgFinalGallery, "content": encryptedImage},
                             error: successUpload(imgName)
                         });
                     });

@@ -23,6 +23,10 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import lgFullscreen from 'lightgallery/plugins/fullscreen';
 import lgAutoplay from 'lightgallery/plugins/autoplay';
 
+
+import CryptoJS from 'crypto-js'
+
+
 const GalleryBrowserComponent = () => {
 
     // get url parameters
@@ -67,11 +71,11 @@ const GalleryBrowserComponent = () => {
             // get image id
             let imageID = imagesList[i].id
 
-            // get image content 
-            let image = "data:image/jpg;base64," + imagesList[i].content
+            // decrypt image
+            let image = "data:image/jpg;base64," +  CryptoJS.AES.decrypt(imagesList[i].content, "1234").toString(CryptoJS.enc.Utf8)
 
             // get image name
-            let imageName = imagesList[i].name
+            let imageName = CryptoJS.AES.decrypt(imagesList[i].name, "1234").toString(CryptoJS.enc.Utf8)
 
             // get image gallery name
             let imageGallery = imagesList[i].gallery 

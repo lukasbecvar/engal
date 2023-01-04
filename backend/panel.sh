@@ -9,9 +9,9 @@ echo "\033[33m\033[1m##\033[0m                             \033[32mEngal API pan
 echo "\033[33m\033[1m############################################################################\033[0m"
 echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m##\033[0m   \033[33m1    -   Start dev server\033[0m        \033[33m2   -   Build production\033[0m            \033[33m\033[1m##\033[0m"
-echo "\033[33m\033[1m##\033[0m   \033[33m3    -   Image uploader\033[0m          \033[33m4   -   Run dumper\033[0m                  \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
-echo "\033[33m\033[1m##\033[0m   \033[33m5    -   Run installer\033[0m                                               \033[33m\033[1m##\033[0m"
+echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
+echo "\033[33m\033[1m##\033[0m   \033[33m4    -   Run installer\033[0m                                               \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m##\033[0m                                                                        \033[33m\033[1m##\033[0m"
 echo "\033[33m\033[1m############################################################################\033[0m"
 echo "\033[33m\033[1m##\033[0m   \033[33m0    -   Exit panel\033[0m                                                  \033[33m\033[1m##\033[0m"
@@ -31,14 +31,8 @@ case $selector in
 	;;
 	2*) # run build structure
 		sh scripts/build_prod.sh
-	;;
-    3*) # run image uploader
-        php scripts/image_uploader.php
-    ;;
-	4*) # run image dumper
-		php scripts/gallery_dumper.php
 	;;	
-	5*) # run components installer
+	4*) # run components installer
 		sh scripts/install.sh
 	;;
 	0*) # exit this panel

@@ -35,14 +35,6 @@
 - delete by id: url/?token=1234&action=delete&id=1
 - edit by id: url/?token=1234&action=edit&id=1&galleryName=gallerynew&name=newname
 
-# CLI Uploader
-- Run from panel.sh image uploader
-- All scripts is interactive without cli paramaters
-
-# CLI Dumper
-- Run cli media dumper from panel.sh
-- All data dump to GalleryDump.tar.gz in images/galleryname
-
 # Config 
 - url: url with subdomain to access API
 - version: define API version

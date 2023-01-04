@@ -1,12 +1,11 @@
-# Encoded media gallery
+# Encrypted media gallery
 
-Self-hosted encoded gallery for desktop or phone
+Self-hosted end-to-end encryption gallery for desktop or phone
 
 ## Features
-- Image browser
-- Image uploader
-- Image edit
-- Gallery uploader script (server)
+- Image content & names encryption
+- Cloud remote storage
+- Private self-hosted database
 
 ## TODOS
 Comons
@@ -60,3 +59,6 @@ Frontend - Client
 * Jquery
    * Version: **3.6.3**
    * [Website](https://jquery.com/)
+* Crypto-JS
+   * Version: **4.1.1**
+   * [Github](https://github.com/brix/crypto-js)

@@ -9,6 +9,7 @@ Self-hosted end-to-end encryption gallery for desktop or phone
 
 ## TODOS
 Comons
+- [ ] Video functions
 - [ ] User system (register, login, separated images for each user)
 - [ ] Code refactor
 
@@ -26,6 +27,8 @@ Backend - API
 - [X] Image uploader script get name from file
 - [X] Gallery uploader script get name remove extension
 - [X] Gallery dump name set id_+filename
+- [ ] Data resources in file system
+
 
 Frontend - Client
 - [X] Check API Running on start
@@ -40,6 +43,8 @@ Frontend - Client
 - [X] Delete image yes or no prompt
 - [X] Image edit (name, gallery)
 - [X] Gallery link in image description
+- [X] Encryption functions
+- [ ] Encryption disable
 - [ ] Gallery uploader
 - [ ] Gallery dumper
 - [ ] Final UI redesign

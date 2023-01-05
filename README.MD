@@ -3,9 +3,10 @@
 Self-hosted end-to-end encryption gallery for desktop or phone
 
 ## Features
-- Image content & names encryption
+- Image content & names encryption with custom key
 - Cloud remote storage
 - Private self-hosted database
+- API secure access with token
 
 ## TODOS
 Comons
@@ -45,7 +46,7 @@ Frontend - Client
 - [X] Gallery link in image description
 - [X] Encryption functions
 - [X] Encryption disable
-- [ ] Gallery uploader
+- [X] Multiple images uploader
 - [ ] Gallery dumper
 - [ ] Final UI redesign
 - [ ] Port APP to electronJS

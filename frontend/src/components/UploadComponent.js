@@ -16,44 +16,46 @@ const UploadComponent = () => {
 
     // info box use state
     const [info, setInfo] = useState("")
-
-
     
     // upload function
-    const upload = () => {
+    const upload = async () => {
 
-            // get from data
-            let imgName = document.getElementById("name").value
-            let imgGallery = document.getElementById("gallery").value
-            let imgContent = document.getElementById("content")
+        // get from data
+        let imgName = document.getElementById("name").value
+        let imgGallery = document.getElementById("gallery").value
+        let imgContent = document.getElementById("content")
 
-            // set image name if empty
-            if (imgName.length === 0) {
-                imgName = "image"
-            }
+        // set image name if empty
+        if (imgName.length === 0) {
+            imgName = "image"
+        }
 
-            // check if data is not empty
-            if (imgName.length === 0) {
+        // check if data is not empty
+        if (imgName.length === 0) {
             
-                // set info
-                setInfo(<p className="info-text">Error: image name is empty!</p>)
+            // set info
+            setInfo(<p className="info-text">Error: image name is empty!</p>)
 
-            } else if (imgGallery.length === 0) {
+        } else if (imgGallery.length === 0) {
                 
 
-                // set info
-                setInfo(<p className="info-text">Error: gallery is empty!</p>)
+            // set info
+            setInfo(<p className="info-text">Error: gallery is empty!</p>)
 
-            } else if (imgContent.value.length === 0) {
+        } else if (imgContent.value.length === 0) {
             
-                // set info
-                setInfo(<p className="info-text">Error: file is empty!</p>)
+            // set info
+            setInfo(<p className="info-text">Error: file is empty!</p>)
             
-            // if data valid
-            } else {
+        // if data valid
+        } else {
+
+
+            // upload all images in form
+            for (var i = 0; i < imgContent.files.length; ++i) {
 
                 // get image
-                let file = imgContent.files[0];
+                let file = imgContent.files[i];
                 let imageType = /image.*/;  
 
                 // check if file is image
@@ -63,17 +65,17 @@ const UploadComponent = () => {
                     const reader = new FileReader();
 
                     // check event
-                    reader.addEventListener("load", function () {
+                    reader.addEventListener("load", async function () {
 
                         // split data type
-                        let base64 = reader.result.split(',')[1]
+                        let base64 = reader.result
 
                         // init gallery name
                         let imgFinalGallery = imgGallery
-                        
+                            
                         // get image content
                         let imageContent = base64
-
+                            
                         // encrypt image
                         if (ENCRYPTION_TOKEN != null) {
                             imageContent = CryptoJS.AES.encrypt(base64, ENCRYPTION_TOKEN).toString()
@@ -91,9 +93,8 @@ const UploadComponent = () => {
                         $.ajax({
                             type: "POST",
                             url: API_URL + '?token=' + API_TOKEN + '&action=upload',
-                            data: {"name": imageName, "gallery": imgFinalGallery, "content": imageContent},
-                            error: successUpload(imgName)
-                        });
+                            data: {"name": imageName, "gallery": imgFinalGallery, "content": imageContent}
+                        })
                     });
 
                     // init reader function
@@ -105,16 +106,14 @@ const UploadComponent = () => {
                 }
             }
 
-    }
+            setInfo(<p className="info-text">uploading...</p>)
 
-    // show success msg
-    const successUpload = () => {
 
-        // get image name
-        let imgName = document.getElementById("name").value
+            setTimeout(() => {
+                setInfo(<p className="info-text">image:<span className="name-line">{i + " " + imgName}</span> uploaded!</p>)
+            }, imgContent.files.length * 1000);
 
-        // set info msg
-        setInfo(<p className="info-text">{imgName}: uploaded!</p>)
+        }
     }
 
     // gallery list use state
@@ -149,7 +148,7 @@ const UploadComponent = () => {
                     <datalist id="galleries">
                         {galleryList.map(name => <option key={name}>{name}</option>)}
                     </datalist>
-                    <input className="file-input" type="file" id="content" name="filename"/><br/>
+                    <input className="file-input" type="file" id="content" name="filename" multiple/><br/>
                     <button className="submit-button" onClick={upload}>Upload</button>
                 </div>
             </div>

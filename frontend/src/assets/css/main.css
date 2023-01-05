@@ -16,6 +16,13 @@ body {
     font-weight: bold;
 }
 
+.not-found-msg {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5%;
+}
+
 /* NAVIGATION */
 .navigation {
     background: #343a40;
@@ -191,13 +198,16 @@ body {
 	border-radius: 4px;
 	background: #343a40;
 	text-align: center;
-	font-family: arial;
-	font-size: 17px;
 	margin: 3px;
 	padding: 4px;
-	color: white;
 	transition: all 0.2s ease;
 	width: 35%;
+    color:transparent;
+}
+
+.file-input:after {
+    color: white;
+    content: "click or drag files";
 }
 
 .submit-button {
@@ -227,6 +237,10 @@ body {
     color: white;
     font-size: 20px;
     font-weight: 600;
+}
+
+.name-line {
+    color: rgb(44, 197, 44)
 }
 
 /* PHONE CSS */

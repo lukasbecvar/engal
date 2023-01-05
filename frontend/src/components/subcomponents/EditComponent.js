@@ -115,7 +115,7 @@ const EditComponent = () => {
             <div className="editor">
                 <div className="info-box">{info}</div>
                 <p className="editor-title">Edit photo: {imageName}</p>
-                <img className="prew-img" src={"data:image/jpg;base64, " + imageContent}/><br/>
+                <img className="prew-img" src={imageContent}/><br/>
                 <input className="text-input" id="name" type="text" name="name" placeholder="New name"/><br/>
                 <input className="text-input" id="gallery" type="text" name="gallery" list="galleries" placeholder="new gallery"/><br/>
                 <datalist id="galleries">

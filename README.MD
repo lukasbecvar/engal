@@ -44,7 +44,7 @@ Frontend - Client
 - [X] Image edit (name, gallery)
 - [X] Gallery link in image description
 - [X] Encryption functions
-- [ ] Encryption disable
+- [X] Encryption disable
 - [ ] Gallery uploader
 - [ ] Gallery dumper
 - [ ] Final UI redesign

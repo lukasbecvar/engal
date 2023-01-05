@@ -71,11 +71,20 @@ const GalleryBrowserComponent = () => {
             // get image id
             let imageID = imagesList[i].id
 
+            let image = "data:image/jpg;base64," + imagesList[i].content
+
             // decrypt image
-            let image = "data:image/jpg;base64," +  CryptoJS.AES.decrypt(imagesList[i].content, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8)
+            if (ENCRYPTION_TOKEN != null) {
+                image = "data:image/jpg;base64," + CryptoJS.AES.decrypt(imagesList[i].content, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8)
+            }
 
             // get image name
-            let imageName = CryptoJS.AES.decrypt(imagesList[i].name, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8)
+            let imageName = imagesList[i].name
+
+            // decrypt image name
+            if (ENCRYPTION_TOKEN != null) {
+                imageName = CryptoJS.AES.decrypt(imagesList[i].name, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8)
+            }
 
             // get image gallery name
             let imageGallery = imagesList[i].gallery 

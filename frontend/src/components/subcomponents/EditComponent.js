@@ -52,8 +52,13 @@ const EditComponent = () => {
 
         const data = await response.json() 
 
-        setImageName(data.name)
-        setImageContent(data.content)
+        if (ENCRYPTION_TOKEN != null) {
+            setImageContent(CryptoJS.AES.decrypt(data.content, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8))
+            setImageName(CryptoJS.AES.decrypt(data.name, ENCRYPTION_TOKEN).toString(CryptoJS.enc.Utf8))
+        } else {
+            setImageContent(data.content)
+            setImageName(data.name)
+        }
 
         setCanGetImageData(false)
     }
@@ -81,11 +86,16 @@ const EditComponent = () => {
     
         } else {
         
-            // encrypt image name
-            var encryptedImageName = CryptoJS.AES.encrypt(imgName, ENCRYPTION_TOKEN).toString()
+            // get new imag name
+            let newImageName = imgName
+
+            // encrypt new image name
+            if (ENCRYPTION_TOKEN != null) {
+                newImageName = CryptoJS.AES.encrypt(imgName, ENCRYPTION_TOKEN).toString()
+            }
 
             // edit url 
-            let urlBuilder = API_URL + "?token=" + API_TOKEN + "&action=edit&id=" + imageID + "&name=" + encryptedImageName + "&galleryName=" + imgGallery
+            let urlBuilder = API_URL + "?token=" + API_TOKEN + "&action=edit&id=" + imageID + "&name=" + newImageName + "&galleryName=" + imgGallery
             
             // send get to API with fetch lol
             fetch(urlBuilder)

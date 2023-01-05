@@ -53,8 +53,8 @@ const UploadComponent = () => {
             } else {
 
                 // get image
-                var file = imgContent.files[0];
-                var imageType = /image.*/;  
+                let file = imgContent.files[0];
+                let imageType = /image.*/;  
 
                 // check if file is image
                 if (file.type.match(imageType)) { 
@@ -66,22 +66,32 @@ const UploadComponent = () => {
                     reader.addEventListener("load", function () {
 
                         // split data type
-                        var base64 = reader.result.split(',')[1]
+                        let base64 = reader.result.split(',')[1]
 
                         // init gallery name
-                        var imgFinalGallery = imgGallery
+                        let imgFinalGallery = imgGallery
                         
+                        // get image content
+                        let imageContent = base64
+
                         // encrypt image
-                        var encryptedImage = CryptoJS.AES.encrypt(base64, ENCRYPTION_TOKEN).toString()
+                        if (ENCRYPTION_TOKEN != null) {
+                            imageContent = CryptoJS.AES.encrypt(base64, ENCRYPTION_TOKEN).toString()
+                        }
+
+                        // get img name
+                        let imageName = imgName
 
                         // encrypt image name
-                        var encryptedImageName = CryptoJS.AES.encrypt(imgName, ENCRYPTION_TOKEN).toString()
+                        if (ENCRYPTION_TOKEN != null) {
+                            imageName = CryptoJS.AES.encrypt(imgName, ENCRYPTION_TOKEN).toString()
+                        }
 
                         // send upload request with jquery
                         $.ajax({
                             type: "POST",
                             url: API_URL + '?token=' + API_TOKEN + '&action=upload',
-                            data: {"name": encryptedImageName, "gallery": imgFinalGallery, "content": encryptedImage},
+                            data: {"name": imageName, "gallery": imgFinalGallery, "content": imageContent},
                             error: successUpload(imgName)
                         });
                     });

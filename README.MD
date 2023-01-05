@@ -10,7 +10,6 @@ Self-hosted end-to-end encryption gallery for desktop or phone
 
 ## TODOS
 Comons
-- [ ] Video functions
 - [ ] User system (register, login, separated images for each user)
 - [ ] Code refactor
 
@@ -47,7 +46,6 @@ Frontend - Client
 - [X] Encryption functions
 - [X] Encryption disable
 - [X] Multiple images uploader
-- [ ] Gallery dumper
 - [ ] Final UI redesign
 - [ ] Port APP to electronJS
 - [ ] Prot APP to Android

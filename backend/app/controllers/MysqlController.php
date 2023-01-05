@@ -106,7 +106,7 @@
             global $config;
 
             // set charset
-            mysqli_set_charset($this->mysqlConnect($config->config["basedb"]), $charset);
+            mysqli_set_charset($this->connect($config->config["basedb"]), $charset);
         }
 
         // read data from mysql
@@ -115,7 +115,7 @@
             global $config;
             
             // send SQL query
-            $sql = mysqli_fetch_assoc(mysqli_query($this->mysqlConnect($config->config["basedb"]), $query));
+            $sql = mysqli_fetch_assoc(mysqli_query($this->connect($config->config["basedb"]), $query));
             
             //return selected data
             return $sql[$specifis];

@@ -18,27 +18,6 @@ const UploadComponent = () => {
     const [info, setInfo] = useState("")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     // upload function
     const upload = () => {

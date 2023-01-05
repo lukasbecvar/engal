@@ -2,10 +2,12 @@
 import { useState } from "react";
 
 // application config
-import {API_URL, API_TOKEN} from "../../config.js"
+import {API_URL, API_TOKEN, ENCRYPTION_TOKEN} from "../../config.js"
 
 // app components
 import LoadingComponent from "../subcomponents/LoadingComponent.js"
+
+import CryptoJS from 'crypto-js'
 
 const EditComponent = () => {
 
@@ -79,8 +81,11 @@ const EditComponent = () => {
     
         } else {
         
+            // encrypt image name
+            var encryptedImageName = CryptoJS.AES.encrypt(imgName, ENCRYPTION_TOKEN).toString()
+
             // edit url 
-            let urlBuilder = API_URL + "?token=" + API_TOKEN + "&action=edit&id=" + imageID + "&name=" + imgName + "&galleryName=" + imgGallery
+            let urlBuilder = API_URL + "?token=" + API_TOKEN + "&action=edit&id=" + imageID + "&name=" + encryptedImageName + "&galleryName=" + imgGallery
             
             // send get to API with fetch lol
             fetch(urlBuilder)

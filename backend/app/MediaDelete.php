@@ -5,9 +5,9 @@
         // delete image by ID
         public function deleteImage() {
 
-            // make objects usable in function
             global $mainController;
             global $mysql;
+            global $config;
 
             if ($mainController->getID() == null) {
                 
@@ -20,13 +20,23 @@
 
                 // get if form query string
                 $id = $mainController->getID();
-                
+                    
+                // get image identifier
+                $identifier = $mysql->read("SELECT identifier FROM images WHERE id = '".$id."'", "identifier");
+
+                // file path builder
+                $filePath = "../storage/images/".$identifier;
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+
                 // delete image from database
                 $mysql->insert("DELETE FROM images WHERE id=$id");
-                
+
                 // log action to mysql
                 $mysql->log("Delete", "Image: $id deleted from database");
-
+    
                 // close window with js
                 echo "<script>window.close();</script>";
             }

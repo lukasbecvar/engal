@@ -106,13 +106,26 @@
             // check if content is not null
             if ($imageContent != null) {
 
+                // image file path builder
+                $imagePath = "../storage/images/".$imageContent["identifier"];
+
+                // check if image exist in file system
+                if (!file_exists($imagePath)) {
+
+                    $contentString = null;
+                } else {
+
+                    // get image content
+                    $contentString = file_get_contents($imagePath);
+                }
+
                 // build array with image content
                 $content = [
                     "id" => $id,
                     "name" => $imageContent["name"],
                     "gallery" => $imageContent["gallery"],
                     "upload_date" => $imageContent["upload_date"],
-                    "content" => $imageContent["content"]
+                    "content" => $contentString
                 ];
 
                 // return final content
@@ -152,13 +165,26 @@
 
                 foreach ($imageContent as $value) {
                     
+                    // image file path builder
+                    $imagePath = "../storage/images/".$value["identifier"];
+
+                    // check if image exist in file system
+                    if (!file_exists($imagePath)) {
+
+                        $contentString = null;
+                    } else {
+
+                        // get image content
+                        $contentString = file_get_contents($imagePath);
+                    }
+
                     // build image array
                     $item = [
                         "id" => $value["id"],
                         "name" => $value["name"],
                         "gallery" => $value["gallery"],
                         "upload_date" => $value["upload_date"],
-                        "content" => $value["content"]
+                        "content" => $contentString
                     ];
 
                     // push image data to final array

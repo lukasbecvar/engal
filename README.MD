@@ -27,7 +27,7 @@ Backend - API
 - [X] Image uploader script get name from file
 - [X] Gallery uploader script get name remove extension
 - [X] Gallery dump name set id_+filename
-- [ ] Data resources in file system
+- [X] Data resources in file system
 
 
 Frontend - Client

@@ -7,9 +7,8 @@ backend/.idea
 backend/.vscode
 backend/vendor
 backend/composer.lock
-backend/dump
-backend/GalleryDump.tar.gz
 backend/build
+backend/storage/
 
 # frontend(app) dir
 frontend/node_modules

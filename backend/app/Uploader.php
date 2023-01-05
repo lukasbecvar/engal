@@ -6,6 +6,7 @@
         public function imageUploadFromClient() {
              
             global $mysql;
+            global $mainController;
 
             // headers
             header('Access-Control-Allow-Origin: *');
@@ -44,12 +45,28 @@
                     // print error msg
                     die("Error(14): POST value content is not defined");
                 } else {
+                    
+                    // create storage dir 
+                    if (!file_exists("../storage/")) { 
+                        @mkdir("../storage/"); 
+                    } 
+                    
+                    // create image dir
+                    if (!file_exists("../storage/images/")) { 
+                        @mkdir("../storage/images/"); 
+                    } 
+                    
+                    // generate image identifier
+                    $identifier = $mainController->getRandomString(10)."_".time();
+                    
+                    // put file with content to file system
+                    file_put_contents("../storage/images/".$identifier, $content);
 
                     // add new row to mysql
-                    $mysql->insert("INSERT INTO `images`(`name`, `gallery`, `upload_date`, `content`) VALUES ('$name', '$gallery', '$upload_date', '$content')");
+                    $mysql->insert("INSERT INTO `images`(`name`, `gallery`, `upload_date`, `identifier`) VALUES ('$name', '$gallery', '$upload_date', '$identifier')");
                 
                     // log action to mysql
-                    $mysql->log("Image upload", "POST request for image upload = complete");
+                    $mysql->log("Image upload", "Image ".$identifier." uploaded");
                 }
             } else {
 

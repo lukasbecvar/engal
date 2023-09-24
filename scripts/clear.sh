@@ -1,4 +1,6 @@
 # clean
 
-#rm -rf vendor/ composer.lock
+#rm -rf vendor/
+#rm -rf composer.lock
+#rm -rf public/assets/
 php bin/console cache:clear

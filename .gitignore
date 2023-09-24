@@ -13,3 +13,10 @@ composer.lock
 ###> phpunit/phpunit ###
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+npm-debug.log
+yarn-error.log
+/public/assets/
+###< symfony/webpack-encore-bundle ###

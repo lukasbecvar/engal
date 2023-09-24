@@ -1,6 +1,6 @@
 # Encrypted media gallery
 
-Self-hosted encrypted gallery
+Self-hosted encrypted gallery build with symfony 6
 
 ## Features
 - User system
@@ -16,7 +16,7 @@ Self-hosted encrypted gallery
 - [X] logs system (database)
 - [X] visitors system
 - [X] escape util
-- [ ] webpack (assets builder)
+- [X] webpack (assets builder)
 - [ ] media encryption
 - [ ] user register component
 - [ ] user login

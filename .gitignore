@@ -19,4 +19,5 @@ composer.lock
 npm-debug.log
 yarn-error.log
 /public/assets/
+package-lock.json
 ###< symfony/webpack-encore-bundle ###

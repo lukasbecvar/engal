@@ -26,3 +26,5 @@ Self-hosted encrypted gallery build with symfony 6
 - [ ] user settings
 - [ ] ban system
 - [ ] admin system
+- [ ] robots.txt & sitemap.xml
+- [ ] tests

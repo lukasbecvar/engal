@@ -1,0 +1,15 @@
+{% extends 'errors/base-error.html.twig' %}
+
+{% block title %}
+    Error 401, Unauthorized
+{% endblock %}
+
+{% block body %}
+<p class="error-page-msg">
+    <strong>
+        You do not have permission to access this page
+        <br><br>
+        Please check the address bar or contact your administrator
+    </strong>
+</p>
+{% endblock %}

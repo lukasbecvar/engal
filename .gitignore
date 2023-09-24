@@ -1,26 +1,21 @@
-# root dir
-.idea
-.vscode
 
-# backed(api) dir
-backend/.idea
-backend/.vscode
-backend/vendor
-backend/composer.lock
-backend/build
-backend/storage/
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+composer.lock
+###< symfony/framework-bundle ###
 
-# frontend(app) dir
-frontend/node_modules
-frontend/.pnp
-frontend/.pnp.js
-frontend/coverage
-frontend/build
-frontend/.DS_Store
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

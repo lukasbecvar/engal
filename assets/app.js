@@ -6,5 +6,13 @@
  */
 
 // any CSS you import will output into a single css file
-import './css/main.css';
-import './css/error-page.css';
+import './css/main.scss';
+
+const $ = require('jquery');
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
+require('bootstrap');
+
+$(document).ready(function() {
+    $('[data-toggle="popover"]').popover();
+});

@@ -9,7 +9,8 @@
 	<link rel="icon" href={{ asset('/assets/images/favicon.png') }} type="image/x-icon"/>
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
+<body class="bg-primary">
     {% block body %}{% endblock %}
+    <script src={{ asset('assets/app.js') }}></script>
 </body>
 </html>

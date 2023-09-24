@@ -1,6 +1,6 @@
 # Encrypted media gallery
 
-Self-hosted encrypted gallery build with symfony 6
+Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 
 ## Features
 - User system
@@ -27,6 +27,13 @@ Self-hosted encrypted gallery build with symfony 6
 - [ ] user settings
 - [ ] ban system
 - [ ] admin system
-- [ ] css redesign
 - [ ] robots.txt & sitemap.xml
 - [ ] tests
+
+## Dependencies
+* Symfony
+   * Version: **6.3**
+   * [Website](https://symfony.com/)
+* Bootstrap
+   * Version: **5.3.2**
+   * [Website](https://getbootstrap.com/)

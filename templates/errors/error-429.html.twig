@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block body %}
-<p class="error-page-msg">
-    <strong>
-        Too Many Requests 
-        <br><br>
-        Please try to wait and try again later
-    </strong>
-</p>
+<div class="bg-primary d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-light">429</h1>
+        <p class="fs-3"><span class="text-danger">Opps!</span></p>
+        <p class="lead text-light">
+            Too Many Requests 
+        </p>
+        <a href="/" class="btn btn-outline-info">Go Home</a>
+    </div>
+</div>
 {% endblock %}

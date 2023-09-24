@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block body %}
-<p class="error-page-msg">
-    <strong>
-        The server encountered an unexpected condition that prevented it from fulfilling the request
-        <br><br>
-        Please check the address bar or contact your administrator
-    </strong>
-</p>
+<div class="bg-primary d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-light">500</h1>
+        <p class="fs-3"><span class="text-danger">Opps!</span></p>
+        <p class="lead text-light">
+            The server encountered an unexpected condition that prevented it from fulfilling the request
+        </p>
+        <a href="/" class="btn btn-outline-info">Go Home</a>
+    </div>
+</div>
 {% endblock %}

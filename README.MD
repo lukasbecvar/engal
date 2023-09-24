@@ -17,6 +17,7 @@ Self-hosted encrypted gallery build with symfony 6
 - [X] visitors system
 - [X] escape util
 - [X] webpack (assets builder)
+- [X] homepage
 - [ ] user register component
 - [ ] user login
 - [ ] media encryption
@@ -26,5 +27,6 @@ Self-hosted encrypted gallery build with symfony 6
 - [ ] user settings
 - [ ] ban system
 - [ ] admin system
+- [ ] css redesign
 - [ ] robots.txt & sitemap.xml
 - [ ] tests

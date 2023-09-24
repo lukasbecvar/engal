@@ -17,9 +17,9 @@ Self-hosted encrypted gallery build with symfony 6
 - [X] visitors system
 - [X] escape util
 - [X] webpack (assets builder)
-- [ ] media encryption
 - [ ] user register component
 - [ ] user login
+- [ ] media encryption
 - [ ] gallery component (create, delete, list)
 - [ ] show images where gallery (light gallery)
 - [ ] image upload

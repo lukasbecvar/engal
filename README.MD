@@ -1,6 +1,14 @@
-# Engal
+# Encrypted media gallery
 
-# dev plan
+Self-hosted encrypted gallery
+
+## Features
+- User system
+- Image browser
+- Image content & names encryption
+- Private self-hosted database
+
+# todo
 - [X] setup symfony
 - [X] error handler
 - [X] maintenance mode system
@@ -18,6 +26,3 @@
 - [ ] user settings
 - [ ] ban system
 - [ ] admin system
-
-# install symfony profiler (dev-tools)
-composer require --dev symfony/profiler-pack

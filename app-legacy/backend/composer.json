@@ -1,9 +1,0 @@
-{
-    "name": "engal/encoded-gallery",
-    "type": "project",
-    "description": "encoded media gallery API",
-    "license": "MIT",
-    "require": {
-        "filp/whoops": "^2.14"
-    }
-}

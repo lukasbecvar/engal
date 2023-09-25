@@ -14,12 +14,10 @@ class LogHelper
 {
 
     private $entityHelper;
-    private $vistorInfoUtils;
 
-    public function __construct(EntityHelper $entityHelper, VisitorInfoUtil $visitorInfoUtil)
+    public function __construct(EntityHelper $entityHelper)
     {
         $this->entityHelper = $entityHelper;
-        $this->vistorInfoUtils = $visitorInfoUtil;
     }
 
     // log action to database
@@ -49,7 +47,7 @@ class LogHelper
             $LogEntity->setName($name); 
             $LogEntity->setValue($value); 
             $LogEntity->setDate($date); 
-            $LogEntity->setRemoteAddr($ipAddress); 
+            $LogEntity->setIpAddress($ipAddress); 
             $LogEntity->setBrowser($browser); 
             $LogEntity->setStatus("unreaded"); 
 

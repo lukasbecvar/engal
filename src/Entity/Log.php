@@ -23,7 +23,7 @@ class Log
     private ?string $date = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $remote_addr = null;
+    private ?string $ip_address = null;
 
     #[ORM\Column(length: 255)]
     private ?string $browser = null;
@@ -72,14 +72,14 @@ class Log
         return $this;
     }
 
-    public function getRemoteAddr(): ?string
+    public function getIpAddress(): ?string
     {
-        return $this->remote_addr;
+        return $this->ip_address;
     }
 
-    public function setRemoteAddr(string $remote_addr): static
+    public function setIpAddress(string $ip_address): static
     {
-        $this->remote_addr = $remote_addr;
+        $this->ip_address = $ip_address;
 
         return $this;
     }

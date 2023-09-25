@@ -17,6 +17,11 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            
+    # resources build check
+    App\Middleware\AssetsCheckMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request' }
 
     # maintenance mode checker
     App\Middleware\MaintenanceMiddleware:

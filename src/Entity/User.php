@@ -28,9 +28,6 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $ip_address = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image_base64 = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -92,18 +89,6 @@ class User
     public function setIpAddress(string $ip_address): static
     {
         $this->ip_address = $ip_address;
-
-        return $this;
-    }
-
-    public function getImageBase64(): ?string
-    {
-        return $this->image_base64;
-    }
-
-    public function setImageBase64(string $image_base64): static
-    {
-        $this->image_base64 = $image_base64;
 
         return $this;
     }

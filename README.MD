@@ -18,7 +18,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] escape util
 - [X] webpack (assets builder)
 - [X] homepage
-- [ ] user register component
+- [X] user register component
 - [ ] user login
 - [ ] media encryption
 - [ ] gallery component (create, delete, list)
@@ -29,6 +29,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [ ] admin system
 - [ ] robots.txt & sitemap.xml
 - [ ] tests
+- [ ] final refactor (change ' to " xDDDD)
 
 ## Dependencies
 * Symfony

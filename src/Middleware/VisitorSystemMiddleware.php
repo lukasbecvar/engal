@@ -3,12 +3,10 @@
 namespace App\Middleware;
 
 use App\Helper\EntityHelper;
-use App\Helper\LogHelper;
 use App\Helper\VisitorHelper;
 use App\Entity\Visitor;
 use App\Util\EscapeUtil;
 use App\Util\VisitorInfoUtil;
-use Twig\Environment;
 
 /*
     Visitor system provides basic visitors managment
@@ -19,23 +17,14 @@ class VisitorSystemMiddleware
 { 
 
     private $visitorHelper;
-    private $logHelper;
     private $entityHelper;
-    private $vistorInfoUtils;
-    private $twig;
 
     public function __construct(
         VisitorHelper $visitorHelper, 
-        LogHelper $logHelper, 
         EntityHelper $entityHelper,
-        VisitorInfoUtil $vistorInfoUtils,
-        Environment $twig
     ) {
         $this->visitorHelper = $visitorHelper;
-        $this->logHelper = $logHelper;
         $this->entityHelper = $entityHelper;
-        $this->vistorInfoUtils = $vistorInfoUtils;
-        $this->twig = $twig;
     }
 
     public function onKernelRequest(): void

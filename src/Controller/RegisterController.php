@@ -50,9 +50,9 @@ class RegisterController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // get form data
-            $username = $form->get("username")->getData();
-            $password = $form->get("password")->getData();
-            $repassword = $form->get("re-password")->getData();
+            $username = $form->get('username')->getData();
+            $password = $form->get('password')->getData();
+            $repassword = $form->get('re-password')->getData();
 
             // escape values (XSS protection)
             $username = EscapeUtil::special_chars_strip($username);
@@ -60,9 +60,9 @@ class RegisterController extends AbstractController
             $repassword = EscapeUtil::special_chars_strip($repassword);
 
             // check if username used
-            if ($this->entityHelper->isEntityExist("username", $username, $user)) {
+            if ($this->entityHelper->isEntityExist('username', $username, $user)) {
                 return $this->render('register.html.twig', [
-                    'errorMSG' => "This username is already in use",
+                    'errorMSG' => 'This username is already in use',
                     'registrationForm' => $form->createView(),
                 ]);
             }
@@ -70,7 +70,7 @@ class RegisterController extends AbstractController
             // check if not match
             if ($password != $repassword) {
                 return $this->render('register.html.twig', [
-                    'errorMSG' => "Your passwords don't match",
+                    'errorMSG' => 'Your passwords dont match',
                     'registrationForm' => $form->createView(),
                 ]);
             }
@@ -87,11 +87,11 @@ class RegisterController extends AbstractController
 
             // set others
             $user->setToken($token);
-            $user->setRole("user");
+            $user->setRole('user');
             $user->setIpAddress($ipAddress);
 
             // log regstration event
-            $this->logHelper->log("registration", "new user: $username registred");
+            $this->logHelper->log('registration', 'new user: $username registred');
 
             // insert new user
             $this->entityManager->persist($user);

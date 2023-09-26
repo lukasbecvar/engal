@@ -23,12 +23,12 @@ class SiteHelper
         $host = $this->getHttpHost();
             
         // check if running on url localhost
-        if (str_starts_with($host, "localhost")) {
+        if (str_starts_with($host, 'localhost')) {
             $state = true;
         } 
             
         // check if running on localhost ip
-        if (str_starts_with($host, "127.0.0.1")) {
+        if (str_starts_with($host, '127.0.0.1')) {
             $state = true;
         }
         return $state;

@@ -45,7 +45,7 @@ class LoginController extends AbstractController
 
         // check if submited
         if ($form->isSubmitted() && $form->isValid()) {
-            die("submit");
+            die('submit');
         }
 
         return $this->render('login.html.twig', [

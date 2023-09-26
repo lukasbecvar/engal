@@ -11,14 +11,14 @@ class VisitorInfoUtil
     
     public static function getIP(): ?string 
     {
-        if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
-            $address = $_SERVER["HTTP_CLIENT_IP"];
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $address = $_SERVER['HTTP_CLIENT_IP'];
       
-        } elseif (!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-            $address = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 
         } else {
-            $address = $_SERVER["REMOTE_ADDR"];
+            $address = $_SERVER['REMOTE_ADDR'];
         }
         return $address;
     }
@@ -26,10 +26,10 @@ class VisitorInfoUtil
     public static function getBrowser(): string 
     {
         // get user agent
-        $agent = $_SERVER["HTTP_USER_AGENT"];
+        $agent = $_SERVER['HTTP_USER_AGENT'];
 
         // default browser name
-        $browser = "Unknown";
+        $browser = 'Unknown';
 
         if ($agent != null) {
             $browser = $agent;
@@ -43,7 +43,7 @@ class VisitorInfoUtil
         $agent = VisitorInfoUtil::getBrowser();
         
         // default os name
-        $os = "Unknown OS";
+        $os = 'Unknown OS';
         
         // OS array
         $os_array = array (

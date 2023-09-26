@@ -5,7 +5,7 @@ namespace App\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 
 /*
-    Entity helper with "main" CRUD actions
+    Entity helper with 'main' CRUD actions
 */
 
 class EntityHelper
@@ -32,7 +32,7 @@ class EntityHelper
             $this->entityManager->flush();
 
         } catch (\Exception $e) {
-            $this->errorHelper->handleError("flush error: ".$e->getMessage(), 500);
+            $this->errorHelper->handleError('flush error: '.$e->getMessage(), 500);
         }
     }
 
@@ -50,7 +50,7 @@ class EntityHelper
             $result = $repository->findOneBy([$columnName => $value]);
 
         } catch (\Exception $e) {
-            $this->errorHelper->handleError("find error: ".$e->getMessage(), 500);
+            $this->errorHelper->handleError('find error: '.$e->getMessage(), 500);
         }
 
         // check if found

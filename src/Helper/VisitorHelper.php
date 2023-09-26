@@ -53,11 +53,11 @@ class VisitorHelper
     public function updateVisitor($date, $ipAddress, $browser, $os): void
     {
         // visitor repository
-        $visitorRepository = $this->entityManager->getRepository(Visitor::class)->findOneBy(["ip_address" => $ipAddress]);
+        $visitorRepository = $this->entityManager->getRepository(Visitor::class)->findOneBy(['ip_address' => $ipAddress]);
 
         // check if visitor repo found
         if (!$visitorRepository) {
-            $this->errorHelper->handleError("unexpected visitor with ip: $ipAddress update error, please check database structure", 500);
+            $this->errorHelper->handleError('unexpected visitor with ip: $ipAddress update error, please check database structure', 500);
         } else {
 
             // get current visited_sites value from database
@@ -80,16 +80,16 @@ class VisitorHelper
 
         // check if site running on localhost
         if ($this->siteHelper->isRunningLocalhost()) {
-            $country = "HOST";
-            $city = "Location";
+            $country = 'HOST';
+            $city = 'Location';
         } else {
  
             try {
                 // geoplugin url
-                $geoplugin_url = $_ENV["GEOPLUGIN_URL"];
+                $geoplugin_url = $_ENV['GEOPLUGIN_URL'];
 
                 // geoplugin data
-                $geoplugin_data = file_get_contents($geoplugin_url."/json.gp?ip=$ipAddress");
+                $geoplugin_data = file_get_contents($geoplugin_url.'/json.gp?ip=$ipAddress');
 
                 // decode data
                 $details = json_decode($geoplugin_data);
@@ -98,10 +98,10 @@ class VisitorHelper
                 $country = $details->geoplugin_countryCode;
 
                 // check if city name defined
-                if (!empty(explode("/", $details->geoplugin_timezone)[1])) {
+                if (!empty(explode('/', $details->geoplugin_timezone)[1])) {
                         
                     // get city name from timezone (explode /)
-                    $city = explode("/", $details->geoplugin_timezone)[1];
+                    $city = explode('/', $details->geoplugin_timezone)[1];
                 } else {
                     $city = null;
                 }
@@ -112,7 +112,7 @@ class VisitorHelper
                 $city = null;
 
                 // log geolocate error
-                $this->logHelper->log("geolocate-error", "error to geolocate ip: " . $ipAddress . ", error: " . $e->getMessage());
+                $this->logHelper->log('geolocate-error', 'error to geolocate ip: ' . $ipAddress . ', error: ' . $e->getMessage());
             }   
         }
 
@@ -126,9 +126,9 @@ class VisitorHelper
 
         // final return
         if  ($country == null or $city == null) {
-            $location = "Unknown";
+            $location = 'Unknown';
         } else {
-            $location = $country."/".$city;
+            $location = $country.'/'.$city;
         }
 
         return $location;

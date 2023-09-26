@@ -26,7 +26,7 @@ class LogHelper
         if ($this->isLogsEnabled()) {
 
             // current date
-            $date = date("d.m.Y H:i:s");
+            $date = date('d.m.Y H:i:s');
 
             // visitor browser agent
             $browser = VisitorInfoUtil::getBrowser();
@@ -49,7 +49,7 @@ class LogHelper
             $LogEntity->setDate($date); 
             $LogEntity->setIpAddress($ipAddress); 
             $LogEntity->setBrowser($browser); 
-            $LogEntity->setStatus("unreaded"); 
+            $LogEntity->setStatus('unreaded'); 
 
             // insert new log to database
             $this->entityHelper->insertEntity($LogEntity);
@@ -62,7 +62,7 @@ class LogHelper
         $state = false;
 
         // check if logs enabled
-        if ($_ENV["LOGS_ENABLED"] == "true") {
+        if ($_ENV['LOGS_ENABLED'] == 'true') {
             $state = true;
         }
 

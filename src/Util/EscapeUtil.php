@@ -11,7 +11,7 @@ class EscapeUtil
 
     /*
       * The function for replace dangerous chars in string (XSS proteection)
-      * Usage like special_chars_strip("<script>alert(xss)</script>")
+      * Usage like special_chars_strip('<script>alert(xss)</script>')
       * Input string
       * Returned secure string
     */

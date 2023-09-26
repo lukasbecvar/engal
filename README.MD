@@ -19,7 +19,8 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] webpack (assets builder)
 - [X] homepage
 - [X] user register component
-- [ ] user login
+- [X] user login form
+- [ ] user login function (LoginController)
 - [ ] media encryption
 - [ ] gallery component (create, delete, list)
 - [ ] show images where gallery (light gallery)

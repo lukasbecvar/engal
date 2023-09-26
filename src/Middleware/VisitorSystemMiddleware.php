@@ -30,7 +30,7 @@ class VisitorSystemMiddleware
     public function onKernelRequest(): void
     {
         // get data to insert
-        $date = date("d.m.Y H:i:s");
+        $date = date('d.m.Y H:i:s');
         $os =VisitorInfoUtil::getOS();
         $ipAddress = VisitorInfoUtil::getIP();
         $browser = VisitorInfoUtil::getBrowser();
@@ -48,7 +48,7 @@ class VisitorSystemMiddleware
         $address = VisitorInfoUtil::getIP();
 
         // check if visitor found in database
-        if (!$this->entityHelper->isEntityExist("ip_address", $address, $visitorEntity)) {
+        if (!$this->entityHelper->isEntityExist('ip_address', $address, $visitorEntity)) {
 
             // insert new visitor
             $this->visitorHelper->insertNew($date, $ipAddress, $browser, $os, $location);

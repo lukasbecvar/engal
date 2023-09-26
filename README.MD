@@ -30,7 +30,13 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [ ] admin system
 - [ ] robots.txt & sitemap.xml
 - [ ] tests
-- [ ] final refactor (change ' to " xDDDD)
+- [ ] new readme + simple doc (install & use tutorial)
+- [ ] final refactor
+
+# TODOS: 2
+- [ ] REST-API
+- [ ] Client Frontend (react native & electron app)
+- [ ] Recode remaining components for current symfony standards
 
 ## Dependencies
 * Symfony

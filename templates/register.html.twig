@@ -11,22 +11,43 @@
     </div>
 </nav>
 
-{{ errorMSG }}
+<div class="container mt-5">
+    <div class="w-4/5 m-auto text-center">
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card bg-dark" style="border-radius: 15px;">
+                            <div class="card-body p-5 text-light">
+                                <h2 class="text-uppercase text-center mb-3 text-light">Create an account</h2>
+            
+                                {% if errorMSG != null %}
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <strong>Error</strong> {{ errorMSG }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endif %}
 
+                                {{ form_start(registrationForm) }}
+                                    
+                                    {{ form_widget(registrationForm) }}
+                                    <div class="m-3 justify-content-center">
+                                        <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-light">Register</button>
+                                    </div>
 
+                                    <p class="text-center mt-3 mb-0 text-light">
+                                        Have already an account? 
+                                        <a href="/login" class="fw-bold text-light"><u>Login here</u></a>
+                                    </p>
 
-<div class="w-4/5 m-auto text-center">
-    <div class="py-12 border-b border-gray-200">
-        <h1 class="text-6xl pt-12 pb-8">
-            Register
-        </h1>
-
-        {{ form_start(registrationForm) }}
-        
-            <button type="submit">Register</button>
-
-        {{ form_end(registrationForm) }}
-
+                                {{ form_end(registrationForm) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 {% endblock %}

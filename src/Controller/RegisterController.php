@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterFormType;
 use App\Helper\EntityHelper;
-use App\Helper\ErrorHelper;
 use App\Helper\LogHelper;
+use App\Util\EscapeUtil;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,18 +23,15 @@ class RegisterController extends AbstractController
 {
 
     private $logHelper;
-    private $errorHelper;
     private $entityHelper;
     private $entityManager;
 
     public function __construct(
         LogHelper $logHelper,
-        ErrorHelper $errorHelper,
         EntityHelper $entityHelper,
         EntityManagerInterface $entityManager
     ){
         $this->logHelper = $logHelper;
-        $this->errorHelper = $errorHelper;
         $this->entityHelper = $entityHelper;
         $this->entityManager = $entityManager;
     }
@@ -57,20 +54,10 @@ class RegisterController extends AbstractController
             $password = $form->get("password")->getData();
             $repassword = $form->get("re-password")->getData();
 
-            // check if username is null (paranoid lvl 100)
-            if ($username == null) {
-                $this->errorHelper->handleError("error to insert register form: username is null", 400);
-            }
-
-            // check if password is null (paranoid lvl 100)
-            if ($password == null) {
-                $this->errorHelper->handleError("error to insert register form: password is null", 400);
-            }
-
-            // check if repassword is null (paranoid lvl 100)
-            if ($repassword == null) {
-                $this->errorHelper->handleError("error to insert register form: re-password is null", 400);
-            }
+            // escape values (XSS protection)
+            $username = EscapeUtil::special_chars_strip($username);
+            $password = EscapeUtil::special_chars_strip($password);
+            $repassword = EscapeUtil::special_chars_strip($repassword);
 
             // check if username used
             if ($this->entityHelper->isEntityExist("username", $username, $user)) {
@@ -111,7 +98,7 @@ class RegisterController extends AbstractController
             $this->entityManager->flush();
 
             // return login page
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('register.html.twig', [

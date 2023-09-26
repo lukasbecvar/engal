@@ -10,11 +10,11 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('public/assets/')
+    .setOutputPath('public/build/')
     // public path used by the web server to access the output path
-    .setPublicPath('/assets')
+    .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
-    //.setManifestKeyPrefix('assets/')
+    //.setManifestKeyPrefix('build/')
 
     .copyFiles({
         from: './assets/images', // Zdrojový adresář s obrázky

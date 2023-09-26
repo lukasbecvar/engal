@@ -18,6 +18,6 @@ composer.lock
 /node_modules/
 npm-debug.log
 yarn-error.log
-/public/assets/
+/public/build/
 package-lock.json
 ###< symfony/webpack-encore-bundle ###

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -16,7 +17,12 @@ class RegisterFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => "Username",
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control form-control-lg mb-3',
+                    'id' => 'form3Example1cg',
+                    'placeholder' => 'Username',
+                ],
                 'mapped' => true,
                 'constraints' => [
                     new NotBlank([
@@ -29,8 +35,13 @@ class RegisterFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('password', TextType::class, [
-                'label' => "Password",
+            ->add('password', PasswordType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control form-control-lg mb-3',
+                    'id' => 'form3Example1cg',
+                    'placeholder' => 'Password',
+                ],
                 'mapped' => true,
                 'constraints' => [
                     new NotBlank([
@@ -43,9 +54,15 @@ class RegisterFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('re-password', TextType::class, [
-                'label' => "Password again",
+            ->add('re-password', PasswordType::class, [
+                'label' => false,
                 'mapped' => false,
+                'attr' => [
+                    'type' => 'password',
+                    'class' => 'form-control form-control-lg',
+                    'id' => 'form3Example1cg',
+                    'placeholder' => 'Password again',
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password "again"',

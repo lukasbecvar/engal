@@ -5,12 +5,28 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Encrypted self-hosted gallery" name="description">
     <meta content="self-hosted encrypted gallery image album" name="keywords">
-    <link href={{ asset('assets/app.css') }} rel="stylesheet">
-	<link rel="icon" href={{ asset('/assets/images/favicon.png') }} type="image/x-icon"/>
+	<link rel="icon" href={{ asset('/build/images/favicon.png') }} type="image/x-icon"/>
     <title>{% block title %}{% endblock %}</title>
+
+    {% block stylesheets %}
+        {# 'app' must match the first argument to addEntry() in webpack.config.js #}
+        {{ encore_entry_link_tags('app') }}
+
+        <!-- Renders a link tag (if your module requires any CSS)
+         <link rel="stylesheet" href="/build/app.css"> -->
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+
+        <!-- Renders app.js & a webpack runtime.js file
+            <script src="/build/runtime.js" defer></script>
+            <script src="/build/app.js" defer></script>
+            See note below about the "defer" attribute -->
+    {% endblock %}
+
 </head>
 <body class="bg-primary">
     {% block body %}{% endblock %}
-    <script src={{ asset('assets/app.js') }}></script>
 </body>
 </html>

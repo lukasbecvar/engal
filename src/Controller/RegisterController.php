@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller; 
 
 use App\Entity\User;
 use App\Form\RegisterFormType;
@@ -39,7 +39,7 @@ class RegisterController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function index(Request $request): Response
     {
-        // create user entity
+        // create user instance
         $user = new User();
 
         // create register form

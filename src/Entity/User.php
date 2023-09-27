@@ -28,6 +28,12 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $ip_address = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $first_login = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $last_login = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +95,30 @@ class User
     public function setIpAddress(string $ip_address): static
     {
         $this->ip_address = $ip_address;
+
+        return $this;
+    }
+
+    public function getFirstLogin(): ?string
+    {
+        return $this->first_login;
+    }
+
+    public function setFirstLogin(string $first_login): static
+    {
+        $this->first_login = $first_login;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?string
+    {
+        return $this->last_login;
+    }
+
+    public function setLastLogin(string $last_login): static
+    {
+        $this->last_login = $last_login;
 
         return $this;
     }

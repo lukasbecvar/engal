@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterFormType;
 use App\Helper\EntityHelper;
+use App\Helper\HashHelper;
 use App\Helper\LogHelper;
 use App\Util\EscapeUtil;
 use App\Util\VisitorInfoUtil;
@@ -13,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\ByteString;
 
 /*
@@ -25,15 +27,18 @@ class RegisterController extends AbstractController
     private $logHelper;
     private $entityHelper;
     private $entityManager;
+    private $hashHelper;
 
     public function __construct(
         LogHelper $logHelper,
         EntityHelper $entityHelper,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        HashHelper $hashHelper
     ){
         $this->logHelper = $logHelper;
         $this->entityHelper = $entityHelper;
         $this->entityManager = $entityManager;
+        $this->hashHelper = $hashHelper;
     }
 
     #[Route('/register', name: 'app_register')]
@@ -49,6 +54,9 @@ class RegisterController extends AbstractController
         // check if submited
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // get current date
+            $date = date('d.m.Y H:i:s');
+
             // get form data
             $username = $form->get('username')->getData();
             $password = $form->get('password')->getData();
@@ -60,7 +68,7 @@ class RegisterController extends AbstractController
             $repassword = EscapeUtil::special_chars_strip($repassword);
 
             // check if username used
-            if ($this->entityHelper->isEntityExist('username', $username, $user)) {
+            if ($this->entityHelper->isEntityExist(['username' => $username], $user)) {
                 return $this->render('register.html.twig', [
                     'errorMSG' => 'This username is already in use',
                     'registrationForm' => $form->createView(),
@@ -75,9 +83,16 @@ class RegisterController extends AbstractController
                 ]);
             }
 
+            // password hash
+            $hashedPassword = $this->hashHelper->gen_bcrypt($password, 10);
+
             // set from data
             $user->setUsername($username);
-            $user->setPassword($password);
+            $user->setPassword($hashedPassword);
+
+            // set login date
+            $user->setFirstLogin($date);
+            $user->setLastLogin('not logged');
 
             // generate token
             $token = ByteString::fromRandom(32)->toString();
@@ -87,11 +102,11 @@ class RegisterController extends AbstractController
 
             // set others
             $user->setToken($token);
-            $user->setRole('user');
+            $user->setRole("user");
             $user->setIpAddress($ipAddress);
 
             // log regstration event
-            $this->logHelper->log('registration', 'new user: $username registred');
+            $this->logHelper->log('registration', 'new user: '.$username.' registred');
 
             // insert new user
             $this->entityManager->persist($user);

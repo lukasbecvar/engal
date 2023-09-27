@@ -22,7 +22,7 @@ class ErrorHelper
     public function handleErrorView($code)
     {
         try {
-            $view = $this->twig->render('errors/error-$code.html.twig');
+            $view = $this->twig->render('errors/error-'.$code.'.html.twig');
         } catch (\Exception) {
             $view = $this->twig->render('errors/error-unknown.html.twig');
         }
@@ -36,7 +36,7 @@ class ErrorHelper
     {
         // check if app in devmode
         if ($_ENV['APP_ENV'] == 'dev') {
-            die('DEV-MODE: $msg');
+            die('DEV-MODE: '.$msg);
 
         // error (for non devmode visitors)
         } else {

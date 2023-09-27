@@ -57,20 +57,24 @@ class VisitorHelper
 
         // check if visitor repo found
         if (!$visitorRepository) {
-            $this->errorHelper->handleError('unexpected visitor with ip: $ipAddress update error, please check database structure', 500);
+            $this->errorHelper->handleError('unexpected visitor with ip: '.$ipAddress.' update error, please check database structure', 500);
         } else {
 
             // get current visited_sites value from database
             $visitedSites = $visitorRepository->getVisitedSites();
 
             // update values
-            $visitorRepository->setVisitedSites($visitedSites +1);
+            $visitorRepository->setVisitedSites($visitedSites + 1);
             $visitorRepository->setLastVisit($date);
             $visitorRepository->setBrowser($browser);
             $visitorRepository->setOs($os);
 
-            // update visitor
-            $this->entityManager->flush();
+            // try to flush updated data
+            try {
+                $this->entityManager->flush();
+            } catch (\Exception $e) {
+                $this->errorHelper->handleError('flush error: '.$e->getMessage(), 500);
+            }
         }
     }
     

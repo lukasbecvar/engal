@@ -29,7 +29,7 @@ class DatabaseOnlineMiddleware
         } catch (\Exception $e) {
 
             // return error if not connected
-            $this->errorHelper->handleError("database connection error: ".$e->getMessage(), 500);
+            $this->errorHelper->handleError('database connection error: '.$e->getMessage(), 500);
         }
     }
 }

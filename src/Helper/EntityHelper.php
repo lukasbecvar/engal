@@ -37,7 +37,7 @@ class EntityHelper
     }
 
     // check if entity exist in database
-    public function isEntityExist($columnName, $value, $entity): bool
+    public function isEntityExist($arr, $entity): bool
     {
         // default state
         $state = false;
@@ -47,7 +47,7 @@ class EntityHelper
         
         // try find value by column name
         try {
-            $result = $repository->findOneBy([$columnName => $value]);
+            $result = $repository->findOneBy($arr);
 
         } catch (\Exception $e) {
             $this->errorHelper->handleError('find error: '.$e->getMessage(), 500);
@@ -59,5 +59,30 @@ class EntityHelper
         } 
 
         return $state;
+    }
+
+    // get entity value by arr
+    public function getEntityValue($arr, $entity) {
+        
+        // default value
+        $value = null;
+
+        // init entity repository
+        $repository = $this->entityManager->getRepository($entity::class);
+                
+        // try find value by column name
+        try {
+            $result = $repository->findOneBy($arr);
+        
+        } catch (\Exception $e) {
+            $this->errorHelper->handleError('find error: '.$e->getMessage(), 500);
+        }
+        
+        // check if found
+        if ($result !== null) {
+            $value = $result;
+        } 
+        
+        return $value;
     }
 }

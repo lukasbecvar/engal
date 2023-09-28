@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,6 +44,14 @@ class LoginFormType extends AbstractType
                 ])
             ],
         ])
+        ->add('remember', CheckboxType::class, [
+            'label' => 'Remember me',
+            'attr' => [
+                'class' => 'form-check-input',
+            ],
+            'mapped' => false,
+            'required' => false
+        ])  
         ;
     }
 

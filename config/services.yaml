@@ -37,3 +37,8 @@ services:
     App\Middleware\VisitorSystemMiddleware:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request' }
+
+    # auto login service
+    App\Middleware\AutoLoginMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request' }

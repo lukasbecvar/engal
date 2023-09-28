@@ -53,6 +53,9 @@ class LoginController extends AbstractController
         $username = $form->get('username')->getData();
         $password = $form->get('password')->getData();
 
+        // get remember status
+        $remember = $form->get('remember')->getData();
+
         // escape values (XSS protection)
         $username = EscapeUtil::special_chars_strip($username);
         $password = EscapeUtil::special_chars_strip($password);
@@ -73,7 +76,7 @@ class LoginController extends AbstractController
                 if ($this->hashHelper->hash_validate($password , $user->getPassword())) {
 
                     // set user token (login-token session)
-                    $this->loginHelper->login($username, $user->getToken());
+                    $this->loginHelper->login($username, $user->getToken(), $remember);
 
                 } else { // invalid password error
                     return $this->render('login.html.twig', [

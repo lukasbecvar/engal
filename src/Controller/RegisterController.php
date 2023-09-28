@@ -122,7 +122,7 @@ class RegisterController extends AbstractController
             $this->entityManager->flush();
 
             // set user token (login-token session)
-            $this->loginHelper->login($username, $user->getToken());
+            $this->loginHelper->login($username, $user->getToken(), false);
 
             // redirect to homepage
             return $this->redirectToRoute('app_home');

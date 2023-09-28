@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use App\Entity\User;
+use App\Util\CookieUtil;
 use Doctrine\ORM\EntityManagerInterface;
 
 /*
@@ -104,7 +105,7 @@ class LoginHelper
         return $state;
     }
 
-    public function login(string $username, string $userToken): void {
+    public function login(string $username, string $userToken, bool $remember): void {
 
         // start session
         $this->startSession();
@@ -112,6 +113,11 @@ class LoginHelper
         // check if user token is valid
         if (!empty($userToken)) {
             $_SESSION['login-token'] = $userToken;
+
+            // check if remember set
+            if ($remember) {
+                CookieUtil::set("login-token-cookie", $userToken, time() + (60*60*24*7*365));
+            }
 
             // log to mysql
             $this->logHelper->log('authenticator', 'user: '.$username.' logged in');
@@ -128,6 +134,9 @@ class LoginHelper
         // init user entity
         $userEntity = new User();
         $user = $this->entityHelper->getEntityValue(['token' => $this->getUserToken()], $userEntity);
+
+        // unset user-token cookie
+        CookieUtil::unset("login-token-cookie");
 
         // log action to mysql
         $this->logHelper->log('authenticator', 'user: '.$user->getUsername().' logout');

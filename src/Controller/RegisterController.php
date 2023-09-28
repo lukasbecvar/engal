@@ -121,8 +121,11 @@ class RegisterController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            // return login page
-            return $this->redirectToRoute('app_login');
+            // set user token (login-token session)
+            $this->loginHelper->login($username, $user->getToken());
+
+            // redirect to homepage
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('register.html.twig', [

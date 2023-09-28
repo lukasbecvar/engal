@@ -22,6 +22,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] user login form
 - [X] user login function (LoginController)
 - [X] password hash
+- [X] login remember me
 - [ ] gallery component (create, delete, list)
 - [ ] show images where gallery (light gallery)
 - [ ] image upload
@@ -29,7 +30,6 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [ ] user settings
 - [ ] ban system
 - [ ] admin system
-- [ ] robots.txt & sitemap.xml
 - [ ] tests
 - [ ] new readme + simple doc (install & use tutorial)
 - [ ] final refactor

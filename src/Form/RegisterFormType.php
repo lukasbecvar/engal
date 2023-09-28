@@ -21,6 +21,7 @@ class RegisterFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control form-control-lg mb-3',
                     'id' => 'form3Example1cg',
+                    'autocomplete' => 'username',
                     'placeholder' => 'Username',
                 ],
                 'mapped' => true,
@@ -40,6 +41,7 @@ class RegisterFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control form-control-lg mb-3',
                     'id' => 'form3Example1cg',
+                    'autocomplete' => 'new-password',
                     'placeholder' => 'Password',
                 ],
                 'mapped' => true,
@@ -61,6 +63,7 @@ class RegisterFormType extends AbstractType
                     'type' => 'password',
                     'class' => 'form-control form-control-lg',
                     'id' => 'form3Example1cg',
+                    'autocomplete' => 'new-password',
                     'placeholder' => 'Password again',
                 ],
                 'constraints' => [

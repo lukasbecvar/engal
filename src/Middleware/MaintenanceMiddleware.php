@@ -22,8 +22,6 @@ class MaintenanceMiddleware
     {
         // check if MAINTENANCE_MODE enabled
         if ($_ENV['MAINTENANCE_MODE'] == 'true') {
-
-            // handle maintenance page
             $this->errorHelper->handleErrorView('maintenance');            
         }
     }

@@ -3,19 +3,19 @@
 namespace App\Controller; 
 
 use App\Entity\User;
-use App\Form\RegisterFormType;
-use App\Helper\EntityHelper;
-use App\Helper\HashHelper;
-use App\Helper\LogHelper;
 use App\Util\EscapeUtil;
+use App\Helper\LogHelper;
+use App\Helper\HashHelper;
+use App\Helper\LoginHelper;
+use App\Helper\EntityHelper;
 use App\Util\VisitorInfoUtil;
+use App\Form\RegisterFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\ByteString;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\String\ByteString;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /*
     Register controller provides user registration
@@ -25,25 +25,34 @@ class RegisterController extends AbstractController
 {
 
     private $logHelper;
+    private $hashHelper;
+    private $loginHelper;
     private $entityHelper;
     private $entityManager;
-    private $hashHelper;
 
     public function __construct(
         LogHelper $logHelper,
+        HashHelper $hashHelper,
+        LoginHelper $loginHelper,
         EntityHelper $entityHelper,
-        EntityManagerInterface $entityManager,
-        HashHelper $hashHelper
+        EntityManagerInterface $entityManager
     ){
         $this->logHelper = $logHelper;
+        $this->hashHelper = $hashHelper;
+        $this->loginHelper = $loginHelper;
         $this->entityHelper = $entityHelper;
         $this->entityManager = $entityManager;
-        $this->hashHelper = $hashHelper;
     }
 
     #[Route('/register', name: 'app_register')]
     public function index(Request $request): Response
     {
+
+        // check if user logged in
+        if ($this->loginHelper->isUserLogedin()) {
+            return $this->redirectToRoute('app_home');   
+        }
+
         // create user instance
         $user = new User();
 
@@ -106,7 +115,7 @@ class RegisterController extends AbstractController
             $user->setIpAddress($ipAddress);
 
             // log regstration event
-            $this->logHelper->log('registration', 'new user: '.$username.' registred');
+            $this->logHelper->log('authenticator', 'registration new user: '.$username.' registred');
 
             // insert new user
             $this->entityManager->persist($user);

@@ -12,16 +12,20 @@ use Doctrine\ORM\EntityManagerInterface;
 class LoginHelper
 {
 
-    private $entityHelper;
-    private $errorHelper;
     private $logHelper;
+    private $errorHelper;
+    private $entityHelper;
     private $entityManager;
 
-    public function __construct(EntityHelper $entityHelper, ErrorHelper $errorHelper, LogHelper $logHelper, EntityManagerInterface $entityManager)
-    {
-        $this->entityHelper = $entityHelper;
-        $this->errorHelper = $errorHelper;
+    public function __construct(
+        LogHelper $logHelper, 
+        ErrorHelper $errorHelper, 
+        EntityHelper $entityHelper, 
+        EntityManagerInterface $entityManager
+    ) {
         $this->logHelper = $logHelper;
+        $this->errorHelper = $errorHelper;
+        $this->entityHelper = $entityHelper;
         $this->entityManager = $entityManager;
     }
 
@@ -100,20 +104,17 @@ class LoginHelper
         return $state;
     }
 
-    public function login($username, $userToken): void {
+    public function login(string $username, string $userToken): void {
 
         // start session
         $this->startSession();
-
-        // init user entity
-        $userEntity = new User();
 
         // check if user token is valid
         if (!empty($userToken)) {
             $_SESSION['login-token'] = $userToken;
 
             // log to mysql
-            $this->logHelper->log('new-login', 'user: '.$username.' logged in');
+            $this->logHelper->log('authenticator', 'user: '.$username.' logged in');
 
         } else {
             $this->errorHelper->handleError('error to login user with token: '.$userToken, 500);
@@ -129,10 +130,9 @@ class LoginHelper
         $user = $this->entityHelper->getEntityValue(['token' => $this->getUserToken()], $userEntity);
 
         // log action to mysql
-        $this->logHelper->log('new-login', 'user: '.$user->getUsername().' logged in');
+        $this->logHelper->log('authenticator', 'user: '.$user->getUsername().' logout');
 
         // destroy all sessions
         session_destroy();
     }
 }
-

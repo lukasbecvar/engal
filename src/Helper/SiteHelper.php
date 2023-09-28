@@ -14,7 +14,6 @@ class SiteHelper
         return $_SERVER['HTTP_HOST'];
     }
 
-    // check if site running on localhost
     public function isRunningLocalhost(): bool 
     {
 		$state = false;
@@ -31,6 +30,7 @@ class SiteHelper
         if (str_starts_with($host, '127.0.0.1')) {
             $state = true;
         }
+        
         return $state;
     }
 }

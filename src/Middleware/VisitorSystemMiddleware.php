@@ -2,10 +2,10 @@
 
 namespace App\Middleware;
 
-use App\Helper\EntityHelper;
-use App\Helper\VisitorHelper;
 use App\Entity\Visitor;
 use App\Util\EscapeUtil;
+use App\Helper\EntityHelper;
+use App\Helper\VisitorHelper;
 use App\Util\VisitorInfoUtil;
 
 /*
@@ -16,15 +16,15 @@ use App\Util\VisitorInfoUtil;
 class VisitorSystemMiddleware
 { 
 
-    private $visitorHelper;
     private $entityHelper;
+    private $visitorHelper;
 
     public function __construct(
-        VisitorHelper $visitorHelper, 
         EntityHelper $entityHelper,
+        VisitorHelper $visitorHelper 
     ) {
-        $this->visitorHelper = $visitorHelper;
         $this->entityHelper = $entityHelper;
+        $this->visitorHelper = $visitorHelper;
     }
 
     public function onKernelRequest(): void

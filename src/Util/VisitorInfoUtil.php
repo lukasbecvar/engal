@@ -25,10 +25,7 @@ class VisitorInfoUtil
 
     public static function getBrowser(): string 
     {
-        // get user agent
         $agent = $_SERVER['HTTP_USER_AGENT'];
-
-        // default browser name
         $browser = 'Unknown';
 
         if ($agent != null) {
@@ -42,10 +39,9 @@ class VisitorInfoUtil
     { 
         $agent = VisitorInfoUtil::getBrowser();
         
-        // default os name
         $os = 'Unknown OS';
         
-        // OS array
+        // OS list
         $os_array = array (
             '/windows/i'            =>  'Windows',
             '/windows nt 10/i'      =>  'Windows 10',

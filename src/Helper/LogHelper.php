@@ -20,7 +20,6 @@ class LogHelper
         $this->entityHelper = $entityHelper;
     }
 
-    // log action to database
     public function log(string $name, string $value): void 
     {
         if ($this->isLogsEnabled()) {
@@ -56,7 +55,6 @@ class LogHelper
         }
     }
 
-    // check if log save enabled
     public function isLogsEnabled(): bool 
     {
         $state = false;

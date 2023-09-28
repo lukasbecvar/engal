@@ -2,8 +2,8 @@
 
 namespace App\Helper;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Visitor;
+use Doctrine\ORM\EntityManagerInterface;
 
 /*
     Visitor helper provides main visitor get, set methods
@@ -12,27 +12,27 @@ use App\Entity\Visitor;
 class VisitorHelper
 {
     
-    private $entityManager;
-    private $errorHelper;
     private $logHelper;
     private $siteHelper;
+    private $errorHelper;
     private $entityHelper;
+    private $entityManager;
 
     public function __construct(
-        EntityManagerInterface $entityManager, 
-        ErrorHelper $errorHelper, 
         LogHelper $logHelper, 
         SiteHelper $siteHelper,
-        EntityHelper $entityHelper
+        ErrorHelper $errorHelper, 
+        EntityHelper $entityHelper,
+        EntityManagerInterface $entityManager
     ) {
-        $this->entityManager = $entityManager;
-        $this->errorHelper = $errorHelper;
         $this->logHelper = $logHelper;
         $this->siteHelper = $siteHelper;
+        $this->errorHelper = $errorHelper;
         $this->entityHelper = $entityHelper;
+        $this->entityManager = $entityManager;
     }
 
-    public function insertNew($date, $ipAddress, $browser, $os, $location): void 
+    public function insertNew(string $date, string $ipAddress, string $browser, string $os, string $location): void 
     {
         // visitor entity
         $visitorEntity = new Visitor();
@@ -50,7 +50,7 @@ class VisitorHelper
         $this->entityHelper->insertEntity($visitorEntity);
     }
 
-    public function updateVisitor($date, $ipAddress, $browser, $os): void
+    public function updateVisitor(string $date, string $ipAddress, string $browser, string $os): void
     {
         // visitor repository
         $visitorRepository = $this->entityManager->getRepository(Visitor::class)->findOneBy(['ip_address' => $ipAddress]);
@@ -69,16 +69,11 @@ class VisitorHelper
             $visitorRepository->setBrowser($browser);
             $visitorRepository->setOs($os);
 
-            // try to flush updated data
-            try {
-                $this->entityManager->flush();
-            } catch (\Exception $e) {
-                $this->errorHelper->handleError('flush error: '.$e->getMessage(), 500);
-            }
+            $this->entityManager->flush();
         }
     }
     
-    public function getLocation($ipAddress): ?string
+    public function getLocation(string $ipAddress): ?string
     {
         $location = null;
 

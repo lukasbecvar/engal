@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href={{ asset('assets/app.css') }} rel="stylesheet">
     <title>{% block title %}{% endblock %}</title>
     {% block stylesheets %}
-        {# 'app' must match the first argument to addEntry() in webpack.config.js #}
         {{ encore_entry_link_tags('app') }}
-
-        <!-- Renders a link tag (if your module requires any CSS)
-         <link rel="stylesheet" href="/build/app.css"> -->
     {% endblock %}
 </head>
 <body>

@@ -9,7 +9,7 @@ namespace App\Helper;
 class HashHelper
 {
 
-	public function hash_validate($plain_text, $hash): bool {
+	public function hash_validate(string $plain_text, string $hash): bool {
 
 		// default state
 		$state = false;
@@ -22,7 +22,7 @@ class HashHelper
 		return $state;
 	}
 
-	public function gen_bcrypt($plain_text, $cost): string {
+	public function gen_bcrypt(string $plain_text, int $cost): string {
 		$options = [
 			'cost' => $cost
 		];

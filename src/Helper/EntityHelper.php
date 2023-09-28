@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 /*
@@ -11,33 +12,29 @@ use Doctrine\ORM\EntityManagerInterface;
 class EntityHelper
 {
 
-    private $entityManager;
     private $errorHelper;
+    private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager, ErrorHelper $errorHelper)
     {
-        $this->entityManager = $entityManager;
         $this->errorHelper = $errorHelper;
+        $this->entityManager = $entityManager;
     }
 
-    // insert new entity row
     public function insertEntity($entity): void
     {
         // set new entity row
         $this->entityManager->persist($entity);
 
+        // try insert row
         try {
-
-            // flush entity row
             $this->entityManager->flush();
-
         } catch (\Exception $e) {
             $this->errorHelper->handleError('flush error: '.$e->getMessage(), 500);
         }
     }
 
-    // check if entity exist in database
-    public function isEntityExist($arr, $entity): bool
+    public function isEntityExist(array $arr, $entity): bool
     {
         // default state
         $state = false;
@@ -48,7 +45,6 @@ class EntityHelper
         // try find value by column name
         try {
             $result = $repository->findOneBy($arr);
-
         } catch (\Exception $e) {
             $this->errorHelper->handleError('find error: '.$e->getMessage(), 500);
         }
@@ -61,8 +57,7 @@ class EntityHelper
         return $state;
     }
 
-    // get entity value by arr
-    public function getEntityValue($arr, $entity) {
+    public function getEntityValue(array $arr, $entity) {
         
         // default value
         $value = null;
@@ -73,7 +68,6 @@ class EntityHelper
         // try find value by column name
         try {
             $result = $repository->findOneBy($arr);
-        
         } catch (\Exception $e) {
             $this->errorHelper->handleError('find error: '.$e->getMessage(), 500);
         }

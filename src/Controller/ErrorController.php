@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Helper\ErrorHelper;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /*
     Error controller is error handler (for web server & redirect use)
@@ -23,14 +22,14 @@ class ErrorController extends AbstractController
 
     // handle unknow error if code not used
     #[Route('/error', name: 'app_error')]
-    public function unknown(): Response
+    public function unknown(): void
     {
         $this->errorHelper->handleErrorView('unknown');
     }
 
     // handle error by code
     #[Route('/error/{code}', methods: ['GET'], name: 'code_error')]
-    public function index($code): Response
+    public function index(string $code): void
     {
         // block maintenance handeling (this used only from app logic)
         if ($code == 'maintenance') {

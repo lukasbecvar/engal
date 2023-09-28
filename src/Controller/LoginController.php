@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\LoginFormType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Helper\EntityHelper;
+use App\Util\EscapeUtil;
 use App\Helper\HashHelper;
 use App\Helper\LoginHelper;
-use App\Util\EscapeUtil;
+use App\Form\LoginFormType;
+use App\Helper\EntityHelper;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /*
     Login controller provides user authentication
@@ -20,23 +20,28 @@ use App\Util\EscapeUtil;
 class LoginController extends AbstractController
 {
 
+    private $hashHelper;
     private $loginHelper;
     private $entityHelper;
-    private $hashHelper;
 
     public function __construct(
+        HashHelper $hashHelper,
         LoginHelper $loginHelper,
-        EntityHelper $entityHelper,
-        HashHelper $hashHelper
+        EntityHelper $entityHelper
     ){
+        $this->hashHelper = $hashHelper;
         $this->loginHelper = $loginHelper;
         $this->entityHelper = $entityHelper;
-        $this->hashHelper = $hashHelper;
     }
 
     #[Route('/login', name: 'app_login')]
     public function login(Request $request): Response
     {
+        // check if user logged in
+        if ($this->loginHelper->isUserLogedin()) {
+            return $this->redirectToRoute('app_home');   
+        }
+
         // create user instance
         $user = new User();
 
@@ -70,19 +75,20 @@ class LoginController extends AbstractController
                     // set user token (login-token session)
                     $this->loginHelper->login($username, $user->getToken());
 
-                } else {
+                } else { // invalid password error
                     return $this->render('login.html.twig', [
                         'errorMSG' => 'Incorrect username or password.',
                         'loginForm' => $form->createView(),
                     ]);  
                 }
-            } else {
+            } else { // user not exist error
                 return $this->render('login.html.twig', [
                     'errorMSG' => 'Incorrect username or password.',
                     'loginForm' => $form->createView(),
                 ]);  
             }
 
+            // redirect to homepage
             return $this->redirectToRoute('app_home');
         }
 
@@ -95,6 +101,7 @@ class LoginController extends AbstractController
     #[Route('/logout', name: 'app_logout')]
     public function logout(): Response
     {
+        // logout user (is session found)
         if ($this->loginHelper->isUserLogedin()) {
             $this->loginHelper->logout();
         }

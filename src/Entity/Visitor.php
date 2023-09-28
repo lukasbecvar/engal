@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\VisitorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VisitorRepository;
 
 #[ORM\Entity(repositoryClass: VisitorRepository::class)]
 class Visitor

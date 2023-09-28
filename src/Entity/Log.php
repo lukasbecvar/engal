@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\LogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LogRepository;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
 class Log

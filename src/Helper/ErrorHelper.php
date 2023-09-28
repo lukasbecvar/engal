@@ -18,9 +18,9 @@ class ErrorHelper
         $this->twig = $twig;
     }
 
-    // handle error twig view
-    public function handleErrorView($code)
+    public function handleErrorView(string $code)
     {
+        // try to get view
         try {
             $view = $this->twig->render('errors/error-'.$code.'.html.twig');
         } catch (\Exception) {
@@ -31,12 +31,19 @@ class ErrorHelper
         die($view);
     }
 
-    // handle error msg (if env is prod = render error view)
     public function handleError(string $msg, int $code)
     {
         // check if app in devmode
         if ($_ENV['APP_ENV'] == 'dev') {
-            die('DEV-MODE: '.$msg);
+
+            $data = [
+                'status' => 'error',
+                'code' => $code,
+                'message' => $msg
+            ];
+
+            // kill app & send error json
+            die(json_encode($data));
 
         // error (for non devmode visitors)
         } else {

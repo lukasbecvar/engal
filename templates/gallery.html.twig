@@ -38,14 +38,15 @@
     </div>
 </nav>
 
-<div id="lightgallery">
-
-    {% for value in images %}
-        <a href="data:image/jpeg;base64,{{ value.image }}" data-lg-size="1600-2400">
-            <img class="gallery-images" alt={{ value.name }} src="data:image/jpeg;base64,{{ value.image }}" />
-        </a>
-    {% endfor %}
-</div>
+<center>
+    <div id="lightgallery">
+        {% for value in images %}
+            <a href="data:image/jpeg;base64,{{ value.image }}" data-lg-size="1600-2400">
+                <img class="gallery-images" alt={{ value.name }} src="data:image/jpeg;base64,{{ value.image }}" />
+            </a>
+        {% endfor %}
+    </div>
+</center>
 
 <!-- import lightgallery js -->
 <script src={{ asset('/build/lightgallery/js/lightgallery.js') }}></script>

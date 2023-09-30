@@ -17,8 +17,13 @@ Encore
     //.setManifestKeyPrefix('build/')
 
     .copyFiles({
-        from: './assets/images', // Zdrojový adresář s obrázky
-        to: 'images/[path][name].[ext]' // Cílový adresář pro kopírované obrázky
+        from: './assets/images', 
+        to: 'images/[path][name].[ext]' 
+    })
+
+    .copyFiles({
+        from: './assets/lightgallery', 
+        to: 'lightgallery/[path][name].[ext]' 
     })
 
     /*

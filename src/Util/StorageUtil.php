@@ -2,8 +2,6 @@
 
 namespace App\Util;
 
-use Symfony\Component\Stopwatch\Stopwatch;
-
 /*
     StorageUtil util provides file storage dirctory methods
 */
@@ -29,6 +27,15 @@ class StorageUtil
         }
     }
 
+    // check if gallery exist
+    public static function checkGallery(string $storage_name, string $gallery_name) {
+        if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // get thumbnail
     public static function getThumbnail(string $storage_name, string $gallery_name) {
 
@@ -46,6 +53,16 @@ class StorageUtil
                 }
             }
         }
+        return $content;
+    }
+
+    // get image content
+    public static function getImage(string $storage_name, string $gallery_name, string $image_name) {
+
+        $file = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name.'/'.$image_name;
+        
+        $fileContents = file_get_contents($file);
+        $content = nl2br(htmlspecialchars($fileContents)); 
         return $content;
     }
 
@@ -89,4 +106,33 @@ class StorageUtil
 
         return $images;
     }
+
+    // get images content
+    public static function getImagesContent(string $storage_name, string $gallery_name) {
+        if (!StorageUtil::checkStorage($storage_name)) {
+            StorageUtil::createStorage($storage_name);
+        }
+
+        $images = null;
+
+        if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
+            $images = scandir(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name);
+            $images = array_diff($images, array('..', '.'));
+        }
+
+        $arr = [];
+
+        foreach ($images as $value) {
+
+            $content = [
+                'name' => $value,
+                'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
+            ];
+
+            array_push($arr, $content);
+        }
+
+        return $arr;
+    }
+    
 }

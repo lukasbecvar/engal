@@ -5,8 +5,10 @@
  * (and its CSS file) in your base layout (bases/base.html.twig).
  */
 
-// any CSS you import will output into a single css file
-import './css/global.scss';
+// bootstrap
+import './bootstrap.scss';
+
+// custom css
 import './css/main.css';
 import './css/scrollbar.css';
 
@@ -14,7 +16,3 @@ const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
-
-$(document).ready(function() {
-    $('[data-toggle="popover"]').popover();
-});

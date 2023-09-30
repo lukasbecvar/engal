@@ -24,7 +24,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] password hash
 - [X] login remember me
 - [X] gallery component (create, delete, list)
-- [ ] show images where gallery (light gallery)
+- [X] images viewer
 - [ ] image upload
 - [ ] media encryption
 - [ ] user settings

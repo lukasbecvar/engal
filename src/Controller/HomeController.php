@@ -31,8 +31,38 @@ class HomeController extends AbstractController
         }
 
         // get gallerys
-        $gallerys = StorageUtil::getGallerys('lordbecvold');
-        
+        $gallerys = StorageUtil::getGallerys($this->loginHelper->getUsername());
+
         return $this->render('gallery-list.html.twig', ['gallerys' => $gallerys]);
+    }
+
+    #[Route(['/', '/gallery'], name: 'app_empty_gallery')]
+    public function emptyGallery(): Response
+    {
+        return $this->redirectToRoute('code_error', [
+            'code' => '400'
+        ]);
+    }
+
+    #[Route(['/', '/gallery/{name}'], name: 'app_gallery')]
+    public function gallery($name): Response
+    {
+        // check if not logged
+        if (!$this->loginHelper->isUserLogedin()) {            
+            return $this->render('home.html.twig');
+        }
+
+        // check if gallery exist
+        if (StorageUtil::checkGallery($this->loginHelper->getUsername(), $name)) {
+            
+            // get gallery images
+            $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name);
+            return $this->render('gallery.html.twig', ['name' => $name, 'images' => $images]);
+            
+        } else {
+            return $this->redirectToRoute('code_error', [
+                'code' => '404'
+            ]);
+        }
     }
 }

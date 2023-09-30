@@ -1,7 +1,7 @@
 {% extends 'bases/base.html.twig' %}
 
 {% block title %}
-    Engal | Gallery
+    Engal | {{ name }}
 {% endblock %}
 
 {% block body %}
@@ -22,7 +22,7 @@
                     <a class="nav-link" href="#">Random</a>
                 </li>
             </ul>
-        </div>
+        </div> 
         <div class="d-flex">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item me-3">
@@ -38,17 +38,25 @@
     </div>
 </nav>
 
-<center>
-    <div class="container mt-5">
-        {% for value in gallerys %}
-            <div class="gallery-link" id="gallery2">
-                <a href="/gallery/{{ value.name }}" class="link-text">
-                    <img class="image-link" src="data:image/jpg;base64,{{ value.thumbnail }}" alt={{ value.name }}>
-                    {{ value.name }}
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-</center><br>
+<div id="lightgallery">
+
+    {% for value in images %}
+        <a href="data:image/jpeg;base64,{{ value.image }}" data-lg-size="1600-2400">
+            <img alt={{ value.name }} src="data:image/jpeg;base64,{{ value.image }}" />
+        </a>
+    {% endfor %}
+</div>
+
+<!-- import lightgallery js -->
+<script src={{ asset('/build/lightgallery/js/lightgallery.js') }}></script>
+<script src={{ asset('/build/lightgallery/js/lg-pager.js') }}></script>
+<script src={{ asset('/build/lightgallery/js/lg-autoplay.js') }}></script>
+<script src={{ asset('/build/lightgallery/js/lg-fullscreen.js') }}></script>
+<script src={{ asset('/build/lightgallery/js/lg-zoom.js') }}></script>
+
+<!-- init lightgallery -->
+<script>
+   lightGallery(document.getElementById('lightgallery'));
+</script>
 
 {% endblock %}

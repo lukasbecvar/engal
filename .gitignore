@@ -21,3 +21,7 @@ yarn-error.log
 /public/build/
 package-lock.json
 ###< symfony/webpack-encore-bundle ###
+
+###> storage ###
+/storage
+###< storage ###

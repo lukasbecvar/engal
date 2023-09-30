@@ -1,0 +1,37 @@
+.gallery-link {
+    display: inline-block;
+    margin: 10px;
+    border: 2px solid #ccc;
+    padding: 2px;
+    transition: transform 0.2s ease-in-out;
+    background-color: black;
+    width: 300px; 
+    height: 500px; 
+    overflow: hidden;
+}
+  
+.link-text {
+    color: white;
+    text-decoration: none;
+}
+  
+.gallery-link:hover {
+    transform: scale(1.01);
+    border: 2px solid rgb(255, 106, 106);
+}
+  
+.gallery-link img {
+    width: 100%;
+    height: 95%;
+    object-fit: cover; 
+}
+
+@media screen and (max-width: 800px) { 
+    .gallery-link {
+        width: 150px; 
+        height: 250px; 
+    }
+    .gallery-link img {
+        height: 90%;
+    }
+}

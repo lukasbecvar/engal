@@ -1,0 +1,20 @@
+/*Custom scrollbar design (Not working on mobile divices)*/
+::-webkit-scrollbar { /*Own page scrollbar design*/
+	width: 10px;
+	height: 15px;
+} 
+
+::-webkit-scrollbar-track { /*Own scrollbar bacground*/
+	background: rgb(17, 17, 17);
+}
+ 
+::-webkit-scrollbar-thumb { /*Own scrollbar button*/
+	background: #40444b;
+	-webkit-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+} 
+
+::-webkit-scrollbar-thumb:hover { /*Own scrollbar button hover*/
+	background: #5c646b;
+}
+/*End of Custom scrollBar*/

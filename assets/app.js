@@ -6,7 +6,9 @@
  */
 
 // any CSS you import will output into a single css file
-import './css/main.scss';
+import './css/global.scss';
+import './css/main.css';
+import './css/scrollbar.css';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it

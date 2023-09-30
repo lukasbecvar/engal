@@ -37,4 +37,18 @@
         </div>
     </div>
 </nav>
+
+<center>
+    <div class="container mt-5">
+        {% for value in gallerys %}
+            <div class="gallery-link" id="gallery2">
+                <a href="#" class="link-text">
+                    <img class="image-link" src="data:image/jpg;base64,{{ value.thumbnail }}" alt={{ value.name }}>
+                    {{ value.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</center><br>
+
 {% endblock %}

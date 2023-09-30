@@ -42,7 +42,7 @@ class LoginHelper
         $date = date('d.m.Y H:i:s');
 
         // user repository
-        $user = $this->entityManager->getRepository(Visitor::class)->findOneBy(['token' => $this->getUserToken()]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['token' => $this->getUserToken()]);
 
         // check if user repo found
         if ($user) {
@@ -105,6 +105,21 @@ class LoginHelper
         return $state;
     }
 
+    public function getUsername(): string {
+
+        $username = null;
+
+        // user repository
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['token' => $this->getUserToken()]);
+
+        // check if user repo found
+        if ($user) {
+            $username = $user->getUsername();
+        } 
+
+        return $username;
+    }
+
     public function login(string $username, string $userToken, bool $remember): void {
 
         // start session
@@ -118,6 +133,9 @@ class LoginHelper
             if ($remember) {
                 CookieUtil::set("login-token-cookie", $userToken, time() + (60*60*24*7*365));
             }
+
+            // update last login time
+            $this->setLastLoginDate();
 
             // log to mysql
             $this->logHelper->log('authenticator', 'user: '.$username.' logged in');

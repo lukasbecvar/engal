@@ -97,14 +97,19 @@ class StorageUtil
             StorageUtil::createStorage($storage_name);
         }
 
-        $images = null;
+        $arr = [];
 
         if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
             $images = scandir(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name);
-            $images = array_diff($images, array('..', '.'));
+            foreach ($images as $image) {
+                if (str_ends_with($image, '.image')) {
+                    array_push($arr, $image);
+                }
+            }
+            $arr = array_diff($arr, array('..', '.'));
         }
 
-        return $images;
+        return $arr;
     }
 
     // get images content
@@ -124,12 +129,14 @@ class StorageUtil
 
         foreach ($images as $value) {
 
-            $content = [
-                'name' => $value,
-                'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
-            ];
-
-            array_push($arr, $content);
+            if (str_ends_with($value, '.image')) {
+                $content = [
+                    'name' => $value,
+                    'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
+                ];
+    
+                array_push($arr, $content);
+            }
         }
 
         return $arr;

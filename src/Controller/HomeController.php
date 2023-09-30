@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper\LoginHelper;
+use App\Util\EscapeUtil;
 use App\Util\StorageUtil;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,6 +52,9 @@ class HomeController extends AbstractController
         if (!$this->loginHelper->isUserLogedin()) {            
             return $this->render('home.html.twig');
         }
+
+        // escape name
+        $name = EscapeUtil::special_chars_strip($name);
 
         // check if gallery exist
         if (StorageUtil::checkGallery($this->loginHelper->getUsername(), $name)) {

@@ -50,6 +50,15 @@ class UploadController extends AbstractController
                 $image_name = EscapeUtil::special_chars_strip($form->get('imageName')->getData());
                 $gallery_name = EscapeUtil::special_chars_strip($form->get('galleryName')->getData());
 
+                if (count($uploaded_images) > 40) {
+                    return $this->render('upload.html.twig', [
+                        'form' => $form->createView(),
+                        'errorMSG' => 'maximal 40 images allowed'
+                    ]);                   
+                } else {
+
+                }
+
                 // upload all images
                 foreach ($uploaded_images as $file) {
 

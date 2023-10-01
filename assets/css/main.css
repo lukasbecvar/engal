@@ -39,6 +39,16 @@
 	border: 1px solid rgb(241, 53, 53);
 }
 
+.img-edit-button { 
+	color: white;
+	text-decoration: underline;
+}
+
+.img-edit-button:hover { 
+	color: rgb(255, 83, 83);
+	text-decoration: underline;
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 

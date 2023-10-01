@@ -66,17 +66,17 @@ class StorageUtil
         return $content;
     }
 
-    // get galleryes list
-    public static function getGallerys(string $storage_name) {
+    // get galleries list
+    public static function getGalleries(string $storage_name) {
         if (!StorageUtil::checkStorage($storage_name)) {
             StorageUtil::createStorage($storage_name);
         }
-        $gallerys = scandir(__DIR__.'/../../storage/'.$storage_name);
-        $gallerys = array_diff($gallerys, array('..', '.'));
+        $galleries = scandir(__DIR__.'/../../storage/'.$storage_name);
+        $galleries = array_diff($galleries, array('..', '.'));
 
         $arr = [];
 
-        foreach ($gallerys as $value) {
+        foreach ($galleries as $value) {
 
             if(StorageUtil::getImages($storage_name, $value) != null) {
                 $gallery = [
@@ -126,6 +126,9 @@ class StorageUtil
         }
 
         $arr = [];
+
+        // sort normal
+        natsort($images);
 
         foreach ($images as $value) {
 

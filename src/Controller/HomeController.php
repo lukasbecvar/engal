@@ -32,14 +32,14 @@ class HomeController extends AbstractController
         // check if not logged
         if (!$this->loginHelper->isUserLogedin()) {            
             return $this->render('home.html.twig');
+        } else {
+            // get galleries
+            $galleries = StorageUtil::getGalleries($this->loginHelper->getUsername());
+            // log action
+            $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed list of galleries');
+            // return galleries
+            return $this->render('gallery-list.html.twig', ['galleries' => $galleries]);
         }
-
-        // get gallerys
-        $gallerys = StorageUtil::getGallerys($this->loginHelper->getUsername());
-
-        $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed list of galleries');
-
-        return $this->render('gallery-list.html.twig', ['gallerys' => $gallerys]);
     }
 
     #[Route(['/', '/gallery'], name: 'app_empty_gallery')]
@@ -56,23 +56,26 @@ class HomeController extends AbstractController
         // check if not logged
         if (!$this->loginHelper->isUserLogedin()) {            
             return $this->render('home.html.twig');
-        }
-
-        // escape name
-        $name = EscapeUtil::special_chars_strip($name);
-
-        // check if gallery exist
-        if (StorageUtil::checkGallery($this->loginHelper->getUsername(), $name)) {
-            
-            // get gallery images
-            $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name);
-            $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed gallery: '.$name);
-            return $this->render('gallery.html.twig', ['name' => $name, 'images' => $images]);
-            
         } else {
-            return $this->redirectToRoute('code_error', [
-                'code' => '404'
-            ]);
+
+            // escape name
+            $name = EscapeUtil::special_chars_strip($name);
+
+            // check if gallery exist
+            if (StorageUtil::checkGallery($this->loginHelper->getUsername(), $name)) {
+                
+                // get gallery images
+                $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name);
+
+                $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed gallery: '.$name);
+                return $this->render('gallery.html.twig', ['name' => $name, 'images' => $images]);
+                
+            } else {
+                return $this->redirectToRoute('code_error', [
+                    'code' => '404'
+                ]);
+            }
+
         }
     }
 }

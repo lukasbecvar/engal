@@ -40,8 +40,9 @@
 
 <center>
     <div id="lightgallery">
+        <div class="lg-custom-toolbar-item"></div>
         {% for value in images %}
-            <a href="data:image/jpeg;base64,{{ value.image }}" data-lg-size="1600-2400">
+            <a href="data:image/jpeg;base64,{{ value.image }}" data-sub-html="{{ value.name }} <a href='/' class='img-edit-button'>delete</a>">
                 <img class="gallery-images" alt={{ value.name }} src="data:image/jpeg;base64,{{ value.image }}" />
             </a>
         {% endfor %}

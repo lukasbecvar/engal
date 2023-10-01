@@ -23,6 +23,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] all & random viewer
 - [X] image delete
 - [ ] image upload
+- [ ] image rename
 - [ ] media encryption
 - [ ] user settings
 - [ ] registration disable system

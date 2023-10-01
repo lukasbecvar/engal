@@ -6,7 +6,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] setup symfony
 - [X] error handler
 - [X] maintenance mode system
-- [X] check if db running (jinak ukazat error(pro devmode) a pro users error 400)
+- [X] check if db running
 - [X] logs system (database)
 - [X] visitors system
 - [X] escape util

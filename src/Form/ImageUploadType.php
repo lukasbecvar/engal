@@ -15,7 +15,7 @@ class ImageUploadType extends AbstractType
     {
         $builder
         ->add('images', FileType::class, [
-            'label' => 'Images',
+            'label' => false,
             'multiple' => true,
             'mapped' => false,
             'constraints' => [
@@ -23,16 +23,31 @@ class ImageUploadType extends AbstractType
                     'message' => 'Please add image/s',
                 ])
             ],
+            'attr' => [
+                'class' => 'form-control mb-3',
+                'placeholder' => 'Image',
+            ],
         ])
         ->add('imageName', null, [
-            'label' => 'Image name',
+            'label' => false,
             'required' => false,
+            'attr' => [
+                'class' => 'form-control form-control-lg mb-3',
+                'id' => 'form3Example1cg',
+                'placeholder' => 'Image name',
+            ],
         ])
         ->add('galleryName', ChoiceType::class, [
-            'label' => 'Galerie',
+            'label' => false,
             'choices' => [
-                'Galerie 1' => 'galerie1',
-                'Galerie 2' => 'galerie2',
+                'test' => 'test',
+                'Gabby Martinez' => 'Gabby Martinez',
+                'new' => 'new'
+            ],
+            'attr' => [
+                'class' => 'form-control form-control-lg mb-3',
+                'id' => 'form3Example1cg',
+                'placeholder' => 'Gallery name',
             ],
             'constraints' => [
                 new NotBlank([

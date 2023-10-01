@@ -148,6 +148,9 @@ class GalleryController extends AbstractController
                 // delete file & check if valid
                 if (unlink($path)) {
 
+                    // log file delete
+                    $this->logHelper->log('delete', $this->loginHelper->getUsername().' delete image: '.$image_name.' in gallery: '.$gallery_name);
+
                     // check if gallery empty
                     if (StorageUtil::isGalleryEmpty($storage_name, $gallery_name)) {
 

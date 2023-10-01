@@ -45,6 +45,12 @@
 
 <center>
     <div class="container mt-5">
+        {% if galleries|length == 0 %}
+            <h5 class="text-light">
+                You can start uploading 
+                <a class="page-button underline" href="#">here</a>
+            </h5>
+        {% endif %}
         {% for value in galleries %}
             <div class="gallery-link" id="gallery2">
                 <a href="/gallery/{{ value.name }}/1" class="link-text">

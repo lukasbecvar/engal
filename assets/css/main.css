@@ -66,6 +66,10 @@
     color: rgb(216, 99, 99)
 }
 
+.underline {
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 

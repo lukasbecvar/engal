@@ -38,7 +38,7 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request' }
 
-    # auto login service
+    # autologin service
     App\Middleware\AutoLoginMiddleware:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request' }

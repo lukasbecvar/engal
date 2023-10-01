@@ -49,6 +49,23 @@
 	text-decoration: underline;
 }
 
+.page-button-box {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+  
+.page-button {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    margin-right: 5px;
+}
+  
+.page-button:hover {
+    color: rgb(216, 99, 99)
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 

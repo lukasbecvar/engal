@@ -16,10 +16,10 @@
                     <a class="nav-link" href="/">List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">All</a>
+                    <a class="nav-link" href="/gallery/_1337_all">All</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Random</a>
+                    <a class="nav-link" href="/gallery/_1337_random">Random</a>
                 </li>
             </ul>
         </div>
@@ -42,7 +42,7 @@
     <div class="container mt-5">
         {% for value in galleries %}
             <div class="gallery-link" id="gallery2">
-                <a href="/gallery/{{ value.name }}" class="link-text">
+                <a href="/gallery/{{ value.name }}/1" class="link-text">
                     <img class="image-link" src="data:image/jpg;base64,{{ value.thumbnail }}" alt={{ value.name }}>
                     {{ value.name }}
                 </a>

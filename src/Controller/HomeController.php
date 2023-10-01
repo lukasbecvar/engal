@@ -50,13 +50,29 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route(['/', '/gallery/{name}'], name: 'app_gallery')]
-    public function gallery($name): Response
+    #[Route(['/', '/gallery/_1337_all'], name: 'app_all_gallery')]
+    public function allGallery(): Response
+    {
+        return 'all';
+    }
+
+    #[Route(['/', '/gallery/_1337_random'], name: 'app_all_gallery')]
+    public function allGallery(): Response
+    {
+        return 'all';
+    }
+
+    #[Route(['/', '/gallery/{name}/{page}'], name: 'app_gallery')]
+    public function gallery($name, $page): Response
     {
         // check if not logged
         if (!$this->loginHelper->isUserLogedin()) {            
             return $this->render('home.html.twig');
         } else {
+
+            if (empty($page)) {
+                die("ko");
+            }
 
             // escape name
             $name = EscapeUtil::special_chars_strip($name);
@@ -65,10 +81,15 @@ class HomeController extends AbstractController
             if (StorageUtil::checkGallery($this->loginHelper->getUsername(), $name)) {
                 
                 // get gallery images
-                $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name);
+                $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name, $page);
 
                 $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed gallery: '.$name);
-                return $this->render('gallery.html.twig', ['name' => $name, 'images' => $images]);
+                return $this->render('gallery.html.twig', [
+                    'page' => $page,
+                    'limit' => $_ENV['LIMIT_PER_PAGE'],
+                    'name' => $name, 
+                    'images' => $images
+                ]);
                 
             } else {
                 return $this->redirectToRoute('code_error', [

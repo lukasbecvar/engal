@@ -113,12 +113,12 @@ class StorageUtil
     }
 
     // get images content
-    public static function getImagesContent(string $storage_name, string $gallery_name) {
+    public static function getImagesContent(string $storage_name, string $gallery_name, int $page) {
         if (!StorageUtil::checkStorage($storage_name)) {
             StorageUtil::createStorage($storage_name);
         }
 
-        $images = null;
+        $images = [];
 
         if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
             $images = scandir(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name);
@@ -130,16 +130,32 @@ class StorageUtil
         // sort normal
         natsort($images);
 
+        // get limit from config
+        $limit = $_ENV['LIMIT_PER_PAGE']; 
+        // calculate content range
+        $start_index = ($page - 1) * $limit;
+        $end_index = $start_index + $limit - 1;
+
+        // fix for first page
+        if ($page == 0) {
+            $start_index = $start_index - 1;
+            $end_index = $end_index - 1;
+        }
+
+        $i = 0;
         foreach ($images as $value) {
 
-            if (str_ends_with($value, '.image')) {
-                $content = [
-                    'name' => $value,
-                    'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
-                ];
-    
-                array_push($arr, $content);
+            // check if start & end index is valud
+            if ($start_index <= $i && $end_index >= $i) {
+                if (str_ends_with($value, '.image')) {
+                    $content = [
+                        'name' => $value,
+                        'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
+                    ];
+                    array_push($arr, $content);
+                }
             }
+            $i++;
         }
 
         return $arr;

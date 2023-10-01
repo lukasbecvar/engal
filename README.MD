@@ -46,6 +46,7 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
    * Version: **3.7.1**
    * [Website](https://jquery.com/)
 * lightGallery
+   * Version: **1.4.1**
    * [Website](https://www.lightgalleryjs.com/)
 * Bootstrap
    * Version: **5.3.2**

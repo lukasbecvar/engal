@@ -2,12 +2,6 @@
 
 Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 
-## Features
-- User system
-- Image browser
-- Image content & names encryption
-- Private self-hosted database
-
 # todo
 - [X] setup symfony
 - [X] error handler
@@ -27,12 +21,13 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] images viewer
 - [X] gallery viewer pages
 - [X] all & random viewer
-- [ ] image delete
+- [X] image delete
 - [ ] image upload
 - [ ] media encryption
 - [ ] user settings
-- [ ] ban system
+- [ ] registration disable system
 - [ ] admin system
+- [ ] ban system
 - [ ] tests
 - [ ] new readme + simple doc (install & use tutorial)
 - [ ] final refactor

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\ErrorHelper;
 use App\Util\EscapeUtil;
 use App\Util\StorageUtil;
 use App\Helper\LogHelper;
@@ -18,11 +19,13 @@ class GalleryController extends AbstractController
 {
     private $logHelper;
     private $loginHelper;
+    private $errorHelper;
 
-    public function __construct(LoginHelper $loginHelper, LogHelper $logHelper)
+    public function __construct(LoginHelper $loginHelper, LogHelper $logHelper, ErrorHelper $errorHelper)
     {
         $this->logHelper = $logHelper;
         $this->loginHelper = $loginHelper;
+        $this->errorHelper = $errorHelper;
     }
 
     // gallery with empty nam protect
@@ -35,7 +38,7 @@ class GalleryController extends AbstractController
     }
 
     // gallery with all images
-    #[Route(['/gallery/_1337_all/{page}'], name: 'app_all_gallery')]
+    #[Route(['/gallery/_1337_all/{page}'], methods: ['GET'], name: 'app_all_gallery')]
     public function allGallery($page): Response
     {
         // check if not logged
@@ -87,7 +90,7 @@ class GalleryController extends AbstractController
     }
     
     // main gallery browser (where name & page)
-    #[Route(['/gallery/{name}/{page}'], name: 'app_gallery')]
+    #[Route(['/gallery/{name}/{page}'],  methods: ['GET'], name: 'app_gallery')]
     public function gallery($name, $page): Response
     {
         // check if not logged
@@ -120,7 +123,62 @@ class GalleryController extends AbstractController
                     'code' => '404'
                 ]);
             }
+        }
+    }
 
+    #[Route(['/gallery/delete/{gallery_name}/{image_name}'],  methods: ['GET'], name: 'delete_image')]
+    public function delete($gallery_name, $image_name): Response
+    {
+        // check if not logged
+        if (!$this->loginHelper->isUserLogedin()) {            
+            return $this->render('home.html.twig');
+        } else {
+
+            // get file data
+            $storage_name = $this->loginHelper->getUsername();
+            $gallery_name = EscapeUtil::special_chars_strip($gallery_name);
+            $image_name = EscapeUtil::special_chars_strip($image_name);
+
+            // build file path
+            $path = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name.'/'.$image_name.'.image';
+
+            // check if file exist
+            if (file_exists($path)) {
+
+                // delete file & check if valid
+                if (unlink($path)) {
+
+                    // check if gallery empty
+                    if (StorageUtil::isGalleryEmpty($storage_name, $gallery_name)) {
+
+                        // build gallery path
+                        $gallery_path = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name;
+
+                        // delete empty gallery
+                        try {    
+                            rmdir($gallery_path);
+                        } catch (\Exception $e) {
+                            $this->errorHelper->handleError('error to delete empty gallery: '.$e->getMessage(), 500);
+                        }
+
+                        // redirect to homr after delete empty gallery
+                        return $this->redirectToRoute('app_home');
+                    }
+
+                    // redirect back to gallery
+                    return $this->redirectToRoute('app_gallery', [
+                        'name' => $gallery_name,
+                        'page' => 1
+                    ]);
+
+                } else {
+                    $this->errorHelper->handleError('file: '.$path.' delete error: unexpected', 500);
+                }
+            } else {
+                $this->errorHelper->handleError('file: '.$path.' delete error: not found', 404);
+            }
+
+            $this->redirectToRoute('app_home');
         }
     }
 }

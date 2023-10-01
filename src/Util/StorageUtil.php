@@ -9,7 +9,7 @@ namespace App\Util;
 class StorageUtil
 {
     // create storage dir (if not exist)
-    public static function createStorage(string $storage_name) {
+    public static function createStorage(string $storage_name): void {
         if (!file_exists(__DIR__.'/../../storage')) {
             mkdir(__DIR__.'/../../storage');
         }
@@ -19,7 +19,7 @@ class StorageUtil
     }
 
     // check if storage exist
-    public static function checkStorage(string $storage_name) {
+    public static function checkStorage(string $storage_name): bool {
         if (file_exists(__DIR__.'/../../storage/'.$storage_name)) {
             return true;
         } else {
@@ -28,7 +28,7 @@ class StorageUtil
     }
 
     // check if gallery exist
-    public static function checkGallery(string $storage_name, string $gallery_name) {
+    public static function checkGallery(string $storage_name, string $gallery_name): bool {
         if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
             return true;
         } else {
@@ -36,8 +36,28 @@ class StorageUtil
         }
     }
 
+    // check if gallery is empty
+    public static function isGalleryEmpty(string $storage_name, string $gallery_name): bool {
+        
+        // build gallery path
+        $path = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name;
+
+        // get images
+        $images = scandir($path);
+        
+        // remove . & ..
+        $images = array_diff($images, ['.', '..']);
+        
+        // check if empty
+        if (empty($images)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // get thumbnail
-    public static function getThumbnail(string $storage_name, string $gallery_name) {
+    public static function getThumbnail(string $storage_name, string $gallery_name): ?string {
 
         $dir = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name;
         $files = glob($dir . '/*.image');
@@ -57,7 +77,7 @@ class StorageUtil
     }
 
     // get image content
-    public static function getImage(string $storage_name, string $gallery_name, string $image_name) {
+    public static function getImage(string $storage_name, string $gallery_name, string $image_name): ?string {
 
         $file = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name.'/'.$image_name;
         
@@ -67,7 +87,7 @@ class StorageUtil
     }
 
     // get galleries list
-    public static function getGalleries(string $storage_name) {
+    public static function getGalleries(string $storage_name): ?array {
         if (!StorageUtil::checkStorage($storage_name)) {
             StorageUtil::createStorage($storage_name);
         }
@@ -92,7 +112,7 @@ class StorageUtil
     }
 
     // get images in gallery
-    public static function getImages(string $storage_name, string $gallery_name) {
+    public static function getImages(string $storage_name, string $gallery_name): ?array {
         if (!StorageUtil::checkStorage($storage_name)) {
             StorageUtil::createStorage($storage_name);
         }
@@ -164,7 +184,7 @@ class StorageUtil
     }
     
     // get images content (all images)
-    public static function getImagesContentAll(string $storage_name, int $page, string $sort = null) {
+    public static function getImagesContentAll(string $storage_name, int $page, string $sort = null): ?array {
         if (!StorageUtil::checkStorage($storage_name)) {
             StorageUtil::createStorage($storage_name);
         }

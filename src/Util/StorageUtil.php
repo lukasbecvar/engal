@@ -122,8 +122,9 @@ class StorageUtil
 
         if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
             $images = scandir(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name);
-            $images = array_diff($images, array('..', '.'));
-        }
+        }  
+
+        $images = array_diff($images, array('..', '.'));
 
         $arr = [];
 
@@ -148,8 +149,9 @@ class StorageUtil
             // check if start & end index is valud
             if ($start_index <= $i && $end_index >= $i) {
                 if (str_ends_with($value, '.image')) {
+                    $name = strstr($value, '.', true);
                     $content = [
-                        'name' => $value,
+                        'name' => $name,
                         'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
                     ];
                     array_push($arr, $content);
@@ -161,4 +163,76 @@ class StorageUtil
         return $arr;
     }
     
+    // get images content (all images)
+    public static function getImagesContentAll(string $storage_name, int $page, string $sort = null) {
+        if (!StorageUtil::checkStorage($storage_name)) {
+            StorageUtil::createStorage($storage_name);
+        }
+
+        $pattern = __DIR__.'/../../storage/'.$storage_name.'/*';
+        
+        $images = [];
+        
+        // get all gallery folders by pattern
+        $folders = glob($pattern, GLOB_ONLYDIR);
+        
+        $files = [];
+        
+        // get files from all gallerys
+        foreach ($folders as $folder) {
+            $folderFiles = glob($folder . '/*');
+            $files = array_merge($files, $folderFiles);
+        }
+        
+        // save files to array
+        foreach ($files as $file) {
+            array_push($images, $file);
+        }
+
+        $images = array_diff($images, array('..', '.'));
+
+        if ($sort == 'random_sort') {
+            shuffle($images);
+        }
+
+        $arr = [];
+
+        // get limit from config
+        $limit = $_ENV['LIMIT_PER_PAGE']; 
+        // calculate content range
+        $start_index = ($page - 1) * $limit;
+        $end_index = $start_index + $limit - 1;
+
+        // fix for first page
+        if ($page == 0) {
+            $start_index = $start_index - 1;
+            $end_index = $end_index - 1;
+        }
+
+        $i = 0;
+        foreach ($images as $value) {
+
+            // check if start & end index is valud
+            if ($start_index <= $i && $end_index >= $i) {
+                if (str_ends_with($value, '.image')) {
+
+                    $fileContents = file_get_contents($value);
+                    $content = nl2br(htmlspecialchars($fileContents)); 
+
+                    $lastAsteriskPos = strrpos($value, '/');
+                    $name = substr($value, $lastAsteriskPos + 1);
+                    $name = strstr($name, '.', true);
+
+                    $content = [
+                        'name' => $name,
+                        'image' => $content
+                    ];
+                    array_push($arr, $content);
+                }
+            }
+            $i++;
+        }
+
+        return $arr;
+    }
 }

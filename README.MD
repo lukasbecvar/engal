@@ -26,9 +26,9 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 - [X] gallery component (create, delete, list)
 - [X] images viewer
 - [X] gallery viewer pages
-- [ ] all & random viewer
-- [ ] image upload
+- [X] all & random viewer
 - [ ] image delete
+- [ ] image upload
 - [ ] media encryption
 - [ ] user settings
 - [ ] ban system

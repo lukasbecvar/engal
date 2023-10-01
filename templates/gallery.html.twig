@@ -16,7 +16,7 @@
                     <a class="nav-link" href="/">List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">All</a>
+                    <a class="nav-link" href="/gallery/_1337_all/1">All</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Random</a>
@@ -48,15 +48,17 @@
         {% endfor %}
     </div><br><br>
 
-    <div class="page-button-box bg-dark">
-        {% if page != 1 %}
-            <a class="page-button" href="/gallery/{{name}}/{{ page - 1 }}">BACK</a>
-        {% endif %}
-        
-        {% if images|length == limit %}
-            <a class="page-button" href="/gallery/{{name}}/{{ page + 1 }}">NEXT</a>
-        {% endif %}
-    </div>
+    {% if name != '_1337_random' %}
+        <div class="page-button-box bg-dark">
+            {% if page != 1 %}
+                <a class="page-button" href="/gallery/{{name}}/{{ page - 1 }}">BACK</a>
+            {% endif %}
+            
+            {% if images|length == limit %}
+                <a class="page-button" href="/gallery/{{name}}/{{ page + 1 }}">NEXT</a>
+            {% endif %}
+        </div>
+    {% endif %}
 
 </center>
 

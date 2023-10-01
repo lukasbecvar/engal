@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\LogHelper;
 use App\Helper\LoginHelper;
 use App\Util\EscapeUtil;
 use App\Util\StorageUtil;
@@ -17,10 +18,12 @@ class HomeController extends AbstractController
 {
 
     private $loginHelper;
+    private $logHelper;
 
-    public function __construct(LoginHelper $loginHelper)
+    public function __construct(LoginHelper $loginHelper, LogHelper $logHelper)
     {
         $this->loginHelper = $loginHelper;
+        $this->logHelper = $logHelper;
     }
 
     #[Route(['/', '/home'], name: 'app_home')]
@@ -33,6 +36,8 @@ class HomeController extends AbstractController
 
         // get gallerys
         $gallerys = StorageUtil::getGallerys($this->loginHelper->getUsername());
+
+        $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed list of galleries');
 
         return $this->render('gallery-list.html.twig', ['gallerys' => $gallerys]);
     }
@@ -61,6 +66,7 @@ class HomeController extends AbstractController
             
             // get gallery images
             $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name);
+            $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed gallery: '.$name);
             return $this->render('gallery.html.twig', ['name' => $name, 'images' => $images]);
             
         } else {

@@ -2,6 +2,8 @@
 
 Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 
+ff
+
 # todo
 - [X] setup symfony
 - [X] error handler

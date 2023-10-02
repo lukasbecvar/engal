@@ -2,8 +2,6 @@
 
 Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 
-ff
-
 # todo
 - [X] setup symfony
 - [X] error handler
@@ -27,20 +25,18 @@ ff
 - [X] image upload
 - [X] limit na upload (only jpg, jpeg, png)
 - [X] dynamical upload form gallery name selction
-- [ ] rename & move image
+- [X] registration disable system
 - [ ] media encryption
-- [ ] user settings
-- [ ] registration disable system
-- [ ] admin system
-- [ ] ban system
 - [ ] tests
 - [ ] new readme + simple doc (install & use tutorial)
 - [ ] final refactor
 
 # TODOS: 2
-- [ ] REST-API
+- [ ] Dumper script (dump all stored galleries to archive)
+- [ ] User settings (password change, profile pics)
+- [ ] admin system (ban system, visitors table, log reader)
+- [ ] REST-API (json api for client app)
 - [ ] Client Frontend (react native & electron app)
-- [ ] Recode remaining components for current symfony standards
 
 ## Dependencies
 * Symfony

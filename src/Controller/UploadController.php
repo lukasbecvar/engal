@@ -108,6 +108,7 @@ class UploadController extends AbstractController
                             // check if upload multiple
                             if (count($uploaded_images) > 1) {
 
+
                                 // generate final name with prefix
                                 $final_name = $image_name.'_'.ByteString::fromRandom(6)->toString().'.image';
                             } else {

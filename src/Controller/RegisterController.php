@@ -53,6 +53,11 @@ class RegisterController extends AbstractController
             return $this->redirectToRoute('app_home');   
         }
 
+        // check if register enabled
+        if ($_ENV['REGISTER_ENABLED'] == 'false') {
+            return $this->render('regsiter-disabled.html.twig');
+        }
+
         // create user instance
         $user = new User();
 

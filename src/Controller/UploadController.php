@@ -87,7 +87,15 @@ class UploadController extends AbstractController
                     
                         // check if image name is empty
                         if (empty($image_name)) {
-                            $final_name = ByteString::fromRandom(16)->toString().'.image';
+
+                            // get file name
+                            $file_name = $file->getClientOriginalName();
+
+                            // remove file extension from name
+                            $file_name = strstr($file_name, '.', true);
+
+                            // build file name
+                            $final_name = $file_name.'.image';
                         } else {
 
                             // check if upload multiple

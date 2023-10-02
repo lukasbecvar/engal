@@ -56,14 +56,21 @@ class UploadController extends AbstractController
                     $gallery_name = $gallery_name_new;
                 }
 
+                // check if gallery name is Add-new/
+                if ($gallery_name == 'Add-new') {
+                    return $this->render('upload.html.twig', [
+                        'form' => $form->createView(),
+                        'errorMSG' => 'please enter gallery name or select existing gallery'
+                    ]);                     
+                }
+
+                // check if maximal images reached
                 if (count($uploaded_images) > 40) {
                     return $this->render('upload.html.twig', [
                         'form' => $form->createView(),
                         'errorMSG' => 'maximal 40 images allowed'
                     ]);                   
-                } else {
-
-                }
+                } 
 
                 // upload all images
                 foreach ($uploaded_images as $file) {

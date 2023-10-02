@@ -49,6 +49,12 @@ class UploadController extends AbstractController
                 $uploaded_images = $form->get('images')->getData();
                 $image_name = EscapeUtil::special_chars_strip($form->get('imageName')->getData());
                 $gallery_name = EscapeUtil::special_chars_strip($form->get('galleryName')->getData());
+                $gallery_name_new = EscapeUtil::special_chars_strip($form->get('newGalleryName')->getData());
+
+                // check if new gallery submit
+                if (!empty($gallery_name_new)) {
+                    $gallery_name = $gallery_name_new;
+                }
 
                 if (count($uploaded_images) > 40) {
                     return $this->render('upload.html.twig', [

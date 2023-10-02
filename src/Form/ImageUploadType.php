@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Helper\LoginHelper;
+use App\Util\StorageUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -11,6 +13,13 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class ImageUploadType extends AbstractType
 {
+    private $loginHelper;
+
+    public function __construct(LoginHelper $loginHelper)
+    {
+        $this->loginHelper = $loginHelper;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -41,15 +50,12 @@ class ImageUploadType extends AbstractType
         ])
         ->add('galleryName', ChoiceType::class, [
             'label' => false,
-            'choices' => [
-                'test' => 'test',
-                'Gabby Martinez' => 'Gabby Martinez',
-                'new' => 'new'
-            ],
+            'choices' => StorageUtil::getGalleryListWithPrefix($this->loginHelper->getUsername()),
             'attr' => [
                 'class' => 'form-control form-control-lg mb-3',
-                'id' => 'form3Example1cg',
-                'placeholder' => 'Gallery name'
+                'id' => 'form3Example1cg gallery-selection',
+                'placeholder' => 'Gallery name',
+                'onchange' => 'show(this)'
             ],
             'constraints' => [
                 new NotBlank([
@@ -60,6 +66,14 @@ class ImageUploadType extends AbstractType
                     'minMessage' => 'Your gallery name should be at least {{ limit }} characters',
                     'max' => 50,
                 ]),
+            ]
+        ])
+        ->add('newGalleryName', null, [
+            'label' => false,
+            'required' => false,
+            'attr' => [
+                'class' => 'form-control form-control-lg mb-3',
+                'placeholder' => 'New Gallery name'
             ]
         ]);
     }

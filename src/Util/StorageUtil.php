@@ -86,6 +86,26 @@ class StorageUtil
         return $content;
     }
 
+    // get gallery list (for upload form)
+    public static function getGalleryListWithPrefix(string $storage_name): ?array {
+        
+        $list = [];
+
+        // get all galleries
+        $galleries = StorageUtil::getGalleries($storage_name);
+
+        // and new row value
+        $list['Add new'] = 'Add-new';
+
+        // add all galleries to list 
+        foreach ($galleries as $gallery) {
+            $list[$gallery['name']] = $gallery['name'];
+        }
+
+
+        return $list;
+    }
+
     // get galleries list
     public static function getGalleries(string $storage_name): ?array {
         if (!StorageUtil::checkStorage($storage_name)) {

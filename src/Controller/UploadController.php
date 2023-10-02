@@ -62,55 +62,79 @@ class UploadController extends AbstractController
                 // upload all images
                 foreach ($uploaded_images as $file) {
 
-                    // check if image name is empty
-                    if (empty($image_name)) {
-                        $final_name = ByteString::fromRandom(16)->toString().'.image';
-                    } else {
+                    // get file extension
+                    $extension = $file->getClientOriginalExtension();
 
-                        // check if upload multiple
-                        if (count($uploaded_images) > 1) {
-
-                            // generate final name with prefix
-                            $final_name = $image_name.'_'.ByteString::fromRandom(6)->toString().'.image';
+                    // check if file is image
+                    if (
+                        $extension == "gif" or 
+                        $extension == "jpg" or 
+                        $extension == "jpeg" or 
+                        $extension == "jfif" or 
+                        $extension == "pjpeg" or 
+                        $extension == "pjp" or 
+                        $extension == "png" or 
+                        $extension == "webp" or 
+                        $extension == "bmp" or 
+                        $extension == "ico"
+                    ) {
+                    
+                        // check if image name is empty
+                        if (empty($image_name)) {
+                            $final_name = ByteString::fromRandom(16)->toString().'.image';
                         } else {
 
-                            // get final name name
-                            $final_name = $image_name.'.image';
+                            // check if upload multiple
+                            if (count($uploaded_images) > 1) {
+
+                                // generate final name with prefix
+                                $final_name = $image_name.'_'.ByteString::fromRandom(6)->toString().'.image';
+                            } else {
+
+                                // get final name name
+                                $final_name = $image_name.'.image';
+                            }
                         }
-                    }
 
-                    // get image content
-                    $fileContents = file_get_contents($file);
+                        // get image content
+                        $fileContents = file_get_contents($file);
 
-                    // encode image
-                    $image_code = base64_encode($fileContents);
+                        // encode image
+                        $image_code = base64_encode($fileContents);
 
-                    // build final path
-                    $final_path = $path.$gallery_name.'/'.$final_name;
+                        // build final path
+                        $final_path = $path.$gallery_name.'/'.$final_name;
 
-                    // check if gallery exist 
-                    if (!is_dir($path.$gallery_name)) {
+                        // check if gallery exist 
+                        if (!is_dir($path.$gallery_name)) {
 
-                        // create gallery dir
-                        mkdir($path.$gallery_name);
-                    }
+                            // create gallery dir
+                            mkdir($path.$gallery_name);
+                        }
 
-                    // save file & check if valid
-                    if (file_exists($final_path)) {
+                        // save file & check if valid
+                        if (file_exists($final_path)) {
+                            return $this->render('upload.html.twig', [
+                                'form' => $form->createView(),
+                                'errorMSG' => 'image: '.$final_name.' is exist!'
+                            ]);
+                        } else {
+
+                            // upload file & check if valid
+                            if (file_put_contents($final_path, $image_code) !== false) {
+                                
+                                // log upload action to database
+                                $this->logHelper->log('upload', 'user: '.$this->loginHelper->getUsername().' uploaded image: '.$final_name.' in gallery: '.$gallery_name);
+                            } else {
+                                $this->erorHelper->handleError('error to upload file: '.$final_name.' to gallery: '.$gallery_name, 500);
+                            }
+                        }
+                    } else {
+     
                         return $this->render('upload.html.twig', [
                             'form' => $form->createView(),
-                            'errorMSG' => 'image: '.$final_name.' is exist!'
-                        ]);
-                    } else {
-
-                        // upload file & check if valid
-                        if (file_put_contents($final_path, $image_code) !== false) {
-                            
-                            // log upload action to database
-                            $this->logHelper->log('upload', 'user: '.$this->loginHelper->getUsername().' uploaded image: '.$final_name.' in gallery: '.$gallery_name);
-                        } else {
-                            $this->erorHelper->handleError('error to upload file: '.$final_name.' to gallery: '.$gallery_name, 500);
-                        }
+                            'errorMSG' => 'the input file is not an image'
+                        ]);                       
                     }
                 }
 

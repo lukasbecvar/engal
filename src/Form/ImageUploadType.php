@@ -26,7 +26,9 @@ class ImageUploadType extends AbstractType
             'attr' => [
                 'class' => 'form-control mb-3',
                 'placeholder' => 'Image',
-            ],
+                'accept' => 'image/*',
+                'image_property' => 'image'
+            ]
         ])
         ->add('imageName', null, [
             'label' => false,
@@ -34,8 +36,8 @@ class ImageUploadType extends AbstractType
             'attr' => [
                 'class' => 'form-control form-control-lg mb-3',
                 'id' => 'form3Example1cg',
-                'placeholder' => 'Image name',
-            ],
+                'placeholder' => 'Image name'
+            ]
         ])
         ->add('galleryName', ChoiceType::class, [
             'label' => false,
@@ -47,7 +49,7 @@ class ImageUploadType extends AbstractType
             'attr' => [
                 'class' => 'form-control form-control-lg mb-3',
                 'id' => 'form3Example1cg',
-                'placeholder' => 'Gallery name',
+                'placeholder' => 'Gallery name'
             ],
             'constraints' => [
                 new NotBlank([
@@ -58,7 +60,7 @@ class ImageUploadType extends AbstractType
                     'minMessage' => 'Your gallery name should be at least {{ limit }} characters',
                     'max' => 50,
                 ]),
-            ],
+            ]
         ]);
     }
 }

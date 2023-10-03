@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Helper\LogHelper;
 use App\Helper\LoginHelper;
+use App\Util\EncryptionUtil;
 use App\Util\StorageUtil;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

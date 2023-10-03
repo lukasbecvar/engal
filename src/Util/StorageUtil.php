@@ -69,7 +69,10 @@ class StorageUtil
             if (str_ends_with($firstFile, '.image')) {
                 if (is_file($firstFile)) {
                     $fileContents = file_get_contents($firstFile);
-                    $content = nl2br(htmlspecialchars($fileContents)); 
+
+                    if (EncryptionUtil::isEnabled()) {
+                        $content = EncryptionUtil::decrypt_aes($fileContents);
+                    }
                 }
             }
         }
@@ -82,8 +85,12 @@ class StorageUtil
         $file = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name.'/'.$image_name;
         
         $fileContents = file_get_contents($file);
-        $content = nl2br(htmlspecialchars($fileContents)); 
-        return $content;
+
+        if (EncryptionUtil::isEnabled()) {
+            $fileContents = EncryptionUtil::decrypt_aes($fileContents);
+        }
+
+        return $fileContents;
     }
 
     // get gallery list (for upload form)
@@ -190,6 +197,8 @@ class StorageUtil
             if ($start_index <= $i && $end_index >= $i) {
                 if (str_ends_with($value, '.image')) {
                     $name = strstr($value, '.', true);
+                
+
                     $content = [
                         'name' => $name,
                         'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
@@ -256,12 +265,15 @@ class StorageUtil
             if ($start_index <= $i && $end_index >= $i) {
                 if (str_ends_with($value, '.image')) {
 
-                    $fileContents = file_get_contents($value);
-                    $content = nl2br(htmlspecialchars($fileContents)); 
+                    $content = file_get_contents($value);
 
                     $lastAsteriskPos = strrpos($value, '/');
                     $name = substr($value, $lastAsteriskPos + 1);
                     $name = strstr($name, '.', true);
+
+                    if (EncryptionUtil::isEnabled()) {
+                        $content = EncryptionUtil::decrypt_aes($content);
+                    }
 
                     $content = [
                         'name' => $name,

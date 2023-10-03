@@ -6,6 +6,7 @@ use App\Form\ImageUploadType;
 use App\Helper\ErrorHelper;
 use App\Helper\LogHelper;
 use App\Helper\LoginHelper;
+use App\Util\EncryptionUtil;
 use App\Util\EscapeUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,6 +124,10 @@ class UploadController extends AbstractController
 
                         // encode image
                         $image_code = base64_encode($fileContents);
+
+                        if (EncryptionUtil::isEnabled()) {
+                            $image_code = EncryptionUtil::encrypt_aes($image_code);
+                        }
 
                         // build final path
                         $final_path = $path.$gallery_name.'/'.$final_name;

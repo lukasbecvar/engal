@@ -39,13 +39,26 @@
 </nav>
 
 <center>
-    <div id="lightgallery">
-        {% for value in images %}
+    
+    {% if name == '_1337_random' or name == '_1337_all' %}
+        <div id="lightgallery">
+            {% for value in images %}
+            <a href="data:image/jpeg;base64,{{ value.image }}" data-sub-html="{{ value.name }}">
+                <img class="gallery-images" alt={{ value.name }} src="data:image/jpeg;base64,{{ value.image }}" />
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div id="lightgallery">
+            {% for value in images %}
             <a href="data:image/jpeg;base64,{{ value.image }}" data-sub-html="{{ value.name }} <a href='/gallery/delete/{{name}}/{{value.name}}' class='img-edit-button'>delete</a>">
                 <img class="gallery-images" alt={{ value.name }} src="data:image/jpeg;base64,{{ value.image }}" />
             </a>
-        {% endfor %}
-    </div><br><br>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <br><br>
 
     {% if name != '_1337_random' %}
         <div class="page-button-box bg-dark">

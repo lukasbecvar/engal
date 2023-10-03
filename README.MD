@@ -1,6 +1,8 @@
 # Encrypted media gallery
-
 Self-hosted encrypted gallery, builded with symfony 6 & bootstrap 5
+
+# Light Gallery 1.4.1
+Engal uses an outdated version of the Light Gallery 1.4.1 library because this version is modified for this project
 
 # Installation (with apache & mysql)
 - Set Mysql data in .env
@@ -8,6 +10,8 @@ Self-hosted encrypted gallery, builded with symfony 6 & bootstrap 5
 - Run install script (scripts/install.sh)
 - Disable apache autoindex module
 - Run migrate (scripts/migrate.sh)
+- Regenerate APP_SECRET in .env
+- set APP_ENV to prod (if using in production server)
 
 ## Required
  - php-8.1 or <
@@ -17,6 +21,10 @@ Self-hosted encrypted gallery, builded with symfony 6 & bootstrap 5
 # TODOS for version 3.0
 - [ ] Dumper script (dump all stored galleries to archive)
 - [ ] User settings (password change, profile pics)
+- [ ] Better gallery list manager (create, delete, move)
+- [ ] Better images managment (rename, move to another gallery)
+- [ ] Upload progress bar
+- [ ] Suport video formats
 - [ ] admin system (ban system, visitors table, log reader)
 - [ ] REST-API (json api for client app)
 - [ ] Client Frontend (react native & electron app)

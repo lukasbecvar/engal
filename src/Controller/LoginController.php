@@ -28,7 +28,7 @@ class LoginController extends AbstractController
         HashHelper $hashHelper,
         LoginHelper $loginHelper,
         EntityHelper $entityHelper
-    ){
+    ) {
         $this->hashHelper = $hashHelper;
         $this->loginHelper = $loginHelper;
         $this->entityHelper = $entityHelper;

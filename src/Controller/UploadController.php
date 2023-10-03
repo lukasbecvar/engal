@@ -2,30 +2,33 @@
 
 namespace App\Controller;
 
-use App\Form\ImageUploadType;
-use App\Helper\ErrorHelper;
+use App\Util\EscapeUtil;
 use App\Helper\LogHelper;
+use App\Helper\ErrorHelper;
 use App\Helper\LoginHelper;
 use App\Util\EncryptionUtil;
-use App\Util\EscapeUtil;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\ImageUploadType;
+use Symfony\Component\String\ByteString;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\String\ByteString;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UploadController extends AbstractController
 {
 
-    private $loginHelper;
-    private $erorHelper;
     private $logHelper;
+    private $erorHelper;
+    private $loginHelper;
 
-    public function __construct(LoginHelper $loginHelper, ErrorHelper $erorHelper, LogHelper $logHelper)
-    {
-        $this->loginHelper = $loginHelper;
-        $this->erorHelper = $erorHelper;
+    public function __construct(
+        LogHelper $logHelper,
+        ErrorHelper $erorHelper, 
+        LoginHelper $loginHelper 
+    ) {
         $this->logHelper = $logHelper;
+        $this->erorHelper = $erorHelper;
+        $this->loginHelper = $loginHelper;
     }
 
     #[Route('/upload', name: 'app_upload')]

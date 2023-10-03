@@ -22,14 +22,14 @@ class ErrorController extends AbstractController
 
     // handle unknow error if code not used
     #[Route('/error', name: 'app_error')]
-    public function unknown(): void
+    public function unknownError(): void
     {
         $this->errorHelper->handleErrorView('unknown');
     }
 
     // handle error by code
     #[Route('/error/{code}', methods: ['GET'], name: 'code_error')]
-    public function index(string $code): void
+    public function errorHandle(string $code): void
     {
         // block maintenance handeling (this used only from app logic)
         if ($code == 'maintenance') {

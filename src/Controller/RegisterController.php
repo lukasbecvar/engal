@@ -36,7 +36,7 @@ class RegisterController extends AbstractController
         LoginHelper $loginHelper,
         EntityHelper $entityHelper,
         EntityManagerInterface $entityManager
-    ){
+    ) {
         $this->logHelper = $logHelper;
         $this->hashHelper = $hashHelper;
         $this->loginHelper = $loginHelper;
@@ -45,7 +45,7 @@ class RegisterController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function index(Request $request): Response
+    public function register(Request $request): Response
     {
 
         // check if user logged in

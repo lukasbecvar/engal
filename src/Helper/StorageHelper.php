@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Util;
+namespace App\Helper;
+
+use App\Util\EncryptionUtil;
 
 /*
-    StorageUtil util provides file storage dirctory methods
+    Storage helper provides file storage dirctory methods
 */
 
-class StorageUtil
+class StorageHelper
 {
-    // create storage dir (if not exist)
-    public static function createStorage(string $storage_name): void {
+    public function createStorage(string $storage_name): void {
         if (!file_exists(__DIR__.'/../../storage')) {
             mkdir(__DIR__.'/../../storage');
         }
-        if (!StorageUtil::checkStorage($storage_name)) {
+        if (!$this->checkStorage($storage_name)) {
             mkdir(__DIR__.'/../../storage/'.$storage_name);
         }
     }
 
-    // check if storage exist
-    public static function checkStorage(string $storage_name): bool {
+    public function checkStorage(string $storage_name): bool {
         if (file_exists(__DIR__.'/../../storage/'.$storage_name)) {
             return true;
         } else {
@@ -27,8 +27,7 @@ class StorageUtil
         }
     }
 
-    // check if gallery exist
-    public static function checkGallery(string $storage_name, string $gallery_name): bool {
+    public function checkGallery(string $storage_name, string $gallery_name): bool {
         if (file_exists(__DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name)) {
             return true;
         } else {
@@ -36,8 +35,7 @@ class StorageUtil
         }
     }
 
-    // check if gallery is empty
-    public static function isGalleryEmpty(string $storage_name, string $gallery_name): bool {
+    public function isGalleryEmpty(string $storage_name, string $gallery_name): bool {
         
         // build gallery path
         $path = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name;
@@ -56,8 +54,7 @@ class StorageUtil
         }
     }
 
-    // get thumbnail
-    public static function getThumbnail(string $storage_name, string $gallery_name): ?string {
+    public function getThumbnail(string $storage_name, string $gallery_name): ?string {
 
         $dir = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name;
         $files = glob($dir . '/*.image');
@@ -79,8 +76,7 @@ class StorageUtil
         return $content;
     }
 
-    // get image content
-    public static function getImage(string $storage_name, string $gallery_name, string $image_name): ?string {
+    public function getImage(string $storage_name, string $gallery_name, string $image_name): ?string {
 
         $file = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name.'/'.$image_name;
         
@@ -93,13 +89,12 @@ class StorageUtil
         return $fileContents;
     }
 
-    // get gallery list (for upload form)
-    public static function getGalleryListWithPrefix(string $storage_name): ?array {
+    public function getGalleryListWithPrefix(string $storage_name): ?array {
         
         $list = [];
 
         // get all galleries
-        $galleries = StorageUtil::getGalleries($storage_name);
+        $galleries = $this->getGalleries($storage_name);
 
         // and new row value
         $list['Add new'] = 'Add-new';
@@ -113,10 +108,9 @@ class StorageUtil
         return $list;
     }
 
-    // get galleries list
-    public static function getGalleries(string $storage_name): ?array {
-        if (!StorageUtil::checkStorage($storage_name)) {
-            StorageUtil::createStorage($storage_name);
+    public function getGalleries(string $storage_name): ?array {
+        if (!$this->checkStorage($storage_name)) {
+            $this->createStorage($storage_name);
         }
         $galleries = scandir(__DIR__.'/../../storage/'.$storage_name);
         $galleries = array_diff($galleries, array('..', '.'));
@@ -126,9 +120,9 @@ class StorageUtil
         foreach ($galleries as $value) {
 
             // get gallery thumbnail
-            $thumbnail = StorageUtil::getThumbnail($storage_name, $value);
+            $thumbnail = $this->getThumbnail($storage_name, $value);
 
-            if(StorageUtil::getImages($storage_name, $value) != null) {
+            if($this->getImages($storage_name, $value) != null) {
                 $gallery = [
                     'name' => $value,
                     'thumbnail' => $thumbnail
@@ -141,10 +135,9 @@ class StorageUtil
         return $arr;
     }
 
-    // get images in gallery
-    public static function getImages(string $storage_name, string $gallery_name): ?array {
-        if (!StorageUtil::checkStorage($storage_name)) {
-            StorageUtil::createStorage($storage_name);
+    public function getImages(string $storage_name, string $gallery_name): ?array {
+        if (!$this->checkStorage($storage_name)) {
+            $this->createStorage($storage_name);
         }
 
         $arr = [];
@@ -162,10 +155,9 @@ class StorageUtil
         return $arr;
     }
 
-    // get images content
-    public static function getImagesContent(string $storage_name, string $gallery_name, int $page) {
-        if (!StorageUtil::checkStorage($storage_name)) {
-            StorageUtil::createStorage($storage_name);
+    public function getImagesContent(string $storage_name, string $gallery_name, int $page) {
+        if (!$this->checkStorage($storage_name)) {
+            $this->createStorage($storage_name);
         }
 
         $images = [];
@@ -200,11 +192,10 @@ class StorageUtil
             if ($start_index <= $i && $end_index >= $i) {
                 if (str_ends_with($value, '.image')) {
                     $name = strstr($value, '.', true);
-                
 
                     $content = [
                         'name' => $name,
-                        'image' => StorageUtil::getImage($storage_name, $gallery_name, $value)
+                        'image' => $this->getImage($storage_name, $gallery_name, $value)
                     ];
                     array_push($arr, $content);
                 }
@@ -215,10 +206,9 @@ class StorageUtil
         return $arr;
     }
     
-    // get images content (all images)
-    public static function getImagesContentAll(string $storage_name, int $page, string $sort = null): ?array {
-        if (!StorageUtil::checkStorage($storage_name)) {
-            StorageUtil::createStorage($storage_name);
+    public function getImagesContentAll(string $storage_name, int $page, string $sort = null): ?array {
+        if (!$this->checkStorage($storage_name)) {
+            $this->createStorage($storage_name);
         }
 
         $pattern = __DIR__.'/../../storage/'.$storage_name.'/*';

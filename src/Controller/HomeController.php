@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Helper\LogHelper;
 use App\Helper\LoginHelper;
-use App\Util\EncryptionUtil;
-use App\Util\StorageUtil;
+use App\Helper\StorageHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,13 +16,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
 
-    private $loginHelper;
     private $logHelper;
+    private $loginHelper;
+    private $storageHelper;
 
-    public function __construct(LoginHelper $loginHelper, LogHelper $logHelper)
-    {
-        $this->loginHelper = $loginHelper;
+    public function __construct(
+        LogHelper $logHelper,
+        LoginHelper $loginHelper,
+        StorageHelper $storageHelper
+    ) {
         $this->logHelper = $logHelper;
+        $this->loginHelper = $loginHelper;
+        $this->storageHelper = $storageHelper;
     }
 
     #[Route(['/', '/home'], name: 'app_home')]
@@ -33,10 +37,16 @@ class HomeController extends AbstractController
         if (!$this->loginHelper->isUserLogedin()) {            
             return $this->render('home.html.twig');
         } else {
+
+            // get current username
+            $username = $this->loginHelper->getUsername();
+
             // get galleries
-            $galleries = StorageUtil::getGalleries($this->loginHelper->getUsername());
+            $galleries = $this->storageHelper->getGalleries($username);
+
             // log action
-            $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed list of galleries');
+            $this->logHelper->log('gallery', $username.' viewed list of galleries');
+            
             // return galleries
             return $this->render('gallery-list.html.twig', ['galleries' => $galleries]);
         }

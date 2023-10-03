@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Helper\ErrorHelper;
 use App\Util\EscapeUtil;
-use App\Util\StorageUtil;
 use App\Helper\LogHelper;
 use App\Helper\LoginHelper;
+use App\Helper\ErrorHelper;
+use App\Helper\StorageHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,12 +20,18 @@ class GalleryController extends AbstractController
     private $logHelper;
     private $loginHelper;
     private $errorHelper;
+    private $storageHelper;
 
-    public function __construct(LoginHelper $loginHelper, LogHelper $logHelper, ErrorHelper $errorHelper)
-    {
+    public function __construct(
+        LogHelper $logHelper, 
+        LoginHelper $loginHelper, 
+        ErrorHelper $errorHelper,
+        StorageHelper $storageHelper,
+    ) {
         $this->logHelper = $logHelper;
         $this->loginHelper = $loginHelper;
         $this->errorHelper = $errorHelper;
+        $this->storageHelper = $storageHelper;
     }
 
     // gallery with empty nam protect
@@ -46,11 +52,14 @@ class GalleryController extends AbstractController
             return $this->render('home.html.twig');
         } else {
 
+            // get current username
+            $username = $this->loginHelper->getUsername();
+
             // get gallery images
-            $images = StorageUtil::getImagesContentAll($this->loginHelper->getUsername(), $page);
+            $images = $this->storageHelper->getImagesContentAll($username, $page);
 
             // log to database
-            $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed all galleries');
+            $this->logHelper->log('gallery', $username.' viewed all galleries');
             
             // return gallery view
             return $this->render('gallery.html.twig', [
@@ -72,11 +81,14 @@ class GalleryController extends AbstractController
             return $this->render('home.html.twig');
         } else {
 
+            // get current username
+            $username = $this->loginHelper->getUsername();
+
             // get gallery images
-            $images = StorageUtil::getImagesContentAll($this->loginHelper->getUsername(), 1, 'random_sort');
+            $images = $this->storageHelper->getImagesContentAll($username, 1, 'random_sort');
 
             // log to databas
-            $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed all galleries with random sort');
+            $this->logHelper->log('gallery', $username.' viewed all galleries with random sort');
             
             // return gallery view
             return $this->render('gallery.html.twig', [
@@ -98,17 +110,20 @@ class GalleryController extends AbstractController
             return $this->render('home.html.twig');
         } else {
 
+            // get current username
+            $username = $this->loginHelper->getUsername();
+
             // escape name
             $name = EscapeUtil::special_chars_strip($name);
 
             // check if gallery exist
-            if (StorageUtil::checkGallery($this->loginHelper->getUsername(), $name)) {
+            if ($this->storageHelper->checkGallery($username, $name)) {
                 
                 // get gallery images
-                $images = StorageUtil::getImagesContent($this->loginHelper->getUsername(), $name, $page);
+                $images = $this->storageHelper->getImagesContent($username, $name, $page);
 
                 // log to database
-                $this->logHelper->log('gallery', $this->loginHelper->getUsername().' viewed gallery: '.$name);
+                $this->logHelper->log('gallery', $username.' viewed gallery: '.$name);
                 
                 // return gallery view
                 return $this->render('gallery.html.twig', [
@@ -126,8 +141,9 @@ class GalleryController extends AbstractController
         }
     }
 
+    // delete image request
     #[Route(['/gallery/delete/{gallery_name}/{image_name}'],  methods: ['GET'], name: 'delete_image')]
-    public function delete($gallery_name, $image_name): Response
+    public function imageDelete($gallery_name, $image_name): Response
     {
         // check if not logged
         if (!$this->loginHelper->isUserLogedin()) {            
@@ -152,7 +168,7 @@ class GalleryController extends AbstractController
                     $this->logHelper->log('delete', $this->loginHelper->getUsername().' delete image: '.$image_name.' in gallery: '.$gallery_name);
 
                     // check if gallery empty
-                    if (StorageUtil::isGalleryEmpty($storage_name, $gallery_name)) {
+                    if ($this->storageHelper->isGalleryEmpty($storage_name, $gallery_name)) {
 
                         // build gallery path
                         $gallery_path = __DIR__.'/../../storage/'.$storage_name.'/'.$gallery_name;

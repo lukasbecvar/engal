@@ -3,21 +3,23 @@
 namespace App\Form;
 
 use App\Helper\LoginHelper;
-use App\Util\StorageUtil;
+use App\Helper\StorageHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Length;
 
 class ImageUploadType extends AbstractType
 {
     private $loginHelper;
+    private $storageHelper;
 
-    public function __construct(LoginHelper $loginHelper)
+    public function __construct(LoginHelper $loginHelper, StorageHelper $storageHelper)
     {
         $this->loginHelper = $loginHelper;
+        $this->storageHelper = $storageHelper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -50,7 +52,7 @@ class ImageUploadType extends AbstractType
         ])
         ->add('galleryName', ChoiceType::class, [
             'label' => false,
-            'choices' => StorageUtil::getGalleryListWithPrefix($this->loginHelper->getUsername()),
+            'choices' => $this->storageHelper->getGalleryListWithPrefix($this->loginHelper->getUsername()),
             'attr' => [
                 'class' => 'form-control form-control-lg mb-3',
                 'id' => 'form3Example1cg gallery-selection',

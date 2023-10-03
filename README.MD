@@ -18,7 +18,7 @@ Engal uses an outdated version of the Light Gallery 1.4.1 library because this v
  - mysql8 or <
  - php-pdo
 
-# TODOS for version 3.0
+## TODOS for version 3.0
 - [ ] Dumper script (dump all stored galleries to archive)
 - [ ] User settings (password change, profile pics)
 - [ ] Better gallery list manager (create, delete, move)

@@ -125,10 +125,13 @@ class StorageUtil
 
         foreach ($galleries as $value) {
 
+            // get gallery thumbnail
+            $thumbnail = StorageUtil::getThumbnail($storage_name, $value);
+
             if(StorageUtil::getImages($storage_name, $value) != null) {
                 $gallery = [
                     'name' => $value,
-                    'thumbnail' => StorageUtil::getThumbnail($storage_name, $value)
+                    'thumbnail' => $thumbnail
                 ];
     
                 array_push($arr, $gallery);

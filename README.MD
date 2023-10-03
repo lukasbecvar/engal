@@ -1,42 +1,27 @@
 # Encrypted media gallery
 
-Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
+Self-hosted encrypted gallery, builded with symfony 6 & bootstrap 5
 
-# todo
-- [X] setup symfony
-- [X] error handler
-- [X] maintenance mode system
-- [X] check if db running
-- [X] logs system (database)
-- [X] visitors system
-- [X] escape util
-- [X] webpack (assets builder)
-- [X] homepage
-- [X] user register component
-- [X] user login form
-- [X] user login function (LoginController)
-- [X] password hash
-- [X] login remember me
-- [X] gallery component (create, delete, list)
-- [X] images viewer
-- [X] gallery viewer pages
-- [X] all & random viewer
-- [X] image delete
-- [X] image upload
-- [X] limit na upload (only jpg, jpeg, png)
-- [X] dynamical upload form gallery name selction
-- [X] registration disable system
-- [ ] media encryption
-- [ ] tests
-- [ ] new readme + simple doc (install & use tutorial)
-- [ ] final refactor
+# Installation (with apache & mysql)
+- Set Mysql data in .env
+- Set apache root dir to public/
+- Run install script (scripts/install.sh)
+- Disable apache autoindex module
+- Run migrate (scripts/migrate.sh)
 
-# TODOS: 2
+## Required
+ - php-8.1 or <
+ - mysql8 or <
+ - php-pdo
+
+# TODOS for version 3.0
 - [ ] Dumper script (dump all stored galleries to archive)
 - [ ] User settings (password change, profile pics)
 - [ ] admin system (ban system, visitors table, log reader)
 - [ ] REST-API (json api for client app)
 - [ ] Client Frontend (react native & electron app)
+- [ ] Docker compose file
+- [ ] Tests
 
 ## Dependencies
 * Symfony
@@ -45,9 +30,9 @@ Self-hosted encrypted gallery build with symfony 6 & bootstrap 5
 * Jquery
    * Version: **3.7.1**
    * [Website](https://jquery.com/)
-* lightGallery
-   * Version: **1.4.1**
-   * [Website](https://www.lightgalleryjs.com/)
 * Bootstrap
    * Version: **5.3.2**
    * [Website](https://getbootstrap.com/)
+* lightGallery
+   * Version: **1.4.1**
+   * [Website](https://www.lightgalleryjs.com/)

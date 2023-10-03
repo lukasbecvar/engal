@@ -1,10 +1,10 @@
 # Encrypted media gallery
 Self-hosted encrypted gallery, builded with symfony 6 & bootstrap 5
 
-# Light Gallery 1.4.1
+## Light Gallery 1.4.1
 Engal uses an outdated version of the Light Gallery 1.4.1 library because this version is modified for this project
 
-# Installation (with apache & mysql)
+## Installation (with apache & mysql)
 - Set Mysql data in .env
 - Set apache root dir to public/
 - Run install script (scripts/install.sh)

@@ -3,7 +3,7 @@ Self-hosted encrypted gallery
 
 # TODOS for version 3.0
 ## Backend
-- [ ] setup backend api base (symfony)
+- [X] setup backend api base (symfony)
 - [ ] basic structure & database check middlewares
 - [ ] auth api functions
 - [ ] gallery list & create api

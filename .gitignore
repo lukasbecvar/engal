@@ -14,7 +14,6 @@
 
 ###> symfony/phpunit-bridge ###
 /backend/.phpunit.result.cache
-/backend/phpunit.xml
 ###< symfony/phpunit-bridge ###
 
 ###> phpstan/phpstan ###

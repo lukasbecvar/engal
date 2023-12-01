@@ -1,0 +1,10 @@
+/* this is main style of engal app */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: red;
+}

@@ -1,30 +1,31 @@
-###> symfony/framework-bundle ###
+###> backend <###
 /backend/.env.local
 /backend/.env.local.php
 /backend/.env.*.local
 /backend/config/secrets/prod/prod.decrypt.private.php
 /backend/public/bundles/
 /backend/var/
-###< symfony/framework-bundle ###
-
-###> phpunit/phpunit ###
 /backend/phpunit.xml
 /backend/.phpunit.result.cache
-###< phpunit/phpunit ###
-
-###> symfony/phpunit-bridge ###
 /backend/.phpunit.result.cache
-###< symfony/phpunit-bridge ###
-
-###> phpstan/phpstan ###
 phpstan.neon
-###< phpstan/phpstan ###
-
-###> composer ###
 /backend/vendor/
 /backend/composer.lock
-###> composer ###
-
-###> config-files ###
 /backend/.env.prod
-###< config-files ###
+
+###> frontend <###
+/frontend/node_modules
+/frontend/package-lock.json
+/frontend/.pnp
+/frontend/.pnp.js
+/frontend/coverage
+/frontend/build
+/frontend/.DS_Store
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+

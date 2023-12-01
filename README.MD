@@ -12,7 +12,7 @@ Self-hosted encrypted gallery
 - [ ] content encryption
 
 ## Frontend
-- [ ] setup frontend app base (react)
+- [X] setup frontend app base (react)
 - [ ] api link setter (for connect to backend server)
 - [ ] api running check
 - [ ] auth functions

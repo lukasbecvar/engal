@@ -54,7 +54,7 @@ class UserManager
         $user->setUsername($username);
         $user->setPassword($password_hash);
         $user->setToken($token);
-        $user->setRole('user');
+        $user->setRole('User');
         $user->setRegisterTime($time);
         $user->setLastLoginTime('never');
         $user->setProfileImage($image_base64);
@@ -71,6 +71,64 @@ class UserManager
         } catch (\Exception $e) {
             $this->errorManager->handleError('Error to flush user entity: '.$e->getMessage(), 500);
         }
+    }
+
+    public function canLogin(string $username, string $password): bool
+    {
+        // get user repository 
+        $repository = $this->getUserRepository(['username' => $username]);
+
+        // check if user exist
+        if ($repository == null) {
+            return false;
+        } else {
+            // get user password hash
+            $password_hash = $repository->getPassword();
+
+            // check if password is valid
+            if ($this->securityUtil->hashValidate($password, $password_hash)) {
+                
+                // get user token
+                $token = $this->getUserToken($username);
+
+                // update user data
+                $this->updateUserData($token);
+                
+                return true;
+            } else { 
+                // invalid password
+                return false;
+            }
+        }
+    }
+
+    public function updateUserData(string $token): void 
+    {
+        // get date & time
+        $date = date('d.m.Y H:i:s');
+
+        // get current visitor ip address
+        $ip_address = $this->visitorInfoUtil->getIP();
+
+        // get user data
+        $user = $this->getUserRepository(['token' => $token]);
+
+        // check if user repo found
+        if ($user != null) {
+
+            // update last login time
+            $user->setLastLoginTime($date);
+
+            // update user ip
+            $user->setIpAddress($ip_address);
+
+            // update user data
+            try {
+                $this->entityManager->flush();
+            } catch (\Exception $e) {
+                $this->errorManager->handleError('Update user data error: '.$e->getMessage(), 500);
+            }
+        }     
     }
 
     public function getUserRepository(array $array): ?object 
@@ -91,5 +149,10 @@ class UserManager
         } else {
             return null;
         }
+    }
+
+    public function getUserToken(string $username): ?string
+    {
+        return $this->getUserRepository(['username' => $username])->getToken();
     }
 }

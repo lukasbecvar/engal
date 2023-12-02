@@ -8,7 +8,7 @@ use Symfony\Component\String\ByteString;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MainInitTest extends WebTestCase
+class RegisterTest extends WebTestCase
 {
     private $client;
 
@@ -57,7 +57,7 @@ class MainInitTest extends WebTestCase
         }
     }
 
-    public function testRegisterDisabled()
+    public function testRegisterDisabled(): void
     {
         // use fake site util instance
         $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(false));
@@ -80,7 +80,7 @@ class MainInitTest extends WebTestCase
         $this->assertSame($data['message'], 'Registration is disabled');
     }
 
-    public function testRegisterEmptyUsername()
+    public function testRegisterEmptyUsername(): void
     {
         // use fake site util instance
         $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
@@ -103,7 +103,7 @@ class MainInitTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: username');
     }
 
-    public function testRegisterEmptyPassword()
+    public function testRegisterEmptyPassword(): void
     {
         // use fake site util instance
         $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
@@ -128,7 +128,7 @@ class MainInitTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: password');
     }
 
-    public function testRegisterEmptyRePassword()
+    public function testRegisterEmptyRePassword(): void
     {
         // use fake site util instance
         $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
@@ -154,7 +154,7 @@ class MainInitTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: re-password');
     }
 
-    public function testRegisterNotMatchedPasswords()
+    public function testRegisterNotMatchedPasswords(): void
     {
         // use fake site util instance
         $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
@@ -181,7 +181,7 @@ class MainInitTest extends WebTestCase
         $this->assertSame($data['message'], 'Passwords not matching');
     }
 
-    public function testRegisterValid()
+    public function testRegisterValid(): void
     {
         // use fake site util instance
         $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));

@@ -17,7 +17,7 @@ class ErrorManager
     {
         // check if error messages is enabled (no for maintenance)
         if (!$this->siteUtil->isErrorMessagesAllowed() && !$this->siteUtil->isMaintenance()) {
-            // replace error message if dev-mode not used
+            // replace error message (for protect exceptions)
             $msg = 'on the server-side is unexpected error, please try again later and report the error to your provider';
         } 
 

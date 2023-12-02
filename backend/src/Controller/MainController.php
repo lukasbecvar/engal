@@ -12,7 +12,9 @@ class MainController extends AbstractController
     public function index(): Response
     {
         return $this->json([
-            'status' => 'ok'
-        ]);
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'Engal services loaded successfully'
+        ], 200);
     }
 }

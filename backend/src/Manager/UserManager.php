@@ -94,6 +94,9 @@ class UserManager
                 // update user data
                 $this->updateUserData($token);
                 
+                // log action
+                $this->logManager->log('authenticator', 'user: '.$username.' login successful');
+
                 return true;
             } else { 
                 // invalid password

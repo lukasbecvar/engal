@@ -4,14 +4,13 @@ Self-hosted encrypted gallery
 # TODOS for version 3.0
 ## Backend
 - [X] setup backend api base (symfony)
-- [ ] log system
-- [ ] maintenance check middleware
-- [ ] database check middleware
-- [ ] security check middleware (check if api running on ssl (only in prod env))
+- [X] log system
+- [X] maintenance check middleware
+- [X] database check middleware
+- [X] security check middleware (check if api running on ssl (only in prod env))
+- [X] / main controller (for check if api connection is valid)
 - [ ] auth api functions (register, login, logout) (USE POST REQUSTS)
-- [ ] register disable config
-- [ ] / main controller (for check if api connection is valid
-- [ ] middleware for check if user valid api token (use user token)
+- [X] register disable config
 - [ ] create gallery (GET REQUST)
 - [ ] get gallery list by logged user (GET REQUEST)
 - [ ] upload images function (POST REQUST)

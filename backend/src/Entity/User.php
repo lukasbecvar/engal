@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 
+#[ORM\Table(name: 'users')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

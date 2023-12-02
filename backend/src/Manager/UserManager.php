@@ -154,6 +154,15 @@ class UserManager
         }
     }
 
+    public function logLogout($token): void
+    {
+        // get username
+        $username = $this->getUserRepository(['token' => $token])->getUsername();
+
+        // log action
+        $this->logManager->log('authenticator', 'user: '.$username.' logout successful');
+    }
+
     public function getUserToken(string $username): ?string
     {
         return $this->getUserRepository(['username' => $username])->getToken();

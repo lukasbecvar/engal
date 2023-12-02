@@ -3,10 +3,9 @@
 namespace App\Tests\Auth;
 
 use App\Entity\User;
-use Symfony\Component\String\ByteString;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class LoginTest extends WebTestCase
+class LogoutTest extends WebTestCase
 {
     private $client;
 
@@ -69,10 +68,10 @@ class LoginTest extends WebTestCase
         }
     }
 
-    public function testLoginEmptyUsername(): void
+    public function testLogoutEmptyToken(): void
     {
         // make post request
-        $this->client->request('POST', '/login');
+        $this->client->request('POST', '/logout');
         
         // get JSON content from the response
         $content = $this->client->getResponse()->getContent();
@@ -86,37 +85,14 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: username');
+        $this->assertSame($data['message'], 'Required post data: token');
     }
 
-    public function testLoginEmptyPassword(): void
+    public function testLogoutInvalidToken(): void
     {
         // make post request
-        $this->client->request('POST', '/login', [
-            'username' => ByteString::fromRandom(12)->toString()
-        ]);
-        
-        // get JSON content from the response
-        $content = $this->client->getResponse()->getContent();
-        
-        // decode JSON content
-        $data = json_decode($content, true);
-        
-        // test response code
-        $this->assertResponseStatusCodeSame(400);
-        
-        // test response data
-        $this->assertSame($data['status'], 'error');
-        $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: password');
-    }
-
-    public function testLoginIncorectData(): void
-    {
-        // make post request
-        $this->client->request('POST', '/login', [
-            'username' => ByteString::fromRandom(12)->toString(),
-            'password' => ByteString::fromRandom(12)->toString()
+        $this->client->request('POST', '/logout', [
+            'token' => 'invalid-token'
         ]);
         
         // get JSON content from the response
@@ -131,15 +107,14 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 403);
-        $this->assertSame($data['message'], 'Incorrect username or password');
+        $this->assertSame($data['message'], 'Invalid token value');
     }
 
-    public function testLoginValid(): void
+    public function testLogoutValid(): void
     {
         // make post request
-        $this->client->request('POST', '/login', [
-            'username' => 'test_username',
-            'password' => 'test_password'
+        $this->client->request('POST', '/logout', [
+            'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D'
         ]);
         
         // get JSON content from the response
@@ -154,7 +129,6 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'login with username: test_username successfully');
-        $this->assertSame($data['token'], 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D');
+        $this->assertSame($data['message'], 'Logout success');
     }
 }

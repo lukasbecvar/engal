@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class MainInitTest extends WebTestCase
 {
@@ -29,8 +28,7 @@ class MainInitTest extends WebTestCase
         $data = json_decode($content, true);
 
         // test response
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(200);
 
         // test response data
         $this->assertSame($data['status'], 'success');

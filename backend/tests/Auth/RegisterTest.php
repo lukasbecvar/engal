@@ -5,7 +5,6 @@ namespace App\Tests\Auth;
 use App\Entity\User;
 use App\Util\SiteUtil;
 use Symfony\Component\String\ByteString;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegisterTest extends WebTestCase
@@ -200,8 +199,7 @@ class RegisterTest extends WebTestCase
         $data = json_decode($content, true);
 
         // test response code
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(200);
 
         // test response data
         $this->assertSame($data['status'], 'success');

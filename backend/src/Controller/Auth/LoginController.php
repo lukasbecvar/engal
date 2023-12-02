@@ -21,7 +21,7 @@ class LoginController extends AbstractController
     }
 
     #[Route('/login', methods:['POST'], name: 'user_login')]
-    public function register(Request $request): Response
+    public function login(Request $request): Response
     {
         // check if request is post
         if (!$request->isMethod('POST')) {

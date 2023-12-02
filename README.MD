@@ -9,7 +9,7 @@ Self-hosted encrypted gallery
 - [X] database check middleware
 - [X] security check middleware (check if api running on ssl (only in prod env))
 - [X] / main controller (for check if api connection is valid)
-- [ ] auth api functions (register, login, logout) (USE POST REQUSTS)
+- [X] auth api functions (register, login, logout) (USE POST REQUSTS)
 - [X] register disable config
 - [ ] create gallery (GET REQUST)
 - [ ] get gallery list by logged user (GET REQUEST)

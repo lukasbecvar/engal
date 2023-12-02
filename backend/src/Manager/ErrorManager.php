@@ -15,8 +15,8 @@ class ErrorManager
 
     public function handleError(string $msg, int $code): void
     {
-        // check if dev-mode is enabled (not for maintenance)
-        if (!$this->siteUtil->isDevMode() && !$this->siteUtil->isMaintenance()) {
+        // check if error messages is enabled (no for maintenance)
+        if (!$this->siteUtil->isErrorMessagesAllowed() && !$this->siteUtil->isMaintenance()) {
             // replace error message if dev-mode not used
             $msg = 'on the server-side is unexpected error, please try again later and report the error to your provider';
         } 

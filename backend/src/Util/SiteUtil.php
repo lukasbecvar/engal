@@ -39,6 +39,16 @@ class SiteUtil
         }
     }
 
+    public function isRegisterEnabled(): bool 
+    {
+        // check if dev mode enabled in app enviroment
+        if ($_ENV['REGISTRATIONS'] == 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function isRunningLocalhost(): bool 
     {
 		$localhost = false;

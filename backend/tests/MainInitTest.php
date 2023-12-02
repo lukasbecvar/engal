@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Public;
+namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class MainControllerTest extends WebTestCase
+class MainInitTest extends WebTestCase
 {
     private $client;
 

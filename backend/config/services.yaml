@@ -25,12 +25,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 1 }
 
-    # database online checker
-    App\Middleware\DatabaseOnlineMiddleware:
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 2 }
-
     # security checker
     App\Middleware\SecurityCheckMiddleware:
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 2 }
+    
+    # database online checker
+    App\Middleware\DatabaseOnlineMiddleware:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 3 }

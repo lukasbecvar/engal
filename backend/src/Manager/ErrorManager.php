@@ -18,7 +18,7 @@ class ErrorManager
         // check if error messages is enabled (no for maintenance)
         if (!$this->siteUtil->isErrorMessagesAllowed() && !$this->siteUtil->isMaintenance()) {
             // replace error message (for protect exceptions)
-            $msg = 'on the server-side is unexpected error, please try again later and report the error to your provider';
+            $msg = 'Unexpected server-side error, please try again later and report the error to your provider';
         } 
 
         // build error message
@@ -27,6 +27,7 @@ class ErrorManager
             'code' => $code,
             'message' => $msg
         ];
+
         // JSON response
         die(json_encode($data));
     }  

@@ -8,8 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_main')]
-    public function index(): Response
+    #[Route('/', methods:['GET'], name: 'app_main')]
+    public function main(): Response
     {
         return $this->json([
             'status' => 'success',

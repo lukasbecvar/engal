@@ -33,11 +33,11 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $last_login_time = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $profile_image = null;
-
     #[ORM\Column(length: 255)]
     private ?string $ip_address = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $profile_image = null;
 
     public function getId(): ?int
     {
@@ -116,18 +116,6 @@ class User
         return $this;
     }
 
-    public function getProfileImage(): ?string
-    {
-        return $this->profile_image;
-    }
-
-    public function setProfileImage(string $profile_image): static
-    {
-        $this->profile_image = $profile_image;
-
-        return $this;
-    }
-
     public function getIpAddress(): ?string
     {
         return $this->ip_address;
@@ -136,6 +124,18 @@ class User
     public function setIpAddress(string $ip_address): static
     {
         $this->ip_address = $ip_address;
+
+        return $this;
+    }
+    
+    public function getProfileImage(): ?string
+    {
+        return $this->profile_image;
+    }
+
+    public function setProfileImage(string $profile_image): static
+    {
+        $this->profile_image = $profile_image;
 
         return $this;
     }

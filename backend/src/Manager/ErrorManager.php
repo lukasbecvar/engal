@@ -2,10 +2,25 @@
 
 namespace App\Manager;
 
+use App\Util\SiteUtil;
+
 class ErrorManager
 {
+    private SiteUtil $siteUtil;
+
+    public function __construct(SiteUtil $siteUtil)
+    {
+        $this->siteUtil = $siteUtil;
+    }
+
     public function handleError(string $msg, int $code): void
     {
+        // check if dev-mode is enabled (not for maintenance)
+        if (!$this->siteUtil->isDevMode() && !$this->siteUtil->isMaintenance()) {
+            // replace error message if dev-mode not used
+            $msg = 'on the server-side is unexpected error, please try again later and report the error to your provider';
+        } 
+
         // build error message
         $data = [
             'status' => 'error',

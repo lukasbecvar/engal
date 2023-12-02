@@ -13,4 +13,14 @@ class SiteUtil
             return false;
         }
     }
+
+    public function isDevMode(): bool 
+    {
+        // check if dev mode enabled in app enviroment
+        if ($_ENV['APP_ENV'] == 'dev') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

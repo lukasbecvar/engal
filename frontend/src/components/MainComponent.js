@@ -2,17 +2,16 @@
 import { useEffect, useState } from "react";
 import { checkApiAvailability } from '../utils/apiUtils';
 
-import LoadingComponent from "./LoadingComponent";
-import LoginComponent from "./setup/LoginComponent";
+import LoginComponent from "./auth/LoginComponent";
 import ApiErrorComponent from "./errors/ApiErrorComponent";
 import ApiUrlSetupComponent from "./setup/ApiUrlSetupComponent";
 import MaintenanceComponent from "./errors/MaintenanceComponent";
+import LoadingComponent from "./sub-components/LoadingComponent";
 
 function MainComponent() {
     const [loading, setLoading] = useState(true);
     const [api_error, setApiError] = useState(false);
     const [maintenance, setMaintenance] = useState(false);
-
 
     // get api url from local storage
     let api_url = localStorage.getItem('api-url');

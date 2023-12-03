@@ -20,7 +20,7 @@ class MaintenanceMiddleware
     {
         // check if MAINTENANCE_MODE enabled
         if ($this->siteUtil->isMaintenance()) {
-            $this->errorManager->handleError('Engal api is under maintenance mode, please try again later', 503);
+            $this->errorManager->handleError('Engal api is under maintenance mode, please try again later', 503, 'maintenance');
         }
     }
 }

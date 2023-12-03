@@ -1,4 +1,3 @@
-// init react components
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -6,10 +5,10 @@ import ReactDOM from 'react-dom/client';
 import './assets/css/main.css';
 
 // init main app component
-import Main from './components/Main';
+import MainComponent from './components/MainComponent';
 
 // create app root
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // render main component
-root.render(<Main/>);
+root.render(<MainComponent/>);

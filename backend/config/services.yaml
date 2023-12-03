@@ -20,17 +20,22 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # set haders service
+    App\Middleware\SetHeadersMiddleware:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 1 }
+
     # maintenance mode checker
     App\Middleware\MaintenanceMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 1 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 2 }
 
     # security checker
     App\Middleware\SecurityCheckMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 2 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 3 }
     
     # database online checker
     App\Middleware\DatabaseOnlineMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 3 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 4 }

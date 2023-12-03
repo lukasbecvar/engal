@@ -24,9 +24,9 @@ Self-hosted encrypted gallery
 
 ## Frontend
 - [X] setup frontend app base (react)
-- [ ] api link setter (for connect to backend server)
-- [ ] api running check
-- [ ] maintenance running check
+- [X] api link setter (for connect to backend server)
+- [X] api running check
+- [X] maintenance mode check
 - [ ] home component (register & login forms navigation)
 - [ ] about component (basic page with engal description)
 - [ ] register component

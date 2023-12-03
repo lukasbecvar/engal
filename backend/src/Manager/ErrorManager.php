@@ -13,7 +13,7 @@ class ErrorManager
         $this->siteUtil = $siteUtil;
     }
 
-    public function handleError(string $msg, int $code): void
+    public function handleError(string $msg, int $code, string $status = 'error'): void
     {
         // check if error messages is enabled (no for maintenance)
         if (!$this->siteUtil->isErrorMessagesAllowed() && !$this->siteUtil->isMaintenance()) {
@@ -23,10 +23,13 @@ class ErrorManager
 
         // build error message
         $data = [
-            'status' => 'error',
+            'status' => $status,
             'code' => $code,
             'message' => $msg
         ];
+
+        // send api headers
+        $this->siteUtil->sendAPIHeaders();
 
         // JSON response
         die(json_encode($data));

@@ -31,8 +31,8 @@ Self-hosted encrypted gallery
 - [X] register enabled check
 - [X] register component
 - [X] login component
+- [X] logout component
 - [ ] user home
-- [ ] logout component
 - [ ] gallery create component
 - [ ] gallery list component
 - [ ] gallery browser component

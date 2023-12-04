@@ -1,16 +1,17 @@
-
 import { useEffect, useState } from "react";
-import { checkApiAvailability } from '../utils/apiUtils';
+import { checkApiAvailability } from '../utils/ApiUtils';
 
 import LoginComponent from "./auth/LoginComponent";
 import ApiErrorComponent from "./errors/ApiErrorComponent";
 import ApiUrlSetupComponent from "./setup/ApiUrlSetupComponent";
 import MaintenanceComponent from "./errors/MaintenanceComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
+import ApiUrlRemoveComponent from "./setup/ApiUrlRemoveComponent";
 
 function MainComponent() {
     const [loading, setLoading] = useState(true);
     const [api_error, setApiError] = useState(false);
+    const [api_connction_error, setApiConnectionError] = useState(false);
     const [maintenance, setMaintenance] = useState(false);
 
     // get api url from local storage
@@ -35,19 +36,10 @@ function MainComponent() {
 
                     // check if api is unreachable
                     if (result === null) {
-
-                        // remove api url
-                        localStorage.removeItem('api-url');
-
-                        // reload app
-                        window.location.reload();
+                        setApiConnectionError(true);
                     }
                 } catch (error) {
-                    // remove api url
-                    localStorage.removeItem('api-url');
-
-                    // reload app
-                    window.location.reload();
+                    setApiConnectionError(true);
                 }
             }
         };
@@ -68,6 +60,10 @@ function MainComponent() {
         if (api_url == null || api_url === '') {
             return (<ApiUrlSetupComponent/>);
         
+        // check if api connection error found
+        } else if (api_connction_error == true) {
+            return (<ApiUrlRemoveComponent/>);
+
         // check is maintenance
         } else if (maintenance == true) {
             return (<MaintenanceComponent/>)

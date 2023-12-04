@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { checkApiAvailability } from '../../utils/apiUtils';
+import { checkApiAvailability } from '../../utils/ApiUtils';
 
 function ApiUrlSetupComponent() {
     const [api_url, setApiUrl] = useState('');

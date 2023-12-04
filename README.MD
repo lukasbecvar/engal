@@ -32,7 +32,7 @@ Self-hosted encrypted gallery
 - [X] register component
 - [X] login component
 - [X] logout component
-- [ ] user home
+- [X] user home (main component with user info)
 - [ ] gallery create component
 - [ ] gallery list component
 - [ ] gallery browser component

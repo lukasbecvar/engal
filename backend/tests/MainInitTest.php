@@ -16,7 +16,7 @@ class MainInitTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testMainController(): void
+    public function testMain(): void
     {
         // make get request
         $this->client->request('GET', '/');

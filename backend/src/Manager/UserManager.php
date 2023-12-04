@@ -167,4 +167,9 @@ class UserManager
     {
         return $this->getUserRepository(['username' => $username])->getToken();
     }
+
+    public function getUsernameByToken(string $token): ?string
+    {
+        return $this->getUserRepository(['token' => $token])->getUsername();
+    }
 }

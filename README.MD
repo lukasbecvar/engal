@@ -29,8 +29,8 @@ Self-hosted encrypted gallery
 - [X] maintenance mode check
 - [X] home component (register & login forms navigation)
 - [X] register enabled check
-- [ ] register component
-- [ ] login component
+- [X] register component
+- [X] login component
 - [ ] user home
 - [ ] logout component
 - [ ] gallery create component

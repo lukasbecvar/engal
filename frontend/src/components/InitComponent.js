@@ -7,8 +7,9 @@ import ApiUrlSetupComponent from "./setup/ApiUrlSetupComponent";
 import MaintenanceComponent from "./errors/MaintenanceComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
 import ApiUrlRemoveComponent from "./setup/ApiUrlRemoveComponent";
+import MainComponent from "./MainComponent";
 
-function MainComponent() {
+function InitComponent() {
     const [loading, setLoading] = useState(true);
     const [api_error, setApiError] = useState(false);
     const [api_connction_error, setApiConnectionError] = useState(false);
@@ -17,6 +18,8 @@ function MainComponent() {
     // get api url from local storage
     let api_url = localStorage.getItem('api-url');
     
+    let user_token = localStorage.getItem('user-token');
+
     // check if api is reachable
     useEffect(() => {
         const checkAPI = async () => {
@@ -74,10 +77,15 @@ function MainComponent() {
 
         } else {
 
-            // show login
-            return (<LoginComponent/>);
+            if (user_token == null) {
+
+                // show login
+                return (<LoginComponent/>);
+            } else {
+                return (<MainComponent/>);
+            }
         }
     }
 }
 
-export default MainComponent;
+export default InitComponent;

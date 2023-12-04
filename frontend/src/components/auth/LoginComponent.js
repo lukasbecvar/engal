@@ -13,6 +13,7 @@ function LoginComponent() {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
+    let api_url = localStorage.getItem('api-url');
 
     function handleUsernameInputChange(event) {
         setUsername(event.target.value);
@@ -37,7 +38,41 @@ function LoginComponent() {
                 setErrorMsg('password is empty!');
             } else {
 
-                console.log('username: ' + username + ', password: ' + password);
+
+                try {
+                    const formData = new FormData();
+                    formData.append('username', username);
+                    formData.append('password', password);
+
+                    const response = await fetch(api_url + '/login', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        // Ošetření odmítnuté odpovědi (HTTP status není OK)
+                        console.error('Error:', response.status);
+                        return;
+                    }
+
+                    const data = await response.json();
+
+                    
+                    if (data.message == 'Incorrect username or password') {
+                        setErrorMsg('Incorrect username or password');
+                    } else {
+                        if (data.message == 'login with username: ' + username + ' successfully') {
+                           
+                            localStorage.setItem('user-token', data.token);
+                            window.location.reload();
+                        }
+                    }
+
+                } catch (error) {
+                    // Ošetření chyb při samotném HTTP požadavku
+                    console.error('Error:', error);
+                }
+
             }
         } 
     }

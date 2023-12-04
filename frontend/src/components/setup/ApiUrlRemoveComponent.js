@@ -1,6 +1,7 @@
 function ApiUrlRemoveComponent() {
     
     let api_url = localStorage.getItem('api-url');
+    let user_token = localStorage.getItem('user-token');
     
     function reload() {
         // reload app
@@ -10,6 +11,10 @@ function ApiUrlRemoveComponent() {
     function removeApiUrl() {
         // remove api url
         localStorage.removeItem('api-url');
+
+        if (user_token != null) {
+            localStorage.removeItem('user-token');
+        }
 
         reload();
     }

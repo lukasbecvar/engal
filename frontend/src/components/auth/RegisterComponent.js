@@ -114,8 +114,9 @@ const RegisterComponent = () => {
                                         setErrorMsg('username: ' + username + ' is already used!');
                                     } else {
                                         if (data.message == 'User: ' + username + ' registred successfully') {
-                                            // tady bude loging
-                                            console.log('tady bude login call');
+                                            
+                                            localStorage.setItem('user-token', data.token);
+                                            window.location.reload();
                                         }
                                     }
         

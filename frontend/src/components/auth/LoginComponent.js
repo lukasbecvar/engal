@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RegisterComponent from './RegisterComponent';
+import LoadingComponent from '../sub-components/LoadingComponent';
 
 function LoginComponent() {
     
+    const [loading, setLoading] = useState(true);
+
     const [is_register, setRegister] = useState(false); 
 
     const [error_msg, setErrorMsg] = useState(null);
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+
 
     function handleUsernameInputChange(event) {
         setUsername(event.target.value);
@@ -38,26 +42,36 @@ function LoginComponent() {
         } 
     }
 
-    if (is_register == true) {
-        return (<RegisterComponent/>);
+    useEffect(function() {
+        setLoading(false);
+    }, []);
+
+    // show loading
+    if (loading == true) {
+        return (<LoadingComponent/>);
     } else {
-        return (
-            <div>
-                {error_msg !== null && (
-                    <div>
-                        <p>error: {error_msg}</p>
-                    </div>
-                )}
-    
+
+        if (is_register == true) {
+            return (<RegisterComponent/>);
+        } else {
+            return (
                 <div>
-                    <p>Login</p>
-                    <input type="text" name="username" placeholder="Username" onChange={handleUsernameInputChange}/><br/>
-                    <input type="text" name="password" placeholder="Password" onChange={handlePasswordInputChange}/><br/>
-                    <button type="button" onClick={login}>Login</button>
-                    <button type="button" onClick={showRegister}>Register</button>
+                    {error_msg !== null && (
+                        <div>
+                            <p>error: {error_msg}</p>
+                        </div>
+                    )}
+        
+                    <div>
+                        <p>Login</p>
+                        <input type="text" name="username" placeholder="Username" onChange={handleUsernameInputChange}/><br/>
+                        <input type="text" name="password" placeholder="Password" onChange={handlePasswordInputChange}/><br/>
+                        <button type="button" onClick={login}>Login</button>
+                        <button type="button" onClick={showRegister}>Register</button>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 

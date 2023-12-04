@@ -42,3 +42,4 @@ Self-hosted encrypted gallery
 - [ ] gallery & image delete function
 - [ ] gallery & image edit function (move to gallery, rename)
 - [ ] image upload form
+- [ ] catch error show only in dev mode

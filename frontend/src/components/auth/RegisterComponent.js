@@ -17,10 +17,13 @@ const RegisterComponent = () => {
     const [password, setPassword] = useState(null);
     const [re_password, setRePassword] = useState(null);
 
+    let api_url = localStorage.getItem('api-url');
+
     useEffect(() => {
         const fetchData = async () => {
+            
             try {
-                const response = await fetch('http://127.0.0.1:33001/register', {
+                const response = await fetch(api_url + '/register', {
                     method: 'POST',
                 });
 
@@ -74,7 +77,58 @@ const RegisterComponent = () => {
                     setErrorMsg('password again is empty!');
                 } else {
 
-                    console.log('username: ' + username + ', password: ' + password + ', re-password: ' + re_password);
+                    // check if password is not matched
+                    if (password != re_password) {
+                        setErrorMsg('passwords not matched!');
+                    } else {
+
+                        if (username.length <= 3) {
+                            setErrorMsg('Your username should be at least 4 characters');
+                        } else {
+
+                            if (password.length <= 7) {
+                                setErrorMsg('Your username should be at least 8 characters');
+                            } else {
+
+                                try {
+                                    const formData = new FormData();
+                                    formData.append('username', username);
+                                    formData.append('password', password);
+                                    formData.append('re-password', re_password);
+            
+                                    const response = await fetch(api_url + '/register', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+            
+                                    if (!response.ok) {
+                                        // Ošetření odmítnuté odpovědi (HTTP status není OK)
+                                        console.error('Error:', response.status);
+                                        return;
+                                    }
+            
+                                    const data = await response.json();
+            
+                                    
+                                    if (data.message == 'Username is already in use') {
+                                        setErrorMsg('username: ' + username + ' is already used!');
+                                    } else {
+                                        if (data.message == 'User: ' + username + ' registred successfully') {
+                                            // tady bude loging
+                                            console.log('tady bude login call');
+                                        }
+                                    }
+        
+                                } catch (error) {
+                                    // Ošetření chyb při samotném HTTP požadavku
+                                    console.error('Error:', error);
+                                }
+                            }
+
+
+                        }
+
+                    }
                 }
             }
         } 

@@ -27,10 +27,12 @@ Self-hosted encrypted gallery
 - [X] api link setter (for connect to backend server)
 - [X] api running check
 - [X] maintenance mode check
-- [ ] home component (register & login forms navigation)
-- [ ] register component
+- [X] home component (register & login forms navigation)
 - [ ] register enabled check
+- [ ] register component
 - [ ] login component
+- [ ] user home
+- [ ] logout component
 - [ ] gallery create component
 - [ ] gallery list component
 - [ ] gallery browser component

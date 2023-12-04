@@ -100,9 +100,13 @@ class SiteUtil
 
     public function sendAPIHeaders(): void
     {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST');
-        header("Access-Control-Allow-Headers: X-Requested-With"); 
-        header('Content-Type: application/json; charset=utf-8');
+        if (session_status() == PHP_SESSION_NONE) {
+            if (!headers_sent()) {
+                header('Access-Control-Allow-Origin: *');
+                header('Access-Control-Allow-Methods: GET, POST');
+                header("Access-Control-Allow-Headers: X-Requested-With"); 
+                header('Content-Type: application/json; charset=utf-8');
+            }
+        }
     }
 }

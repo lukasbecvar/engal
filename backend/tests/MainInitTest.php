@@ -27,7 +27,7 @@ class MainInitTest extends WebTestCase
         // decode JSON content
         $data = json_decode($content, true);
 
-        // test response
+        // test response code
         $this->assertResponseStatusCodeSame(200);
 
         // test response data

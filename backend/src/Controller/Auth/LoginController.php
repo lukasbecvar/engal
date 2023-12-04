@@ -29,7 +29,7 @@ class LoginController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 400);
+            ], 200);
         } else {
 
             // get post data
@@ -42,7 +42,7 @@ class LoginController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Required post data: username'
-                ], 400); 
+                ], 200); 
             }
 
             // check if password posted
@@ -51,7 +51,7 @@ class LoginController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Required post data: password'
-                ], 400); 
+                ], 200); 
             }
 
             // escape post data
@@ -77,7 +77,7 @@ class LoginController extends AbstractController
                     'status' => 'error',
                     'code' => 403,
                     'message' => 'Incorrect username or password'
-                ], 403);
+                ], 200);
             }
         }      
     }

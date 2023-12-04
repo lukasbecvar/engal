@@ -32,7 +32,7 @@ class LogoutController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 400);
+            ], 200);
         } else {
             // check if token seted
             if ($token == null) {
@@ -40,7 +40,7 @@ class LogoutController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Required post data: token'
-                ], 400);
+                ], 200);
             }
 
             // escape user token
@@ -63,7 +63,7 @@ class LogoutController extends AbstractController
                     'status' => 'error',
                     'code' => 403,
                     'message' => 'Invalid token value'
-                ], 403);
+                ], 200);
             }
         }
     }

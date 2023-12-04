@@ -81,7 +81,7 @@ class LoginTest extends WebTestCase
         $data = json_decode($content, true);
         
         // test response code
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(200);
         
         // test response data
         $this->assertSame($data['status'], 'error');
@@ -103,7 +103,7 @@ class LoginTest extends WebTestCase
         $data = json_decode($content, true);
         
         // test response code
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(200);
         
         // test response data
         $this->assertSame($data['status'], 'error');
@@ -126,7 +126,7 @@ class LoginTest extends WebTestCase
         $data = json_decode($content, true);
         
         // test response code
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseStatusCodeSame(200);
         
         // test response data
         $this->assertSame($data['status'], 'error');

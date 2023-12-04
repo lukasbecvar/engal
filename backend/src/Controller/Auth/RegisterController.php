@@ -35,7 +35,7 @@ class RegisterController extends AbstractController
                 'status' => 'error',
                 'code' => 403,
                 'message' => 'Registration is disabled'
-            ], 403);   
+            ], 200);   
         }
 
         // check if request is post
@@ -44,7 +44,7 @@ class RegisterController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 400);
+            ], 200);
         } else {
 
             // get post data
@@ -58,7 +58,7 @@ class RegisterController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Required post data: username'
-                ], 400); 
+                ], 200); 
             }
 
             // check if password posted
@@ -67,7 +67,7 @@ class RegisterController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Required post data: password'
-                ], 400); 
+                ], 200); 
             }
 
             // check if re-password posted
@@ -76,7 +76,7 @@ class RegisterController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Required post data: re-password'
-                ], 400); 
+                ], 200); 
             }  
 
             // escape post data
@@ -90,7 +90,7 @@ class RegisterController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Passwords not matching'
-                ], 400);  
+                ], 200);  
             }
 
             // check if username exist
@@ -99,7 +99,7 @@ class RegisterController extends AbstractController
                     'status' => 'error',
                     'code' => 400,
                     'message' => 'Username is already in use'
-                ], 400); 
+                ], 200); 
             }
 
             // insert new user to database

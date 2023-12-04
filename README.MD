@@ -28,7 +28,6 @@ Self-hosted encrypted gallery
 - [X] api running check
 - [X] maintenance mode check
 - [ ] home component (register & login forms navigation)
-- [ ] about component (basic page with engal description)
 - [ ] register component
 - [ ] register enabled check
 - [ ] login component

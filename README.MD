@@ -11,14 +11,13 @@ Self-hosted encrypted gallery
 - [X] / main controller (for check if api connection is valid)
 - [X] auth api functions (register, login, logout) (USE POST REQUSTS)
 - [X] register disable config
-- [ ] create gallery (GET REQUST)
-- [ ] get gallery list by logged user (GET REQUEST)
 - [ ] upload images function (POST REQUST)
-- [ ] get images ids list by gallery name (GET REQUEST)
-- [ ] get image where gallery & id (GET REQUEST)
+- [ ] get gallery list by logged user (POST REQUEST)
+- [ ] get images ids list by gallery name (POST REQUEST)
+- [ ] get image where gallery & id (POST REQUEST)
 - [ ] protect content for users (only users with token in image data can show image & gallery content)
-- [ ] delete gallery & images
-- [ ] edit gallery & images
+- [ ] images
+- [ ] edit images (move to gallery, rename)
 - [ ] document api errors & endpoints
 - [ ] content encryption
 
@@ -33,13 +32,9 @@ Self-hosted encrypted gallery
 - [X] login component
 - [X] logout component
 - [X] user home (main component with user info)
-- [ ] gallery create component
+- [ ] upload component
 - [ ] gallery list component
 - [ ] gallery browser component
-- [ ] auth functions
-- [ ] gallery gets & create view
-- [ ] gallery browser view
-- [ ] gallery & image delete function
-- [ ] gallery & image edit function (move to gallery, rename)
-- [ ] image upload form
+- [ ] image delete function
+- [ ] image edit function (move to gallery, rename)
 - [ ] catch error show only in dev mode

@@ -11,7 +11,7 @@ export default function ApiUrlSetupComponent() {
     async function set() {
         
         // check if url is not empty
-        if (api_url.length != 0) {
+        if (api_url.length !== 0) {
             
             // try to set api url
             try {
@@ -19,7 +19,7 @@ export default function ApiUrlSetupComponent() {
                 const result = await checkApiAvailability(api_url);
     
                 // check if api is reachable
-                if (result != null) {
+                if (result !== null) {
                    
                     // remove trailing slash from the end of the URL
                     const api_url_to_save = api_url.replace(/\/$/, '');

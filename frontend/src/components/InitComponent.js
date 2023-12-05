@@ -26,7 +26,7 @@ export default function InitComponent() {
     // check if api is reachable
     useEffect(() => {
         async function checkAPI() {
-            if (api_url != null) {
+            if (api_url !== null) {
                 try {
                     const result = await checkApiAvailability(api_url);
       
@@ -59,7 +59,7 @@ export default function InitComponent() {
     }, [api_url])
 
     // show loading
-    if (loading == true) {
+    if (loading === true) {
         return <LoadingComponent/>;
     } else {
 
@@ -68,21 +68,21 @@ export default function InitComponent() {
             return <ApiUrlSetupComponent/>;
         
         // check if api connection error found
-        } else if (api_connction_error == true) {
+        } else if (api_connction_error === true) {
             return <ApiUrlRemoveComponent/>;
 
         // check is maintenance
-        } else if (maintenance == true) {
+        } else if (maintenance === true) {
             return <MaintenanceComponent/>;
         
         // check if found api error
-        } else if (api_error == true) {
+        } else if (api_error === true) {
             return <ApiErrorComponent/>;
 
         } else {
 
             // check if user not logged
-            if (getUserToken() == null) {
+            if (getUserToken() === null) {
 
                 // show login
                 return <LoginComponent/>;

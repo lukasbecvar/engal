@@ -26,7 +26,7 @@ export function removeApiUrl() {
     let user_token = localStorage.getItem('user-token');
 
     // remove user token if is seted
-    if (user_token != null) {
+    if (user_token !== null) {
         localStorage.removeItem('user-token');
     }
 

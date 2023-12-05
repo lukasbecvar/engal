@@ -39,7 +39,7 @@ export default function MainComponent() {
             }
 
             // remove user token form locale storage (logout)
-            if (user_token != null) {
+            if (user_token !== null) {
                 userLogout();          
             }
         } catch (error) {
@@ -77,10 +77,10 @@ export default function MainComponent() {
         }
     
         fetchData();
-    }, []);
+    }, [api_url, user_token, username]);
 
     // show loading
-    if (loading == true) {
+    if (loading === true) {
         return (<LoadingComponent/>);
     } else {
         return (
@@ -94,15 +94,15 @@ export default function MainComponent() {
                             <ul className='navbar-nav me-auto'>
                             
                                 <li className='nav-item active'>
-                                    <a className='nav-link' href='#'>List</a>
+                                    <button className='nav-link'>List</button>
                                 </li>
                             
                                 <li className='nav-item'>
-                                    <a className='nav-link' href='#'>All</a>
+                                    <button className='nav-link'>All</button>
                                 </li>
                             
                                 <li className='nav-item'>
-                                    <a className='nav-link' href='#'>Random</a>
+                                    <button className='nav-link'>Random</button>
                                 </li>
                             
                             </ul>
@@ -111,13 +111,13 @@ export default function MainComponent() {
                            
                             <ul className='navbar-nav ms-auto'>
                                 <li className='nav-item me-2'>
-                                    <a className='nav-link' href='#'>Upload</a>
+                                    <button className='nav-link'>Upload</button>
                                 </li>
                             </ul>
                             
                             <ul className='navbar-nav ms-auto'>
                                 <li className='nav-item'>
-                                    <a className='nav-link' href='#' onClick={logout}>Logout</a>
+                                    <button className='nav-link' onClick={logout}>Logout</button>
                                 </li>
                             </ul>
                         

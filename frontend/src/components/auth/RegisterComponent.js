@@ -27,15 +27,16 @@ export default function RegisterComponent() {
     let api_url = localStorage.getItem('api-url');
 
     // hook to fetch registration status when the component mounts
-    useEffect(async function() {
+    useEffect(() => {
+        async function checkStatus() {
             try {
                 const response = await fetch(api_url + '/register', {
                     method: 'POST',
                 });
-
+    
                 // get response data
                 const data = await response.json();
-
+    
                 // check if registration is disabled
                 if (data.message === 'Registration is disabled') {
                     console.log(response.status + ', ' + data.message);
@@ -45,10 +46,13 @@ export default function RegisterComponent() {
                 setErrorMsg('request error, please report this to your administrator');
                 console.error('Error:', error);
             }
-
+    
             // disable loading
             setLoading(false);
-        }, [])
+        }
+    
+        checkStatus();
+    }, [api_url]);
 
     // switch to the login component
     function showLogin() {
@@ -172,7 +176,7 @@ export default function RegisterComponent() {
 
                                                             <p className='text-center mt-3 mb-0 text-light'>
                                                                 Have already an account?
-                                                                <a href='#' className='fw-bold text-light' onClick={showLogin}><u className='ml-3'>Login here</u></a>
+                                                                <button className='fw-bold text-light' onClick={showLogin}><span className='ml-3'>login here</span></button>
                                                             </p>
                                                         </div>
                                                     </div>

@@ -21,8 +21,8 @@ export default function ApiUrlRemoveComponent() {
                 <p className='lead text-light'>
                     Error to connect API: {api_url}
                 </p>
-                <a href='#' className='btn btn-outline-info' onClick={resetUrl}>Set new URL</a>
-                <a href='#' className='btn btn-outline-info ml-3' onClick={reload}>Reload</a>
+                <button className='btn btn-outline-info' onClick={resetUrl}>Set new URL</button>
+                <button className='btn btn-outline-info ml-3' onClick={reload}>Reload</button>
             </div>
         </div>
     );

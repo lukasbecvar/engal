@@ -1,3 +1,5 @@
+import { appReload } from "../../utils/AppUtils";
+
 export default function MaintenanceComponent() {
     return (
         <div className='component d-flex align-items-center justify-content-center vh-100'>
@@ -6,7 +8,7 @@ export default function MaintenanceComponent() {
                 <p className='lead text-light'>
                     The service is temporarily unavailable due to maintenance
                 </p>
-                <a href='/' className='btn btn-outline-info'>Reload</a>
+                <button className='btn btn-outline-info' onClick={appReload}>Reload</button>
             </div>
         </div>
     );

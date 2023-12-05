@@ -84,7 +84,7 @@ export default function LoginComponent() {
     // set loading state to false after component mount
     useEffect(function() {
         setLoading(false);
-    }, [])
+    }, []);
 
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
@@ -130,7 +130,7 @@ export default function LoginComponent() {
 
                                                         <p className='text-center mt-3 mb-0 text-light'>
                                                             You can register here:
-                                                            <a href='#' className='fw-bold text-light' onClick={showRegister}><u className='ml-3'>register</u></a>
+                                                            <button className='fw-bold text-light' onClick={showRegister}><span className='ml-3'>register</span></button>
                                                         </p>
                                                     </div>
                                                 </div>

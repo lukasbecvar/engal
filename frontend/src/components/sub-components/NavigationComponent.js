@@ -1,10 +1,12 @@
+import { appReload } from "../../utils/AppUtils";
+
 export default function NavigationComponent() {
     return (
         <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
             <div className='container-fluid'>
-                <a className='navbar-brand' href='/'>
+                <button className='navbar-brand' onClick={appReload}>
                     Engal
-                </a>
+                </button>
             </div>
         </nav>
     );

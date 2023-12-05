@@ -42,6 +42,12 @@ export default function ApiUrlSetupComponent() {
         setApiUrl(event.target.value);
     }
 
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            set();
+        }
+    }
+
     return (
         <div className='component'>
 
@@ -63,7 +69,7 @@ export default function ApiUrlSetupComponent() {
                                             )}
 
                                             <div className='set-api-url-form'>
-                                                <input type='text' placeholder='url' name='api-url' className='form-control form-control-lg mb-0' onChange={handleInputChange}/>
+                                                <input type='text' placeholder='url' name='api-url' className='form-control form-control-lg mb-0' onChange={handleInputChange} onKeyDown={handleKeyPress}/>
                                                 <div className='m-3 justify-content-center'>
                                                     <button type='button' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={set}>Save</button>
                                                 </div>

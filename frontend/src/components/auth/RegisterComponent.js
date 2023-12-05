@@ -126,6 +126,12 @@ export default function RegisterComponent() {
         }
     }
 
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            register();
+        }
+    }
+
     // conditional rendering based on component state
     if (loading) {
         return <LoadingComponent/>;
@@ -156,9 +162,9 @@ export default function RegisterComponent() {
                                                         )}
 
                                                         <div className='register-form'>
-                                                            <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' onChange={handleUsernameInputChange} /><br />
-                                                            <input type='password' name='password' placeholder='Password' className='form-control form-control-lg mb-0' onChange={handlePasswordInputChange} /><br />
-                                                            <input type='password' name='re-password' placeholder='Password again' className='form-control form-control-lg mb-0' onChange={handleRePasswordInputChange} /><br />
+                                                            <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                            <input type='password' name='password' placeholder='Password' className='form-control form-control-lg mb-0' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                            <input type='password' name='re-password' placeholder='Password again' className='form-control form-control-lg mb-0' onChange={handleRePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
                                                             <div className='m-3 justify-content-center'>
                                                                 <button type='submit' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={register}>Register</button>

@@ -86,6 +86,12 @@ export default function LoginComponent() {
         setLoading(false);
     }, [])
 
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            login();
+        }
+    }
+
     // conditional rendering based on component state
     if (loading) {
         return <LoadingComponent/>;
@@ -115,8 +121,8 @@ export default function LoginComponent() {
                                                     )}
 
                                                     <div className='login-form'>
-                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' onChange={handleUsernameInputChange} /><br />
-                                                        <input type='password' name='password' placeholder='Password' className='form-control form-control-lg' onChange={handlePasswordInputChange} /><br />
+                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                        <input type='password' name='password' placeholder='Password' className='form-control form-control-lg' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
                                                         <div className='m-3 justify-content-center'>
                                                             <button type='button' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={login}>Login</button>

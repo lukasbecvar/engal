@@ -204,6 +204,6 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'User: testing_username registred successfully');
+        $this->assertSame($data['message'], 'User: testing_username registered successfully');
     }
 }

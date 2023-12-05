@@ -109,7 +109,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'User: '.$username.' registred successfully',
+                'message' => 'User: '.$username.' registered successfully',
                 'token' => $this->userManager->getUserToken($username)
             ], 200); 
         }      

@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
-import { checkApiAvailability } from '../utils/ApiUtils';
 
+// import engal utils
+import { getUserToken } from "../utils/AuthUtils";
+import { checkApiAvailability, getApiUrl } from '../utils/ApiUtils';
+
+// import engal components
+import MainComponent from "./MainComponent";
 import LoginComponent from "./auth/LoginComponent";
 import ApiErrorComponent from "./errors/ApiErrorComponent";
 import ApiUrlSetupComponent from "./setup/ApiUrlSetupComponent";
 import MaintenanceComponent from "./errors/MaintenanceComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
 import ApiUrlRemoveComponent from "./setup/ApiUrlRemoveComponent";
-import MainComponent from "./MainComponent";
 
-function InitComponent() {
+export default function InitComponent() {
+    // state variables for managing component state
     const [loading, setLoading] = useState(true);
     const [api_error, setApiError] = useState(false);
     const [api_connction_error, setApiConnectionError] = useState(false);
     const [maintenance, setMaintenance] = useState(false);
 
     // get api url from local storage
-    let api_url = localStorage.getItem('api-url');
-    
-    let user_token = localStorage.getItem('user-token');
+    let api_url = getApiUrl();
 
     // check if api is reachable
     useEffect(() => {
-        const checkAPI = async () => {
+        async function checkAPI() {
             if (api_url != null) {
                 try {
                     const result = await checkApiAvailability(api_url);
@@ -42,50 +45,52 @@ function InitComponent() {
                         setApiConnectionError(true);
                     }
                 } catch (error) {
+                    console.log('Error: ' + error);
                     setApiConnectionError(true);
                 }
             }
-        };
+        }
 
         // check api
         checkAPI();
 
         // disable loading
         setLoading(false);
-    }, [api_url]);
+    }, [api_url])
 
     // show loading
     if (loading == true) {
-        return (<LoadingComponent/>);
+        return <LoadingComponent/>;
     } else {
 
         // check if api url not seted
         if (api_url == null || api_url === '') {
-            return (<ApiUrlSetupComponent/>);
+            return <ApiUrlSetupComponent/>;
         
         // check if api connection error found
         } else if (api_connction_error == true) {
-            return (<ApiUrlRemoveComponent/>);
+            return <ApiUrlRemoveComponent/>;
 
         // check is maintenance
         } else if (maintenance == true) {
-            return (<MaintenanceComponent/>)
+            return <MaintenanceComponent/>;
         
         // check if found api error
         } else if (api_error == true) {
-            return (<ApiErrorComponent/>);
+            return <ApiErrorComponent/>;
 
         } else {
 
-            if (user_token == null) {
+            // check if user not logged
+            if (getUserToken() == null) {
 
                 // show login
-                return (<LoginComponent/>);
+                return <LoginComponent/>;
             } else {
-                return (<MainComponent/>);
+
+                // init main componnt
+                return <MainComponent/>;
             }
         }
     }
 }
-
-export default InitComponent;

@@ -1,32 +1,29 @@
-function ApiUrlRemoveComponent() {
-    
+// import engal utils
+import { appReload } from "../../utils/AppUtils";
+import { removeApiUrl } from "../../utils/ApiUtils";
+
+export default function ApiUrlRemoveComponent() {
+    // get api url form locale storage
     let api_url = localStorage.getItem('api-url');
-    let user_token = localStorage.getItem('user-token');
     
-    function reload() {
-        // reload app
-        window.location.reload();
+    function resetUrl() {
+        removeApiUrl();
     }
 
-    function removeApiUrl() {
-        // remove api url
-        localStorage.removeItem('api-url');
-
-        if (user_token != null) {
-            localStorage.removeItem('user-token');
-        }
-
-        reload();
+    function reload() {
+        appReload();
     }
 
     return (
-        <div>
-            <p>Error to connect API: {api_url}</p>
-            <p>You can set new api url or try again later</p>
-            <button type="button" onClick={removeApiUrl}>Set URL</button>
-            <button type="button" onClick={reload}>Reload</button>
+        <div className='component d-flex align-items-center justify-content-center vh-100'>
+            <div className='text-center'>
+                <p className='fs-3'><span className='text-danger'>Opps!</span></p>
+                <p className='lead text-light'>
+                    Error to connect API: {api_url}
+                </p>
+                <a href='#' className='btn btn-outline-info' onClick={resetUrl}>Set new URL</a>
+                <a href='#' className='btn btn-outline-info ml-3' onClick={reload}>Reload</a>
+            </div>
         </div>
     );
 }
-
-export default ApiUrlRemoveComponent;

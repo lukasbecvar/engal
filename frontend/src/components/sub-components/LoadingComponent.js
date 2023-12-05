@@ -1,5 +1,9 @@
-function LoadingComponent() {
-    return (<p>loading</p>);
-}
+import '../../assets/css/page-loading.css';
 
-export default LoadingComponent;
+export default function LoadingComponent() {
+    return (
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+        </div>
+    );
+}

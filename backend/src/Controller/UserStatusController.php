@@ -66,6 +66,5 @@ class UserStatusController extends AbstractController
                 ], 200);
             }
         }
-    
     }
 }

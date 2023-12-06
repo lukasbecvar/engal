@@ -130,6 +130,7 @@ export default function RegisterComponent() {
         }
     }
 
+    // handle press enter submit
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
             register();

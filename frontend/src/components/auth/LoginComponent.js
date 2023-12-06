@@ -86,6 +86,7 @@ export default function LoginComponent() {
         setLoading(false);
     }, []);
 
+    // handle press enter submit
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
             login();

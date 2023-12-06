@@ -6,10 +6,12 @@ export default function ApiUrlRemoveComponent() {
     // get api url form locale storage
     let api_url = localStorage.getItem('api-url');
     
+    // reset api config
     function resetUrl() {
         removeApiUrl();
     }
 
+    // reload app
     function reload() {
         appReload();
     }

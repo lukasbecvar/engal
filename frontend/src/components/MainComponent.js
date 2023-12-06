@@ -1,36 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 // import engal utils
-import { getApiUrl } from '../utils/ApiUtils'
-import { getUserToken, userLogout } from '../utils/AuthUtils'
+import { getApiUrl } from '../utils/ApiUtils';
+import { getUserToken, userLogout } from '../utils/AuthUtils';
 
 // import engal components
-import LoadingComponent from './sub-components/LoadingComponent'
+import UploaderComponent from './UploaderComponent';
+import GalleryListComponent from './GalleryListComponent';
+import GalleryBrowserComponent from './GalleryBrowserComponent';
+import LoadingComponent from './sub-components/LoadingComponent';
 
 export default function MainComponent() {
     // state variables for managing component state
-    const [loading, setLoading] = useState(true)
-
-    // default username state
-    const [username, setUsername] = useState(null)
+    const [loading, setLoading] = useState(true);
+    const [gallery, setGallery] = useState(null);
+    const [upload, setUpload] = useState(false);
+    let container = null;
 
     // get api url
-    let api_url = getApiUrl()
+    let api_url = getApiUrl();
 
     // get user token
-    let user_token = getUserToken()
+    let user_token = getUserToken();
 
+    // user logout
     async function logout() {
         try {
-            const formData = new FormData()
+            const formData = new FormData();
 
             // build request data
-            formData.append('token', user_token)
+            formData.append('token', user_token);
 
             const response = await fetch(api_url + '/logout', {
                 method: 'POST',
                 body: formData
-            })
+            });
 
             // check error
             if (!response.ok) {
@@ -46,38 +50,38 @@ export default function MainComponent() {
             console.error('Error:', error);
         }
     }
-    
+
     useEffect(() => {
-        async function fetchData() {
-            if (username == null) {
-                try {
-                    const formData = new FormData();
-                    formData.append('token', user_token);
-        
-                    const response = await fetch(api_url + '/user/status', {
-                        method: 'POST',
-                        body: formData
-                    });
-        
-                    if (!response.ok) {
-                        console.error('Error:', response.status);
-                        return;
-                    }
-                    const data = await response.json();
-        
-                    if (data.status === 'success') {
-                        setUsername(data.username);
-                    }
-        
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            }
-            setLoading(false);
-        }
-    
-        fetchData();
-    }, [api_url, user_token, username]);
+        // disable loading
+        setLoading(false);
+    }, []);
+
+    // show upload page
+    function showUpload() {
+        setUpload(true);
+        setGallery(null);
+    }
+
+    // disable components for show gallery list
+    function showList() {
+        setUpload(false);
+        setGallery(null);
+    }
+
+    // show gallery browser component
+    function showBrowser(gallery_name) {
+        setUpload(false);
+        setGallery(gallery_name);
+    }
+
+    // render component to container
+    if (upload) {
+        container = <UploaderComponent/>;
+    } else if (gallery != null) {
+        container = <GalleryBrowserComponent gallery_name={gallery}/>;
+    } else {
+        container = <GalleryListComponent/>;
+    }
 
     // show loading
     if (loading === true) {
@@ -92,43 +96,33 @@ export default function MainComponent() {
                         </button>
                         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
                             <ul className='navbar-nav me-auto'>
-                            
                                 <li className='nav-item active'>
-                                    <button className='nav-link'>List</button>
+                                    <button className='nav-link' onClick={(showList)}>List</button>
                                 </li>
                             
                                 <li className='nav-item'>
-                                    <button className='nav-link'>All</button>
+                                    <button className='nav-link' onClick={()=>showBrowser('all')}>All</button>
                                 </li>
-                            
                                 <li className='nav-item'>
-                                    <button className='nav-link'>Random</button>
+                                    <button className='nav-link' onClick={()=>showBrowser('random')}>Random</button>
                                 </li>
-                            
                             </ul>
                         </div>
                         <div className='d-flex'>
-                           
                             <ul className='navbar-nav ms-auto'>
                                 <li className='nav-item me-2'>
-                                    <button className='nav-link'>Upload</button>
+                                    <button className='nav-link' onClick={showUpload}>Upload</button>
                                 </li>
                             </ul>
-                            
                             <ul className='navbar-nav ms-auto'>
                                 <li className='nav-item'>
                                     <button className='nav-link' onClick={logout}>Logout</button>
                                 </li>
                             </ul>
-                        
                         </div>
                     </div>
                 </nav>
-
-
-                <div>
-                    <p className='text-light'>logged: {localStorage.getItem('user-token')}, user: {username}</p>
-                </div>
+                {container}
             </div>
         );
     }

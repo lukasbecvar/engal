@@ -39,6 +39,5 @@ Self-hosted encrypted gallery
 - [ ] image edit function (move to gallery, rename)
 - [ ] catch error show only in dev mode
 
-
 ## Version 4.0
 - [ ] sort by upload date, name, size + reverse

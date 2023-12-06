@@ -80,6 +80,10 @@ class UserManager
 
         // check if user exist
         if ($repository == null) {
+
+            // log action
+            $this->logManager->log('authenticator', 'user: '.$username.' trying to login: username not registred, '.$username.':'.$password);
+
             return false;
         } else {
             // get user password hash
@@ -100,6 +104,10 @@ class UserManager
                 return true;
             } else { 
                 // invalid password
+
+                // log action
+                $this->logManager->log('authenticator', 'user: '.$username.' trying to login: wrong password, '.$username.':'.$password);
+
                 return false;
             }
         }

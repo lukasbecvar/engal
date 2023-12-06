@@ -29,46 +29,47 @@ class LogManager
     public function log(string $name, string $value): void 
     {
         // check if logs enabled in config
-        if ($this->isLogsEnabled()) {
+        if (!$this->isLogsEnabled()) {
+            return;
+        }
 
-            // value string shortifiy
-            if (mb_strlen($value) >= 100) {
-                $value = mb_substr($value, 0, 100 - 3).'...';
-            } 
+        // value string shortifiy
+        if (mb_strlen($value) >= 100) {
+            $value = mb_substr($value, 0, 100 - 3).'...';
+        } 
 
-            // get current date & time
-            $time = date('d.m.Y H:i:s');
+        // get current date & time
+        $time = date('d.m.Y H:i:s');
 
-            // get visitor browser agent
-            $browser = $this->visitorInfoUtil->getBrowser();
+        // get visitor browser agent
+        $browser = $this->visitorInfoUtil->getBrowser();
 
-            // get visitor ip address
-            $ip_address = $this->visitorInfoUtil->getIP();
+        // get visitor ip address
+        $ip_address = $this->visitorInfoUtil->getIP();
 
-            // xss inputs escape
-            $name = $this->securityUtil->escapeString($name);
-            $value = $this->securityUtil->escapeString($value);
-            $browser = $this->securityUtil->escapeString($browser);
-            $ip_address = $this->securityUtil->escapeString($ip_address);
+        // xss inputs escape
+        $name = $this->securityUtil->escapeString($name);
+        $value = $this->securityUtil->escapeString($value);
+        $browser = $this->securityUtil->escapeString($browser);
+        $ip_address = $this->securityUtil->escapeString($ip_address);
                 
-            // create new log object
-            $LogEntity = new Log();
+        // create new log object
+        $LogEntity = new Log();
 
-            // set log object values
-            $LogEntity->setName($name); 
-            $LogEntity->setValue($value); 
-            $LogEntity->setBrowser($browser); 
-            $LogEntity->setTime($time); 
-            $LogEntity->setUserIp($ip_address); 
-            $LogEntity->setStatus('unreaded'); 
+        // set log object values
+        $LogEntity->setName($name); 
+        $LogEntity->setValue($value); 
+        $LogEntity->setBrowser($browser); 
+        $LogEntity->setTime($time); 
+        $LogEntity->setUserIp($ip_address); 
+        $LogEntity->setStatus('unreaded'); 
                 
-            // try insert row
-            try {
-                $this->entityManager->persist($LogEntity);
-                $this->entityManager->flush();
-            } catch (\Exception $e) {
-                $this->errorManager->handleError('Log save error: '.$e->getMessage(), 500);  
-            }
+        // try insert row
+        try {
+            $this->entityManager->persist($LogEntity);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('Log save error: '.$e->getMessage(), 500);  
         }
     }
 

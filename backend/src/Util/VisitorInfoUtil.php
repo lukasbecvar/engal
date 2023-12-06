@@ -13,9 +13,9 @@ class VisitorInfoUtil
         // check forwarded ip (get ip from cloudflare visitors) 
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        
+        // basic address get
         } else {
-
-            // basic address get
             $address = $_SERVER['REMOTE_ADDR'];
         }
         return $address;

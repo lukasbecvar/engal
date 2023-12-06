@@ -33,38 +33,35 @@ class UserStatusController extends AbstractController
                 'code' => 400,
                 'message' => 'Post request required'
             ], 200);
-        } else {
-            // check if token seted
-            if ($token == null) {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Required post data: token'
-                ], 200);
-            }
+        }
+        
+        // check if token seted
+        if ($token == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Required post data: token'
+            ], 200);
+        }
 
-            // escape user token
-            $token = $this->securityUtil->escapeString($token);
+        // escape user token
+        $token = $this->securityUtil->escapeString($token);
 
-            // check if user found in database
-            if ($this->userManager->getUserRepository(['token' => $token]) != null) {
+        // check if user found in database
+        if ($this->userManager->getUserRepository(['token' => $token]) != null) {
                 
-                // log logout action
-                $this->userManager->logLogout($token);
-
-                // return success message
-                return $this->json([
-                    'status' => 'success',
-                    'code' => 200,
-                    'username' => $this->userManager->getUsernameByToken($token)
-                ], 200);
-            } else {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 403,
-                    'message' => 'Invalid token value'
-                ], 200);
-            }
+            // return success message
+            return $this->json([
+                'status' => 'success',
+                'code' => 200,
+                'username' => $this->userManager->getUsernameByToken($token)
+            ], 200);
+        } else {
+            return $this->json([
+                'status' => 'error',
+                'code' => 403,
+                'message' => 'Invalid token value'
+            ], 200);
         }
     }
 }

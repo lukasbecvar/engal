@@ -29,6 +29,11 @@ class RegisterController extends AbstractController
     #[Route('/register', methods:['POST'], name: 'user_register')]
     public function register(Request $request): Response
     {
+        // get post data
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+        $re_password = $request->request->get('re-password');
+
         // check if registrations is databled
         if ($this->siteUtil->isRegisterEnabled() == false) {
             return $this->json([
@@ -45,73 +50,67 @@ class RegisterController extends AbstractController
                 'code' => 400,
                 'message' => 'Post request required'
             ], 200);
-        } else {
-
-            // get post data
-            $username = $request->request->get('username');
-            $password = $request->request->get('password');
-            $re_password = $request->request->get('re-password');
-
-            // check if username posted
-            if ($username == null) {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Required post data: username'
-                ], 200); 
-            }
-
-            // check if password posted
-            if ($password == null) {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Required post data: password'
-                ], 200); 
-            }
-
-            // check if re-password posted
-            if ($re_password == null) {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Required post data: re-password'
-                ], 200); 
-            }  
-
-            // escape post data
-            $username = $this->securityUtil->escapeString($username);
-            $password = $this->securityUtil->escapeString($password);
-            $re_password = $this->securityUtil->escapeString($re_password);
-
-            // check if passwords si matched
-            if ($password != $re_password) {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Passwords not matching'
-                ], 200);  
-            }
-
-            // check if username exist
-            if ($this->userManager->getUserRepository(['username' => $username]) != null) {
-                return $this->json([
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'Username is already in use'
-                ], 200); 
-            }
-
-            // insert new user to database
-            $this->userManager->insertNewUser($username, $password);
-
-            // return success response
+        }
+    
+        // check if username posted
+        if ($username == null) {
             return $this->json([
-                'status' => 'success',
-                'code' => 200,
-                'message' => 'User: '.$username.' registered successfully',
-                'token' => $this->userManager->getUserToken($username)
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Required post data: username'
             ], 200); 
-        }      
+        }
+
+        // check if password posted
+        if ($password == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Required post data: password'
+            ], 200); 
+        }
+
+        // check if re-password posted
+        if ($re_password == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Required post data: re-password'
+            ], 200); 
+        }  
+
+        // escape post data
+        $username = $this->securityUtil->escapeString($username);
+        $password = $this->securityUtil->escapeString($password);
+        $re_password = $this->securityUtil->escapeString($re_password);
+
+        // check if passwords si matched
+        if ($password != $re_password) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Passwords not matching'
+            ], 200);  
+        }
+
+        // check if username exist
+        if ($this->userManager->getUserRepository(['username' => $username]) != null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Username is already in use'
+            ], 200); 
+        }
+
+        // insert new user to database
+        $this->userManager->insertNewUser($username, $password);
+
+        // return success response
+        return $this->json([
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'User: '.$username.' registered successfully',
+            'token' => $this->userManager->getUserToken($username)
+        ], 200);       
     }
 }

@@ -11,7 +11,7 @@ Self-hosted encrypted gallery
 - [X] / main controller (for check if api connection is valid)
 - [X] auth api functions (register, login, logout) (USE POST REQUSTS)
 - [X] register disable config
-- [ ] upload images function (POST REQUST)
+- [X] upload images function (POST REQUST)
 - [ ] get gallery list by logged user (POST REQUEST)
 - [ ] get images ids list by gallery name (POST REQUEST)
 - [ ] get image where gallery & id (POST REQUEST)
@@ -38,3 +38,7 @@ Self-hosted encrypted gallery
 - [ ] image delete function
 - [ ] image edit function (move to gallery, rename)
 - [ ] catch error show only in dev mode
+
+
+## Version 4.0
+- [ ] sort by upload date, name, size + reverse

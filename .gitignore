@@ -12,6 +12,7 @@ phpstan.neon
 /backend/vendor/
 /backend/composer.lock
 /backend/.env.prod
+/backend/storage/
 
 ###> frontend <###
 /frontend/node_modules

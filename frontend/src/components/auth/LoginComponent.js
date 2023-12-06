@@ -103,7 +103,7 @@ export default function LoginComponent() {
                 <div className='component'>
                     <NavigationComponent/>
 
-                    <div className='container mt-5'>
+                    <div className='container mt-5 mb-5'>
                         <div className='w-4/5 m-auto text-center'>
                             <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
                                 <div className='container h-100'>
@@ -121,7 +121,7 @@ export default function LoginComponent() {
                                                     )}
 
                                                     <div className='login-form'>
-                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autocomplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
                                                         <input type='password' name='password' placeholder='Password' className='form-control form-control-lg' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
                                                         <div className='m-3 justify-content-center'>

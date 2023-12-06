@@ -30,7 +30,7 @@ class UploaderController extends AbstractController
     public function main(Request $request): Response
     {
         // upload storage directory
-        $storage_directory = __DIR__.'/../../storage/';
+        $storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/';
         
         // get post data
         $token = $request->request->get('token');
@@ -118,6 +118,20 @@ class UploaderController extends AbstractController
                     // create gallery dir
                     if (!file_exists($storage_directory.$username.'/'.$gallery)) {
                         mkdir($storage_directory.$username.'/'.$gallery);
+                    }
+
+                    $max_file_size_value = intval($_ENV['MAX_FILE_SIZE']);
+
+                    // calculate maximal file size
+                    $max_file_size = $max_file_size_value * 1024 * 1024;
+
+                    // check file size limit
+                    if ($uploaded_file['size'] > $max_file_size) {
+                        return $this->json([
+                            'status' => 'error',
+                            'code' => 200,
+                            'message' => 'Maximal file size is '.$max_file_size_value.'MB'
+                        ], 200);
                     }
 
                     try {

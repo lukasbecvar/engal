@@ -13,6 +13,7 @@ Self-hosted encrypted gallery
 - [X] register disable config
 - [X] upload images function (POST REQUST)
 - [X] get gallery list by logged user (POST REQUEST)
+- [ ] validate error codes response
 - [ ] get gallery thumbnails base64 in gallery list (for use in gallery selection)
 - [ ] get images ids list by gallery name (POST REQUEST)
 - [ ] get image where gallery & id (POST REQUEST)
@@ -34,6 +35,7 @@ Self-hosted encrypted gallery
 - [X] logout component
 - [X] user home (main component with user info)
 - [X] upload component
+- [ ] validate error codes response check
 - [ ] gallery list component
 - [ ] gallery browser component
 - [ ] gallery & images counter

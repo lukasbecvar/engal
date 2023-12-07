@@ -68,7 +68,7 @@ class LoginController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'login with username: '.$username.' successfully',
+                'message' => 'Login with username: '.$username.' successfully',
                 'token' => $token
             ], 200);
 

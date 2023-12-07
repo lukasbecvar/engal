@@ -9,10 +9,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './assets/css/main.css';
 
 // init main app component
-import MainComponent from './components/InitComponent';
+import InitComponent from './InitComponent';
 
 // create app root
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // render main component
-root.render(<MainComponent/>);
+root.render(<InitComponent/>);

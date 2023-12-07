@@ -32,7 +32,6 @@ Self-hosted encrypted gallery
 - [X] login component
 - [X] logout component
 - [X] user home (main component with user info)
-- [ ] recode component select with router 
 - [ ] upload component
 - [ ] gallery list component
 - [ ] gallery browser component

@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
 // import engal utils
-import { getUserToken } from "../utils/AuthUtils";
-import { checkApiAvailability, getApiUrl } from '../utils/ApiUtils';
+import { getUserToken } from "./utils/AuthUtils";
+import { checkApiAvailability, getApiUrl } from './utils/ApiUtils';
 
 // import engal components
-import MainComponent from "./MainComponent";
-import LoginComponent from "./auth/LoginComponent";
-import ApiErrorComponent from "./errors/ApiErrorComponent";
-import ApiUrlSetupComponent from "./setup/ApiUrlSetupComponent";
-import MaintenanceComponent from "./errors/MaintenanceComponent";
-import LoadingComponent from "./sub-components/LoadingComponent";
-import ApiUrlRemoveComponent from "./setup/ApiUrlRemoveComponent";
+import MainComponent from "./components/MainComponent";
+import LoginComponent from "./components/auth/LoginComponent";
+import ApiErrorComponent from "./components/errors/ApiErrorComponent";
+import ApiUrlSetupComponent from "./components/setup/ApiUrlSetupComponent";
+import MaintenanceComponent from "./components/errors/MaintenanceComponent";
+import LoadingComponent from "./components/sub-components/LoadingComponent";
+import ApiUrlRemoveComponent from "./components/setup/ApiUrlRemoveComponent";
 
 export default function InitComponent() {
     // state variables for managing component state

@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 // import engal utils
 import { checkApiAvailability, setApiLink } from '../../utils/ApiUtils';
 
+// import engal components
+import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
+
 export default function ApiUrlSetupComponent() {
     // state variables for managing component state
     const [api_url, setApiUrl] = useState('');
@@ -62,10 +65,7 @@ export default function ApiUrlSetupComponent() {
                                             <h2 className='text-uppercase text-center mb-3 text-light'>Set your API URL</h2>
 
                                             {error_msg !== null && (
-                                                <div className='alert alert-warning alert-dismissible fade show' role='alert'>
-                                                    <strong>Error</strong> {error_msg}
-                                                    <button type='button' className='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                                                </div>
+                                                <ErrorBoxComponent error_msg={error_msg}/>
                                             )}
 
                                             <div className='set-api-url-form'>

@@ -5,13 +5,12 @@ import { userLogin } from '../../utils/AuthUtils';
 
 // import engal components
 import LoginComponent from './LoginComponent';
-import LoadingComponent from '../sub-components/LoadingComponent';
+import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
 import RegisterDisabledComponent from '../errors/RegisterDisabledComponent';
 
 export default function RegisterComponent() {
     // state variables for managing component state
-    const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(true);
     const [is_login, setLogin] = useState(false);
     
@@ -46,9 +45,6 @@ export default function RegisterComponent() {
                 setErrorMsg('request error, please report this to your administrator');
                 console.error('Error:', error);
             }
-    
-            // disable loading
-            setLoading(false);
         }
     
         checkStatus();
@@ -116,12 +112,12 @@ export default function RegisterComponent() {
                 const data = await response.json();
 
                 // check the response message
-                if (data.message === 'Username is already in use') {
-                    setErrorMsg('Username: ' + username + ' is already used!');
-                } else if (data.message === 'User: ' + username + ' registered successfully') {
+                if (data.message === 'User: ' + username + ' registered successfully') {
 
                     // set login state
                     userLogin(data.token);
+                } else {
+                    setErrorMsg(data.message);
                 }
             } catch (error) {
                 setErrorMsg('request error, please report this to your administrator');
@@ -138,48 +134,41 @@ export default function RegisterComponent() {
     }
 
     // conditional rendering based on component state
-    if (loading) {
-        return <LoadingComponent/>;
+    if (is_login) {
+        return <LoginComponent/>;
     } else {
-        if (is_login) {
-            return <LoginComponent/>;
-        } else {
-            if (status) {
-                return (
-                    <div className='component'>
-                        <NavigationComponent/>
+        if (status) {
+            return (
+                <div className='component'>
+                    <NavigationComponent/>
 
-                        <div className='container mt-5 mb-5'>
-                            <div className='w-4/5 m-auto text-center'>
-                                <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
-                                    <div className='container h-100'>
-                                        <div className='row d-flex justify-content-center align-items-center h-100'>
-                                            <div className='col-12 col-md-9 col-lg-7 col-xl-6'>
-                                                <div className='card bg-dark'>
-                                                    <div className='card-body p-5 text-light'>
-                                                        <h2 className='text-uppercase text-center mb-3 text-light'>Create an account</h2>
+                    <div className='container mt-5 mb-5'>
+                        <div className='w-4/5 m-auto text-center'>
+                            <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
+                                <div className='container h-100'>
+                                    <div className='row d-flex justify-content-center align-items-center h-100'>
+                                        <div className='col-12 col-md-9 col-lg-7 col-xl-6'>
+                                            <div className='card bg-dark'>
+                                                <div className='card-body p-5 text-light'>
+                                                    <h2 className='text-uppercase text-center mb-3 text-light'>Create an account</h2>
+                                                
+                                                    {error_msg !== null && (
+                                                        <ErrorBoxComponent error_msg={error_msg}/>
+                                                    )}
 
-                                                        {error_msg !== null && (
-                                                            <div className='alert alert-warning alert-dismissible fade show' role='alert'>
-                                                                <strong>Error</strong> {error_msg}
-                                                                <button type='button' className='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                                                            </div>
-                                                        )}
+                                                    <div className='register-form'>
+                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autoComplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                        <input type='password' name='password' placeholder='Password' className='form-control form-control-lg mb-0' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                        <input type='password' name='re-password' placeholder='Password again' className='form-control form-control-lg mb-0' onChange={handleRePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
-                                                        <div className='register-form'>
-                                                            <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autoComplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
-                                                            <input type='password' name='password' placeholder='Password' className='form-control form-control-lg mb-0' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
-                                                            <input type='password' name='re-password' placeholder='Password again' className='form-control form-control-lg mb-0' onChange={handleRePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
-
-                                                            <div className='m-3 justify-content-center'>
-                                                                <button type='submit' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={register}>Register</button>
-                                                            </div>
-
-                                                            <p className='text-center mt-3 mb-0 text-light'>
-                                                                Have already an account?
-                                                                <button className='fw-bold text-light' onClick={showLogin}><span className='ml-3'>login here</span></button>
-                                                            </p>
+                                                        <div className='m-3 justify-content-center'>
+                                                            <button type='submit' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={register}>Register</button>
                                                         </div>
+
+                                                        <p className='text-center mt-3 mb-0 text-light'>
+                                                            Have already an account?
+                                                            <button className='fw-bold text-light' onClick={showLogin}><span className='ml-3'>login here</span></button>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,10 +178,10 @@ export default function RegisterComponent() {
                             </div>
                         </div>
                     </div>
-                );
-            } else {
-                return <RegisterDisabledComponent/>;
-            }
+                </div>
+            );
+        } else {
+            return <RegisterDisabledComponent/>;
         }
     }
 }

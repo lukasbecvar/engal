@@ -122,7 +122,7 @@ export default function LoginComponent() {
                                                     )}
 
                                                     <div className='login-form'>
-                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autocomplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                        <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autoComplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
                                                         <input type='password' name='password' placeholder='Password' className='form-control form-control-lg' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
                                                         <div className='m-3 justify-content-center'>

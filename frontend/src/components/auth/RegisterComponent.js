@@ -167,7 +167,7 @@ export default function RegisterComponent() {
                                                         )}
 
                                                         <div className='register-form'>
-                                                            <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autocomplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
+                                                            <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autoComplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
                                                             <input type='password' name='password' placeholder='Password' className='form-control form-control-lg mb-0' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
                                                             <input type='password' name='re-password' placeholder='Password again' className='form-control form-control-lg mb-0' onChange={handleRePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 

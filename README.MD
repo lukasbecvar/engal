@@ -12,7 +12,8 @@ Self-hosted encrypted gallery
 - [X] auth api functions (register, login, logout) (USE POST REQUSTS)
 - [X] register disable config
 - [X] upload images function (POST REQUST)
-- [ ] get gallery list by logged user (POST REQUEST)
+- [X] get gallery list by logged user (POST REQUEST)
+- [ ] get gallery thumbnails base64 in gallery list (for use in gallery selection)
 - [ ] get images ids list by gallery name (POST REQUEST)
 - [ ] get image where gallery & id (POST REQUEST)
 - [ ] protect content for users (only users with token in image data can show image & gallery content)

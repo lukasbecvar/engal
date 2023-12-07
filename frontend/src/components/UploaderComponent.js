@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // import engal utils
 import { getUserToken } from '../utils/AuthUtils';
@@ -13,13 +13,14 @@ export default function UploaderComponent() {
     // get current user token
     let user_token = getUserToken();
 
-    // state variables for managing component state
+    // state variable for managing component state
     const [error_msg, setErrorMsg] = useState(null);
     
     // form data
-    const [selected_gallery, setSelectedGallery] = useState('default-gallery');
-    const [new_gallery_name, setNewGalleryName] = useState('');
     const [images, setImages] = useState([]);
+    const [gallery_options, setGalleryOptions] = useState([]);
+    const [new_gallery_name, setNewGalleryName] = useState('');
+    const [selected_gallery, setSelectedGallery] = useState(null);
 
     // handle gallery name change
     function handleGalleryChange(event) {
@@ -40,8 +41,14 @@ export default function UploaderComponent() {
     async function handleUpload() {
         try {
             // get gallery name
-            let gallery_name = selected_gallery === 'new-gallery-141715288475' ? new_gallery_name : selected_gallery;
+            let gallery_name = selected_gallery === 'New gallery' ? new_gallery_name : selected_gallery;
 
+            // set new gallery name if selection is empty
+            if (gallery_options.length <= 1) {
+                gallery_name = new_gallery_name;
+            }
+
+            // check if gallery name include space
             if (gallery_name.includes(' ')) {
                 setErrorMsg('spaces in gallery name is not allowed!');
             } else {
@@ -68,14 +75,56 @@ export default function UploaderComponent() {
                     if (result.status === 'success') {
                         console.log('uploaded!');
                     } else {
-                        setErrorMsg(result.message);
+                        if (result.message === 'Required post data: gallery') {
+                            setErrorMsg('your gallery name is empty')
+                        } else {
+                            setErrorMsg(result.message);
+                        }
                     }
                 }
             }
         } catch (error) {
             console.error('Error during upload:', error);
+            setErrorMsg('unknown upload error, please contact your administrator');
         }
     };
+
+    useEffect(() => {
+
+        // get gallery list from gallery name selection
+        const fetchGalleryList = async () => {
+            try {
+                const formData = new FormData();
+    
+                // set post data
+                formData.append('token', user_token);
+
+                // send request
+                const response = await fetch(api_url + '/gallery/list', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // get response
+                const result = await response.json();
+
+                // check response
+                if (result.status === 'success') {
+                    const galleryList = result.gallery_list.map((gallery) => gallery.name);
+                    setGalleryOptions([...galleryList, 'New gallery']);
+                    setSelectedGallery(galleryList[0]); 
+                } else {
+                    setErrorMsg('error fetching gallery list');
+                    console.error('Error fetching gallery list: ', result.message);
+                }
+            } catch (error) {
+                setErrorMsg('error fetching gallery list');
+                console.error('Error fetching gallery list: ', error);
+            }
+        };
+
+        fetchGalleryList();
+    }, [api_url, user_token]);
 
     return (
         <div className='component'>
@@ -99,13 +148,19 @@ export default function UploaderComponent() {
 
                                                 <label htmlFor='galleryName' className='form-label'>Gallery Name</label>
                                                 <select id='galleryName' name='galleryName' className='form-control form-control-lg mb-3' onChange={handleGalleryChange}>
-                                                    <option value='gallery-1'>gallery-1</option>
-                                                    <option value='gallery-2'>gallery-2</option>
-                                                    <option value='gallery-3'>gallery-3</option>
-                                                    <option value='new-gallery-141715288475'>New gallery</option>
+                                                    {gallery_options.map((option) => (
+                                                        <option key={option} value={option}>{option}</option>
+                                                    ))}
                                                 </select>
 
-                                                {selected_gallery === 'new-gallery-141715288475' && (
+                                                {selected_gallery === 'New gallery' && (
+                                                    <div>
+                                                        <label htmlFor='newGalleryName' className='form-label'>New Gallery Name</label>
+                                                        <input type='text' id='newGalleryName' name='newGalleryName' className='form-control form-control-lg mb-3' placeholder='New Gallery name' onChange={handleNewGalleryNameChange}/>
+                                                    </div>
+                                                )}
+
+                                                {gallery_options.length <= 1 && (
                                                     <div>
                                                         <label htmlFor='newGalleryName' className='form-label'>New Gallery Name</label>
                                                         <input type='text' id='newGalleryName' name='newGalleryName' className='form-control form-control-lg mb-3' placeholder='New Gallery name' onChange={handleNewGalleryNameChange}/>

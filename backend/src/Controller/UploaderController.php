@@ -27,7 +27,7 @@ class UploaderController extends AbstractController
     }
 
     #[Route('/media/upload', methods:['POST'], name: 'app_media_upload')]
-    public function main(Request $request): Response
+    public function uploader(Request $request): Response
     {
         // get post data
         $token = $request->request->get('token');
@@ -69,8 +69,9 @@ class UploaderController extends AbstractController
             ], 200);
         }
 
-        // escape user token
+        // escape data
         $token = $this->securityUtil->escapeString($token);
+        $gallery = $this->securityUtil->escapeString($gallery);
 
         // check if user found in database
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {

@@ -74,19 +74,19 @@ export default function RegisterComponent() {
     async function register() {
         // validation checks for username, password, and re_password
         if (username == null || username === '') {
-            setErrorMsg('Username is empty');
+            setErrorMsg('username is empty');
         } else if (password == null || password === '') {
-            setErrorMsg('Password is empty');
+            setErrorMsg('password is empty');
         } else if (re_password == null || re_password === '') {
-            setErrorMsg('Password again is empty');
+            setErrorMsg('password again is empty');
         } else if (password !== re_password) {
-            setErrorMsg('Passwords do not match');
+            setErrorMsg('passwords do not match');
         } else if (username.length <= 3) {
-            setErrorMsg('Your username should be at least 4 characters');
+            setErrorMsg('your username should be at least 4 characters');
         } else if (password.length <= 7) {
-            setErrorMsg('Your password should be at least 8 characters');
+            setErrorMsg('your password should be at least 8 characters');
         } else if (username.includes(' ') || password.includes(' ') || re_password.includes(' ')) {
-            setErrorMsg('Spaces in login credentials is not allowed');
+            setErrorMsg('spaces in login credentials is not allowed');
         } else {
             try {
                 // perform a POST request to the registration API endpoint

@@ -39,9 +39,9 @@ export default function LoginComponent() {
     async function login() {
         // validation checks for username and password
         if (username === null || username === '') {
-            setErrorMsg('Username is empty!');
+            setErrorMsg('username is empty!');
         } else if (password === null || password === '') {
-            setErrorMsg('Password is empty!');
+            setErrorMsg('password is empty!');
         } else {
             try {
                 const formData = new FormData();

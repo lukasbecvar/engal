@@ -6,18 +6,24 @@ class MediaManager
 {
     private LogManager $logManager;
     private UserManager $userManager;
+    private ErrorManager $errorManager;
 
-    public function __construct(LogManager $logManager, UserManager $userManager)
-    {
+    private string $storage_directory;
+
+    public function __construct(
+        LogManager $logManager, 
+        UserManager $userManager,
+        ErrorManager $errorManager
+    ) {
         $this->logManager = $logManager;
         $this->userManager = $userManager;
+        $this->errorManager = $errorManager;
+
+        $this->storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/';
     }
 
     public function mediaUpload(string $token, string $gallery, array $uploaded_file): array 
     {
-        // upload storage directory
-        $storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/';
-
         // list of allowend media fromats
         $allowed_formats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
 
@@ -31,22 +37,22 @@ class MediaManager
         $username = $this->userManager->getUsernameByToken($token);
 
         // create storage dir
-        if (!file_exists($storage_directory)) {
-            mkdir($storage_directory);
+        if (!file_exists($this->storage_directory)) {
+            mkdir($this->storage_directory);
         }
 
         // create user path 
-        if (!file_exists($storage_directory.$username)) {
-            mkdir($storage_directory.$username);
+        if (!file_exists($this->storage_directory.$username)) {
+            mkdir($this->storage_directory.$username);
         }
 
         // create gallery dir
-        if (!file_exists($storage_directory.$username.'/'.$gallery)) {
-            mkdir($storage_directory.$username.'/'.$gallery);
+        if (!file_exists($this->storage_directory.$username.'/'.$gallery)) {
+            mkdir($this->storage_directory.$username.'/'.$gallery);
         }
 
         // check if storage is writable
-        if (!is_writable($storage_directory)) {
+        if (!is_writable($this->storage_directory)) {
             return [
                 'status' => 'error',
                 'code' => 500,
@@ -75,27 +81,70 @@ class MediaManager
         try {
             // get file name
             $file_name = $uploaded_file['name'];
-
+            
             // build final upload path
-            $destination = $storage_directory.$username.'/'.$gallery.'/'.$file_name;
-                                        
-            // move file to upload dir
-            move_uploaded_file($uploaded_file['tmp_name'], $destination);
+            $destination = $this->storage_directory.$username.'/'.$gallery.'/'.$file_name;
+
+            // check if image exist
+            if (file_exists($destination)) {
+                return [
+                    'status' => 'error',
+                    'code' => 400,
+                    'message' => 'Image: '.$file_name.' is already exist'
+                ];
+
+            } else {
+                // move file to upload dir
+                move_uploaded_file($uploaded_file['tmp_name'], $destination);
+                                
+                // log action
+                $this->logManager->log('uploader', 'user: '.$username.' upload new media: '.$file_name.' to gallery: '.$gallery);
                             
-            // log action
-            $this->logManager->log('uploader', 'user: '.$username.' upload new media: '.$file_name.' to gallery: '.$gallery);
-                        
-            return [
-                'status' => 'success',
-                'code' => 200,
-                'message' => 'Image uploaded to gallery: '.$gallery
-            ];
+                return [
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Image uploaded to gallery: '.$gallery
+                ];
+            }
+                                        
         } catch (\Exception $e) {
             return [
                 'status' => 'error',
                 'code' => 500,
                 'message' => 'Error to upload image: '.$e->getMessage()
             ];
+        }
+    }
+
+    public function getGalleryListByUsername(string $username): ?array {
+
+        // create storage dir
+        if (!file_exists($this->storage_directory)) {
+            mkdir($this->storage_directory);
+        }
+        
+        // create user path 
+        if (!file_exists($this->storage_directory.$username)) {
+            mkdir($this->storage_directory.$username);
+        }
+
+        try {
+            $galleries = scandir(__DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/'.$username);
+            $galleries = array_diff($galleries, array('..', '.'));
+    
+            $arr = [];
+
+            foreach ($galleries as $value) {
+                $gallery = [
+                    'name' => $value
+                ];
+                array_push($arr, $gallery);            
+            }
+    
+            return $arr;
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to get gallery list: '.$e->getMessage(), 500);
+            return null;
         }
     }
 }

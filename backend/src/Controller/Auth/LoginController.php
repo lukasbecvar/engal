@@ -33,7 +33,7 @@ class LoginController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 200);
+            ]);
         } 
         
         // check if username posted
@@ -42,7 +42,7 @@ class LoginController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: username'
-            ], 200); 
+            ]); 
         }
 
         // check if password posted
@@ -51,7 +51,7 @@ class LoginController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: password'
-            ], 200); 
+            ]); 
         }
 
         // escape post data
@@ -70,14 +70,14 @@ class LoginController extends AbstractController
                 'code' => 200,
                 'message' => 'Login with username: '.$username.' successfully',
                 'token' => $token
-            ], 200);
+            ]);
 
         } else {
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
                 'message' => 'Incorrect username or password'
-            ], 200);
+            ]);
         }
     }      
 }

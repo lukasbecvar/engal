@@ -19,6 +19,7 @@ class MediaManager
         $this->userManager = $userManager;
         $this->errorManager = $errorManager;
 
+        // init file storage directory (in app root)
         $this->storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/';
     }
 
@@ -99,7 +100,7 @@ class MediaManager
                                 
                 // log action
                 $this->logManager->log('uploader', 'user: '.$username.' upload new media: '.$file_name.' to gallery: '.$gallery);
-                            
+
                 return [
                     'status' => 'success',
                     'code' => 200,

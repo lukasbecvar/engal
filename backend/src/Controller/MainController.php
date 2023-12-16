@@ -15,6 +15,6 @@ class MainController extends AbstractController
             'status' => 'success',
             'code' => 200,
             'message' => 'Engal services loaded successfully'
-        ], 200);
+        ]);
     }
 }

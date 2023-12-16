@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // import engal util
+import { getApiUrl } from '../../utils/ApiUtils';
 import { userLogin } from '../../utils/AuthUtils';
 
 // import engal components
@@ -23,7 +24,7 @@ export default function RegisterComponent() {
     const [re_password, setRePassword] = useState(null);
 
     // retrieve API URL from local storage
-    let api_url = localStorage.getItem('api-url');
+    let api_url = getApiUrl()
 
     // hook to fetch registration status when the component mounts
     useEffect(() => {
@@ -97,6 +98,7 @@ export default function RegisterComponent() {
                 formData.append('password', password);
                 formData.append('re-password', re_password);
 
+                // fetch response
                 const response = await fetch(api_url + '/register', {
                     method: 'POST',
                     body: formData,

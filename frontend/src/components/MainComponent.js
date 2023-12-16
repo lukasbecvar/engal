@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 // import engal utils
 import { getApiUrl } from '../utils/ApiUtils';
-import { getUserToken, userLogout } from '../utils/AuthUtils';
 import { appReload } from '../utils/AppUtils';
+import { getUserToken, userLogout } from '../utils/AuthUtils';
 
 // import engal components
 import UploaderComponent from './UploaderComponent';
@@ -102,10 +102,10 @@ export default function MainComponent() {
                                 </li>
                             
                                 <li className='nav-item'>
-                                    <button className='nav-link' onClick={()=>showBrowser('all_1337_1337_666')}>All</button>
+                                    <button className='nav-link' onClick={()=>showBrowser('__all_1337_1337_666')}>All</button>
                                 </li>
                                 <li className='nav-item'>
-                                    <button className='nav-link' onClick={()=>showBrowser('random_1337_1337_666')}>Random</button>
+                                    <button className='nav-link' onClick={()=>showBrowser('__random_1337_1337_666')}>Random</button>
                                 </li>
                             </ul>
                         </div>

@@ -32,7 +32,7 @@ class GalleryListController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 200);
+            ]);
         }
         
         // check if token seted
@@ -41,7 +41,7 @@ class GalleryListController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: token'
-            ], 200);
+            ]);
         }
 
         // check if user found in database
@@ -63,13 +63,13 @@ class GalleryListController extends AbstractController
                 'message' => 'User: '.$username.' gallery list',
                 'count' => $gallery_count,
                 'gallery_list' => $gallery_list
-            ], 200);
+            ]);
         } else {
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
                 'message' => 'Invalid token value'
-            ], 200);
+            ]);
         }
     }
 }

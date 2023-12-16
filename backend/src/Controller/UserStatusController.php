@@ -32,7 +32,7 @@ class UserStatusController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 200);
+            ]);
         }
         
         // check if token seted
@@ -41,7 +41,7 @@ class UserStatusController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: token'
-            ], 200);
+            ]);
         }
 
         // escape user token
@@ -55,13 +55,13 @@ class UserStatusController extends AbstractController
                 'status' => 'success',
                 'code' => 200,
                 'username' => $this->userManager->getUsernameByToken($token)
-            ], 200);
+            ]);
         } else {
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
                 'message' => 'Invalid token value'
-            ], 200);
+            ]);
         }
     }
 }

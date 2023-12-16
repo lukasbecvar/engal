@@ -41,10 +41,12 @@ export default function ApiUrlSetupComponent() {
         }
     }
 
+    // handle change api url input
     function handleInputChange(event) {
         setApiUrl(event.target.value);
     }
 
+    // handle enter key press
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
             set();

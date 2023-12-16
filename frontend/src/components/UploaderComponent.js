@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // import engal utils
+import { getApiUrl } from '../utils/ApiUtils';
 import { getUserToken } from '../utils/AuthUtils';
 
 // import engal components
@@ -11,7 +12,7 @@ import WarningMessageBox from './sub-components/WarningMessageBox';
 
 export default function UploaderComponent() {
     // retrieve API URL from local storage
-    let api_url = localStorage.getItem('api-url');
+    let api_url = getApiUrl();
 
     // get current user token
     let user_token = getUserToken();

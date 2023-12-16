@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Util\SecurityUtil;
-use App\Manager\MediaManager;
 use App\Manager\UserManager;
+use App\Manager\MediaManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +39,7 @@ class UploaderController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Post request required'
-            ], 200);
+            ]);
         }
 
         // check if token seted
@@ -48,7 +48,7 @@ class UploaderController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: token'
-            ], 200);
+            ]);
         }
 
         // check if gallery seted
@@ -57,7 +57,7 @@ class UploaderController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: gallery'
-            ], 200);
+            ]);
         }
         
         // check if gallery have minimal length
@@ -66,7 +66,7 @@ class UploaderController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Gallery name minimal length is 4 characters'
-            ], 200);
+            ]);
         }
 
         // check if gallery reached maximal length
@@ -75,7 +75,7 @@ class UploaderController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Gallery name maximal length is 30 characters'
-            ], 200);
+            ]);
         }
 
         // check if image seted
@@ -84,7 +84,7 @@ class UploaderController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'Required post data: image file'
-            ], 200);
+            ]);
         }
 
         // escape data
@@ -100,13 +100,13 @@ class UploaderController extends AbstractController
             // upload file & get response
             $result = $this->mediaManager->mediaUpload($token, $gallery, $uploaded_file);
 
-            return $this->json($result, 200);
+            return $this->json($result);
         } else {
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
                 'message' => 'Invalid token value'
-            ], 200);
+            ]);
         }
     }
 }

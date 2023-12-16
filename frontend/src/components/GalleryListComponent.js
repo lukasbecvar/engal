@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 // import engal utils
-import { getUserToken } from "../utils/AuthUtils";
 import { getApiUrl } from "../utils/ApiUtils";
+import { getUserToken } from "../utils/AuthUtils";
 
 // import engal components
 import CustomErrorComponent from "./errors/CustomErrorComponent";
@@ -25,6 +25,7 @@ export default function GalleryListComponent() {
     // gallery list array
     const [gallery_options, setGalleryOptions] = useState([]);
 
+    // set gallery browser
     function showGallery(gallery_name) {
         setGallery(gallery_name);
     }

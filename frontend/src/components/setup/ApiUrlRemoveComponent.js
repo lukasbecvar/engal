@@ -1,10 +1,10 @@
 // import engal utils
 import { appReload } from "../../utils/AppUtils";
-import { removeApiUrl } from "../../utils/ApiUtils";
+import { getApiUrl, removeApiUrl } from "../../utils/ApiUtils";
 
 export default function ApiUrlRemoveComponent() {
     // get api url form locale storage
-    let api_url = localStorage.getItem('api-url');
+    let api_url = getApiUrl();
     
     // reset api config
     function resetUrl() {

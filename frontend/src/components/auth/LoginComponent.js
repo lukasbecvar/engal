@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 // import engal util
+import { getApiUrl } from '../../utils/ApiUtils';
 import { userLogin } from '../../utils/AuthUtils';
 
 // import engal components
@@ -10,7 +11,7 @@ import NavigationComponent from '../sub-components/NavigationComponent';
 
 export default function LoginComponent() {
     // retrieve API URL from local storage
-    let api_url = localStorage.getItem('api-url');
+    let api_url = getApiUrl();
 
     // state variables for managing component state
     const [is_register, setRegister] = useState(false);

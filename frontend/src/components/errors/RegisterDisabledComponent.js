@@ -5,7 +5,7 @@ export default function RegisterDisabledComponent() {
         <div className='component'>
 
             <NavigationComponent/>
-
+            
             <div className='text-center'>
                 <div className='container mt-5'>
                     <p className='fs-3'><span className='text-danger'>Opps!</span></p>

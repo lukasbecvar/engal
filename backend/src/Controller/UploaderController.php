@@ -60,6 +60,24 @@ class UploaderController extends AbstractController
             ], 200);
         }
         
+        // check if gallery have minimal length
+        if (strlen($gallery) <= 3) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Gallery name minimal length is 4 characters'
+            ], 200);
+        }
+
+        // check if gallery reached maximal length
+        if (strlen($gallery) >= 30) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Gallery name maximal length is 30 characters'
+            ], 200);
+        }
+
         // check if image seted
         if (empty($_FILES['image'])) {
             return $this->json([

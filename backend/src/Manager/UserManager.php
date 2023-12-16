@@ -56,7 +56,7 @@ class UserManager
         $user->setToken($token);
         $user->setRole('User');
         $user->setRegisterTime($time);
-        $user->setLastLoginTime('never');
+        $user->setLastLoginTime($time);
         $user->setProfileImage($image_base64);
         $user->setIpAddress($ip_address);
 

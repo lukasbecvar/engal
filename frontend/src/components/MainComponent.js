@@ -74,19 +74,20 @@ export default function MainComponent() {
         setGallery(gallery_name);
     }
 
-    // render component to container
-    if (upload) {
-        container = <UploaderComponent/>;
-    } else if (gallery != null) {
-        container = <GalleryBrowserComponent gallery_name={gallery}/>;
-    } else {
-        container = <GalleryListComponent/>;
-    }
-
     // show loading
     if (loading === true) {
         return (<LoadingComponent/>);
     } else {
+
+        // render component to container
+        if (upload) {
+            container = <UploaderComponent/>;
+        } else if (gallery != null) {
+            container = <GalleryBrowserComponent gallery_name={gallery}/>;
+        } else {
+            container = <GalleryListComponent/>;
+        }
+
         return (
             <div className='component'>
                 <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>

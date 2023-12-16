@@ -116,8 +116,8 @@ class MediaManager
         }
     }
 
-    public function getGalleryListByUsername(string $username): ?array {
-
+    public function getGalleryListByUsername(string $username): ?array 
+    {
         // create storage dir
         if (!file_exists($this->storage_directory)) {
             mkdir($this->storage_directory);
@@ -136,7 +136,8 @@ class MediaManager
 
             foreach ($galleries as $value) {
                 $gallery = [
-                    'name' => $value
+                    'name' => $value,
+                    'thumbnail' => $this->getThumbnail($username, $value)
                 ];
                 array_push($arr, $gallery);            
             }
@@ -146,5 +147,17 @@ class MediaManager
             $this->errorManager->handleError('error to get gallery list: '.$e->getMessage(), 500);
             return null;
         }
+    }
+
+    public function getThumbnail(string $storage_name, string $gallery_name): ?string 
+    {
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+        foreach (glob($this->storage_directory.$storage_name.'/'.$gallery_name . '/*.{'.implode(',', $allowed_extensions).'}', GLOB_BRACE) as $file) {
+            $image_content = file_get_contents($file);
+            $base64_image = base64_encode($image_content);
+            return $base64_image;
+        }
+        return null;
     }
 }

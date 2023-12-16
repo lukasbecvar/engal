@@ -16,8 +16,6 @@ Self-hosted encrypted gallery
 - [X] get gallery thumbnails base64 in gallery list (for use in gallery selection)
 - [ ] get images ids list by gallery name (POST REQUEST)
 - [ ] get image where gallery & id (POST REQUEST)
-- [ ] protect content for users (only users with token in image data can show image & gallery content)
-- [ ] images
 - [ ] edit images (move to gallery, rename)
 - [ ] document api errors & endpoints
 - [ ] content encryption

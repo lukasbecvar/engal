@@ -22,13 +22,12 @@ button {
 
 .gallery-link {
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
     border: 2px solid #ccc;
-    padding: 2px;
     transition: transform 0.2s ease-in-out;
-    background-color: black;
+    background-color: rgb(20, 20, 20);
     width: 300px; 
-    height: 500px; 
+    height: 300px; 
     overflow: hidden;
 }
   
@@ -38,21 +37,21 @@ button {
 }
   
 .gallery-link:hover {
-    transform: scale(1.01);
-    border: 1px solid rgb(241, 53, 53);
+    border: 1px solid #0f9785;
 }
   
 .gallery-link img {
     width: 100%;
-    height: 95%;
+    height: 91.5%;
     object-fit: cover; 
+    border-bottom: 1px solid rgba(146, 146, 146, 0.945);
 }
 
 .gallery-images {
 	margin: 10px;
 	max-height: 400px;
 	max-width: 80%;
-	border: 1px solid rgba(146, 146, 146, 0.945);;
+	border: 1px solid rgba(146, 146, 146, 0.945);
 	transition: all 0.2s ease;
 }
 
@@ -95,9 +94,9 @@ button {
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 
-        height: 250px; 
+        height: 150px; 
     }
     .gallery-link img {
-        height: 90%;
+        height: 83%;
     }
 }

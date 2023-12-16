@@ -36,8 +36,6 @@ Self-hosted encrypted gallery
 - [X] user home (main component with user info)
 - [X] upload component
 - [X] gallery list component
-- [ ] recode component selection with react router
-- [ ] redirect to final gallery view after upload
 - [ ] validate error codes response check
 - [ ] gallery browser component
 - [ ] gallery & images counter

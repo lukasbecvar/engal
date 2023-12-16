@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // import main app style
 import './assets/css/main.css';
+import './assets/css/scrollbar.css';
 
 // init main app component
 import InitComponent from './InitComponent';

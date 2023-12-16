@@ -8,7 +8,7 @@ import { getApiUrl } from "../utils/ApiUtils";
 import CustomErrorComponent from "./errors/CustomErrorComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
 import GalleryComponent from "./sub-components/GalleryComponent";
-import UploaderComponent from "./UploaderComponent";
+import GalleryBrowserComponent from "./GalleryBrowserComponent";
 
 export default function GalleryListComponent() {
     // retrieve API URL from local storage
@@ -20,12 +20,16 @@ export default function GalleryListComponent() {
     // state variables for managing component state
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [current_gallery, setGallery] = useState(null);
 
     // gallery list array
     const [gallery_options, setGalleryOptions] = useState([]);
 
-    useEffect(() => {
+    function showGallery(gallery_name) {
+        setGallery(gallery_name);
+    }
 
+    useEffect(() => {
         // get gallery list from gallery name selection
         const fetchGalleryList = async () => {
             try {
@@ -68,27 +72,33 @@ export default function GalleryListComponent() {
     if (loading === true) {
         return (<LoadingComponent/>);
     } else {
-        // check if found error
-        if (error !== null) {
-            return <CustomErrorComponent error_message={error}/>
+        if (current_gallery !== null) {
+            return <GalleryBrowserComponent gallery_name={current_gallery}/>
         } else {
-            // check if gallery list is empty
-            if (gallery_options.length === 0) {
-                return (
-                    <center className="container mt-5">
-                        <h5 className="text-light">
-                            Your gallery list is empty
-                        </h5>
-                    </center>
-                );
+            // check if found error
+            if (error !== null) {
+                return <CustomErrorComponent error_message={error}/>
             } else {
-                return (
-                    <center className="container mt-5">
-                        {gallery_options.map((gallery, index) => (
-                            <GalleryComponent key={index} name={gallery.name} thumbnail={gallery.thumbnail} />
-                        ))}
-                    </center>
-                );
+                // check if gallery list is empty
+                if (gallery_options.length === 0) {
+                    return (
+                        <center className="container mt-5">
+                            <h5 className="text-light">
+                                Your gallery list is empty
+                            </h5>
+                        </center>
+                    );
+                } else {
+                    return (
+                        <center className='container mt-2'>
+                            {gallery_options.map((gallery, index) => (
+                                <span key={index} onClick={() => showGallery(gallery.name)}>
+                                    <GalleryComponent key={index} name={gallery.name} thumbnail={gallery.thumbnail}/>
+                                </span>
+                            ))}
+                        </center>
+                    );
+                }
             }
         }
     }

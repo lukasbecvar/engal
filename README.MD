@@ -16,6 +16,7 @@ Self-hosted encrypted gallery
 - [X] get gallery thumbnails base64 in gallery list (for use in gallery selection)
 - [X] get images ids list by gallery name (POST REQUEST)
 - [X] get image where gallery & id (POST REQUEST)
+- [ ] image delete
 - [ ] edit images (move to gallery, rename)
 - [ ] document api errors & endpoints
 - [ ] content encryption
@@ -34,8 +35,8 @@ Self-hosted encrypted gallery
 - [X] upload component
 - [X] gallery list component
 - [X] gallery browser component
-- [ ] style image browser
-- [ ] implement light gallery
+- [X] style image browser
+- [X] implement light gallery
 - [ ] image delete function
 - [ ] image edit function (move to gallery, rename)
 - [ ] catch error show only in dev mode

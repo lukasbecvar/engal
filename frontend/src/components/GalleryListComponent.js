@@ -97,6 +97,7 @@ export default function GalleryListComponent() {
                                     <GalleryComponent key={index} name={gallery.name + ' [' + gallery.count + ']'} thumbnail={gallery.thumbnail}/>
                                 </span>
                             ))}
+                            <br/>
                         </center>
                     );
                 }

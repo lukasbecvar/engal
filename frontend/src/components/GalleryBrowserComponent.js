@@ -4,6 +4,21 @@ import React, { useEffect, useState } from 'react';
 import { getApiUrl } from '../utils/ApiUtils';
 import { getUserToken } from '../utils/AuthUtils';
 
+// import light gallery
+import LightGallery from 'lightgallery/react';
+import 'lightgallery/css/lightgallery.css';
+
+// light gallery styles
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-fullscreen.css';
+import 'lightgallery/css/lg-autoplay.css';
+ 
+// import light gallery plugins
+import lgZoom from 'lightgallery/plugins/zoom';
+import lgFullscreen from 'lightgallery/plugins/fullscreen';
+import lgAutoplay from 'lightgallery/plugins/autoplay';
+
 // import engal components
 import LoadingComponent from './sub-components/LoadingComponent';
 import CustomErrorComponent from './errors/CustomErrorComponent';
@@ -112,9 +127,12 @@ export default function GalleryBrowserComponent(props) {
         } else {
             return (
                 <div className="gallery-box">
-                    {image_content_list.map(({ id, name, content }) => (
-                        <ImageComponent key={id} name={name} image={content}/>
-                    ))}
+                    <LightGallery plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
+                        {image_content_list.map(({ id, name, content }) => (
+                            <ImageComponent key={id} name={name} description={name} image={content}/>
+                        ))}
+                    </LightGallery>
+                    <br/>
                 </div>
             );
         }

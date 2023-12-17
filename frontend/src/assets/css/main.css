@@ -50,21 +50,25 @@ button {
 }
 
 .gallery-box {
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     position: absolute;
     width: 100%;
+    text-align: center;
 }   
 
 .gallery-images {
-	margin: 10px;
-	max-height: 400px;
-	max-width: 80%;
+	margin: 5px;
+    min-width: 200px;
+    min-height: 100px;
+	max-width: 400px;
+	max-height: 200px;
 	border: 1px solid rgba(146, 146, 146, 0.945);;
 	transition: all 0.2s ease;
 }
 
 .gallery-images:hover {
-	border: 1px solid #0f9785;
+	border: 2px solid rgb(255, 83, 83);
 }
 
 .img-edit-button { 

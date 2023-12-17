@@ -8,7 +8,6 @@ import { getUserToken, userLogout } from '../utils/AuthUtils';
 // import engal components
 import UploaderComponent from './UploaderComponent';
 import GalleryListComponent from './GalleryListComponent';
-import GalleryBrowserComponent from './GalleryBrowserComponent';
 import LoadingComponent from './sub-components/LoadingComponent';
 
 export default function MainComponent() {

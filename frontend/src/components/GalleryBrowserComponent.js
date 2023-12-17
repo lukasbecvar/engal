@@ -57,50 +57,50 @@ export default function GalleryBrowserComponent(props) {
         fetchData();
     }, [api_url, user_token, props.gallery_name]);
 
-    async function fetchNextImageContent() { // fetch image content
-        if (current_index < image_list.length) {
-            const [id, name] = image_list[current_index];
-
-            try {
-                const formData = new FormData();
-                
-                // set post data
-                formData.append('token', user_token);
-                formData.append('gallery', props.gallery_name);
-                formData.append('image', name);
-
-                // fetch response
-                const response = await fetch(api_url + '/image/content', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                // get response data
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    setImageContentList((prev_list) => [
-                        ...prev_list,
-                        {id, name, content: data.content}
-                    ]);
-                } else {
-                    setError(data.message);
-                    console.error('Error fetching image content: ' + data.message);
-                }
-            } catch (error) {
-                setError(error);
-                console.error('Error fetching image content: ' + error);
-            }
-
-            setCurrentIndex((prev_index) => prev_index + 1);
-        }
-    };
-
     useEffect(function() {
+        async function fetchNextImageContent() { // fetch image content
+            if (current_index < image_list.length) {
+                const [id, name] = image_list[current_index];
+
+                try {
+                    const formData = new FormData();
+                    
+                    // set post data
+                    formData.append('token', user_token);
+                    formData.append('gallery', props.gallery_name);
+                    formData.append('image', name);
+
+                    // fetch response
+                    const response = await fetch(api_url + '/image/content', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    // get response data
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        setImageContentList((prev_list) => [
+                            ...prev_list,
+                            {id, name, content: data.content}
+                        ]);
+                    } else {
+                        setError(data.message);
+                        console.error('Error fetching image content: ' + data.message);
+                    }
+                } catch (error) {
+                    setError(error);
+                    console.error('Error fetching image content: ' + error);
+                }
+
+                setCurrentIndex((prev_index) => prev_index + 1);
+            }
+        }
+
         if (current_index < image_list.length) {
             fetchNextImageContent();
         }
-    }, [current_index, image_list, fetchNextImageContent]);
+    }, [current_index, image_list, api_url, user_token, props.gallery_name]);
 
     // check if image loaded 
     if (image_list.length !== image_content_list.length) {

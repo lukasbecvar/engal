@@ -42,3 +42,5 @@ Self-hosted encrypted gallery
 
 ## Version 4.0
 - [ ] sort by upload date, name, size + reverse
+- [ ] All images browser
+- [ ] Random sort browser

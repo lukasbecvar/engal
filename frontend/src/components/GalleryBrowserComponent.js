@@ -7,6 +7,7 @@ import { getUserToken } from '../utils/AuthUtils';
 // import engal components
 import LoadingComponent from './sub-components/LoadingComponent';
 import CustomErrorComponent from './errors/CustomErrorComponent';
+import ImageComponent from './sub-components/ImageComponent';
 
 export default function GalleryBrowserComponent(props) {
     // state variables for managing component state
@@ -110,12 +111,9 @@ export default function GalleryBrowserComponent(props) {
             return <CustomErrorComponent error_message={error}/>;
         } else {
             return (
-                <div>
+                <div className="gallery-box">
                     {image_content_list.map(({ id, name, content }) => (
-                    <div key={id}>
-                        <p>{`Name: ${name}`}</p>
-                        <img src={'data:image/jpg;base64,' + content} alt='' />
-                    </div>
+                        <ImageComponent key={id} name={name} image={content}/>
                     ))}
                 </div>
             );

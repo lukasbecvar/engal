@@ -186,4 +186,22 @@ class StorageManager
         }
         return null;
     }
+
+    public function checkIfImageExist(string $storage_name, string $gallery_name, string $image_name): bool
+    {
+        if (file_exists($this->storage_directory.$storage_name.'/'.$gallery_name.'/'.$image_name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getImageContent(string $storage_name, string $gallery_name, string $image_name): ?string
+    {
+        if ($this->checkIfImageExist($storage_name, $gallery_name, $image_name)) {
+            $content = file_get_contents($this->storage_directory.$storage_name.'/'.$gallery_name.'/'.$image_name);
+            return base64_encode($content);
+        }
+        return null;
+    }
 }

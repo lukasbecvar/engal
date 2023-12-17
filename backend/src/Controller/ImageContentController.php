@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ImageListController extends AbstractController
+class ImageContentController extends AbstractController
 {
     private UserManager $userManager;
     private StorageManager $storageManager;
@@ -20,11 +20,12 @@ class ImageListController extends AbstractController
         $this->storageManager = $storageManager;
     }
 
-    #[Route('/images', methods:['POST'], name: 'app_images_list')]
+    #[Route('/image/content', methods:['POST'], name: 'app_image_content')]
     public function imageList(Request $request): Response
     {
         // get post data
         $token = $request->request->get('token');
+        $image = $request->request->get('image');
         $gallery = $request->request->get('gallery');
 
         // check if request is post
@@ -54,6 +55,15 @@ class ImageListController extends AbstractController
             ]);
         }
 
+        // check if image seted
+        if ($image == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Required post data: image (image name)'
+            ]);
+        }
+
         // check if user found in database
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {
 
@@ -63,14 +73,21 @@ class ImageListController extends AbstractController
             // check if gallery exist
             if ($this->storageManager->checkIfGalleryExist($username, $gallery)) {
 
-                // get image list
-                $image_list = $this->storageManager->getImageListWhereGallery($username, $gallery);
-
-                return $this->json([
-                    'status' => 'success',
-                    'code' => 200,
-                    'images' => $image_list
-                ]);
+                // check if image exist
+                if ($this->storageManager->checkIfImageExist($username, $gallery, $image)) {
+                    
+                    return $this->json([
+                        'status' => 'success',
+                        'code' => 200,
+                        'content' => $this->storageManager->getImageContent($username, $gallery, $image)
+                    ]);
+                } else {
+                    return $this->json([
+                        'status' => 'error',
+                        'code' => 404,
+                        'message' => 'Image: '.$image.' not exist'
+                    ]);
+                }
             } else {
                 return $this->json([
                     'status' => 'error',

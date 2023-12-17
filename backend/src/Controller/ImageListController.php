@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class GalleryListController extends AbstractController
+class ImageListController extends AbstractController
 {
     private UserManager $userManager;
     private StorageManager $storageManager;
@@ -20,11 +20,12 @@ class GalleryListController extends AbstractController
         $this->storageManager = $storageManager;
     }
 
-    #[Route('/gallery/list', methods:['POST'], name: 'app_gallery_list')]
-    public function galleryList(Request $request): Response
+    #[Route('/images', methods:['POST'], name: 'app_images_list')]
+    public function imageList(Request $request): Response
     {
         // get post data
         $token = $request->request->get('token');
+        $gallery = $request->request->get('gallery');
 
         // check if request is post
         if (!$request->isMethod('POST')) {
@@ -44,26 +45,39 @@ class GalleryListController extends AbstractController
             ]);
         }
 
+        // check if gallery seted
+        if ($gallery == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Required post data: gallery (gallery name)'
+            ]);
+        }
+
         // check if user found in database
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {
 
             // get username
             $username = $this->userManager->getUsernameByToken($token);
 
-            // get gallery list by username
-            $gallery_list = $this->storageManager->getGalleryListByUsername($username);
+            // check if gallery exist
+            if ($this->storageManager->checkIfGalleryExist($username, $gallery)) {
+                
+                // get image list
+                $image_list = $this->storageManager->getImageListWhereGallery($username, $gallery);
 
-            // count gallery list
-            $gallery_count = count($gallery_list);
-
-            // return final gallery list
-            return $this->json([
-                'status' => 'success',
-                'code' => 200,
-                'message' => 'User: '.$username.' gallery list',
-                'count' => $gallery_count,
-                'gallery_list' => $gallery_list
-            ]);
+                return $this->json([
+                    'status' => 'success',
+                    'code' => 200,
+                    'images' => $image_list
+                ]);
+            } else {
+                return $this->json([
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'Gallery: '.$gallery.' not exist'
+                ]);
+            }
         } else {
             return $this->json([
                 'status' => 'error',

@@ -14,7 +14,7 @@ Self-hosted encrypted gallery
 - [X] upload images function (POST REQUST)
 - [X] get gallery list by logged user (POST REQUEST)
 - [X] get gallery thumbnails base64 in gallery list (for use in gallery selection)
-- [ ] get images ids list by gallery name (POST REQUEST)
+- [X] get images ids list by gallery name (POST REQUEST)
 - [ ] get image where gallery & id (POST REQUEST)
 - [ ] edit images (move to gallery, rename)
 - [ ] document api errors & endpoints

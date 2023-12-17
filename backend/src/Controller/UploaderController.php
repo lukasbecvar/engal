@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Util\SecurityUtil;
 use App\Manager\UserManager;
-use App\Manager\MediaManager;
+use App\Manager\StorageManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,16 +14,16 @@ class UploaderController extends AbstractController
 {
     private UserManager $userManager;
     private SecurityUtil $securityUtil;
-    private MediaManager $mediaManager;
+    private StorageManager $storageManager;
 
     public function __construct(
         UserManager $userManager, 
         SecurityUtil $securityUtil,
-        MediaManager $mediaManager
+        StorageManager $storageManager
     ) {
         $this->userManager = $userManager;
         $this->securityUtil = $securityUtil;
-        $this->mediaManager = $mediaManager;
+        $this->storageManager = $storageManager;
     }
 
     #[Route('/media/upload', methods:['POST'], name: 'app_media_upload')]
@@ -98,7 +98,7 @@ class UploaderController extends AbstractController
             $uploaded_file = $_FILES['image'];
 
             // upload file & get response
-            $result = $this->mediaManager->mediaUpload($token, $gallery, $uploaded_file);
+            $result = $this->storageManager->mediaUpload($token, $gallery, $uploaded_file);
 
             return $this->json($result);
         } else {

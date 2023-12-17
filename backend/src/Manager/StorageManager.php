@@ -2,7 +2,7 @@
 
 namespace App\Manager;
 
-class MediaManager
+class StorageManager
 {
     private LogManager $logManager;
     private UserManager $userManager;
@@ -158,6 +158,31 @@ class MediaManager
             $image_content = file_get_contents($file);
             $base64_image = base64_encode($image_content);
             return $base64_image;
+        }
+        return null;
+    }
+
+    public function checkIfGalleryExist(string $storage_name, string $gallery_name): bool
+    {
+        if (file_exists($this->storage_directory.$storage_name.'/'.$gallery_name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getImageListWhereGallery(string $storage_name, string $gallery_name): ?array
+    {
+        // check if gallery exist
+        if ($this->checkIfGalleryExist($storage_name, $gallery_name)) {
+
+            // get images list from storage
+            $images = scandir($this->storage_directory.$storage_name.'/'.$gallery_name);
+
+            // remove dots links
+            $images = array_diff($images, array('..', '.'));
+            
+            return $images;
         }
         return null;
     }

@@ -51,7 +51,7 @@ export default function GalleryListComponent() {
                 // check response
                 if (result.status === 'success') {
                     const galleryListWithThumbnails = result.gallery_list.map((gallery) => {
-                        return {name: gallery.name, thumbnail: gallery.thumbnail};
+                        return {name: gallery.name, count: gallery.images_count, thumbnail: gallery.thumbnail};
                     });
                     setGalleryOptions([...galleryListWithThumbnails]);
                 } else {
@@ -94,7 +94,7 @@ export default function GalleryListComponent() {
                         <center className='container mt-2'>
                             {gallery_options.map((gallery, index) => (
                                 <span key={index} onClick={() => showGallery(gallery.name)}>
-                                    <GalleryComponent key={index} name={gallery.name} thumbnail={gallery.thumbnail}/>
+                                    <GalleryComponent key={index} name={gallery.name + ' [' + gallery.count + ']'} thumbnail={gallery.thumbnail}/>
                                 </span>
                             ))}
                         </center>

@@ -14,7 +14,6 @@ import LoadingComponent from './sub-components/LoadingComponent';
 export default function MainComponent() {
     // state variables for managing component state
     const [loading, setLoading] = useState(true);
-    const [gallery, setGallery] = useState(null);
     const [upload, setUpload] = useState(false);
     let container = null;
 
@@ -60,18 +59,11 @@ export default function MainComponent() {
     // show upload page
     function showUpload() {
         setUpload(true);
-        setGallery(null);
     }
 
     // disable components for show gallery list
     function showList() {
         appReload();
-    }
-
-    // show gallery browser component
-    function showBrowser(gallery_name) {
-        setUpload(false);
-        setGallery(gallery_name);
     }
 
     // show loading
@@ -82,8 +74,6 @@ export default function MainComponent() {
         // render component to container
         if (upload) {
             container = <UploaderComponent/>;
-        } else if (gallery != null) {
-            container = <GalleryBrowserComponent gallery_name={gallery}/>;
         } else {
             container = <GalleryListComponent/>;
         }
@@ -99,13 +89,6 @@ export default function MainComponent() {
                             <ul className='navbar-nav me-auto'>
                                 <li className='nav-item active'>
                                     <button className='nav-link' onClick={(showList)}>List</button>
-                                </li>
-                            
-                                <li className='nav-item'>
-                                    <button className='nav-link' onClick={()=>showBrowser('__all_1337_1337_666')}>All</button>
-                                </li>
-                                <li className='nav-item'>
-                                    <button className='nav-link' onClick={()=>showBrowser('__random_1337_1337_666')}>Random</button>
                                 </li>
                             </ul>
                         </div>

@@ -138,6 +138,7 @@ class StorageManager
             foreach ($galleries as $value) {
                 $gallery = [
                     'name' => $value,
+                    'images_count' => count($this->getImageListWhereGallery($username, $value)),
                     'thumbnail' => $this->getThumbnail($username, $value)
                 ];
                 array_push($arr, $gallery);            

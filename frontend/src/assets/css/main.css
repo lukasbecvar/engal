@@ -102,6 +102,7 @@ button {
     text-decoration: underline;
 }
 
+/* PHONE CSS */
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 
@@ -109,5 +110,8 @@ button {
     }
     .gallery-link img {
         height: 83%;
+    }
+    #lg-prev-2, #lg-next-2 {
+        display: none;
     }
 }

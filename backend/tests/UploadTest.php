@@ -5,10 +5,20 @@ namespace App\Tests;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class UploadTest
+ * @package App\Tests
+ */
 class UploadTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,12 +53,18 @@ class UploadTest extends WebTestCase
         }
     }
 
+    /**
+     * Clean up the test environment.
+     */
     protected function tearDown(): void
     {
         $this->removeFakeData();
         parent::tearDown();
     }
 
+    /**
+     * Remove fake data created during the test.
+     */
     private function removeFakeData(): void
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -68,6 +84,9 @@ class UploadTest extends WebTestCase
         }
     }
 
+    /**
+     * Test uploading media with an empty token.
+     */
     public function testUploadEmptyToken(): void
     {
         // make request
@@ -88,6 +107,9 @@ class UploadTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: token');
     }
 
+    /**
+     * Test uploading media with an empty gallery.
+     */
     public function testUploadEmptyGallery(): void
     {
         // make request
@@ -110,6 +132,9 @@ class UploadTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: gallery');
     }
 
+    /**
+     * Test uploading media with an empty image file.
+     */
     public function testUploadEmptyMedia(): void
     {
         // make request

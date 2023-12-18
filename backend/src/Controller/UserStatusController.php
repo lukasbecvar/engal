@@ -9,17 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class UserStatusController
+ * @package App\Controller
+ */
 class UserStatusController extends AbstractController
 {
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
     private SecurityUtil $securityUtil;
 
+    /**
+     * UserStatusController constructor.
+     * @param UserManager $userManager The user manager.
+     * @param SecurityUtil $securityUtil The security utility.
+     */
     public function __construct(UserManager $userManager, SecurityUtil $securityUtil)
     {
         $this->userManager = $userManager;
         $this->securityUtil = $securityUtil;
     }
 
+    /**
+     * Handles the user status endpoint to check the status of a user based on their token.
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The JSON response.
+     */
     #[Route('/user/status', methods:['POST'], name: 'app_user_status')]
     public function userStatus(Request $request): Response
     {

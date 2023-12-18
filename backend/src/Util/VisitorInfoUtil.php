@@ -2,8 +2,17 @@
 
 namespace App\Util;
 
+/**
+ * Class VisitorInfoUtil
+ * @package App\Util
+ */
 class VisitorInfoUtil
 {
+    /**
+     * Gets the visitor's IP address.
+     *
+     * @return string|null The visitor's IP address, or null if not available.
+     */
     public function getIP(): ?string 
     {
         // check client ip
@@ -21,6 +30,11 @@ class VisitorInfoUtil
         return $address;
     }
 
+    /**
+     * Gets the visitor's browser agent.
+     *
+     * @return string|null The visitor's browser agent, or 'Unknown' if not available.
+     */
     public function getBrowser(): ?string 
     {
         // get user agent

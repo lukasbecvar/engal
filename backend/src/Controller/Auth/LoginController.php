@@ -9,17 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class LoginController
+ * @package App\Controller\Auth
+ */
 class LoginController extends AbstractController
 {
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
     private SecurityUtil $securityUtil;
 
+    /**
+     * LoginController constructor.
+     * @param UserManager $userManager The user manager.
+     * @param SecurityUtil $securityUtil The security utility.
+     */
     public function __construct(UserManager $userManager, SecurityUtil $securityUtil)
     {
         $this->userManager = $userManager;
         $this->securityUtil = $securityUtil;
     }
 
+    /**
+     * Handles user login.
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The JSON response.
+     */
     #[Route('/login', methods:['POST'], name: 'user_login')]
     public function login(Request $request): Response
     {

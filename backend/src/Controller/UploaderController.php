@@ -10,12 +10,33 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class UploaderController
+ * @package App\Controller
+ */
 class UploaderController extends AbstractController
 {
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
     private SecurityUtil $securityUtil;
+
+    /**
+     * @var StorageManager $storageManager The storage manager.
+     */
     private StorageManager $storageManager;
 
+    /**
+     * UploaderController constructor.
+     * @param UserManager $userManager The user manager.
+     * @param SecurityUtil $securityUtil The security utility.
+     * @param StorageManager $storageManager The storage manager.
+     */
     public function __construct(
         UserManager $userManager, 
         SecurityUtil $securityUtil,
@@ -26,6 +47,12 @@ class UploaderController extends AbstractController
         $this->storageManager = $storageManager;
     }
 
+    /**
+     * Handles the media upload endpoint for uploading images to galleries.
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The JSON response.
+     */
     #[Route('/media/upload', methods:['POST'], name: 'app_media_upload')]
     public function uploader(Request $request): Response
     {
@@ -100,6 +127,7 @@ class UploaderController extends AbstractController
             // upload file & get response
             $result = $this->storageManager->mediaUpload($token, $gallery, $uploaded_file);
 
+            // return final response
             return $this->json($result);
         } else {
             return $this->json([

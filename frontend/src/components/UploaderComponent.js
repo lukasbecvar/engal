@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+// import config values
+import { DEV_MODE } from '../config';
+
 // import engal utils
 import { getApiUrl } from '../utils/ApiUtils';
 import { getUserToken } from '../utils/AuthUtils';
@@ -9,9 +12,9 @@ import LoadingComponent from './sub-components/LoadingComponent';
 import ErrorBoxComponent from './sub-components/ErrorBoxComponent';
 import SuccessMessageBox from './sub-components/SuccessMessageBox';
 import WarningMessageBox from './sub-components/WarningMessageBox';
-import { DEV_MODE } from '../config';
 
-export default function UploaderComponent() {
+export default function UploaderComponent() 
+{
     // retrieve API URL from local storage
     let api_url = getApiUrl();
 

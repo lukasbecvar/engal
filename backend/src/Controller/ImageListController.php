@@ -9,17 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class ImageListController
+ * @package App\Controller
+ */
 class ImageListController extends AbstractController
 {
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var StorageManager $storageManager The storage manager.
+     */
     private StorageManager $storageManager;
 
+    /**
+     * ImageListController constructor.
+     * @param UserManager $userManager The user manager.
+     * @param StorageManager $storageManager The storage manager.
+     */
     public function __construct(UserManager $userManager, StorageManager $storageManager)
     {
         $this->userManager = $userManager;
         $this->storageManager = $storageManager;
     }
 
+    /**
+     * Handles the retrieval of a list of images for a specific gallery.
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The JSON response.
+     */
     #[Route('/images', methods:['POST'], name: 'app_images_list')]
     public function imageList(Request $request): Response
     {

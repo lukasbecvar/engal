@@ -9,17 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class GalleryListController
+ * @package App\Controller
+ */
 class GalleryListController extends AbstractController
 {
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var StorageManager $storageManager The storage manager.
+     */
     private StorageManager $storageManager;
 
+    /**
+     * GalleryListController constructor.
+     * @param UserManager $userManager The user manager.
+     * @param StorageManager $storageManager The storage manager.
+     */
     public function __construct(UserManager $userManager, StorageManager $storageManager)
     {
         $this->userManager = $userManager;
         $this->storageManager = $storageManager;
     }
 
+    /**
+     * Handles the retrieval of the gallery list for a user.
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The JSON response.
+     */
     #[Route('/gallery/list', methods:['POST'], name: 'app_gallery_list')]
     public function galleryList(Request $request): Response
     {

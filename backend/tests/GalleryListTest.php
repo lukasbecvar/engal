@@ -5,10 +5,20 @@ namespace App\Tests;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class GalleryListTest
+ * @package App\Tests
+ */
 class GalleryListTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,12 +53,18 @@ class GalleryListTest extends WebTestCase
         }
     }
 
+    /**
+     * Tear down the test environment.
+     */
     protected function tearDown(): void
     {
         $this->removeFakeData();
         parent::tearDown();
     }
 
+    /**
+     * Remove fake user data from the database.
+     */
     private function removeFakeData(): void
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -68,6 +84,9 @@ class GalleryListTest extends WebTestCase
         }
     }
 
+    /**
+     * Test the behavior of the '/gallery/list' endpoint with an empty token.
+     */
     public function testGalleryListEmptyToken(): void
     {
         // make post request
@@ -88,6 +107,9 @@ class GalleryListTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: token');
     }
 
+    /**
+     * Test the behavior of the '/gallery/list' endpoint with an invalid token.
+     */
     public function testGalleryListInvalidToken(): void
     {
         // make post request
@@ -110,6 +132,9 @@ class GalleryListTest extends WebTestCase
         $this->assertSame($data['message'], 'Invalid token value');
     }
 
+    /**
+     * Test the behavior of the '/gallery/list' endpoint with a valid token.
+     */
     public function tesGalleryListValid(): void
     {
         // make post request

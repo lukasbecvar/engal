@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+// import config values
+import { DEV_MODE } from '../../config';
+
 // import engal util
 import { getApiUrl } from '../../utils/ApiUtils';
 import { userLogin } from '../../utils/AuthUtils';
@@ -9,9 +12,9 @@ import LoginComponent from './LoginComponent';
 import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
 import RegisterDisabledComponent from '../errors/RegisterDisabledComponent';
-import { DEV_MODE } from '../../config';
 
-export default function RegisterComponent() {
+export default function RegisterComponent() 
+{
     // state variables for managing component state
     const [status, setStatus] = useState(true);
     const [is_login, setLogin] = useState(false);

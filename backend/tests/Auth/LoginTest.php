@@ -6,10 +6,20 @@ use App\Entity\User;
 use Symfony\Component\String\ByteString;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class LoginTest
+ * @package App\Tests\Auth
+ */
 class LoginTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Set up test data and environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,12 +54,18 @@ class LoginTest extends WebTestCase
         }
     }
 
+    /**
+     * Tear down test data and environment.
+     */
     protected function tearDown(): void
     {
         $this->removeFakeData();
         parent::tearDown();
     }
 
+    /**
+     * Remove fake user data after test execution.
+     */
     private function removeFakeData(): void
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -69,6 +85,9 @@ class LoginTest extends WebTestCase
         }
     }
 
+    /**
+     * Test for login with an empty username.
+     */
     public function testLoginEmptyUsername(): void
     {
         // make post request
@@ -89,6 +108,9 @@ class LoginTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: username');
     }
 
+    /**
+     * Test for login with an empty password.
+     */
     public function testLoginEmptyPassword(): void
     {
         // make post request
@@ -111,6 +133,9 @@ class LoginTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: password');
     }
 
+    /**
+     * Test for login with incorrect data.
+     */
     public function testLoginIncorectData(): void
     {
         // make post request
@@ -134,6 +159,9 @@ class LoginTest extends WebTestCase
         $this->assertSame($data['message'], 'Incorrect username or password');
     }
 
+    /**
+     * Test for a valid login.
+     */
     public function testLoginValid(): void
     {
         // make post request

@@ -9,17 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class ImageContentController
+ * @package App\Controller
+ */
 class ImageContentController extends AbstractController
 {
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var StorageManager $storageManager The storage manager.
+     */
     private StorageManager $storageManager;
 
+    /**
+     * ImageContentController constructor.
+     * @param UserManager $userManager The user manager.
+     * @param StorageManager $storageManager The storage manager.
+     */
     public function __construct(UserManager $userManager, StorageManager $storageManager)
     {
         $this->userManager = $userManager;
         $this->storageManager = $storageManager;
     }
 
+    /**
+     * Handles the retrieval of the content of a specific image.
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The JSON response.
+     */
     #[Route('/image/content', methods:['POST'], name: 'app_image_content')]
     public function imageList(Request $request): Response
     {

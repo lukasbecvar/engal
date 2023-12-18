@@ -102,7 +102,6 @@ button {
     text-decoration: underline;
 }
 
-/* PHONE CSS */
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 

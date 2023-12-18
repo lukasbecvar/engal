@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+// import config values
+import { DEV_MODE } from "../config";
+
 // import engal utils
 import { getApiUrl } from "../utils/ApiUtils";
 import { getUserToken } from "../utils/AuthUtils";
@@ -9,9 +12,9 @@ import CustomErrorComponent from "./errors/CustomErrorComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
 import GalleryComponent from "./sub-components/GalleryComponent";
 import GalleryBrowserComponent from "./GalleryBrowserComponent";
-import { DEV_MODE } from "../config";
 
-export default function GalleryListComponent() {
+export default function GalleryListComponent() 
+{
     // retrieve API URL from local storage
     let api_url = getApiUrl();
 

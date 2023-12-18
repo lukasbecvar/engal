@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+// import config values
+import { DEV_MODE } from '../../config';
+
 // import engal util
 import { getApiUrl } from '../../utils/ApiUtils';
 import { userLogin } from '../../utils/AuthUtils';
@@ -8,9 +11,9 @@ import { userLogin } from '../../utils/AuthUtils';
 import RegisterComponent from './RegisterComponent';
 import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
-import { DEV_MODE } from '../../config';
 
-export default function LoginComponent() {
+export default function LoginComponent() 
+{
     // retrieve API URL from local storage
     let api_url = getApiUrl();
 

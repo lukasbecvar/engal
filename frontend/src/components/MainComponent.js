@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+// import config values
+import { DEV_MODE } from '../config';
+
 // import engal utils
 import { getApiUrl } from '../utils/ApiUtils';
 import { appReload } from '../utils/AppUtils';
@@ -9,9 +12,9 @@ import { getUserToken, userLogout } from '../utils/AuthUtils';
 import UploaderComponent from './UploaderComponent';
 import GalleryListComponent from './GalleryListComponent';
 import LoadingComponent from './sub-components/LoadingComponent';
-import { DEV_MODE } from '../config';
 
-export default function MainComponent() {
+export default function MainComponent() 
+{
     // state variables for managing component state
     const [loading, setLoading] = useState(true);
     const [upload, setUpload] = useState(false);

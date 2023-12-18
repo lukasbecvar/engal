@@ -5,10 +5,20 @@ namespace App\Tests;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class UserStatusTest
+ * @package App\Tests
+ */
 class UserStatusTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,12 +53,18 @@ class UserStatusTest extends WebTestCase
         }
     }
 
+    /**
+     * Clean up the test environment.
+     */
     protected function tearDown(): void
     {
         $this->removeFakeData();
         parent::tearDown();
     }
 
+    /**
+     * Remove fake data created during the test.
+     */
     private function removeFakeData(): void
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -68,6 +84,9 @@ class UserStatusTest extends WebTestCase
         }
     }
 
+    /**
+     * Test getting user status with an empty token.
+     */
     public function testUserStatusEmptyToken(): void
     {
         // make post request
@@ -88,6 +107,9 @@ class UserStatusTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: token');
     }
 
+    /**
+     * Test getting user status with an invalid token.
+     */
     public function testUserStatusInvalidToken(): void
     {
         // make post request
@@ -110,6 +132,9 @@ class UserStatusTest extends WebTestCase
         $this->assertSame($data['message'], 'Invalid token value');
     }
 
+    /**
+     * Test getting user status with a valid token.
+     */
     public function testUserStatusValid(): void
     {
         // make post request

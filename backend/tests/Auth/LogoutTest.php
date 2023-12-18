@@ -5,10 +5,20 @@ namespace App\Tests\Auth;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class LogoutTest
+ * @package App\Tests\Auth
+ */
 class LogoutTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Set up test data and environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,12 +53,18 @@ class LogoutTest extends WebTestCase
         }
     }
 
+    /**
+     * Tear down test data and environment.
+     */
     protected function tearDown(): void
     {
         $this->removeFakeData();
         parent::tearDown();
     }
 
+    /**
+     * Remove fake user data after test execution.
+     */
     private function removeFakeData(): void
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -68,6 +84,9 @@ class LogoutTest extends WebTestCase
         }
     }
 
+    /**
+     * Test for logout with an empty token.
+     */
     public function testLogoutEmptyToken(): void
     {
         // make post request
@@ -88,6 +107,9 @@ class LogoutTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: token');
     }
 
+    /**
+     * Test for logout with an invalid token.
+     */
     public function testLogoutInvalidToken(): void
     {
         // make post request
@@ -110,6 +132,9 @@ class LogoutTest extends WebTestCase
         $this->assertSame($data['message'], 'Invalid token value');
     }
 
+    /**
+     * Test for a valid logout.
+     */
     public function testLogoutValid(): void
     {
         // make post request

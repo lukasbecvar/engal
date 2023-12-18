@@ -8,14 +8,45 @@ use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\ByteString;
 
+/**
+ * Class UserManager
+ * @package App\Manager
+ */
 class UserManager
 {
+    /**
+     * @var LogManager $logManager The log manager.
+     */
     private LogManager $logManager;
+
+    /**
+     * @var ErrorManager $errorManager The error manager.
+     */
     private ErrorManager $errorManager;
+
+    /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
     private SecurityUtil $securityUtil;
+
+    /**
+     * @var VisitorInfoUtil $visitorInfoUtil The visitor info utility.
+     */
     private VisitorInfoUtil $visitorInfoUtil;
+
+    /**
+     * @var EntityManagerInterface $entityManager The entity manager.
+     */
     private EntityManagerInterface $entityManager;
     
+    /**
+     * UserManager constructor.
+     * @param LogManager $logManager The log manager.
+     * @param ErrorManager $errorManager The error manager.
+     * @param SecurityUtil $securityUtil The security utility.
+     * @param VisitorInfoUtil $visitorInfoUtil The visitor info utility.
+     * @param EntityManagerInterface $entityManager The entity manager.
+     */
     public function __construct(
         LogManager $logManager,
         ErrorManager $errorManager,
@@ -30,6 +61,12 @@ class UserManager
         $this->visitorInfoUtil = $visitorInfoUtil;
     }
 
+    /**
+     * Inserts a new user into the database.
+     *
+     * @param string $username The username.
+     * @param string $password The user's password.
+     */
     public function insertNewUser(string $username, string $password): void
     {
         // generate password hash
@@ -73,6 +110,13 @@ class UserManager
         }
     }
 
+    /**
+     * Checks if a user can log in with the given credentials.
+     *
+     * @param string $username The username.
+     * @param string $password The user's password.
+     * @return bool True if the user can log in, false otherwise.
+     */
     public function canLogin(string $username, string $password): bool
     {
         // get user repository 
@@ -113,6 +157,11 @@ class UserManager
         }
     }
 
+    /**
+     * Updates user data such as last login time and IP address.
+     *
+     * @param string $token The user token.
+     */
     public function updateUserData(string $token): void 
     {
         // get date & time
@@ -142,6 +191,12 @@ class UserManager
         }     
     }
 
+    /**
+     * Gets the user repository for a given set of conditions.
+     *
+     * @param array $array The conditions to search for.
+     * @return User|null The user entity or null if not found.
+     */
     public function getUserRepository(array $array): ?object 
     {
         $result = null;
@@ -162,6 +217,11 @@ class UserManager
         }
     }
 
+    /**
+     * Logs a user out and records the action.
+     *
+     * @param string $token The user token.
+     */
     public function logLogout($token): void
     {
         // get username
@@ -171,11 +231,23 @@ class UserManager
         $this->logManager->log('authenticator', 'user: '.$username.' logout successful');
     }
 
+    /**
+     * Gets the user token for a given username.
+     *
+     * @param string $username The username.
+     * @return string|null The user token or null if not found.
+     */
     public function getUserToken(string $username): ?string
     {
         return $this->getUserRepository(['username' => $username])->getToken();
     }
 
+    /**
+     * Gets the username for a given user token.
+     *
+     * @param string $token The user token.
+     * @return string|null The username or null if not found.
+     */
     public function getUsernameByToken(string $token): ?string
     {
         return $this->getUserRepository(['token' => $token])->getUsername();

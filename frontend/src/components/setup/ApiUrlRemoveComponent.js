@@ -2,7 +2,8 @@
 import { appReload } from "../../utils/AppUtils";
 import { getApiUrl, removeApiUrl } from "../../utils/ApiUtils";
 
-export default function ApiUrlRemoveComponent() {
+export default function ApiUrlRemoveComponent() 
+{
     // get api url form locale storage
     let api_url = getApiUrl();
     

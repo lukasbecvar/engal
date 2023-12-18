@@ -7,10 +7,23 @@ use App\Util\SiteUtil;
 use Symfony\Component\String\ByteString;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class RegisterTest
+ * @package App\Tests\Auth
+ */
 class RegisterTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Creates a mock SiteUtil object for testing with a specified registration status.
+     *
+     * @param bool $register_enabled
+     * @return object
+     */
     private function createSiteUtilMock(bool $register_enabled): object
     {
         // create moc site util fake object
@@ -23,6 +36,9 @@ class RegisterTest extends WebTestCase
         return $siteUtilMock;
     }
 
+    /**
+     * Set up test data and environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,12 +47,18 @@ class RegisterTest extends WebTestCase
         $this->client = static::createClient();
     }
 
+    /**
+     * Tear down test data and environment.
+     */
     protected function tearDown(): void
     {
         $this->removeFakeData();
         parent::tearDown();
     }
 
+    /**
+     * Remove fake user data after test execution.
+     */
     private function removeFakeData(): void
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -56,6 +78,9 @@ class RegisterTest extends WebTestCase
         }
     }
 
+    /**
+     * Test for registration when it is disabled.
+     */
     public function testRegisterDisabled(): void
     {
         // use fake site util instance
@@ -79,6 +104,9 @@ class RegisterTest extends WebTestCase
         $this->assertSame($data['message'], 'Registration is disabled');
     }
 
+    /**
+     * Test for registration with an empty username.
+     */
     public function testRegisterEmptyUsername(): void
     {
         // use fake site util instance
@@ -102,6 +130,9 @@ class RegisterTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: username');
     }
 
+    /**
+     * Test for registration with an empty password.
+     */
     public function testRegisterEmptyPassword(): void
     {
         // use fake site util instance
@@ -127,6 +158,9 @@ class RegisterTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: password');
     }
 
+    /**
+     * Test for registration with an empty re-password.
+     */
     public function testRegisterEmptyRePassword(): void
     {
         // use fake site util instance
@@ -153,6 +187,9 @@ class RegisterTest extends WebTestCase
         $this->assertSame($data['message'], 'Required post data: re-password');
     }
 
+    /**
+     * Test for registration with non-matching passwords.
+     */
     public function testRegisterNotMatchedPasswords(): void
     {
         // use fake site util instance
@@ -180,6 +217,9 @@ class RegisterTest extends WebTestCase
         $this->assertSame($data['message'], 'Passwords not matching');
     }
 
+    /**
+     * Test for a valid registration.
+     */
     public function testRegisterValid(): void
     {
         // use fake site util instance

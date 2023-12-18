@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+// import config values
+import { DEV_MODE } from '../config';
+
 // import engal utils
 import { getApiUrl } from '../utils/ApiUtils';
 import { getUserToken } from '../utils/AuthUtils';
@@ -23,9 +26,9 @@ import lgAutoplay from 'lightgallery/plugins/autoplay';
 import LoadingComponent from './sub-components/LoadingComponent';
 import CustomErrorComponent from './errors/CustomErrorComponent';
 import ImageComponent from './sub-components/ImageComponent';
-import { DEV_MODE } from '../config';
 
-export default function GalleryBrowserComponent(props) {
+export default function GalleryBrowserComponent(props) 
+{
     // state variables for managing component state
     const [error, setError] = useState(null);
     
@@ -62,10 +65,10 @@ export default function GalleryBrowserComponent(props) {
                 if (data.status === 'success') {
                     setImageList(Object.entries(data.images));
                 } else {
-                    setError(data.message);
                     if (DEV_MODE) {
                         console.error('Error fetching image list: ' + data.message);
                     }
+                    setError(data.message);
                 }
             } catch (error) {
                 setError(error);
@@ -106,18 +109,17 @@ export default function GalleryBrowserComponent(props) {
                             {id, name, content: data.content}
                         ]);
                     } else {
-                        setError(data.message);
                         if (DEV_MODE) {
                             console.error('Error fetching image content: ' + data.message);
                         }
+                        setError(data.message);
                     }
                 } catch (error) {
-                    setError(error);
                     if (DEV_MODE) {
                         console.error('Error fetching image content: ' + error);
                     }
+                    setError(error);
                 }
-
                 setCurrentIndex((prev_index) => prev_index + 1);
             }
         }

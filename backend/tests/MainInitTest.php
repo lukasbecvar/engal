@@ -4,10 +4,20 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class MainInitTest
+ * @package App\Tests
+ */
 class MainInitTest extends WebTestCase
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -16,6 +26,9 @@ class MainInitTest extends WebTestCase
         $this->client = static::createClient();
     }
 
+    /**
+     * Test the main initialization by making a GET request to the root URL.
+     */
     public function testMain(): void
     {
         // make get request

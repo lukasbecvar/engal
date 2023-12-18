@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
+// import config values
+import { DEV_MODE } from '../../config';
+
 // import engal utils
 import { checkApiAvailability, setApiLink } from '../../utils/ApiUtils';
 
 // import engal components
 import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
-import { DEV_MODE } from '../../config';
 
-export default function ApiUrlSetupComponent() {
+export default function ApiUrlSetupComponent() 
+{
     // state variables for managing component state
     const [api_url, setApiUrl] = useState('');
     const [error_msg, setErrorMsg] = useState(null);

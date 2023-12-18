@@ -2,14 +2,38 @@
 
 namespace App\Manager;
 
+/**
+ * Class StorageManager
+ * @package App\Manager
+ */
 class StorageManager
 {
+    /**
+     * @var LogManager $logManager The log manager.
+     */
     private LogManager $logManager;
+
+    /**
+     * @var UserManager $userManager The user manager.
+     */
     private UserManager $userManager;
+
+    /**
+     * @var ErrorManager $errorManager The error manager.
+     */
     private ErrorManager $errorManager;
 
+    /**
+     * @var string $storage_directory The base directory for storage.
+     */
     private string $storage_directory;
 
+    /**
+     * StorageManager constructor.
+     * @param LogManager $logManager The log manager.
+     * @param UserManager $userManager The user manager.
+     * @param ErrorManager $errorManager The error manager.
+     */
     public function __construct(
         LogManager $logManager, 
         UserManager $userManager,
@@ -23,6 +47,14 @@ class StorageManager
         $this->storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/';
     }
 
+    /**
+     * Handles the media upload operation.
+     *
+     * @param string $token The user token.
+     * @param string $gallery The gallery name.
+     * @param array $uploaded_file The uploaded file details.
+     * @return array The result of the upload operation.
+     */
     public function mediaUpload(string $token, string $gallery, array $uploaded_file): array 
     {
         // list of allowend media fromats
@@ -117,6 +149,12 @@ class StorageManager
         }
     }
 
+    /**
+     * Gets the list of galleries for a given username.
+     *
+     * @param string $username The username.
+     * @return array|null The list of galleries or null in case of an error.
+     */
     public function getGalleryListByUsername(string $username): ?array 
     {
         // create storage dir
@@ -151,6 +189,13 @@ class StorageManager
         }
     }
 
+    /**
+     * Gets the base64-encoded thumbnail for a given gallery.
+     *
+     * @param string $storage_name The storage name.
+     * @param string $gallery_name The gallery name.
+     * @return string|null The base64-encoded thumbnail or null if not found.
+     */
     public function getThumbnail(string $storage_name, string $gallery_name): ?string 
     {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
@@ -163,6 +208,13 @@ class StorageManager
         return null;
     }
 
+    /**
+     * Checks if a gallery exists.
+     *
+     * @param string $storage_name The storage name.
+     * @param string $gallery_name The gallery name.
+     * @return bool True if the gallery exists, false otherwise.
+     */
     public function checkIfGalleryExist(string $storage_name, string $gallery_name): bool
     {
         if (file_exists($this->storage_directory.$storage_name.'/'.$gallery_name)) {
@@ -172,6 +224,13 @@ class StorageManager
         }
     }
 
+    /**
+     * Gets the list of images for a given gallery.
+     *
+     * @param string $storage_name The storage name.
+     * @param string $gallery_name The gallery name.
+     * @return array|null The list of images or null if the gallery doesn't exist.
+     */
     public function getImageListWhereGallery(string $storage_name, string $gallery_name): ?array
     {
         // check if gallery exist
@@ -188,6 +247,14 @@ class StorageManager
         return null;
     }
 
+    /**
+     * Checks if an image exists in a given gallery.
+     *
+     * @param string $storage_name The storage name.
+     * @param string $gallery_name The gallery name.
+     * @param string $image_name The image name.
+     * @return bool True if the image exists, false otherwise.
+     */
     public function checkIfImageExist(string $storage_name, string $gallery_name, string $image_name): bool
     {
         if (file_exists($this->storage_directory.$storage_name.'/'.$gallery_name.'/'.$image_name)) {
@@ -197,6 +264,14 @@ class StorageManager
         }
     }
 
+    /**
+     * Gets the base64-encoded content of an image.
+     *
+     * @param string $storage_name The storage name.
+     * @param string $gallery_name The gallery name.
+     * @param string $image_name The image name.
+     * @return string|null The base64-encoded content or null if the image doesn't exist.
+     */
     public function getImageContent(string $storage_name, string $gallery_name, string $image_name): ?string
     {
         if ($this->checkIfImageExist($storage_name, $gallery_name, $image_name)) {

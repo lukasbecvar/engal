@@ -7,13 +7,39 @@ use App\Util\SecurityUtil;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class LogManager
+ * @package App\Manager
+ */
 class LogManager
 {
+    /**
+     * @var ErrorManager $errorManager The error manager.
+     */
     private ErrorManager $errorManager;
+    
+    /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
     private SecurityUtil $securityUtil;
+
+    /**
+     * @var VisitorInfoUtil $visitorInfoUtil The visitor information utility.
+     */
     private VisitorInfoUtil $visitorInfoUtil;
+
+    /**
+     * @var EntityManagerInterface $entityManager The entity manager.
+     */
     private EntityManagerInterface $entityManager;
 
+    /**
+     * LogManager constructor.
+     * @param ErrorManager $errorManager The error manager.
+     * @param SecurityUtil $securityUtil The security utility.
+     * @param VisitorInfoUtil $visitorInfoUtil The visitor information utility.
+     * @param EntityManagerInterface $entityManager The entity manager.
+     */
     public function __construct(
         ErrorManager $errorManager,
         SecurityUtil $securityUtil, 
@@ -26,6 +52,13 @@ class LogManager
         $this->visitorInfoUtil = $visitorInfoUtil;
     }
 
+    /**
+     * Logs a message with additional information.
+     *
+     * @param string $name The name of the log entry.
+     * @param string $value The value of the log entry.
+     * @return void
+     */
     public function log(string $name, string $value): void 
     {
         // check if logs enabled in config
@@ -73,6 +106,11 @@ class LogManager
         }
     }
 
+    /**
+     * Checks if logs are enabled.
+     *
+     * @return bool Returns true if logs are enabled, otherwise false.
+     */
     public function isLogsEnabled(): bool 
     {
         // check if logs enabled

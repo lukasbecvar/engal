@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
+// import config values
+import { DEV_MODE } from "./config";
+
 // import engal utils
 import { getUserToken } from "./utils/AuthUtils";
-import { checkApiAvailability, getApiUrl } from './utils/ApiUtils';
+import { checkApiAvailability, getApiUrl, isApiUrlSeted } from './utils/ApiUtils';
 
 // import engal components
 import MainComponent from "./components/MainComponent";
@@ -12,23 +15,24 @@ import ApiUrlSetupComponent from "./components/setup/ApiUrlSetupComponent";
 import MaintenanceComponent from "./components/errors/MaintenanceComponent";
 import LoadingComponent from "./components/sub-components/LoadingComponent";
 import ApiUrlRemoveComponent from "./components/setup/ApiUrlRemoveComponent";
-import { DEV_MODE } from "./config";
 
-export default function InitComponent() {
-    // state variables for managing component state
-    const [loading, setLoading] = useState(true);
-    const [api_error, setApiError] = useState(false);
-    const [api_connction_error, setApiConnectionError] = useState(false);
-    const [maintenance, setMaintenance] = useState(false);
-
+export default function InitComponent() 
+{
     // get api url from local storage
     let api_url = getApiUrl();
 
+    // state variables for managing component state
+    const [loading, setLoading] = useState(true);
+    const [api_error, setApiError] = useState(false);
+    const [maintenance, setMaintenance] = useState(false);
+    const [api_connction_error, setApiConnectionError] = useState(false);
+
     // check if api is reachable
-    useEffect(() => {
+    useEffect(function() {
         async function checkAPI() {
             if (api_url !== null) {
                 try {
+                    // check api status
                     const result = await checkApiAvailability(api_url);
       
                     // check if maintenance enabled

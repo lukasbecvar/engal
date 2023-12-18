@@ -6,8 +6,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class MainController
+ * @package App\Controller
+ */
 class MainController extends AbstractController
 {
+    /**
+     * Handles the main endpoint to check the status of Engal services.
+     *
+     * @return Response The JSON response.
+     */
     #[Route('/', methods:['GET'], name: 'app_main')]
     public function main(): Response
     {

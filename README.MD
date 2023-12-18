@@ -42,6 +42,6 @@ Self-hosted encrypted gallery
 - [ ] catch error show only in dev mode
 
 ## Version 4.0
-- [ ] sort by upload date, name, size + reverse
+- [ ] Sort by upload date, name, size, random + reverse
 - [ ] All images browser
-- [ ] Random sort browser
+- [ ] Redesign UI

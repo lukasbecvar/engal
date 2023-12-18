@@ -9,6 +9,7 @@ import LoginComponent from './LoginComponent';
 import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
 import RegisterDisabledComponent from '../errors/RegisterDisabledComponent';
+import { DEV_MODE } from '../../config';
 
 export default function RegisterComponent() {
     // state variables for managing component state
@@ -39,12 +40,16 @@ export default function RegisterComponent() {
     
                 // check if registration is disabled
                 if (data.message === 'Registration is disabled') {
-                    console.log(response.status + ', ' + data.message);
+                    if (DEV_MODE) {
+                        console.log(response.status + ', ' + data.message);
+                    }
                     setStatus(false);
                 }
             } catch (error) {
+                if (DEV_MODE) {
+                    console.error('Error:', error);
+                }
                 setErrorMsg('request error, please report this to your administrator');
-                console.error('Error:', error);
             }
         }
     
@@ -106,7 +111,9 @@ export default function RegisterComponent() {
 
                 // check error
                 if (!response.ok) {
-                    console.error('Error:', response.status);
+                    if (DEV_MODE) {
+                        console.error('Error:', response.status);
+                    }
                     return;
                 }
 
@@ -122,8 +129,10 @@ export default function RegisterComponent() {
                     setErrorMsg(data.message);
                 }
             } catch (error) {
+                if (DEV_MODE) {
+                    console.error('Error:', error);
+                }
                 setErrorMsg('request error, please report this to your administrator');
-                console.error('Error:', error);
             }
         }
     }

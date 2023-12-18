@@ -9,6 +9,7 @@ import { getUserToken, userLogout } from '../utils/AuthUtils';
 import UploaderComponent from './UploaderComponent';
 import GalleryListComponent from './GalleryListComponent';
 import LoadingComponent from './sub-components/LoadingComponent';
+import { DEV_MODE } from '../config';
 
 export default function MainComponent() {
     // state variables for managing component state
@@ -37,7 +38,9 @@ export default function MainComponent() {
 
             // check error
             if (!response.ok) {
-                console.error('Error:', response.status);
+                if (DEV_MODE) {
+                    console.error('Error:', response.status);
+                }
                 return;
             }
 
@@ -46,7 +49,9 @@ export default function MainComponent() {
                 userLogout();          
             }
         } catch (error) {
-            console.error('Error:', error);
+            if (DEV_MODE) {
+                console.error('Error:', error);
+            }
         }
     }
 

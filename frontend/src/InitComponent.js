@@ -12,6 +12,7 @@ import ApiUrlSetupComponent from "./components/setup/ApiUrlSetupComponent";
 import MaintenanceComponent from "./components/errors/MaintenanceComponent";
 import LoadingComponent from "./components/sub-components/LoadingComponent";
 import ApiUrlRemoveComponent from "./components/setup/ApiUrlRemoveComponent";
+import { DEV_MODE } from "./config";
 
 export default function InitComponent() {
     // state variables for managing component state
@@ -45,7 +46,9 @@ export default function InitComponent() {
                         setApiConnectionError(true);
                     }
                 } catch (error) {
-                    console.log('Error: ' + error);
+                    if (DEV_MODE) {
+                        console.log('Error: ' + error);
+                    }
                     setApiConnectionError(true);
                 }
             }

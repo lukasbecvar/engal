@@ -1,3 +1,4 @@
+import { DEV_MODE } from "../config";
 import { appReload } from "./AppUtils";
 
 export async function checkApiAvailability(url) {
@@ -14,6 +15,9 @@ export async function checkApiAvailability(url) {
             return null;
         }
     } catch (error) {
+        if (DEV_MODE) {
+            console.log('error: ' + error);
+        }
         return null;
     }
 }

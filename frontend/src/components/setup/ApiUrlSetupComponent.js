@@ -5,6 +5,7 @@ import { checkApiAvailability, setApiLink } from '../../utils/ApiUtils';
 
 // import engal components
 import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
+import { DEV_MODE } from '../../config';
 
 export default function ApiUrlSetupComponent() {
     // state variables for managing component state
@@ -33,7 +34,9 @@ export default function ApiUrlSetupComponent() {
                     setErrorMsg('this api url is unreachable');
                 }
             } catch (error) {
-                console.log('Error: ' + error);
+                if (DEV_MODE) {
+                    console.log('Error: ' + error);
+                }
                 setErrorMsg('this api url is unreachable');
             }
         } else {

@@ -23,6 +23,7 @@ import lgAutoplay from 'lightgallery/plugins/autoplay';
 import LoadingComponent from './sub-components/LoadingComponent';
 import CustomErrorComponent from './errors/CustomErrorComponent';
 import ImageComponent from './sub-components/ImageComponent';
+import { DEV_MODE } from '../config';
 
 export default function GalleryBrowserComponent(props) {
     // state variables for managing component state
@@ -62,11 +63,15 @@ export default function GalleryBrowserComponent(props) {
                     setImageList(Object.entries(data.images));
                 } else {
                     setError(data.message);
-                    console.error('Error fetching image list: ' + data.message);
+                    if (DEV_MODE) {
+                        console.error('Error fetching image list: ' + data.message);
+                    }
                 }
             } catch (error) {
                 setError(error);
-                console.error('Error fetching image list: ' + error);
+                if (DEV_MODE) {
+                    console.error('Error fetching image list: ' + error);
+                }
             }     
         };
 
@@ -102,11 +107,15 @@ export default function GalleryBrowserComponent(props) {
                         ]);
                     } else {
                         setError(data.message);
-                        console.error('Error fetching image content: ' + data.message);
+                        if (DEV_MODE) {
+                            console.error('Error fetching image content: ' + data.message);
+                        }
                     }
                 } catch (error) {
                     setError(error);
-                    console.error('Error fetching image content: ' + error);
+                    if (DEV_MODE) {
+                        console.error('Error fetching image content: ' + error);
+                    }
                 }
 
                 setCurrentIndex((prev_index) => prev_index + 1);

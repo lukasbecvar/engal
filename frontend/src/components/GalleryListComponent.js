@@ -9,6 +9,7 @@ import CustomErrorComponent from "./errors/CustomErrorComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
 import GalleryComponent from "./sub-components/GalleryComponent";
 import GalleryBrowserComponent from "./GalleryBrowserComponent";
+import { DEV_MODE } from "../config";
 
 export default function GalleryListComponent() {
     // retrieve API URL from local storage
@@ -55,11 +56,15 @@ export default function GalleryListComponent() {
                     });
                     setGalleryOptions([...galleryListWithThumbnails]);
                 } else {
-                    console.error('Error fetching gallery list: ', result.message);
+                    if (DEV_MODE) {
+                        console.error('Error fetching gallery list: ', result.message);
+                    }
                     setError('error fetching gallery list');
                 }
             } catch (error) {
-                console.error('Error fetching gallery list: ', error);
+                if (DEV_MODE) {
+                    console.error('Error fetching gallery list: ', error);
+                }
                 setError('error fetching gallery list');
             } finally {
                 setLoading(false);

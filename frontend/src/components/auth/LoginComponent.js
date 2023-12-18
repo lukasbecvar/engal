@@ -8,6 +8,7 @@ import { userLogin } from '../../utils/AuthUtils';
 import RegisterComponent from './RegisterComponent';
 import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
+import { DEV_MODE } from '../../config';
 
 export default function LoginComponent() {
     // retrieve API URL from local storage
@@ -59,7 +60,9 @@ export default function LoginComponent() {
 
                 // check error
                 if (!response.ok) {
-                    console.error('Error:', response.status);
+                    if (DEV_MODE) {
+                        console.error('Error:', response.status);
+                    }
                     return
                 }
 
@@ -75,8 +78,10 @@ export default function LoginComponent() {
                     setErrorMsg(data.message);
                 }
             } catch (error) {
+                if (DEV_MODE) {
+                    console.error('Error:', error);
+                }
                 setErrorMsg('request error, please report this to your administrator');
-                console.error('Error:', error);
             }
         }
     }

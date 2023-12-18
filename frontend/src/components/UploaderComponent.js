@@ -9,6 +9,7 @@ import LoadingComponent from './sub-components/LoadingComponent';
 import ErrorBoxComponent from './sub-components/ErrorBoxComponent';
 import SuccessMessageBox from './sub-components/SuccessMessageBox';
 import WarningMessageBox from './sub-components/WarningMessageBox';
+import { DEV_MODE } from '../config';
 
 export default function UploaderComponent() {
     // retrieve API URL from local storage
@@ -101,7 +102,9 @@ export default function UploaderComponent() {
                 }
             }
         } catch (error) {
-            console.error('Error during upload:', error);
+            if (DEV_MODE) {
+                console.error('Error during upload:', error);
+            }
             setErrorMsg('unknown upload error, please contact your administrator');
         } finally {
             setWarningMsg(null); 
@@ -135,11 +138,15 @@ export default function UploaderComponent() {
                     setSelectedGallery(galleryList[0]); 
                 } else {
                     setErrorMsg('error fetching gallery list');
-                    console.error('Error fetching gallery list: ', result.message);
+                    if (DEV_MODE) {
+                        console.error('Error fetching gallery list: ', result.message);
+                    }
                 }
             } catch (error) {
                 setErrorMsg('error fetching gallery list');
-                console.error('Error fetching gallery list: ', error);
+                if (DEV_MODE) {
+                    console.error('Error fetching gallery list: ', error);
+                }
             } finally {
                 setLoading(false);
             }

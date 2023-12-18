@@ -127,9 +127,9 @@ export default function GalleryBrowserComponent(props) {
         } else {
             return (
                 <div className="gallery-box">
-                    <LightGallery plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
+                    <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
                         {image_content_list.map(({ id, name, content }) => (
-                            <ImageComponent key={id} name={name} description={name} image={content}/>
+                            <ImageComponent key={id} name={name} image={content}/>
                         ))}
                     </LightGallery>
                     <br/>

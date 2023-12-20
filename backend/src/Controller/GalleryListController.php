@@ -53,7 +53,7 @@ class GalleryListController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         }
         
@@ -62,7 +62,7 @@ class GalleryListController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: token'
+                'message' => 'required post data: token'
             ]);
         }
 
@@ -82,7 +82,7 @@ class GalleryListController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'User: '.$username.' gallery list',
+                'message' => 'user: '.$username.' gallery list',
                 'count' => $gallery_count,
                 'gallery_list' => $gallery_list
             ]);
@@ -90,7 +90,7 @@ class GalleryListController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Invalid token value'
+                'message' => 'invalid token value'
             ]);
         }
     }

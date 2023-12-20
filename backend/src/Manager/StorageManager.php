@@ -89,7 +89,25 @@ class StorageManager
             return [
                 'status' => 'error',
                 'code' => 500,
-                'message' => 'Upload error: storage is not writable'
+                'message' => 'upload error: storage is not writable'
+            ];
+        }
+
+        // check gallery name minimal length
+        if (strlen($gallery) <= 3) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'minimal gallery name length is 4 characters'
+            ];
+        }
+
+        // check gallery name maximal length
+        if (strlen($gallery) >= 31) {
+            return [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'maximal gallery name length is 30 characters'
             ];
         }
 
@@ -98,7 +116,7 @@ class StorageManager
             return [
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Unsuported format: allowed formats is: jpg, jpeg, png, gif'
+                'message' => 'unsuported format: allowed formats is: jpg, jpeg, png, gif'
             ];
         }
         
@@ -107,7 +125,7 @@ class StorageManager
             return [
                 'status' => 'error',
                 'code' => 200,
-                'message' => 'Maximal file size is '.$max_file_size_value.'MB'
+                'message' => 'maximal file size is '.$max_file_size_value.'MB'
             ];
         }
 
@@ -123,7 +141,7 @@ class StorageManager
                 return [
                     'status' => 'error',
                     'code' => 400,
-                    'message' => 'Image: '.$file_name.' is already exist'
+                    'message' => 'image: '.$file_name.' is already exist'
                 ];
 
             } else {
@@ -136,7 +154,7 @@ class StorageManager
                 return [
                     'status' => 'success',
                     'code' => 200,
-                    'message' => 'Image uploaded to gallery: '.$gallery
+                    'message' => 'image uploaded to gallery: '.$gallery
                 ];
             }
                                         
@@ -144,7 +162,7 @@ class StorageManager
             return [
                 'status' => 'error',
                 'code' => 500,
-                'message' => 'Error to upload image: '.$e->getMessage()
+                'message' => 'error to upload image: '.$e->getMessage()
             ];
         }
     }

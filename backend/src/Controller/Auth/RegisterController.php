@@ -66,7 +66,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Registration is disabled'
+                'message' => 'registration is disabled'
             ]);   
         }
 
@@ -75,7 +75,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         }
     
@@ -84,7 +84,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: username'
+                'message' => 'required post data: username'
             ]); 
         }
 
@@ -93,7 +93,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: password'
+                'message' => 'required post data: password'
             ]); 
         }
 
@@ -102,7 +102,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: re-password'
+                'message' => 'required post data: re-password'
             ]); 
         }  
 
@@ -111,12 +111,57 @@ class RegisterController extends AbstractController
         $password = $this->securityUtil->escapeString($password);
         $re_password = $this->securityUtil->escapeString($re_password);
 
+        // check if inputs including spaces
+        if (strpos($username, ' ') && strpos($password, ' ') && strpos($re_password, ' ')) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'spaces is not allowed in login credentials'
+            ]);  
+        }
+
+        // check minimal username length
+        if (strlen($username) <= 3) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'minimal username length is 4 characters'
+            ]);  
+        }
+
+        // check maximal username maximal
+        if (strlen($username) >= 31) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'maximal username length is 30 characters'
+            ]);  
+        }
+
+        // check minimal password length
+        if (strlen($password) <= 7) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'minimal password length is 8 characters'
+            ]);  
+        }
+
+        // check maximal password maximal
+        if (strlen($password) >= 51) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'maximal password length is 50 characters'
+            ]);  
+        }
+
         // check if passwords si matched
         if ($password != $re_password) {
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Passwords not matching'
+                'message' => 'passwords not matching'
             ]);  
         }
 
@@ -125,7 +170,7 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Username is already in use'
+                'message' => 'username is already in use'
             ]); 
         }
 
@@ -136,7 +181,7 @@ class RegisterController extends AbstractController
         return $this->json([
             'status' => 'success',
             'code' => 200,
-            'message' => 'User: '.$username.' registered successfully',
+            'message' => 'user: '.$username.' registered successfully',
             'token' => $this->userManager->getUserToken($username)
         ]);       
     }

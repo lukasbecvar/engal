@@ -43,7 +43,7 @@ class SecurityCheckMiddleware
 
             // check SSL
             if (!$this->siteUtil->isSsl()) {
-                $this->errorManager->handleError('SSL error: connection not running on ssl protocol', 500);
+                $this->errorManager->handleError('ssl-error: connection not running on ssl protocol', 500);
             }
         }
     }

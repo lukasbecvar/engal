@@ -46,7 +46,7 @@ class ImageContentTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: token');
+        $this->assertSame($data['message'], 'required post data: token');
     }
 
     /**
@@ -71,7 +71,7 @@ class ImageContentTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: gallery (gallery name)');
+        $this->assertSame($data['message'], 'required post data: gallery (gallery name)');
     }
 
     /**
@@ -97,6 +97,6 @@ class ImageContentTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: image (image name)');
+        $this->assertSame($data['message'], 'required post data: image (image name)');
     }
 }

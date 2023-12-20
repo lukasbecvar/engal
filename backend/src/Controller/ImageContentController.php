@@ -55,7 +55,7 @@ class ImageContentController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         }
         
@@ -64,7 +64,7 @@ class ImageContentController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: token'
+                'message' => 'required post data: token'
             ]);
         }
 
@@ -73,7 +73,7 @@ class ImageContentController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: gallery (gallery name)'
+                'message' => 'required post data: gallery (gallery name)'
             ]);
         }
 
@@ -82,7 +82,7 @@ class ImageContentController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: image (image name)'
+                'message' => 'required post data: image (image name)'
             ]);
         }
 
@@ -107,21 +107,21 @@ class ImageContentController extends AbstractController
                     return $this->json([
                         'status' => 'error',
                         'code' => 404,
-                        'message' => 'Image: '.$image.' not exist'
+                        'message' => 'image: '.$image.' not exist'
                     ]);
                 }
             } else {
                 return $this->json([
                     'status' => 'error',
                     'code' => 404,
-                    'message' => 'Gallery: '.$gallery.' not exist'
+                    'message' => 'gallery: '.$gallery.' not exist'
                 ]);
             }
         } else {
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Invalid token value'
+                'message' => 'invalid token value'
             ]);
         }
     }

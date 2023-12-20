@@ -80,7 +80,7 @@ class GalleryListTest extends WebTestCase
     
             // reset auto-increment
             $connection = $entityManager->getConnection();
-            $connection->executeStatement("ALTER TABLE users AUTO_INCREMENT = " . ($id - 1));
+            $connection->executeStatement('ALTER TABLE users AUTO_INCREMENT = ' . ($id - 1));
         }
     }
 
@@ -104,7 +104,7 @@ class GalleryListTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: token');
+        $this->assertSame($data['message'], 'required post data: token');
     }
 
     /**
@@ -129,7 +129,7 @@ class GalleryListTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 403);
-        $this->assertSame($data['message'], 'Invalid token value');
+        $this->assertSame($data['message'], 'invalid token value');
     }
 
     /**
@@ -154,7 +154,7 @@ class GalleryListTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'User: test_username gallery list');
+        $this->assertSame($data['message'], 'user: test_username gallery list');
         $this->assertIsInt($data['count']);
         $this->assertIsArray($data['gallery_list']);
     }

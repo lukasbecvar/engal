@@ -80,7 +80,7 @@ class LogoutTest extends WebTestCase
     
             // reset auto-increment
             $connection = $entityManager->getConnection();
-            $connection->executeStatement("ALTER TABLE users AUTO_INCREMENT = " . ($id - 1));
+            $connection->executeStatement('ALTER TABLE users AUTO_INCREMENT = ' . ($id - 1));
         }
     }
 
@@ -104,7 +104,7 @@ class LogoutTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: token');
+        $this->assertSame($data['message'], 'required post data: token');
     }
 
     /**
@@ -129,7 +129,7 @@ class LogoutTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 403);
-        $this->assertSame($data['message'], 'Invalid token value');
+        $this->assertSame($data['message'], 'invalid token value');
     }
 
     /**
@@ -154,6 +154,6 @@ class LogoutTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'Logout success');
+        $this->assertSame($data['message'], 'logout success');
     }
 }

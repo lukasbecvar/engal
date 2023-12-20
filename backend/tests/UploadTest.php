@@ -80,7 +80,7 @@ class UploadTest extends WebTestCase
     
             // reset auto-increment
             $connection = $entityManager->getConnection();
-            $connection->executeStatement("ALTER TABLE users AUTO_INCREMENT = " . ($id - 1));
+            $connection->executeStatement('ALTER TABLE users AUTO_INCREMENT = ' . ($id - 1));
         }
     }
 
@@ -104,7 +104,7 @@ class UploadTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: token');
+        $this->assertSame($data['message'], 'required post data: token');
     }
 
     /**
@@ -129,7 +129,7 @@ class UploadTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: gallery');
+        $this->assertSame($data['message'], 'required post data: gallery');
     }
 
     /**
@@ -155,6 +155,6 @@ class UploadTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: image file');
+        $this->assertSame($data['message'], 'required post data: image file');
     }
 }

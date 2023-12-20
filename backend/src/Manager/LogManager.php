@@ -102,7 +102,7 @@ class LogManager
             $this->entityManager->persist($LogEntity);
             $this->entityManager->flush();
         } catch (\Exception $e) {
-            $this->errorManager->handleError('Log save error: '.$e->getMessage(), 500);  
+            $this->errorManager->handleError('log save error: '.$e->getMessage(), 500);  
         }
     }
 

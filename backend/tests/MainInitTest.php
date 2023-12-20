@@ -46,6 +46,6 @@ class MainInitTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'Engal services loaded successfully');
+        $this->assertSame($data['message'], 'engal services loaded successfully');
     }
 }

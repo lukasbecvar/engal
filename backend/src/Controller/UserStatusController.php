@@ -53,7 +53,7 @@ class UserStatusController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         }
         
@@ -62,7 +62,7 @@ class UserStatusController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: token'
+                'message' => 'required post data: token'
             ]);
         }
 
@@ -82,7 +82,7 @@ class UserStatusController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Invalid token value'
+                'message' => 'invalid token value'
             ]);
         }
     }

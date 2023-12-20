@@ -54,7 +54,7 @@ class LoginController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         } 
         
@@ -63,7 +63,7 @@ class LoginController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: username'
+                'message' => 'required post data: username'
             ]); 
         }
 
@@ -72,7 +72,7 @@ class LoginController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: password'
+                'message' => 'required post data: password'
             ]); 
         }
 
@@ -90,7 +90,7 @@ class LoginController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'Login with username: '.$username.' successfully',
+                'message' => 'login with username: '.$username.' successfully',
                 'token' => $token
             ]);
 
@@ -98,7 +98,7 @@ class LoginController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Incorrect username or password'
+                'message' => 'incorrect username or password'
             ]);
         }
     }      

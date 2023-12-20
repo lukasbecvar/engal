@@ -74,7 +74,7 @@ class RegisterTest extends WebTestCase
 
             // reset auto-increment values for the users table
             $connection = $entityManager->getConnection();
-            $connection->executeStatement("ALTER TABLE users AUTO_INCREMENT = " . ($id - 1));
+            $connection->executeStatement('ALTER TABLE users AUTO_INCREMENT = ' . ($id - 1));
         }
     }
 
@@ -101,7 +101,37 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 403);
-        $this->assertSame($data['message'], 'Registration is disabled');
+        $this->assertSame($data['message'], 'registration is disabled');
+    }
+
+    /**
+     * Test for registration with an spaces.
+     */
+    public function testRegisterWithSpaces(): void
+    {
+        // use fake site util instance
+        $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
+
+        // make post request
+        $this->client->request('POST', '/register', [
+            'username' => 'test test',
+            'password' => 'test test',
+            're-password' => 'test test'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+
+        // decode JSON content
+        $data = json_decode($content, true);
+
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'spaces is not allowed in login credentials');
     }
 
     /**
@@ -127,7 +157,67 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: username');
+        $this->assertSame($data['message'], 'required post data: username');
+    }
+
+    /**
+     * Test for registration with an short username.
+     */
+    public function testRegisterShortUsername(): void
+    {
+        // use fake site util instance
+        $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
+
+        // make post request
+        $this->client->request('POST', '/register', [
+            'username' => ByteString::fromRandom(3)->toString(),
+            'password' => ByteString::fromRandom(10)->toString(),
+            're-password' => ByteString::fromRandom(10)->toString()
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+
+        // decode JSON content
+        $data = json_decode($content, true);
+
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'minimal username length is 4 characters');
+    }
+
+    /**
+     * Test for registration with an long username.
+     */
+    public function testRegisterLognUsername(): void
+    {
+        // use fake site util instance
+        $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
+
+        // make post request
+        $this->client->request('POST', '/register', [
+            'username' => ByteString::fromRandom(80)->toString(),
+            'password' => ByteString::fromRandom(10)->toString(),
+            're-password' => ByteString::fromRandom(10)->toString()
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+
+        // decode JSON content
+        $data = json_decode($content, true);
+
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'maximal username length is 30 characters');
     }
 
     /**
@@ -155,7 +245,67 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: password');
+        $this->assertSame($data['message'], 'required post data: password');
+    }
+
+    /**
+     * Test for registration with an short password.
+     */
+    public function testRegisterShortPassword(): void
+    {
+        // use fake site util instance
+        $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
+
+        // make post request
+        $this->client->request('POST', '/register', [
+            'username' => ByteString::fromRandom(12)->toString(),
+            'password' => ByteString::fromRandom(7)->toString(),
+            're-password' => ByteString::fromRandom(7)->toString()
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+
+        // decode JSON content
+        $data = json_decode($content, true);
+
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'minimal password length is 8 characters');
+    }
+
+    /**
+     * Test for registration with an long password.
+     */
+    public function testRegisterLongPassword(): void
+    {
+        // use fake site util instance
+        $this->client->getContainer()->set(SiteUtil::class, $this->createSiteUtilMock(true));
+
+        // make post request
+        $this->client->request('POST', '/register', [
+            'username' => ByteString::fromRandom(12)->toString(),
+            'password' => ByteString::fromRandom(100)->toString(),
+            're-password' => ByteString::fromRandom(100)->toString()
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+
+        // decode JSON content
+        $data = json_decode($content, true);
+
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'maximal password length is 50 characters');
     }
 
     /**
@@ -184,7 +334,7 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: re-password');
+        $this->assertSame($data['message'], 'required post data: re-password');
     }
 
     /**
@@ -214,7 +364,7 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Passwords not matching');
+        $this->assertSame($data['message'], 'passwords not matching');
     }
 
     /**
@@ -244,6 +394,6 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'User: testing_username registered successfully');
+        $this->assertSame($data['message'], 'user: testing_username registered successfully');
     }
 }

@@ -81,7 +81,7 @@ class LoginTest extends WebTestCase
     
             // reset auto-increment
             $connection = $entityManager->getConnection();
-            $connection->executeStatement("ALTER TABLE users AUTO_INCREMENT = " . ($id - 1));
+            $connection->executeStatement('ALTER TABLE users AUTO_INCREMENT = ' . ($id - 1));
         }
     }
 
@@ -105,7 +105,7 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: username');
+        $this->assertSame($data['message'], 'required post data: username');
     }
 
     /**
@@ -130,7 +130,7 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'Required post data: password');
+        $this->assertSame($data['message'], 'required post data: password');
     }
 
     /**
@@ -156,7 +156,7 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 403);
-        $this->assertSame($data['message'], 'Incorrect username or password');
+        $this->assertSame($data['message'], 'incorrect username or password');
     }
 
     /**
@@ -182,7 +182,7 @@ class LoginTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'Login with username: test_username successfully');
+        $this->assertSame($data['message'], 'login with username: test_username successfully');
         $this->assertSame($data['token'], 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D');
     }
 }

@@ -23,7 +23,7 @@ class MainController extends AbstractController
         return $this->json([
             'status' => 'success',
             'code' => 200,
-            'message' => 'Engal services loaded successfully'
+            'message' => 'engal services loaded successfully'
         ]);
     }
 }

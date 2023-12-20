@@ -53,7 +53,7 @@ class LogoutController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         }
         
@@ -62,7 +62,7 @@ class LogoutController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: token'
+                'message' => 'required post data: token'
             ]);
         }
 
@@ -79,13 +79,13 @@ class LogoutController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'Logout success'
+                'message' => 'logout success'
             ]);
         } else {
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Invalid token value'
+                'message' => 'invalid token value'
             ]);
         }
     }

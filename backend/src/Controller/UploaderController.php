@@ -65,7 +65,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Post request required'
+                'message' => 'post request required'
             ]);
         }
 
@@ -74,7 +74,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: token'
+                'message' => 'required post data: token'
             ]);
         }
 
@@ -83,7 +83,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: gallery'
+                'message' => 'required post data: gallery'
             ]);
         }
         
@@ -92,7 +92,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Gallery name minimal length is 4 characters'
+                'message' => 'gallery name minimal length is 4 characters'
             ]);
         }
 
@@ -101,7 +101,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Gallery name maximal length is 30 characters'
+                'message' => 'gallery name maximal length is 30 characters'
             ]);
         }
 
@@ -110,7 +110,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Required post data: image file'
+                'message' => 'required post data: image file'
             ]);
         }
 
@@ -133,7 +133,7 @@ class UploaderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'Invalid token value'
+                'message' => 'invalid token value'
             ]);
         }
     }

@@ -43,7 +43,7 @@ class DatabaseOnlineMiddleware
         } catch (\Exception $e) {
 
             // handle error if database not connected
-            $this->errorManager->handleError('Database connection error: '.$e->getMessage(), 503);
+            $this->errorManager->handleError('database connection error: '.$e->getMessage(), 503);
         }
     }
 }

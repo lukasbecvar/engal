@@ -16,7 +16,10 @@ export default function ApiUrlSetupComponent()
     const [error_msg, setErrorMsg] = useState(null);
 
     // set api url
-    async function set() {        
+    async function set() {     
+        // null error message
+        setErrorMsg(null);
+        
         // check if url is not empty
         if (api_url.length !== 0) {
             

@@ -81,6 +81,10 @@ export default function RegisterComponent()
 
     // handle the registration process
     async function register() {
+        
+        // null error message
+        setErrorMsg(null);
+
         // validation checks for username, password, and re_password
         if (username == null || username === '') {
             setErrorMsg('username is empty');

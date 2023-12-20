@@ -42,6 +42,10 @@ export default function LoginComponent()
 
     // handle the login process
     async function login() {
+
+        // null error message
+        setErrorMsg(null);
+
         // validation checks for username and password
         if (username === null || username === '') {
             setErrorMsg('username is empty!');

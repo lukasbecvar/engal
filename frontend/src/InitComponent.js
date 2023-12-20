@@ -5,7 +5,7 @@ import { DEV_MODE } from "./config";
 
 // import engal utils
 import { getUserToken } from "./utils/AuthUtils";
-import { checkApiAvailability, getApiUrl, isApiUrlSeted } from './utils/ApiUtils';
+import { checkApiAvailability, getApiUrl } from './utils/ApiUtils';
 
 // import engal components
 import MainComponent from "./components/MainComponent";

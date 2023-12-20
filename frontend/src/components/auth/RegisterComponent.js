@@ -42,7 +42,7 @@ export default function RegisterComponent()
                 const data = await response.json();
     
                 // check if registration is disabled
-                if (data.message === 'Registration is disabled') {
+                if (data.message === 'registration is disabled') {
                     if (DEV_MODE) {
                         console.log(response.status + ', ' + data.message);
                     }
@@ -50,7 +50,7 @@ export default function RegisterComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('Error:', error);
+                    console.error('error:', error);
                 }
                 setErrorMsg('request error, please report this to your administrator');
             }
@@ -96,8 +96,12 @@ export default function RegisterComponent()
             setErrorMsg('passwords do not match');
         } else if (username.length <= 3) {
             setErrorMsg('your username should be at least 4 characters');
+        } else if (username.length >= 31) {
+            setErrorMsg('your username is to long (maximal 30 characters)');
         } else if (password.length <= 7) {
             setErrorMsg('your password should be at least 8 characters');
+        } else if (password.length >= 51) {
+            setErrorMsg('your password is to long (maximal 50 characters)');
         } else if (username.includes(' ') || password.includes(' ') || re_password.includes(' ')) {
             setErrorMsg('spaces in login credentials is not allowed');
         } else {
@@ -119,7 +123,7 @@ export default function RegisterComponent()
                 // check error
                 if (!response.ok) {
                     if (DEV_MODE) {
-                        console.error('Error:', response.status);
+                        console.error('error:', response.status);
                     }
                     return;
                 }
@@ -128,7 +132,7 @@ export default function RegisterComponent()
                 const data = await response.json();
 
                 // check the response message
-                if (data.message === 'User: ' + username + ' registered successfully') {
+                if (data.message === 'user: ' + username + ' registered successfully') {
 
                     // set login state
                     userLogin(data.token);
@@ -137,7 +141,7 @@ export default function RegisterComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('Error:', error);
+                    console.error('error:', error);
                 }
                 setErrorMsg('request error, please report this to your administrator');
             }

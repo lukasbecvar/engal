@@ -41,7 +41,7 @@ export default function ApiUrlSetupComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.log('Error: ' + error);
+                    console.log('error: ' + error);
                 }
                 setErrorMsg('this api url is unreachable');
             }

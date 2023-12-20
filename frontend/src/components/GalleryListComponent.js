@@ -60,13 +60,13 @@ export default function GalleryListComponent()
                     setGalleryOptions([...galleryListWithThumbnails]);
                 } else {
                     if (DEV_MODE) {
-                        console.error('Error fetching gallery list: ', result.message);
+                        console.error('error fetching gallery list: ', result.message);
                     }
                     setError('error fetching gallery list');
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('Error fetching gallery list: ', error);
+                    console.error('error fetching gallery list: ', error);
                 }
                 setError('error fetching gallery list');
             } finally {

@@ -51,7 +51,7 @@ export default function InitComponent()
                     }
                 } catch (error) {
                     if (DEV_MODE) {
-                        console.log('Error: ' + error);
+                        console.log('error: ' + error);
                     }
                     setApiConnectionError(true);
                 }

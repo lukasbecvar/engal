@@ -9,8 +9,8 @@ import { userLogin } from '../../utils/AuthUtils';
 
 // import engal components
 import RegisterComponent from './RegisterComponent';
-import ErrorBoxComponent from '../sub-components/alerts/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
+import ErrorBoxComponent from '../sub-components/alerts/ErrorBoxComponent';
 
 export default function LoginComponent() 
 {
@@ -68,7 +68,7 @@ export default function LoginComponent()
                 // check error
                 if (!response.ok) {
                     if (DEV_MODE) {
-                        console.error('Error:', response.status);
+                        console.error('error:', response.status);
                     }
                     return
                 }
@@ -77,7 +77,7 @@ export default function LoginComponent()
                 const data = await response.json();
 
                 // check the response message
-                if (data.message === 'Login with username: ' + username + ' successfully') {
+                if (data.message === 'login with username: ' + username + ' successfully') {
                     
                     // set login state
                     userLogin(data.token);
@@ -86,7 +86,7 @@ export default function LoginComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('Error:', error);
+                    console.error('error:', error);
                 }
                 setErrorMsg('request error, please report this to your administrator');
             }

@@ -12,12 +12,17 @@ This is only the basic version which will be extended and improved in the future
 
 ## Version 4.0 TODO-LIST
 - [X] Upload progress bar
+- [ ] Content encryption (only in backend storage)
+- [ ] Check server free space before upload new images
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
+- [ ] Gallery properties (show, images count, created data, last modified date, size)
+- [ ] Image properties (show, gallery name, created data, last modified date, size)
+- [ ] Dashboard user panel (show profile pic, username, role, link to account settings)
+- [ ] Dashboard bar in gallery list (gallery count, images count, total size)
 - [ ] Image delete function
 - [ ] Image edit function (move to gallery, rename)
-- [ ] document api errors & endpoints
-- [ ] content encryption (only in backend storage)
+- [ ] Document api errors & endpoints
 - [ ] Redesign UI
 - [ ] Port Frontend to electron + (react native mobile app)
 

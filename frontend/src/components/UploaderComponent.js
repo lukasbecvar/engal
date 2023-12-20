@@ -67,7 +67,7 @@ export default function UploaderComponent()
         }
 
         // check gallery name lenght reached
-        if (gallery_name.length >= 30) {
+        if (gallery_name.length >= 31) {
             setErrorMsg('maximal gallery name length is 30 characters');
 
         // check gallery name minimal lenght
@@ -117,7 +117,7 @@ export default function UploaderComponent()
                     } else {
 
                         // check if gallry name is empty
-                        if (result.message === 'Required post data: gallery') {
+                        if (result.message === 'required post data: gallery') {
                             setErrorMsg('your gallery name is empty');
                         } else {
 
@@ -135,7 +135,7 @@ export default function UploaderComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('Error during upload:', error);
+                    console.error('error during upload:', error);
                 }
                 setErrorMsg('unknown upload error, please contact your administrator');
             } finally {
@@ -146,15 +146,17 @@ export default function UploaderComponent()
                 
                 // set success message
                 setSuccessMsg('upload process is success');
-                
-                // reload app (show main component [list]) only if upload success
-                if (success_message !== null) {
-                    appReload();
-                }
             }
         }
     }
     
+    useEffect(() => {
+        // reload app (show main component [list]) only if upload success
+        if (success_message !== null && error_msg === null) {
+            appReload();
+        }   
+    })
+
     useEffect(() => {
 
         // get gallery list from gallery name selection
@@ -182,13 +184,13 @@ export default function UploaderComponent()
                 } else {
                     setErrorMsg('error fetching gallery list');
                     if (DEV_MODE) {
-                        console.error('Error fetching gallery list: ', result.message);
+                        console.error('error fetching gallery list: ', result.message);
                     }
                 }
             } catch (error) {
                 setErrorMsg('error fetching gallery list');
                 if (DEV_MODE) {
-                    console.error('Error fetching gallery list: ', error);
+                    console.error('error fetching gallery list: ', error);
                 }
             } finally {
                 setLoading(false);

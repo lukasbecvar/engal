@@ -42,7 +42,7 @@ export default function MainComponent()
             // check error
             if (!response.ok) {
                 if (DEV_MODE) {
-                    console.error('Error:', response.status);
+                    console.error('error:', response.status);
                 }
                 return;
             }
@@ -53,7 +53,7 @@ export default function MainComponent()
             }
         } catch (error) {
             if (DEV_MODE) {
-                console.error('Error:', error);
+                console.error('error:', error);
             }
         }
     }

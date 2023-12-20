@@ -12,20 +12,20 @@ import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
 
 // light gallery styles
-import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-fullscreen.css';
 import 'lightgallery/css/lg-autoplay.css';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-fullscreen.css';
  
 // import light gallery plugins
 import lgZoom from 'lightgallery/plugins/zoom';
-import lgFullscreen from 'lightgallery/plugins/fullscreen';
 import lgAutoplay from 'lightgallery/plugins/autoplay';
+import lgFullscreen from 'lightgallery/plugins/fullscreen';
 
 // import engal components
+import ImageComponent from './sub-components/ImageComponent';
 import LoadingComponent from './sub-components/LoadingComponent';
 import CustomErrorComponent from './errors/CustomErrorComponent';
-import ImageComponent from './sub-components/ImageComponent';
 
 export default function GalleryBrowserComponent(props) 
 {
@@ -66,14 +66,14 @@ export default function GalleryBrowserComponent(props)
                     setImageList(Object.entries(data.images));
                 } else {
                     if (DEV_MODE) {
-                        console.error('Error fetching image list: ' + data.message);
+                        console.error('error fetching image list: ' + data.message);
                     }
                     setError(data.message);
                 }
             } catch (error) {
                 setError(error);
                 if (DEV_MODE) {
-                    console.error('Error fetching image list: ' + error);
+                    console.error('error fetching image list: ' + error);
                 }
             }     
         };
@@ -110,13 +110,13 @@ export default function GalleryBrowserComponent(props)
                         ]);
                     } else {
                         if (DEV_MODE) {
-                            console.error('Error fetching image content: ' + data.message);
+                            console.error('error fetching image content: ' + data.message);
                         }
                         setError(data.message);
                     }
                 } catch (error) {
                     if (DEV_MODE) {
-                        console.error('Error fetching image content: ' + error);
+                        console.error('error fetching image content: ' + error);
                     }
                     setError(error);
                 }

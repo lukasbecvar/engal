@@ -9,7 +9,7 @@ import { userLogin } from '../../utils/AuthUtils';
 
 // import engal components
 import LoginComponent from './LoginComponent';
-import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
+import ErrorBoxComponent from '../sub-components/alerts/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
 import RegisterDisabledComponent from '../errors/RegisterDisabledComponent';
 
@@ -81,7 +81,7 @@ export default function RegisterComponent()
 
     // handle the registration process
     async function register() {
-        
+
         // null error message
         setErrorMsg(null);
 

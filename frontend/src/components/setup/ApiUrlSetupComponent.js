@@ -7,7 +7,7 @@ import { DEV_MODE } from '../../config';
 import { checkApiAvailability, setApiLink } from '../../utils/ApiUtils';
 
 // import engal components
-import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
+import ErrorBoxComponent from '../sub-components/alerts/ErrorBoxComponent';
 
 export default function ApiUrlSetupComponent() 
 {

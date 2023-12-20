@@ -102,6 +102,12 @@ button {
     text-decoration: underline;
 }
 
+.progress {
+    border: 3px solid rgb(69, 69, 253);
+    height: 30px;
+    background-color: #212529;
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 

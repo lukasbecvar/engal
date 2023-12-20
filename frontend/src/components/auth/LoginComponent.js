@@ -9,7 +9,7 @@ import { userLogin } from '../../utils/AuthUtils';
 
 // import engal components
 import RegisterComponent from './RegisterComponent';
-import ErrorBoxComponent from '../sub-components/ErrorBoxComponent';
+import ErrorBoxComponent from '../sub-components/alerts/ErrorBoxComponent';
 import NavigationComponent from '../sub-components/NavigationComponent';
 
 export default function LoginComponent() 

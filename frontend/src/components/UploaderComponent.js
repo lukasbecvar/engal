@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react';
 import { DEV_MODE } from '../config';
 
 // import engal utils
+import { appReload } from '../utils/AppUtils';
 import { getApiUrl } from '../utils/ApiUtils';
 import { getUserToken } from '../utils/AuthUtils';
 
 // import engal components
 import LoadingComponent from './sub-components/LoadingComponent';
-import ErrorBoxComponent from './sub-components/ErrorBoxComponent';
-import SuccessMessageBox from './sub-components/SuccessMessageBox';
-import WarningMessageBox from './sub-components/WarningMessageBox';
+import ErrorBoxComponent from './sub-components/alerts/ErrorBoxComponent';
+import SuccessMessageBox from './sub-components/alerts/SuccessMessageBox';
+import WarningMessageBox from './sub-components/alerts/WarningMessageBox';
 
 export default function UploaderComponent() 
 {
@@ -22,8 +23,9 @@ export default function UploaderComponent()
     let user_token = getUserToken();
 
     // state variable for managing component state
-    const [error_msg, setErrorMsg] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error_msg, setErrorMsg] = useState(null);
+    const [percentage, setPercentage] = useState(0);
     const [success_message, setSuccessMsg] = useState(null);
     const [warning_message, setWarningMsg] = useState(null);
 
@@ -50,71 +52,109 @@ export default function UploaderComponent()
 
     // main upload function
     async function handleUpload() {
+
         // reset messages
         setErrorMsg(null);
-        setWarningMsg(null);
         setSuccessMsg(null);
+        setWarningMsg(null);
+
+        // get gallery name
+        let gallery_name = selected_gallery === 'New gallery' ? new_gallery_name : selected_gallery;
+
+        // set new gallery name
+        if (gallery_options.length <= 1) {
+            gallery_name = new_gallery_name;
+        }
+
+        // check gallery name lenght reached
+        if (gallery_name.length >= 30) {
+            setErrorMsg('maximal gallery name length is 30 characters');
+
+        // check gallery name minimal lenght
+        } else if (gallery_name.length <= 3) {
+            setErrorMsg('minimal gallery name length is 4 characters');
+
+        // spaces check
+        } else if (gallery_name.includes(' ')) {
+            setErrorMsg('spaces in gallery name are not allowed!');
         
-        try {
-            // get gallery name
-            let gallery_name = selected_gallery === 'New gallery' ? new_gallery_name : selected_gallery;
+        // check if file input is not empty
+        } else if (images.length < 1) {
+            setErrorMsg('your file input is empty');
+        } else {
 
-            // set new gallery name if selection is empty
-            if (gallery_options.length <= 1) {
-                gallery_name = new_gallery_name;
-            }
+            // main upload process
+            try {
+                let uploaded = 0;
+        
+                // calculate total files for progress calculation
+                const totalFiles = images.length;
 
-            // check if gallery name reached maximal length
-            if (gallery_name.length >= 30) {
-                setErrorMsg('maximal gallery name length is 30 characters');
-            } 
-
-            // check if gallery name include space
-            if (gallery_name.includes(' ')) {
-                setErrorMsg('spaces in gallery name is not allowed!');
-            } else {
-
-                // upload images
+                // set minimal progress
+                setPercentage(1);
+            
+                // upload all images loop
                 for (const image of images) {
+
+                    // set request data
                     const formData = new FormData();
-    
-                    // set post data
                     formData.append('token', user_token);
                     formData.append('gallery', gallery_name);
                     formData.append('image', image);
-    
-                    // send request
+            
+                    // make request with data
                     const response = await fetch(api_url + '/media/upload', {
                         method: 'POST',
                         body: formData
                     });
-    
+            
                     // get response
                     const result = await response.json();
-    
-                    // check response
+            
+                    // check if status is success
                     if (result.status === 'success') {
                         setWarningMsg(image.name + ': ' + result.message);
                     } else {
+
+                        // check if gallry name is empty
                         if (result.message === 'Required post data: gallery') {
-                            setErrorMsg('your gallery name is empty')
+                            setErrorMsg('your gallery name is empty');
                         } else {
+
+                            // set other errors
                             setErrorMsg(result.message);
                         }
                     }
+            
+                    // increase uploaded files count 
+                    uploaded++;
+            
+                    // calculate and set the percentage
+                    const currentPercentage = Math.round((uploaded / totalFiles) * 100);
+                    setPercentage(currentPercentage);
+                }
+            } catch (error) {
+                if (DEV_MODE) {
+                    console.error('Error during upload:', error);
+                }
+                setErrorMsg('unknown upload error, please contact your administrator');
+            } finally {
+
+                // reset default upload sate values
+                setWarningMsg(null); 
+                setPercentage(0);
+                
+                // set success message
+                setSuccessMsg('upload process is success');
+                
+                // reload app (show main component [list]) only if upload success
+                if (success_message !== null) {
+                    appReload();
                 }
             }
-        } catch (error) {
-            if (DEV_MODE) {
-                console.error('Error during upload:', error);
-            }
-            setErrorMsg('unknown upload error, please contact your administrator');
-        } finally {
-            setWarningMsg(null); 
-            setSuccessMsg('upload process is success');
         }
-    };
- 
+    }
+    
     useEffect(() => {
 
         // get gallery list from gallery name selection
@@ -174,6 +214,20 @@ export default function UploaderComponent()
                                             <div className='card-body p-5 text-light'>
                                                 <h2 className='text-uppercase text-center mb-3 text-light'>Image upload</h2>
                                                 
+                                                {percentage !== 0 && (
+                                                    <div className="progress mb-3">
+                                                        <div
+                                                            className="progress-bar bg-success"
+                                                            role="progressbar"
+                                                            style={{ width: `${percentage}%` }}
+                                                            aria-valuenow={percentage}
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100">
+                                                            {percentage}%
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 {warning_message !== null && (
                                                     <WarningMessageBox warning_message={warning_message}/>
                                                 )}

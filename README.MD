@@ -11,8 +11,7 @@ This is only the basic version which will be extended and improved in the future
 - Register disable & maintenance mode
 
 ## Version 4.0 TODO-LIST
-- [ ] Upload progress bar
-- [ ] Redirect to final gallery (after upload process)
+- [X] Upload progress bar
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
 - [ ] Image delete function

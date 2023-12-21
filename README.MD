@@ -13,18 +13,23 @@ This is only the basic version which will be extended and improved in the future
 ## Version 4.0 TODO-LIST
 - [X] Upload progress bar
 - [X] Check server free space before upload new images
+- [ ] Dashboard user panel (show profile pic, username, role, link to account settings)
+- [ ] Account settings (change username, password, profile pic)
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
 - [ ] Gallery properties (show, images count, created data, last modified date, size)
 - [ ] Image properties (show, gallery name, created data, last modified date, size)
-- [ ] Dashboard user panel (show profile pic, username, role, link to account settings)
-- [ ] Dashboard bar in gallery list (gallery count, images count, total size)
 - [ ] Image delete function
 - [ ] Image edit function (move to gallery, rename)
 - [ ] Document api errors & endpoints
 - [ ] Redesign UI
 - [ ] Port Frontend to electron + (react native mobile app)
 - [ ] Content encryption (only in backend storage)
+
+## Version 5.0 TODO-LIST
+- [ ] Share gallery with other user
+- [ ] Rate images 1 - 5
+- [ ] Favorite images
 
 ## Dependencies 
 * Symfony

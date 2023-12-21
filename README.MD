@@ -12,8 +12,7 @@ This is only the basic version which will be extended and improved in the future
 
 ## Version 4.0 TODO-LIST
 - [X] Upload progress bar
-- [ ] Content encryption (only in backend storage)
-- [ ] Check server free space before upload new images
+- [X] Check server free space before upload new images
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
 - [ ] Gallery properties (show, images count, created data, last modified date, size)
@@ -25,6 +24,7 @@ This is only the basic version which will be extended and improved in the future
 - [ ] Document api errors & endpoints
 - [ ] Redesign UI
 - [ ] Port Frontend to electron + (react native mobile app)
+- [ ] Content encryption (only in backend storage)
 
 ## Dependencies 
 * Symfony

@@ -2,6 +2,8 @@
 
 namespace App\Manager;
 
+use App\Util\SystemUtil;
+
 /**
  * Class StorageManager
  * @package App\Manager
@@ -14,6 +16,11 @@ class StorageManager
     private LogManager $logManager;
 
     /**
+     * @var SystemUtil $systemUtil The OS system utils.
+     */
+    private SystemUtil $systemUtil;
+
+    /**
      * @var UserManager $userManager The user manager.
      */
     private UserManager $userManager;
@@ -23,6 +30,7 @@ class StorageManager
      */
     private ErrorManager $errorManager;
 
+
     /**
      * @var string $storage_directory The base directory for storage.
      */
@@ -31,15 +39,18 @@ class StorageManager
     /**
      * StorageManager constructor.
      * @param LogManager $logManager The log manager.
+     * @param SystemUtil $systemUtil The user manager.
      * @param UserManager $userManager The user manager.
      * @param ErrorManager $errorManager The error manager.
      */
     public function __construct(
         LogManager $logManager, 
+        SystemUtil $systemUtil,
         UserManager $userManager,
         ErrorManager $errorManager
     ) {
         $this->logManager = $logManager;
+        $this->systemUtil = $systemUtil;
         $this->userManager = $userManager;
         $this->errorManager = $errorManager;
 
@@ -126,6 +137,15 @@ class StorageManager
                 'status' => 'error',
                 'code' => 200,
                 'message' => 'maximal file size is '.$max_file_size_value.'MB'
+            ];
+        }
+
+        // check if server size is not reached
+        if ($this->systemUtil->getDriveUsage() > 95) {
+            return [
+                'status' => 'error',
+                'code' => 200,
+                'message' => 'maximal server storage space is reached, please contact you server admin for fix this problem'
             ];
         }
 

@@ -12,7 +12,6 @@ import { getUserToken, userLogout } from '../utils/AuthUtils';
 import UploaderComponent from './UploaderComponent';
 import GalleryListComponent from './GalleryListComponent';
 import LoadingComponent from './sub-components/LoadingComponent';
-import CustomErrorComponent from './errors/CustomErrorComponent';
 import AccountSettingsComponent from './sub-components/AccountSettingsComponent';
 
 export default function MainComponent() 
@@ -135,11 +134,6 @@ export default function MainComponent()
         return (<LoadingComponent/>);
     } else {
 
-        // check minimal screen width
-        if (window.innerWidth <= 234) {
-            return <CustomErrorComponent error_message={'Your screen is not supported, minimal screen width is 235'}/>
-        }
-
         // render component to container
         if (upload) {
             container = <UploaderComponent/>;
@@ -169,9 +163,9 @@ export default function MainComponent()
 
                         </div>
                         <div className='nav-space'>
-                            <button className='nav-link' onClick={(showList)}>List</button>
-                            <button className='nav-link' onClick={showUpload}>Upload</button>
-                            <button className='nav-link' onClick={logout}>Logout</button>
+                            <button className='nav-link' onClick={(showList)}>LIST</button>
+                            <button className='nav-link' onClick={showUpload}>UPLOAD</button>
+                            <button className='nav-link' onClick={logout}>LOGOUT</button>
                         </div>
                     </div>
                 </nav>

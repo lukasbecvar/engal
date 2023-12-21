@@ -12,6 +12,7 @@ import MainComponent from "./components/MainComponent";
 import LoginComponent from "./components/auth/LoginComponent";
 import ApiErrorComponent from "./components/errors/ApiErrorComponent";
 import ApiUrlSetupComponent from "./components/setup/ApiUrlSetupComponent";
+import CustomErrorComponent from "./components/errors/CustomErrorComponent";
 import MaintenanceComponent from "./components/errors/MaintenanceComponent";
 import LoadingComponent from "./components/sub-components/LoadingComponent";
 import ApiUrlRemoveComponent from "./components/setup/ApiUrlRemoveComponent";
@@ -64,6 +65,11 @@ export default function InitComponent()
         // disable loading
         setLoading(false);
     }, [api_url])
+
+    // check minimal screen width
+    if (window.innerWidth <= 259) {
+        return <CustomErrorComponent error_message={'Your screen is not supported, minimal screen width is 260'}/>
+    }
 
     // show loading
     if (loading === true) {

@@ -174,7 +174,7 @@ export default function RegisterComponent()
                                     <div className='row d-flex justify-content-center align-items-center h-100'>
                                         <div className='col-12 col-md-9 col-lg-7 col-xl-6'>
                                             <div className='card bg-dark'>
-                                                <div className='card-body p-5 text-light'>
+                                                <div className='card-body p-5 text-light border'>
                                                     <h2 className='text-uppercase text-center mb-3 text-light'>Create an account</h2>
                                                 
                                                     {error_msg !== null && (

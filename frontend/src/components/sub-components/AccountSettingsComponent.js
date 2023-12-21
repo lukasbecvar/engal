@@ -103,7 +103,7 @@ export default function AccountSettingsComponent() {
             );
 
         // change username
-        } else if (state == 'change-username') {
+        } else if (state === 'change-username') {
             return (
                 <div>
                     <p>username change</p>
@@ -112,7 +112,7 @@ export default function AccountSettingsComponent() {
             );
 
         // change password
-        } else if (state == 'change-password') {
+        } else if (state === 'change-password') {
             return (
                 <div>
                     <p>password change</p>
@@ -123,7 +123,7 @@ export default function AccountSettingsComponent() {
         } else { 
             return (
                 <center>
-                    <h2 className="page-title phone-none">Account settings</h2>
+                    <h2 className="page-title">Account settings</h2>
                     <div className="table-responsive account-settings-table">
                         <table className="table table-dark">
                             <tbody>

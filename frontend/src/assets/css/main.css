@@ -17,6 +17,14 @@
     background-color: #313131;
 }
 
+.container {
+    margin-top: 20px;
+}
+
+.border {
+    border: 1px solid rgba(255, 255, 255, 0.24) !important;
+}
+
 .ml-3 {
     margin-left: 3px;
 }
@@ -225,10 +233,7 @@ button {
     }
 	.page-title {
 		font-size: 23px;
-	}
-	.phone-none {
-		display: none;
-	}
+	}   
 	.account-settings-table {
 		max-width: 100%;
 	}

@@ -110,7 +110,6 @@ export default function LoginComponent()
         return (
             <div className='component'>
                 <NavigationComponent/>
-
                 <div className='container mt-5 mb-5'>
                     <div className='w-4/5 m-auto text-center'>
                         <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
@@ -118,7 +117,7 @@ export default function LoginComponent()
                                 <div className='row d-flex justify-content-center align-items-center h-100'>
                                     <div className='col-12 col-md-9 col-lg-7 col-xl-6'>
                                         <div className='card bg-dark'>
-                                            <div className='card-body p-5 text-light'>
+                                            <div className='card-body p-5 text-light border'>
                                                 <h2 className='text-uppercase text-center mb-3 text-light'>Login</h2>
 
                                                 {error_msg !== null && (

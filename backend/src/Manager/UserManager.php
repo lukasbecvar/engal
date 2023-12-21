@@ -294,4 +294,26 @@ class UserManager
     public function getUserRole(string $token) {
         return $this->getUserRepository(['token' => $token])->getRole();
     }
+
+    /**
+     * Update the profile picture for the user identified by the provided token.
+     *
+     * @param string $token The token associated with the user.
+     * @param string $base_image The base64-encoded image data for the new profile picture.
+     *
+     * @return void
+     */
+    public function updateProfilePic(string $token, string $base_image): void
+    {
+        // get user repository
+        $user = $this->getUserRepository(['token' => $token]);
+
+        // update profile image
+        try {
+            $user->setProfileImage($base_image);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to update profile image: '.$e->getMessage(), 500);
+        }
+    }
 }

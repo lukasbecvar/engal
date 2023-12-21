@@ -14,7 +14,12 @@ This is only the basic version which will be extended and improved in the future
 - [X] Upload progress bar
 - [X] Check server free space before upload new images
 - [X] Dashboard user panel (show profile pic, username, role, link to account settings)
-- [ ] Account settings (change username, password, profile pic)
+
+- [ ] Account settings:
+  - [X] Profile pic change
+  - [ ] Username change
+  - [ ] Password change 
+
 - [ ] Recode storage system (store data in database [name, gallery-name, date, image-content-link])
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse

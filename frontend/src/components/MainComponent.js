@@ -175,7 +175,7 @@ export default function MainComponent()
                         </div>
                     </div>
                 </nav>
-                {container}
+                <div className='main-component'>{container}</div>
             </div>
         );
     }

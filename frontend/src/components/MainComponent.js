@@ -150,7 +150,7 @@ export default function MainComponent()
         }
 
         // render user panel component
-        if (role == 'Owner' || role == 'Admin') {
+        if (role === 'Owner' || role === 'Admin') {
             profile_panel = <span className='user-panel red-text'>{username}</span>;
         } else {
             profile_panel = <span className='user-panel green-text'>{username}</span>

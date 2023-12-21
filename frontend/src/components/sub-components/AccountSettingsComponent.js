@@ -121,6 +121,7 @@ export default function AccountSettingsComponent()
                     <div className="table-responsive account-settings-table">
                         <table className="table table-dark">
                             <tbody>
+                                {/* profile pic change link */}
                                 <tr className="line-item">
                                     <th scope='row'>profile-pic: 
                                         <img className="profile-pics-admin-settings" src={'data:image/jpeg;base64,' + profile_image} alt="profile-pic"/>
@@ -129,12 +130,16 @@ export default function AccountSettingsComponent()
                                         <button type='button' className='change-button' onClick={changeProfilePic}>change</button>
                                     </th>
                                 </tr>
+
+                                {/* username chnage link */}
                                 <tr className="line-item">
                                     <th scope='row'>username: {username}</th>
                                     <th scope='row'>
                                         <button type='button' className='change-button' onClick={changeUsername}>change</button>
                                     </th>
                                 </tr>
+
+                                {/* password change link */}
                                 <tr className="line-item">
                                     <th scope='row'>password: **********</th>
                                     <th scope='row'>

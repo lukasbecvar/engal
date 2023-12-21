@@ -64,7 +64,6 @@ export default function ApiUrlSetupComponent()
 
     return (
         <div className='component'>
-
             <div className='container mt-5'>
                 <div className='w-4/5 m-auto text-center'>
                     <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
@@ -75,12 +74,15 @@ export default function ApiUrlSetupComponent()
                                         <div className='card-body p-5 text-light'>
                                             <h2 className='text-uppercase text-center mb-3 text-light'>Set your API URL</h2>
 
+                                            {/* error box alert */}
                                             {error_msg !== null && (
                                                 <ErrorBoxComponent error_msg={error_msg}/>
                                             )}
 
                                             <div className='set-api-url-form'>
                                                 <input type='text' placeholder='url' name='api-url' className='form-control form-control-lg mb-0' onChange={handleInputChange} onKeyDown={handleKeyPress}/>
+                                                
+                                                {/* form submit button */}
                                                 <div className='m-3 justify-content-center'>
                                                     <button type='button' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={set}>Save</button>
                                                 </div>

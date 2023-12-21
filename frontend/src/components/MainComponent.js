@@ -158,10 +158,13 @@ export default function MainComponent()
                             <button type='button' onClick={clickOnProfile}>
                                 <img className='profile-image' src={"data:image/jpeg;base64," + profile_image} alt="profile-pic"/>
                             </button>
-                            
+
+                            {/* include user panel */}
                             {profile_panel}
 
                         </div>
+
+                        {/* navigation links */}
                         <div className='nav-space'>
                             <button className='nav-link' onClick={(showList)}>LIST</button>
                             <button className='nav-link' onClick={showUpload}>UPLOAD</button>

@@ -8,10 +8,10 @@ import { getApiUrl } from "../utils/ApiUtils";
 import { getUserToken } from "../utils/AuthUtils";
 
 // import engal components
+import GalleryBrowserComponent from "./GalleryBrowserComponent";
 import CustomErrorComponent from "./errors/CustomErrorComponent";
 import LoadingComponent from "./sub-components/LoadingComponent";
 import GalleryComponent from "./sub-components/GalleryComponent";
-import GalleryBrowserComponent from "./GalleryBrowserComponent";
 
 export default function GalleryListComponent() 
 {

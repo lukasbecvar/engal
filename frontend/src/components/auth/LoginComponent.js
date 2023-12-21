@@ -51,9 +51,9 @@ export default function LoginComponent()
 
         // validation checks for username and password
         if (username === null || username === '') {
-            setErrorMsg('username is empty!');
+            setErrorMsg('username input is empty!');
         } else if (password === null || password === '') {
-            setErrorMsg('password is empty!');
+            setErrorMsg('password input is empty!');
         } else {
             try {
                 const formData = new FormData();
@@ -120,6 +120,7 @@ export default function LoginComponent()
                                             <div className='card-body p-5 text-light border'>
                                                 <h2 className='text-uppercase text-center mb-3 text-light'>Login</h2>
 
+                                                {/* error box alert */}
                                                 {error_msg !== null && (
                                                     <ErrorBoxComponent error_msg={error_msg}/>
                                                 )}
@@ -128,6 +129,7 @@ export default function LoginComponent()
                                                     <input type='text' name='username' placeholder='Username' className='form-control form-control-lg mb-0' autoComplete='off' onChange={handleUsernameInputChange} onKeyDown={handleKeyPress}/><br/>
                                                     <input type='password' name='password' placeholder='Password' className='form-control form-control-lg' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
+                                                    {/* login submit button */}
                                                     <div className='m-3 justify-content-center'>
                                                         <button type='button' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={login}>Login</button>
                                                     </div>

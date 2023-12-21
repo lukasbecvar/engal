@@ -166,7 +166,6 @@ export default function RegisterComponent()
             return (
                 <div className='component'>
                     <NavigationComponent/>
-
                     <div className='container mt-5 mb-5'>
                         <div className='w-4/5 m-auto text-center'>
                             <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
@@ -174,9 +173,10 @@ export default function RegisterComponent()
                                     <div className='row d-flex justify-content-center align-items-center h-100'>
                                         <div className='col-12 col-md-9 col-lg-7 col-xl-6'>
                                             <div className='card bg-dark'>
-                                                <div className='card-body p-5 text-light border'>
+                                                <div className='card-body p-5 text-light'>
                                                     <h2 className='text-uppercase text-center mb-3 text-light'>Create an account</h2>
                                                 
+                                                    {/* error box alert */}
                                                     {error_msg !== null && (
                                                         <ErrorBoxComponent error_msg={error_msg}/>
                                                     )}
@@ -186,6 +186,7 @@ export default function RegisterComponent()
                                                         <input type='password' name='password' placeholder='Password' className='form-control form-control-lg mb-0' onChange={handlePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
                                                         <input type='password' name='re-password' placeholder='Password again' className='form-control form-control-lg mb-0' onChange={handleRePasswordInputChange} onKeyDown={handleKeyPress}/><br/>
 
+                                                        {/* register submit button */}
                                                         <div className='m-3 justify-content-center'>
                                                             <button type='submit' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={register}>Register</button>
                                                         </div>

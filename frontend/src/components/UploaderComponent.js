@@ -69,11 +69,11 @@ export default function UploaderComponent()
             gallery_name = new_gallery_name;
         }
 
-        // check gallery name lenght reached
+        // check gallery name length reached
         if (gallery_name.length >= 31) {
             setErrorMsg('maximal gallery name length is 30 characters');
 
-        // check gallery name minimal lenght
+        // check gallery name minimal length
         } else if (gallery_name.length <= 3) {
             setErrorMsg('minimal gallery name length is 4 characters');
 
@@ -219,6 +219,7 @@ export default function UploaderComponent()
                                             <div className='card-body p-5 text-light'>
                                                 <h2 className='text-uppercase text-center mb-3 text-light'>Image upload</h2>
                                                 
+                                                {/* upload progress bar */}
                                                 {percentage !== 0 && (
                                                     <div className="progress mb-3">
                                                         <div
@@ -233,29 +234,38 @@ export default function UploaderComponent()
                                                     </div>
                                                 )}
 
+                                                {/* warning message box alert */}
                                                 {warning_message !== null && (
                                                     <WarningMessageBox warning_message={warning_message}/>
                                                 )}
 
+                                                {/* error message box alert */}
                                                 {error_msg !== null && (
                                                     <ErrorBoxComponent error_msg={error_msg}/>
                                                 )}
 
+                                                {/* success message box alert */}
                                                 {success_message !== null && error_msg === null && (
                                                     <SuccessMessageBox success_message={success_message}/>
                                                 )}
     
                                                 <div className='upload-form'>
+                                                    
+                                                    {/* files input */}
                                                     <label htmlFor='images' className='form-label'>Image(s)</label>
                                                     <input type='file' id='images' name='images[]' className='form-control mb-3' multiple accept='image/*' onChange={handleImageChange}/>
     
-                                                    <label htmlFor='galleryName' className='form-label'>Gallery Name</label>
-                                                    <select id='galleryName' name='galleryName' className='form-control form-control-lg mb-3' onChange={handleGalleryChange}>
-                                                        {gallery_options.map((option) => (
-                                                            <option key={option} value={option}>{option}</option>
-                                                        ))}
-                                                    </select>
-    
+                                                    {/* gallery name selection */}
+                                                    <span>
+                                                        <label htmlFor='galleryName' className='form-label'>Gallery Name</label>
+                                                        <select id='galleryName' name='galleryName' className='form-control form-control-lg mb-3' onChange={handleGalleryChange}>
+                                                            {gallery_options.map((option) => (
+                                                                <option key={option} value={option}>{option}</option>
+                                                            ))}
+                                                        </select>
+                                                    </span>
+                                                
+                                                    {/* show new gallery input (if selected) */}
                                                     {selected_gallery === 'New gallery' && (
                                                         <div>
                                                             <label htmlFor='newGalleryName' className='form-label'>New Gallery Name</label>
@@ -263,6 +273,7 @@ export default function UploaderComponent()
                                                         </div>
                                                     )}
     
+                                                    {/* show new gallery input (if list empty) */}
                                                     {gallery_options.length <= 1 && (
                                                         <div>
                                                             <label htmlFor='newGalleryName' className='form-label'>New Gallery Name</label>
@@ -270,6 +281,7 @@ export default function UploaderComponent()
                                                         </div>
                                                     )}
     
+                                                    {/* upload submit button */}
                                                     <div className='m-3 justify-content-center'>
                                                         <button type='button' className='btn btn-success btn-block btn-lg gradient-custom-4 text-light' onClick={handleUpload}>Upload</button>
                                                     </div>

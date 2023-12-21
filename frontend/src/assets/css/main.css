@@ -132,6 +132,7 @@ button {
     width: 100%;
     margin-top: -50px;
     z-index: 900;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.24);
 }
 
 .main-component {
@@ -167,6 +168,50 @@ button {
     font-weight: bold;
 }
 
+.page-title {
+	text-align: center; 
+	color: white;
+	font-size: 30px;
+	margin-top: 3%;
+}
+
+.account-settings-table {
+	border: 1px solid rgba(255, 255, 255, 0.24);
+	max-width: 50%;
+}
+
+.table {
+	position: relative;
+	font-size: 18px;
+	margin-bottom: 0px;
+	background-color: rgb(27, 27, 27);
+	color: white;
+}
+
+.line-item {
+	border-top: 2px solid #242627;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.line-item:hover {
+	background-color: rgba(87, 87, 87, 0.397);
+}
+
+.profile-pics-admin-settings {
+	max-width: 40px;
+    margin-left: 5px;
+}
+
+.change-button {
+    color: rgb(44, 44, 255);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.change-button:hover {
+    color: rgb(67, 67, 255);   
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 
@@ -177,6 +222,25 @@ button {
     }
     #lg-prev-2, #lg-next-2 {
         display: none;
+    }
+	.page-title {
+		font-size: 23px;
+	}
+	.phone-none {
+		display: none;
+	}
+	.account-settings-table {
+		max-width: 100%;
+	}
+	.table {
+		font-size: 13px;
+	}
+    .profile-pics-admin-settings {
+        margin-left: 5px;
+        max-width: 30px;
+        max-height: 30px;
+        min-width: 30px;
+        min-height: 30px;
     }
 }
 

@@ -22,7 +22,6 @@ This is only the basic version which will be extended and improved in the future
 - [ ] Image delete function
 - [ ] Image edit function (move to gallery, rename)
 - [ ] Document api errors & endpoints
-- [ ] Redesign UI
 - [ ] Port Frontend to electron + (react native mobile app)
 - [ ] Content encryption (only in backend storage)
 
@@ -30,6 +29,7 @@ This is only the basic version which will be extended and improved in the future
 - [ ] Share gallery with other user
 - [ ] Rate images 1 - 5
 - [ ] Favorite images
+- [ ] Redesign UI
 
 ## Dependencies 
 * Symfony

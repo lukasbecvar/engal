@@ -78,7 +78,7 @@ class StorageManager
         $max_file_size = $max_file_size_value * 1024 * 1024;
 
         // get username (who makes upload)
-        $username = $this->userManager->getUsernameByToken($token);
+        $username = $this->userManager->getUsername($token);
 
         // create storage dir
         if (!file_exists($this->storage_directory)) {

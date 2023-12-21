@@ -270,8 +270,28 @@ class UserManager
      * @param string $token The user token.
      * @return string|null The username or null if not found.
      */
-    public function getUsernameByToken(string $token): ?string
+    public function getUsername(string $token): ?string
     {
         return $this->getUserRepository(['token' => $token])->getUsername();
+    }
+
+    /**
+     * Gets the profile picture for a given user token.
+     *
+     * @param string $token The user token.
+     * @return string|null The profile pic or null if not found.
+     */
+    public function getProfilePic(string $token) {
+        return $this->getUserRepository(['token' => $token])->getProfileImage();
+    }
+
+    /**
+     * Gets the user role for a given user token.
+     *
+     * @param string $token The user token.
+     * @return string|null The role or null if not found.
+     */
+    public function getUserRole(string $token) {
+        return $this->getUserRepository(['token' => $token])->getRole();
     }
 }

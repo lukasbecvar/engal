@@ -86,7 +86,7 @@ export default function LoginComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('error:', error);
+                    console.error('error: ', error);
                 }
                 setErrorMsg('request error, please report this to your administrator');
             }

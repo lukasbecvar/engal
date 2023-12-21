@@ -70,7 +70,7 @@ class GalleryListController extends AbstractController
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {
 
             // get username
-            $username = $this->userManager->getUsernameByToken($token);
+            $username = $this->userManager->getUsername($token);
 
             // get gallery list by username
             $gallery_list = $this->storageManager->getGalleryListByUsername($username);

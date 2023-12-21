@@ -13,7 +13,7 @@ This is only the basic version which will be extended and improved in the future
 ## Version 4.0 TODO-LIST
 - [X] Upload progress bar
 - [X] Check server free space before upload new images
-- [ ] Dashboard user panel (show profile pic, username, role, link to account settings)
+- [X] Dashboard user panel (show profile pic, username, role, link to account settings)
 - [ ] Account settings (change username, password, profile pic)
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse

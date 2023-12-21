@@ -5,6 +5,14 @@
     box-sizing: border-box;
 }
 
+.red-text {
+    color: rgb(240, 78, 78) !important;
+}
+
+.green-text {
+    color: rgb(103, 255, 103) !important;
+}
+
 .component {
     background-color: #313131;
 }
@@ -95,7 +103,7 @@ button {
 }
   
 .page-button:hover {
-    color: rgb(216, 99, 99)
+    color: rgb(216, 99, 99);
 }
 
 .underline {
@@ -108,6 +116,48 @@ button {
     background-color: #212529;
 }
 
+.profile-image {
+    max-width: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    margin-left: -10px;
+    margin-bottom: 3px;
+    border: 1px solid rgb(194, 194, 194);
+}
+
+.navbar {
+    padding: 4px;
+}
+
+.nav-space {
+    display: flex;
+    margin-right: -4px;
+}
+
+.nav-link {
+    position: relative;
+    color: rgb(190, 190, 190);
+    margin-left: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: #0f9785;
+}
+
+.nav-link:focus {
+    color: #0f9785;
+}
+
+.user-panel {
+    margin-left: 5px;
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 
@@ -117,6 +167,12 @@ button {
         height: 83%;
     }
     #lg-prev-2, #lg-next-2 {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .user-panel {
         display: none;
     }
 }

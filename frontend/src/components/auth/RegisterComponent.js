@@ -50,7 +50,7 @@ export default function RegisterComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('error:', error);
+                    console.error('error: ', error);
                 }
                 setErrorMsg('request error, please report this to your administrator');
             }
@@ -123,7 +123,7 @@ export default function RegisterComponent()
                 // check error
                 if (!response.ok) {
                     if (DEV_MODE) {
-                        console.error('error:', response.status);
+                        console.error('error: ', response.status);
                     }
                     return;
                 }
@@ -141,7 +141,7 @@ export default function RegisterComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('error:', error);
+                    console.error('error: ', error);
                 }
                 setErrorMsg('request error, please report this to your administrator');
             }

@@ -135,7 +135,7 @@ export default function UploaderComponent()
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('error during upload:', error);
+                    console.error('error during upload: ', error);
                 }
                 setErrorMsg('unknown upload error, please contact your administrator');
             } finally {

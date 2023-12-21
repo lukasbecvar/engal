@@ -76,7 +76,9 @@ class UserStatusController extends AbstractController
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'username' => $this->userManager->getUsernameByToken($token)
+                'username' => $this->userManager->getUsername($token),
+                'role' => $this->userManager->getUserRole($token),
+                'profile_pic' => $this->userManager->getProfilePic($token)
             ]);
         } else {
             return $this->json([

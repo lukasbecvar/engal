@@ -12,13 +12,23 @@ import { getUserToken, userLogout } from '../utils/AuthUtils';
 import UploaderComponent from './UploaderComponent';
 import GalleryListComponent from './GalleryListComponent';
 import LoadingComponent from './sub-components/LoadingComponent';
+import CustomErrorComponent from './errors/CustomErrorComponent';
+import AccountSettingsComponent from './sub-components/AccountSettingsComponent';
 
 export default function MainComponent() 
 {
     // state variables for managing component state
     const [loading, setLoading] = useState(true);
     const [upload, setUpload] = useState(false);
+    const [account_settings, setAccountSettings] = useState(false);
+
+    // user data state
+    const [username, setUsername] = useState(null);
+    const [role, setRole] = useState(null);
+    const [profile_image, setProfileImage] = useState(null);
+
     let container = null;
+    let profile_panel = null;
 
     // get api url
     let api_url = getApiUrl();
@@ -42,7 +52,7 @@ export default function MainComponent()
             // check error
             if (!response.ok) {
                 if (DEV_MODE) {
-                    console.error('error:', response.status);
+                    console.error('error: ', response.status);
                 }
                 return;
             }
@@ -53,10 +63,50 @@ export default function MainComponent()
             }
         } catch (error) {
             if (DEV_MODE) {
-                console.error('error:', error);
+                console.error('error: ', error);
             }
         }
     }
+
+    useEffect(() => {
+        // get user status
+        const fetchUserStatus = async () => {
+            try {
+                const formData = new FormData();
+    
+                // set post data
+                formData.append('token', user_token);
+
+                // send request
+                const response = await fetch(api_url + '/user/status', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // get response
+                const result = await response.json();
+
+                // check response
+                if (result.status === 'success') {
+                    setUsername(result.username);
+                    setRole(result.role);
+                    setProfileImage(result.profile_pic);
+                } else {
+                    if (DEV_MODE) {
+                        console.error('error fetching user status: ', result.message);
+                    }
+                }
+            } catch (error) {
+                if (DEV_MODE) {
+                    console.error('error fetching user status: ', error);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserStatus();
+    }, [api_url, user_token]);
 
     useEffect(() => {
         // disable loading
@@ -66,6 +116,7 @@ export default function MainComponent()
     // show upload page
     function showUpload() {
         setUpload(true);
+        setAccountSettings(false);
     }
 
     // disable components for show gallery list
@@ -73,16 +124,36 @@ export default function MainComponent()
         appReload();
     }
 
+    // show account settings component
+    function clickOnProfile() {
+        setUpload(false);
+        setAccountSettings(true);
+    }
+
     // show loading
     if (loading === true) {
         return (<LoadingComponent/>);
     } else {
 
+        // check minimal screen width
+        if (window.innerWidth <= 234) {
+            return <CustomErrorComponent error_message={'Your screen is not supported, minimal screen width is 235'}/>
+        }
+
         // render component to container
         if (upload) {
             container = <UploaderComponent/>;
+        } else if (account_settings) {
+            container = <AccountSettingsComponent/>;
         } else {
             container = <GalleryListComponent/>;
+        }
+
+        // render user panel component
+        if (role == 'Owner' || role == 'Admin') {
+            profile_panel = <span className='user-panel red-text'>{username}</span>;
+        } else {
+            profile_panel = <span className='user-panel green-text'>{username}</span>
         }
 
         return (
@@ -90,23 +161,17 @@ export default function MainComponent()
                 <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
                     <div className='container-fluid'>
                         <div id='navbarSupportedContent'>
-                            <ul className='navbar-nav me-auto'>
-                                <li className='nav-item active'>
-                                    <button className='nav-link' onClick={(showList)}>List</button>
-                                </li>
-                            </ul>
+                            <button type='button' onClick={clickOnProfile}>
+                                <img className='profile-image' src={"data:image/jpeg;base64," + profile_image} alt="profile-pic"/>
+                            </button>
+                            
+                            {profile_panel}
+
                         </div>
-                        <div className='d-flex'>
-                            <ul className='navbar-nav ms-auto'>
-                                <li className='nav-item me-2'>
-                                    <button className='nav-link' onClick={showUpload}>Upload</button>
-                                </li>
-                            </ul>
-                            <ul className='navbar-nav ms-auto'>
-                                <li className='nav-item'>
-                                    <button className='nav-link' onClick={logout}>Logout</button>
-                                </li>
-                            </ul>
+                        <div className='nav-space'>
+                            <button className='nav-link' onClick={(showList)}>List</button>
+                            <button className='nav-link' onClick={showUpload}>Upload</button>
+                            <button className='nav-link' onClick={logout}>Logout</button>
                         </div>
                     </div>
                 </nav>

@@ -80,7 +80,7 @@ class ImageListController extends AbstractController
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {
 
             // get username
-            $username = $this->userManager->getUsernameByToken($token);
+            $username = $this->userManager->getUsername($token);
 
             // check if gallery exist
             if ($this->storageManager->checkIfGalleryExist($username, $gallery)) {

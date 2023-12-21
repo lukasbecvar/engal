@@ -14,6 +14,9 @@ import ErrorBoxComponent from '../sub-components/alerts/ErrorBoxComponent';
 
 export default function LoginComponent() 
 {
+    // update app title
+    document.title = 'Engal: login';
+    
     // retrieve API URL from local storage
     let api_url = getApiUrl();
 

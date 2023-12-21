@@ -15,6 +15,9 @@ import GalleryBrowserComponent from "./GalleryBrowserComponent";
 
 export default function GalleryListComponent() 
 {
+    // update app title
+    document.title = 'Engal: gallery list';
+
     // retrieve API URL from local storage
     let api_url = getApiUrl();
 

@@ -16,6 +16,9 @@ import WarningMessageBox from './sub-components/alerts/WarningMessageBox';
 
 export default function UploaderComponent() 
 {
+    // update app title
+    document.title = 'Engal: upload';
+
     // retrieve API URL from local storage
     let api_url = getApiUrl();
 

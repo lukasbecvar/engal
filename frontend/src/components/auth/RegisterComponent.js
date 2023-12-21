@@ -15,6 +15,9 @@ import RegisterDisabledComponent from '../errors/RegisterDisabledComponent';
 
 export default function RegisterComponent() 
 {
+    // update app title
+    document.title = 'Engal: register';
+
     // state variables for managing component state
     const [status, setStatus] = useState(true);
     const [is_login, setLogin] = useState(false);

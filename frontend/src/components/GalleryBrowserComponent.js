@@ -29,6 +29,9 @@ import CustomErrorComponent from './errors/CustomErrorComponent';
 
 export default function GalleryBrowserComponent(props) 
 {
+    // update app title
+    document.title = 'Engal: gallery ' + props.gallery_name;
+
     // state variables for managing component state
     const [error, setError] = useState(null);
     

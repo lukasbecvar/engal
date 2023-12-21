@@ -14,6 +14,7 @@ This is only the basic version which will be extended and improved in the future
 - [X] Upload progress bar
 - [X] Check server free space before upload new images
 - [X] Dashboard user panel (show profile pic, username, role, link to account settings)
+- [ ] Process all form validation in backend api
 - [ ] Account settings (change username, password, profile pic)
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse

@@ -220,6 +220,64 @@ button {
     color: rgb(67, 67, 255);   
 }
 
+.form {
+	padding: 2%;
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: 400px;
+}
+
+.form-title {
+	color: white;
+	text-align: center;
+}
+
+.input-button {
+	padding: 5px;
+	margin-top: 7px;
+	border: 1px solid rgba(255, 255, 255, 0.24);
+	background: rgba(255, 255, 255, 0.062);
+	text-align: center;
+	font-family: arial;
+	font-size: 18px;
+	color: white;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-decoration: none;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.input-button:hover {
+	border: 1px solid rgba(255, 255, 255, 0.2419);
+	background: rgba(255, 255, 255, 0.103);
+}
+
+.text-input {
+	border: 1px solid rgba(255, 255, 255, 0.24);
+	background: rgba(255, 255, 255, 0.062);
+	text-align: center;
+	font-family: arial;
+	font-size: 17px;
+	margin: 3px;
+	padding: 4px;
+	color: white;
+	transition: all 0.2s ease;
+	width: 98.5%;
+}
+
+.back-to-table {
+    margin-left: 3px;
+    text-decoration: underline;
+    color: rgb(206, 206, 206);
+}
+
+.back-to-table:hover {
+    color: rgb(255, 82, 82);
+}
+
 @media screen and (max-width: 800px) { 
     .gallery-link {
         width: 150px; 
@@ -247,6 +305,15 @@ button {
         min-width: 30px;
         min-height: 30px;
     }
+	.form {
+		padding: 4%;
+		top: 40%;
+		left: 50%;
+		width: 90%;
+	}
+	.form-title {
+		font-size: 20px;
+	}
 }
 
 @media screen and (max-width: 350px) {

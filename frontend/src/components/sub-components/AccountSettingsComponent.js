@@ -9,9 +9,12 @@ import { getUserToken } from '../../utils/AuthUtils';
 
 // import engal components
 import LoadingComponent from "./LoadingComponent";
+import PasswordChangeComponent from './account-settings/PasswordChangeComponent';
+import UsernameChangeComponent from './account-settings/UsernameChangeComponent';
+import ProfilePicChangeComponent from './account-settings/ProfilePicChangeComponent';
 
-export default function AccountSettingsComponent() {
-
+export default function AccountSettingsComponent() 
+{
     // update app title
     document.title = 'Engal: account settings';
 
@@ -88,6 +91,12 @@ export default function AccountSettingsComponent() {
         setState('change-password');
     }
 
+    let show_panel_element = 
+        <span className='text-light'>
+            back to table:
+            <button type='button' className='back-to-table' onClick={showPanel}>here</button>
+        </span>;
+
     // show loading
     if (loading) {
         return <LoadingComponent/>
@@ -95,31 +104,16 @@ export default function AccountSettingsComponent() {
 
         // change profile-pic
         if (state === 'change-pic') {
-            return (
-                <div>
-                    <p>pic change</p>
-                    <button type='button' onClick={showPanel}>back</button>
-                </div>
-            );
+            return <ProfilePicChangeComponent show_panel_element={show_panel_element}/>;
 
         // change username
         } else if (state === 'change-username') {
-            return (
-                <div>
-                    <p>username change</p>
-                    <button type='button' onClick={showPanel}>back</button>
-                </div>
-            );
+            return <UsernameChangeComponent show_panel_element={show_panel_element}/>;
 
         // change password
         } else if (state === 'change-password') {
-            return (
-                <div>
-                    <p>password change</p>
-                    <button type='button' onClick={showPanel}>back</button>
-                </div>
-            );
-
+            return <PasswordChangeComponent show_panel_element={show_panel_element}/>;
+            
         } else { 
             return (
                 <center>

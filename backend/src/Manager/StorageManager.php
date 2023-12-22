@@ -318,4 +318,13 @@ class StorageManager
         }
         return null;
     }
+
+    public function renameStorage(string $storage_name, string $new_storage_name): void 
+    {
+        try {
+            rename($this->storage_directory.$storage_name, $this->storage_directory.$new_storage_name);
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to rename user storage: '.$storage_name.' -> '.$new_storage_name.', error: '.$e->getMessage(), 500);
+        }
+    }
 }

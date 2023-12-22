@@ -186,6 +186,32 @@ class UsernameChangeTest extends WebTestCase
     }
 
     /**
+     * Tests changing username with exist name.
+     */
+    public function testChangeUsernameWithExistName(): void
+    {
+        // make post request
+        $this->client->request('POST', '/account/settings/username', [
+            'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D',
+            'new_username' => 'test_username'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+        
+        // decode JSON content
+        $data = json_decode($content, true);
+            
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'username is already in use');
+    }
+
+    /**
      * Tests changing username with valid data.
      */
     public function testChangeUsernameWithValidData(): void

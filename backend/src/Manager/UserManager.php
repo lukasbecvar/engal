@@ -39,6 +39,7 @@ class UserManager
      */
     private EntityManagerInterface $entityManager;
     
+
     /**
      * UserManager constructor.
      * @param LogManager $logManager The log manager.
@@ -315,6 +316,8 @@ class UserManager
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to update profile image: '.$e->getMessage(), 500);
         }
+
+        $this->logManager->log('account-settings', $user->getUsername().' change self profile picture');
     }
 
     /**
@@ -330,6 +333,8 @@ class UserManager
         // get user repository
         $user = $this->getUserRepository(['token' => $token]);
 
+        $old_username = $user->getUsername();
+
         // update profile image
         try {
             $user->setUsername($new_username);
@@ -337,6 +342,8 @@ class UserManager
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to update username: '.$e->getMessage(), 500);
         }
+
+        $this->logManager->log('account-settings', $old_username.' change self username to: '.$new_username);
     }
 
     /**
@@ -359,5 +366,7 @@ class UserManager
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to update password: '.$e->getMessage(), 500);
         }
+
+        $this->logManager->log('account-settings', $user->getUsername().' change self password');
     }
 }

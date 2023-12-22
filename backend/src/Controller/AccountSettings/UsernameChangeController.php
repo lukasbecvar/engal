@@ -4,6 +4,7 @@ namespace App\Controller\AccountSettings;
 
 use App\Util\SecurityUtil;
 use App\Manager\UserManager;
+use App\Manager\StorageManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class UsernameChangeController extends AbstractController
 {
     /**
      * @var UserManager $userManager The user manager.
-     */
+     */ 
     private UserManager $userManager;
 
     /**
@@ -26,15 +27,25 @@ class UsernameChangeController extends AbstractController
     private SecurityUtil $securityUtil;
 
     /**
+     * @var StorageManager $storageManager The storage manager.
+     */
+    private StorageManager $storageManager;
+
+    /**
      * ChangeProfilePicController constructor.
      *
      * @param UserManager $userManager The user manager.
      * @param SecurityUtil $securityUtil The security utility.
+     * @param StorageManager $storageManager The storage manager.
      */
-    public function __construct(UserManager $userManager, SecurityUtil $securityUtil)
-    {
+    public function __construct(
+        UserManager $userManager, 
+        SecurityUtil $securityUtil, 
+        StorageManager $storageManager
+    ) {
         $this->userManager = $userManager;
         $this->securityUtil = $securityUtil;
+        $this->storageManager = $storageManager;
     }
 
     /**
@@ -96,6 +107,14 @@ class UsernameChangeController extends AbstractController
             ]);  
         }
 
+        // check if username exist
+        if ($this->userManager->getUserRepository(['username' => $new_username]) != null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'username is already in use'
+            ]); 
+        }
 
         // escape post data
         $token = $this->securityUtil->escapeString($token);
@@ -104,8 +123,16 @@ class UsernameChangeController extends AbstractController
         // check if user found in database
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {
             
+            // get old username
+            $old_username = $this->userManager->getUsername($token);
+
             // update username
             $this->userManager->updateUsername($token, $new_username);
+
+            // rename user storage
+            if ($this->userManager->getUsername($token) == $new_username) {
+                $this->storageManager->renameStorage($old_username, $new_username);
+            }
 
             // return success message
             return $this->json([

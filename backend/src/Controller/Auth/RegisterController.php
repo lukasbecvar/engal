@@ -106,11 +106,6 @@ class RegisterController extends AbstractController
             ]); 
         }  
 
-        // escape post data
-        $username = $this->securityUtil->escapeString($username);
-        $password = $this->securityUtil->escapeString($password);
-        $re_password = $this->securityUtil->escapeString($re_password);
-
         // check if inputs including spaces
         if (strpos($username, ' ') && strpos($password, ' ') && strpos($re_password, ' ')) {
             return $this->json([
@@ -155,6 +150,11 @@ class RegisterController extends AbstractController
                 'message' => 'maximal password length is 50 characters'
             ]);  
         }
+
+        // escape post data
+        $username = $this->securityUtil->escapeString($username);
+        $password = $this->securityUtil->escapeString($password);
+        $re_password = $this->securityUtil->escapeString($re_password);
 
         // check if passwords si matched
         if ($password != $re_password) {

@@ -53,7 +53,7 @@ class ChangeProfilePicTest extends WebTestCase
         }
     }
 
-    /**
+   /**
      * Tear down test data and environment.
      */
     protected function tearDown(): void
@@ -69,7 +69,7 @@ class ChangeProfilePicTest extends WebTestCase
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
         $userRepository = $entityManager->getRepository(User::class);
-        $fakeUser = $userRepository->findOneBy(['username' => 'test_username']);
+        $fakeUser = $userRepository->findOneBy(['token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D']);
     
         // check if user exist
         if ($fakeUser) {
@@ -87,7 +87,7 @@ class ChangeProfilePicTest extends WebTestCase
     /**
      * Tests the behavior when the token is empty.
      */
-    public function testChangeWithEmptyToken(): void
+    public function testChangePicWithEmptyToken(): void
     {
         // make post request
         $this->client->request('POST', '/account/settings/pic');
@@ -110,7 +110,7 @@ class ChangeProfilePicTest extends WebTestCase
     /**
      * Tests the behavior when the image is empty.
      */
-    public function testChangeWithEmptyImage(): void
+    public function testChangePicWithEmptyImage(): void
     {
         // make post request
         $this->client->request('POST', '/account/settings/pic', [
@@ -135,7 +135,7 @@ class ChangeProfilePicTest extends WebTestCase
     /**
      * Tests the behavior when an invalid token is provided.
      */
-    public function testChangeWithInvalidToken(): void
+    public function testChangePicWithInvalidToken(): void
     {
         // make post request
         $this->client->request('POST', '/account/settings/pic', [
@@ -161,7 +161,7 @@ class ChangeProfilePicTest extends WebTestCase
     /**
      * Tests the behavior with valid data.
      */
-    public function testChangeWithValidData(): void
+    public function testChangePicWithValidData(): void
     {
         // make post request
         $this->client->request('POST', '/account/settings/pic', [

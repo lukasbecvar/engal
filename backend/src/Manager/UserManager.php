@@ -316,4 +316,26 @@ class UserManager
             $this->errorManager->handleError('error to update profile image: '.$e->getMessage(), 500);
         }
     }
+
+    /**
+     * Updates the username of the user associated with the provided token.
+     *
+     * @param string $token The authentication token of the user.
+     * @param string $new_username The new username to be set for the user.
+     * 
+     * @return void
+     */
+    public function updateUsername(string $token, string $new_username): void
+    {
+        // get user repository
+        $user = $this->getUserRepository(['token' => $token]);
+
+        // update profile image
+        try {
+            $user->setUsername($new_username);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to update username: '.$e->getMessage(), 500);
+        }
+    }
 }

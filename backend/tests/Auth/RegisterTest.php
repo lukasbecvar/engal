@@ -63,7 +63,7 @@ class RegisterTest extends WebTestCase
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
         $userRepository = $entityManager->getRepository(User::class);
-        $fakeUser = $userRepository->findOneBy(['username' => 'testing_username']);
+        $fakeUser = $userRepository->findOneBy(['username' => 'testing_username-15479']);
 
         // check if user exist
         if ($fakeUser) {
@@ -377,7 +377,7 @@ class RegisterTest extends WebTestCase
 
         // make post request
         $this->client->request('POST', '/register', [
-            'username' => 'testing_username',
+            'username' => 'testing_username-15479',
             'password' => 'testing_password_1',
             're-password' => 'testing_password_1'
         ]);
@@ -394,6 +394,6 @@ class RegisterTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'user: testing_username registered successfully');
+        $this->assertSame($data['message'], 'user: testing_username-15479 registered successfully');
     }
 }

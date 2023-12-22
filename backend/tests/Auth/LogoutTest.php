@@ -69,7 +69,7 @@ class LogoutTest extends WebTestCase
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
         $userRepository = $entityManager->getRepository(User::class);
-        $fakeUser = $userRepository->findOneBy(['username' => 'test_username']);
+        $fakeUser = $userRepository->findOneBy(['token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D']);
     
         // check if user exist
         if ($fakeUser) {

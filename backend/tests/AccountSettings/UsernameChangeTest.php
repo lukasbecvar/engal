@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\AccountSettings;
 
 use App\Entity\User;
+use Symfony\Component\String\ByteString;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class UserStatusTest
- * @package App\Tests
+ * Class UsernameChangeTest
+ * @package App\Tests\AccountSettings
  */
-class UserStatusTest extends WebTestCase
+class UsernameChangeTest extends WebTestCase
 {
     /**
      * @var mixed
@@ -17,7 +18,7 @@ class UserStatusTest extends WebTestCase
     private $client;
 
     /**
-     * Set up the test environment.
+     * Set up test data and environment.
      */
     protected function setUp(): void
     {
@@ -53,8 +54,8 @@ class UserStatusTest extends WebTestCase
         }
     }
 
-    /**
-     * Clean up the test environment.
+   /**
+     * Tear down test data and environment.
      */
     protected function tearDown(): void
     {
@@ -63,7 +64,7 @@ class UserStatusTest extends WebTestCase
     }
 
     /**
-     * Remove fake data created during the test.
+     * Remove fake user data after test execution.
      */
     private function removeFakeData(): void
     {
@@ -84,78 +85,116 @@ class UserStatusTest extends WebTestCase
         }
     }
 
-    /**
-     * Test getting user status with an empty token.
-     */
-    public function testUserStatusEmptyToken(): void
+    public function testChangeUsernameWithEmptyToken(): void
     {
         // make post request
-        $this->client->request('POST', '/user/status');
-        
+        $this->client->request('POST', '/account/settings/username');
+
         // get JSON content from the response
         $content = $this->client->getResponse()->getContent();
         
         // decode JSON content
         $data = json_decode($content, true);
-        
+            
         // test response code
         $this->assertResponseStatusCodeSame(200);
-        
+
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
         $this->assertSame($data['message'], 'required post data: token');
     }
 
-    /**
-     * Test getting user status with an invalid token.
-     */
-    public function testUserStatusInvalidToken(): void
+
+    public function testChangeUsernameWithEmptyUsername(): void
     {
         // make post request
-        $this->client->request('POST', '/user/status', [
-            'token' => 'invalid-token'
+        $this->client->request('POST', '/account/settings/username', [
+            'token' => 'testing-token'
         ]);
-        
+
         // get JSON content from the response
         $content = $this->client->getResponse()->getContent();
         
         // decode JSON content
         $data = json_decode($content, true);
-        
+            
         // test response code
         $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'required post data: new_username');
+    }
+
+
+    public function testChangeUsernameWithInvalidToken(): void
+    {
+        // make post request
+        $this->client->request('POST', '/account/settings/username', [
+            'token' => 'invalid-token',
+            'new_username' => 'new-username'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
         
+        // decode JSON content
+        $data = json_decode($content, true);
+            
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 403);
         $this->assertSame($data['message'], 'invalid token value');
     }
 
-    /**
-     * Test getting user status with a valid token.
-     */
-    public function testUserStatusValid(): void
+    public function testChangeUsernameWithLongUsername(): void
     {
         // make post request
-        $this->client->request('POST', '/user/status', [
-            'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D'
+        $this->client->request('POST', '/account/settings/username', [
+            'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D',
+            'new_username' =>  ByteString::fromRandom(99)->toString()
         ]);
-        
+
         // get JSON content from the response
         $content = $this->client->getResponse()->getContent();
         
         // decode JSON content
         $data = json_decode($content, true);
-        
+            
         // test response code
         $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'maximal username length is 50 characters');
+    }
+
+    public function testChangeUsernameWithValidData(): void
+    {
+        // make post request
+        $this->client->request('POST', '/account/settings/username', [
+            'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D',
+            'new_username' => 'new-testing-username'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
         
+        // decode JSON content
+        $data = json_decode($content, true);
+            
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['role'], 'User');
-        $this->assertSame($data['profile_pic'], 'image');
-        $this->assertSame($data['username'], 'test_username');
+        $this->assertSame($data['message'], 'username updated success');
     }
 }

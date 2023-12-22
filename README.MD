@@ -17,7 +17,7 @@ This is only the basic version which will be extended and improved in the future
 
 - [ ] Account settings:
   - [X] Profile pic change
-  - [ ] Username change
+  - [X] Username change
   - [ ] Password change 
 
 - [ ] Recode storage system (store data in database [name, gallery-name, date, image-content-link])

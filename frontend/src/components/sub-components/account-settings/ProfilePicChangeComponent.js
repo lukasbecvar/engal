@@ -49,6 +49,7 @@ export default function ProfilePicChangeComponent(props)
         }
     }
 
+    // update profile pic
     async function updateProfilePic(base64_image) {
         try {
             const formData = new FormData();

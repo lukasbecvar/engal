@@ -10,10 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class UsernameChangeController
+ * Class PasswordChangeController
  * @package App\Controller\AccountSettings
  */
-class UsernameChangeController extends AbstractController
+class PasswordChangeController extends AbstractController
 {
     /**
      * @var UserManager $userManager The user manager.
@@ -38,18 +38,19 @@ class UsernameChangeController extends AbstractController
     }
 
     /**
-     * Handles the request to change the username.
+     * Handles the request to change the user's password.
      *
      * @param Request $request The HTTP request.
      *
-     * @return Response JSON response indicating the success or failure of the username change.
+     * @return Response JSON response indicating the success or failure of the password change.
      */
-    #[Route('/account/settings/username', methods:['POST'], name: 'app_account_settings_username_change')]
-    public function usernameChange(Request $request): Response
+    #[Route('/account/settings/password', methods:['POST'], name: 'app_account_settings_password_change')]
+    public function passwordChange(Request $request): Response
     {
         // get post data
         $token = $request->request->get('token');
-        $new_username = $request->request->get('new_username');
+        $password = $request->request->get('password');
+        $re_password = $request->request->get('re_password');
 
         // check if request is post
         if (!$request->isMethod('POST')) {
@@ -69,49 +70,69 @@ class UsernameChangeController extends AbstractController
             ]);
         }
 
-        // check if username seted
-        if ($new_username == null) {
+        // check if password seted
+        if ($password == null) {
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'required post data: new_username'
+                'message' => 'required post data: password'
             ]);
         }
 
-        // check minimal username length
-        if (strlen($new_username) <= 3) {
+        // check if re_password seted
+        if ($re_password == null) {
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'minimal username length is 4 characters'
-            ]);  
+                'message' => 'required post data: re_password'
+            ]);
         }
 
-        // check maximal username length
-        if (strlen($new_username) >= 51) {
+        // check minimal password length
+        if (strlen($password) <= 3) {
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'maximal username length is 50 characters'
+                'message' => 'minimal password length is 4 characters'
             ]);  
         }
 
+        // check maximal password length
+        if (strlen($password) >= 51) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'maximal password length is 50 characters'
+            ]);  
+        }
+
+        // check if passwords matching
+        if ($password != $re_password) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'passwords not matching'
+            ]);
+        }
 
         // escape post data
         $token = $this->securityUtil->escapeString($token);
-        $new_username = $this->securityUtil->escapeString($new_username);
+        $password = $this->securityUtil->escapeString($password);
 
         // check if user found in database
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {
             
+            // hash password
+            $password = $this->securityUtil->genBcryptHash($password, 10);
+
             // update username
-            $this->userManager->updateUsername($token, $new_username);
+            $this->userManager->updatePassword($token, $password);
 
             // return success message
             return $this->json([
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'username update success'
+                'message' => 'password update success'
             ]);
         } else {
             return $this->json([

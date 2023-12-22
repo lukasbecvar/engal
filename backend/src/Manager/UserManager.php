@@ -338,4 +338,26 @@ class UserManager
             $this->errorManager->handleError('error to update username: '.$e->getMessage(), 500);
         }
     }
+
+    /**
+     * Updates the password of the user associated with the provided token.
+     *
+     * @param string $token The authentication token of the user.
+     * @param string $password The new password to be set for the user.
+     *
+     * @return void
+     */
+    public function updatePassword(string $token, string $password): void
+    {
+        // get user repository
+        $user = $this->getUserRepository(['token' => $token]);
+
+        // update profile image
+        try {
+            $user->setPassword($password);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to update password: '.$e->getMessage(), 500);
+        }
+    }
 }

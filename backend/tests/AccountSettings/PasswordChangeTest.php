@@ -7,10 +7,10 @@ use Symfony\Component\String\ByteString;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class UsernameChangeTest
+ * Class PasswordChangeTest
  * @package App\Tests\AccountSettings
  */
-class UsernameChangeTest extends WebTestCase
+class PasswordChangeTest extends WebTestCase
 {
     /**
      * @var mixed
@@ -86,12 +86,12 @@ class UsernameChangeTest extends WebTestCase
     }
 
     /**
-     * Tests changing username with an empty token.
+     * Tests changing password with an empty token.
      */
-    public function testChangeUsernameWithEmptyToken(): void
+    public function testChangePasswordWithEmptyToken(): void
     {
         // make post request
-        $this->client->request('POST', '/account/settings/username');
+        $this->client->request('POST', '/account/settings/password');
 
         // get JSON content from the response
         $content = $this->client->getResponse()->getContent();
@@ -109,12 +109,12 @@ class UsernameChangeTest extends WebTestCase
     }
 
     /**
-     * Tests changing username with an empty new username.
+     * Tests changing password with an empty new password.
      */
-    public function testChangeUsernameWithEmptyUsername(): void
+    public function testChangePasswordWithEmptyPassword(): void
     {
         // make post request
-        $this->client->request('POST', '/account/settings/username', [
+        $this->client->request('POST', '/account/settings/password', [
             'token' => 'testing-token'
         ]);
 
@@ -130,18 +130,45 @@ class UsernameChangeTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'required post data: new_username');
+        $this->assertSame($data['message'], 'required post data: password');
     }
 
     /**
-     * Tests changing username with an invalid token.
+     * Tests changing password with an empty re-entered password.
      */
-    public function testChangeUsernameWithInvalidToken(): void
+    public function testChangePasswordWithEmptyRePassword(): void
     {
         // make post request
-        $this->client->request('POST', '/account/settings/username', [
+        $this->client->request('POST', '/account/settings/password', [
+            'token' => 'testing-token',
+            'password' => 'testing-new-password'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+        
+        // decode JSON content
+        $data = json_decode($content, true);
+            
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'required post data: re_password');
+    }
+
+    /**
+     * Tests changing password with an invalid token.
+     */
+    public function testChangePasswordWithInvalidToken(): void
+    {
+        // make post request
+        $this->client->request('POST', '/account/settings/password', [
             'token' => 'invalid-token',
-            'new_username' => 'new-username'
+            'password' => 'testing-new-password',
+            're_password' => 'testing-new-password'
         ]);
 
         // get JSON content from the response
@@ -160,14 +187,15 @@ class UsernameChangeTest extends WebTestCase
     }
 
     /**
-     * Tests changing username with a too long new username.
+     * Tests changing password with a too long new password.
      */
-    public function testChangeUsernameWithLongUsername(): void
+    public function testChangePasswordWithLongPassword(): void
     {
         // make post request
-        $this->client->request('POST', '/account/settings/username', [
-            'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D',
-            'new_username' =>  ByteString::fromRandom(99)->toString()
+        $this->client->request('POST', '/account/settings/password', [
+            'token' => 'invalid-token',
+            'password' => ByteString::fromRandom(99)->toString(),
+            're_password' => ByteString::fromRandom(99)->toString()
         ]);
 
         // get JSON content from the response
@@ -182,18 +210,46 @@ class UsernameChangeTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'maximal username length is 50 characters');
+        $this->assertSame($data['message'], 'maximal password length is 50 characters');
     }
 
     /**
-     * Tests changing username with valid data.
+     * Tests changing password with non-matching passwords.
      */
-    public function testChangeUsernameWithValidData(): void
+    public function testChangePasswordWithNotMatch(): void
     {
         // make post request
-        $this->client->request('POST', '/account/settings/username', [
+        $this->client->request('POST', '/account/settings/password', [
+            'token' => 'invalid-token',
+            'password' => 'testing-new-password',
+            're_password' => 'testing-new-password-1'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+        
+        // decode JSON content
+        $data = json_decode($content, true);
+            
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'passwords not matching');
+    }
+
+    /**
+     * Tests changing password with valid data.
+     */
+    public function testChangePasswordWithValidData(): void
+    {
+        // make post request
+        $this->client->request('POST', '/account/settings/password', [
             'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D',
-            'new_username' => 'new-testing-username'
+            'password' => 'testing-new-password',
+            're_password' => 'testing-new-password'
         ]);
 
         // get JSON content from the response
@@ -208,6 +264,6 @@ class UsernameChangeTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'success');
         $this->assertSame($data['code'], 200);
-        $this->assertSame($data['message'], 'username update success');
+        $this->assertSame($data['message'], 'password update success');
     }
 }

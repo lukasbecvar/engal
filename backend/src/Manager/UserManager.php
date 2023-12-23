@@ -39,7 +39,6 @@ class UserManager
      */
     private EntityManagerInterface $entityManager;
     
-
     /**
      * UserManager constructor.
      * @param LogManager $logManager The log manager.
@@ -63,10 +62,16 @@ class UserManager
     }
 
     /**
-     * Inserts a new user into the database.
+     * Insert a new user into the database.
      *
-     * @param string $username The username.
-     * @param string $password The user's password.
+     * This method creates a new user entity, sets its data, and inserts it into the database.
+     *
+     * @param string $username The username of the new user.
+     * @param string $password The password of the new user.
+     *
+     * @return void
+     *
+     * @throws \Exception If an error occurs during the process of inserting the user entity into the database.
      */
     public function insertNewUser(string $username, string $password): void
     {
@@ -181,9 +186,16 @@ class UserManager
     }
 
     /**
-     * Updates user data such as last login time and IP address.
+     * Update user data based on the provided user token.
      *
-     * @param string $token The user token.
+     * This method retrieves the user entity from the repository using the provided token,
+     * updates the last login time and user IP address, and then flushes the changes to the database.
+     *
+     * @param string $token The user token used to identify and update the user data.
+     *
+     * @return void
+     *
+     * @throws \Exception If an error occurs during the process of updating user data in the database.
      */
     public function updateUserData(string $token): void 
     {
@@ -215,10 +227,16 @@ class UserManager
     }
 
     /**
-     * Gets the user repository for a given set of conditions.
+     * Get a user entity from the repository based on the provided criteria.
      *
-     * @param array $array The conditions to search for.
-     * @return User|null The user entity or null if not found.
+     * This method retrieves a user entity from the repository using the specified criteria.
+     * If a user entity is found, it is returned; otherwise, null is returned.
+     *
+     * @param array $array An associative array representing the criteria for finding the user entity.
+     *
+     * @return object|null The found user entity or null if no user entity is found.
+     *
+     * @throws \Exception If an error occurs during the process of finding the user entity in the repository.
      */
     public function getUserRepository(array $array): ?object 
     {
@@ -297,12 +315,18 @@ class UserManager
     }
 
     /**
-     * Update the profile picture for the user identified by the provided token.
+     * Update the profile picture of a user based on the provided user token.
      *
-     * @param string $token The token associated with the user.
-     * @param string $base_image The base64-encoded image data for the new profile picture.
+     * This method retrieves the user entity from the repository using the provided token,
+     * updates the user's profile image with the new base64 image, and then flushes the changes to the database.
+     * Additionally, it logs the action in the log manager.
+     *
+     * @param string $token The user token used to identify the user for whom to update the profile picture.
+     * @param string $base_image The new base64-encoded profile image.
      *
      * @return void
+     *
+     * @throws \Exception If an error occurs during the process of updating the profile image in the database.
      */
     public function updateProfilePic(string $token, string $base_image): void
     {
@@ -321,12 +345,18 @@ class UserManager
     }
 
     /**
-     * Updates the username of the user associated with the provided token.
+     * Update the username of a user based on the provided user token.
      *
-     * @param string $token The authentication token of the user.
+     * This method retrieves the user entity from the repository using the provided token,
+     * updates the user's username with the new username, and then flushes the changes to the database.
+     * Additionally, it logs the action in the log manager.
+     *
+     * @param string $token The user token used to identify the user for whom to update the username.
      * @param string $new_username The new username to be set for the user.
-     * 
+     *
      * @return void
+     *
+     * @throws \Exception If an error occurs during the process of updating the username in the database.
      */
     public function updateUsername(string $token, string $new_username): void
     {
@@ -347,12 +377,18 @@ class UserManager
     }
 
     /**
-     * Updates the password of the user associated with the provided token.
+     * Update the password of a user based on the provided user token.
      *
-     * @param string $token The authentication token of the user.
+     * This method retrieves the user entity from the repository using the provided token,
+     * updates the user's password with the new password, and then flushes the changes to the database.
+     * Additionally, it logs the action in the log manager.
+     *
+     * @param string $token The user token used to identify the user for whom to update the password.
      * @param string $password The new password to be set for the user.
      *
      * @return void
+     *
+     * @throws \Exception If an error occurs during the process of updating the password in the database.
      */
     public function updatePassword(string $token, string $password): void
     {

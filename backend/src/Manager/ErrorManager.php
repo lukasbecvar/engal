@@ -34,8 +34,8 @@ class ErrorManager
      */
     public function handleError(string $msg, int $code, string $status = 'error'): void
     {
-        // check if error messages is enabled (no for maintenance)
-        if (!$this->siteUtil->isErrorMessagesAllowed() && !$this->siteUtil->isMaintenance()) {
+        // check if error messages is enabled
+        if (!$this->siteUtil->isDevMode()) {
             // replace error message (for protect exceptions)
             $msg = 'unexpected server-side error, please try again later and report the error to your provider';
         } 

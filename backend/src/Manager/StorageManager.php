@@ -59,12 +59,21 @@ class StorageManager
     }
 
     /**
-     * Handles the media upload operation.
+     * Upload media file to a specified user's gallery.
      *
-     * @param string $token The user token.
-     * @param string $gallery The gallery name.
-     * @param array $uploaded_file The uploaded file details.
-     * @return array The result of the upload operation.
+     * This method handles the process of uploading a media file to a user's gallery,
+     * performing various checks on file format, size, and server storage space.
+     *
+     * @param string $token The user token for authentication.
+     * @param string $gallery The name of the gallery where the media will be uploaded.
+     * @param array $uploaded_file The information about the uploaded file (from $_FILES).
+     *
+     * @return array An associative array with the upload status, code, and message.
+     *               - 'status': 'success' or 'error'
+     *               - 'code': HTTP status code
+     *               - 'message': A descriptive message indicating the result of the upload.
+     *
+     * @throws \Exception If an unexpected error occurs during the upload process.
      */
     public function mediaUpload(string $token, string $gallery, array $uploaded_file): array 
     {
@@ -188,10 +197,21 @@ class StorageManager
     }
 
     /**
-     * Gets the list of galleries for a given username.
+     * Get the list of galleries for a specific user.
      *
-     * @param string $username The username.
-     * @return array|null The list of galleries or null in case of an error.
+     * This method retrieves the list of galleries associated with a given username,
+     * along with additional information such as the number of images in each gallery
+     * and the thumbnail image for preview.
+     *
+     * @param string $username The username for which to retrieve the gallery list.
+     *
+     * @return array|null An array containing information about each gallery, or null in case of an error.
+     *                   Each gallery information includes:
+     *                   - 'name': The name of the gallery.
+     *                   - 'images_count': The number of images in the gallery.
+     *                   - 'thumbnail': The thumbnail image for preview.
+     *
+     * @throws \Exception If an error occurs during the process of retrieving the gallery list.
      */
     public function getGalleryListByUsername(string $username): ?array 
     {
@@ -319,12 +339,29 @@ class StorageManager
         return null;
     }
 
+    /**
+     * Rename a user storage directory.
+     *
+     * This method renames a user storage directory from the specified name to a new name.
+     *
+     * @param string $storage_name The current name of the user storage directory.
+     * @param string $new_storage_name The new name to which the user storage directory should be renamed.
+     *
+     * @throws \Exception If an error occurs during the renaming process, an exception is caught and logged.
+     *
+     * @return void
+     */
     public function renameStorage(string $storage_name, string $new_storage_name): void 
     {
-        try {
-            rename($this->storage_directory.$storage_name, $this->storage_directory.$new_storage_name);
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('error to rename user storage: '.$storage_name.' -> '.$new_storage_name.', error: '.$e->getMessage(), 500);
+        // check if file exist
+        if (file_exists($this->storage_directory.$storage_name)) {
+            try {
+
+                // rename user storage
+                rename($this->storage_directory.$storage_name, $this->storage_directory.$new_storage_name);
+            } catch (\Exception $e) {
+                $this->errorManager->handleError('error to rename user storage: '.$storage_name.' -> '.$new_storage_name.', error: '.$e->getMessage(), 500);
+            }
         }
     }
 }

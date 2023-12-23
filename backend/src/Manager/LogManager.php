@@ -53,10 +53,16 @@ class LogManager
     }
 
     /**
-     * Logs a message with additional information.
+     * Log a message with additional information.
      *
-     * @param string $name The name of the log entry.
-     * @param string $value The value of the log entry.
+     * This method logs a message along with relevant information such as date and time,
+     * visitor's browser agent, and IP address. The logged information is stored in the database.
+     *
+     * @param string $name The name or identifier associated with the logged message.
+     * @param string $value The actual content or value of the logged message.
+     *
+     * @throws \Exception If an error occurs while attempting to save the log to the database.
+     *
      * @return void
      */
     public function log(string $name, string $value): void 

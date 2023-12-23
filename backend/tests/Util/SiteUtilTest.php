@@ -47,18 +47,6 @@ class SiteUtilTest extends TestCase
     }
 
     /**
-     * Test the isErrorMessagesAllowed method to check if error messages are allowed.
-     */
-    public function testIsErrorMessagesAllowed(): void
-    {
-        $_ENV['ERROR_MESSAGES'] = 'true';
-        $this->assertTrue($this->siteUtil->isErrorMessagesAllowed());
-
-        $_ENV['ERROR_MESSAGES'] = 'false';
-        $this->assertFalse($this->siteUtil->isErrorMessagesAllowed());
-    }
-
-    /**
      * Test the isDevMode method to check if the application is in dev mode.
      */
     public function testIsDevMode(): void

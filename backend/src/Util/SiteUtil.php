@@ -34,21 +34,6 @@ class SiteUtil
     }
 
     /**
-     * Checks if error messages are allowed.
-     *
-     * @return bool True if error messages are allowed, false otherwise.
-     */
-    public function isErrorMessagesAllowed(): bool 
-    {
-        // check if maintenance mode enabled in app enviroment
-        if ($_ENV['ERROR_MESSAGES'] == 'true') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Checks if the application is in dev mode.
      *
      * @return bool True if in dev mode, false otherwise.

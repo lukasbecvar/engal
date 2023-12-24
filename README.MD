@@ -15,7 +15,6 @@ This is only the basic version which will be extended and improved in the future
 - [X] Check server free space before upload new images
 - [X] Dashboard user panel (show profile pic, username, role, link to account settings)
 - [X] Account settings
-- [ ] Recode backend storage
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
 - [ ] Gallery properties (show, images count, created data, last modified date, size)

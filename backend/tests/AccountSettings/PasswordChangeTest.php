@@ -187,6 +187,33 @@ class PasswordChangeTest extends WebTestCase
     }
 
     /**
+     * Tests changing password with a short new password.
+     */
+    public function testChangePasswordWithShortPassword(): void
+    {
+        // make post request
+        $this->client->request('POST', '/account/settings/password', [
+            'token' => 'invalid-token',
+            'password' => '1234567',
+            're-password' => '1234567'
+        ]);
+
+        // get JSON content from the response
+        $content = $this->client->getResponse()->getContent();
+        
+        // decode JSON content
+        $data = json_decode($content, true);
+            
+        // test response code
+        $this->assertResponseStatusCodeSame(200);
+
+        // test response data
+        $this->assertSame($data['status'], 'error');
+        $this->assertSame($data['code'], 400);
+        $this->assertSame($data['message'], 'minimal password length is 8 characters');
+    }
+
+    /**
      * Tests changing password with a too long new password.
      */
     public function testChangePasswordWithLongPassword(): void

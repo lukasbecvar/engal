@@ -77,10 +77,6 @@ export default function UploaderComponent()
         } else if (gallery_name.length <= 3) {
             setErrorMsg('minimal gallery name length is 4 characters');
 
-        // spaces check
-        } else if (gallery_name.includes(' ')) {
-            setErrorMsg('spaces in gallery name are not allowed!');
-        
         // check if file input is not empty
         } else if (images.length < 1) {
             setErrorMsg('your file input is empty');

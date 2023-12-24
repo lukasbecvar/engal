@@ -89,11 +89,11 @@ class PasswordChangeController extends AbstractController
         }
 
         // check minimal password length
-        if (strlen($password) <= 3) {
+        if (strlen($password) <= 8) {
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'minimal password length is 4 characters'
+                'message' => 'minimal password length is 8 characters'
             ]);  
         }
 

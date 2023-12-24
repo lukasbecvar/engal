@@ -55,7 +55,7 @@ class StorageManager
         $this->errorManager = $errorManager;
 
         // init file storage directory (in app root)
-        $this->storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/';
+        $this->storage_directory = __DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'];
     }
 
     /**
@@ -78,10 +78,10 @@ class StorageManager
     public function mediaUpload(string $token, string $gallery, array $uploaded_file): array 
     {
         // list of allowend media fromats
-        $allowed_formats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+        $allowed_formats = explode(',', $_ENV['ALLOWED_MEDIA_FORMATS']);
 
         // get maximal allowed file size from config
-        $max_file_size_value = intval($_ENV['MAX_FILE_SIZE']);
+        $max_file_size_value = intval($_ENV['MAX_IMAGE_SIZE']);
 
         // calculate maximal file size
         $max_file_size = $max_file_size_value * 1024 * 1024;
@@ -95,13 +95,13 @@ class StorageManager
         }
 
         // create user path 
-        if (!file_exists($this->storage_directory.$username)) {
-            mkdir($this->storage_directory.$username);
+        if (!file_exists($this->storage_directory.'/'.$username)) {
+            mkdir($this->storage_directory.'/'.$username);
         }
 
         // create gallery dir
-        if (!file_exists($this->storage_directory.$username.'/'.$gallery)) {
-            mkdir($this->storage_directory.$username.'/'.$gallery);
+        if (!file_exists($this->storage_directory.'/'.$username.'/'.$gallery)) {
+            mkdir($this->storage_directory.'/'.$username.'/'.$gallery);
         }
 
         // check if storage is writable
@@ -132,11 +132,12 @@ class StorageManager
         }
 
         // check if media format allowed
-        if (!in_array($uploaded_file['type'], $allowed_formats)) {
+        $uploaded_file_extension = strtolower(pathinfo($uploaded_file['name'], PATHINFO_EXTENSION));
+        if (!in_array($uploaded_file_extension, $allowed_formats)) {
             return [
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'unsuported format: allowed formats is: jpg, jpeg, png, gif'
+                'message' => 'unsuported format: allowed formats is: '.$_ENV['ALLOWED_MEDIA_FORMATS']
             ];
         }
         
@@ -163,7 +164,7 @@ class StorageManager
             $file_name = $uploaded_file['name'];
             
             // build final upload path
-            $destination = $this->storage_directory.$username.'/'.$gallery.'/'.$file_name;
+            $destination = $this->storage_directory.'/'.$username.'/'.$gallery.'/'.$file_name;
 
             // check if image exist
             if (file_exists($destination)) {
@@ -221,12 +222,12 @@ class StorageManager
         }
         
         // create user path 
-        if (!file_exists($this->storage_directory.$username)) {
-            mkdir($this->storage_directory.$username);
+        if (!file_exists($this->storage_directory.'/'.$username)) {
+            mkdir($this->storage_directory.'/'.$username);
         }
 
         try {
-            $galleries = scandir(__DIR__.'/../../'.$_ENV['STORAGE_DIR_NAME'].'/'.$username);
+            $galleries = scandir($this->storage_directory.'/'.$username);
             $galleries = array_diff($galleries, array('..', '.'));
     
             $arr = [];
@@ -256,9 +257,9 @@ class StorageManager
      */
     public function getThumbnail(string $storage_name, string $gallery_name): ?string 
     {
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $allowed_extensions =  explode(',', $_ENV['ALLOWED_MEDIA_FORMATS']);
 
-        foreach (glob($this->storage_directory.$storage_name.'/'.$gallery_name . '/*.{'.implode(',', $allowed_extensions).'}', GLOB_BRACE) as $file) {
+        foreach (glob($this->storage_directory.'/'.$storage_name.'/'.$gallery_name . '/*.{'.implode(',', $allowed_extensions).'}', GLOB_BRACE) as $file) {
             $image_content = file_get_contents($file);
             $base64_image = base64_encode($image_content);
             return $base64_image;
@@ -275,7 +276,7 @@ class StorageManager
      */
     public function checkIfGalleryExist(string $storage_name, string $gallery_name): bool
     {
-        if (file_exists($this->storage_directory.$storage_name.'/'.$gallery_name)) {
+        if (file_exists($this->storage_directory.'/'.$storage_name.'/'.$gallery_name)) {
             return true;
         } else {
             return false;
@@ -295,7 +296,7 @@ class StorageManager
         if ($this->checkIfGalleryExist($storage_name, $gallery_name)) {
 
             // get images list from storage
-            $images = scandir($this->storage_directory.$storage_name.'/'.$gallery_name);
+            $images = scandir($this->storage_directory.'/'.$storage_name.'/'.$gallery_name);
 
             // remove dots links
             $images = array_diff($images, array('..', '.'));
@@ -315,7 +316,7 @@ class StorageManager
      */
     public function checkIfImageExist(string $storage_name, string $gallery_name, string $image_name): bool
     {
-        if (file_exists($this->storage_directory.$storage_name.'/'.$gallery_name.'/'.$image_name)) {
+        if (file_exists($this->storage_directory.'/'.$storage_name.'/'.$gallery_name.'/'.$image_name)) {
             return true;
         } else {
             return false;
@@ -333,7 +334,7 @@ class StorageManager
     public function getImageContent(string $storage_name, string $gallery_name, string $image_name): ?string
     {
         if ($this->checkIfImageExist($storage_name, $gallery_name, $image_name)) {
-            $content = file_get_contents($this->storage_directory.$storage_name.'/'.$gallery_name.'/'.$image_name);
+            $content = file_get_contents($this->storage_directory.'/'.$storage_name.'/'.$gallery_name.'/'.$image_name);
             return base64_encode($content);
         }
         return null;
@@ -354,11 +355,11 @@ class StorageManager
     public function renameStorage(string $storage_name, string $new_storage_name): void 
     {
         // check if file exist
-        if (file_exists($this->storage_directory.$storage_name)) {
+        if (file_exists($this->storage_directory.'/'.$storage_name)) {
             try {
 
                 // rename user storage
-                rename($this->storage_directory.$storage_name, $this->storage_directory.$new_storage_name);
+                rename($this->storage_directory.'/'.$storage_name, $this->storage_directory.'/'.$new_storage_name);
             } catch (\Exception $e) {
                 $this->errorManager->handleError('error to rename user storage: '.$storage_name.' -> '.$new_storage_name.', error: '.$e->getMessage(), 500);
             }

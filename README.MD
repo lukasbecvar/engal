@@ -15,12 +15,15 @@ This is only the basic version which will be extended and improved in the future
 - [X] Check server free space before upload new images
 - [X] Dashboard user panel (show profile pic, username, role, link to account settings)
 - [X] Account settings
-- [ ] Replace spaces in gallery names with _
+- [ ] Replace spaces in gallery names with _ block _ in gallery names
+- [ ] Max image & gallery name lenght limit
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
+- [ ] Page system (infinite scroll)
 - [ ] Gallery properties (show, images count, created data, last modified date, size)
 - [ ] Image properties (show, gallery name, created data, last modified date, size)
 - [ ] Image delete function
+- [ ] Gallery delete function
 - [ ] Image edit function (move to gallery, rename)
 - [ ] Document api errors & endpoints
 - [ ] Port Frontend to electron + (react native mobile app)
@@ -32,6 +35,8 @@ This is only the basic version which will be extended and improved in the future
 - [ ] Favorite images
 - [ ] Redesign UI
 - [ ] Storage data dumper (CLI)
+
+## Version 6.0 TODO-LIST
 - [ ] Video formats support
 
 ## Dependencies 

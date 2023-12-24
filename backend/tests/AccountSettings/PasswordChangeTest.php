@@ -156,7 +156,7 @@ class PasswordChangeTest extends WebTestCase
         // test response data
         $this->assertSame($data['status'], 'error');
         $this->assertSame($data['code'], 400);
-        $this->assertSame($data['message'], 'required post data: re_password');
+        $this->assertSame($data['message'], 'required post data: re-password');
     }
 
     /**
@@ -168,7 +168,7 @@ class PasswordChangeTest extends WebTestCase
         $this->client->request('POST', '/account/settings/password', [
             'token' => 'invalid-token',
             'password' => 'testing-new-password',
-            're_password' => 'testing-new-password'
+            're-password' => 'testing-new-password'
         ]);
 
         // get JSON content from the response
@@ -195,7 +195,7 @@ class PasswordChangeTest extends WebTestCase
         $this->client->request('POST', '/account/settings/password', [
             'token' => 'invalid-token',
             'password' => ByteString::fromRandom(99)->toString(),
-            're_password' => ByteString::fromRandom(99)->toString()
+            're-password' => ByteString::fromRandom(99)->toString()
         ]);
 
         // get JSON content from the response
@@ -222,7 +222,7 @@ class PasswordChangeTest extends WebTestCase
         $this->client->request('POST', '/account/settings/password', [
             'token' => 'invalid-token',
             'password' => 'testing-new-password',
-            're_password' => 'testing-new-password-1'
+            're-password' => 'testing-new-password-1'
         ]);
 
         // get JSON content from the response
@@ -249,7 +249,7 @@ class PasswordChangeTest extends WebTestCase
         $this->client->request('POST', '/account/settings/password', [
             'token' => 'zbjNNyuudM3HQGWe6xqWwjyncbtZB22D',
             'password' => 'testing-new-password',
-            're_password' => 'testing-new-password'
+            're-password' => 'testing-new-password'
         ]);
 
         // get JSON content from the response

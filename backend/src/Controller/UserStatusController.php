@@ -42,7 +42,7 @@ class UserStatusController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/user/status', methods:['POST'], name: 'app_user_status')]
+    #[Route('/user/status', methods:['POST'], name: 'get_user_status')]
     public function userStatus(Request $request): Response
     {
         // get user token

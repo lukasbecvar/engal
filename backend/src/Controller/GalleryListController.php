@@ -42,7 +42,7 @@ class GalleryListController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/gallery/list', methods:['POST'], name: 'app_gallery_list')]
+    #[Route('/gallery/list', methods:['POST'], name: 'get_gallery_list')]
     public function galleryList(Request $request): Response
     {
         // get post data

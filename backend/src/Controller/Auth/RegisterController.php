@@ -53,7 +53,7 @@ class RegisterController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/register', methods:['POST'], name: 'user_register')]
+    #[Route('/register', methods:['POST'], name: 'auth_register')]
     public function register(Request $request): Response
     {
         // get post data

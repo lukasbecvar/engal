@@ -42,8 +42,8 @@ class ImageContentController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/image/content', methods:['POST'], name: 'app_image_content')]
-    public function imageList(Request $request): Response
+    #[Route('/image/content', methods:['POST'], name: 'get_image_content')]
+    public function imageContent(Request $request): Response
     {
         // get post data
         $token = $request->request->get('token');

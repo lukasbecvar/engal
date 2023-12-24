@@ -55,7 +55,7 @@ class UsernameChangeController extends AbstractController
      *
      * @return Response JSON response indicating the success or failure of the username change.
      */
-    #[Route('/account/settings/username', methods:['POST'], name: 'app_account_settings_username_change')]
+    #[Route('/account/settings/username', methods:['POST'], name: 'account_settings_username_change')]
     public function usernameChange(Request $request): Response
     {
         // get post data

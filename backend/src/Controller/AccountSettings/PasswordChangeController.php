@@ -44,13 +44,13 @@ class PasswordChangeController extends AbstractController
      *
      * @return Response JSON response indicating the success or failure of the password change.
      */
-    #[Route('/account/settings/password', methods:['POST'], name: 'app_account_settings_password_change')]
+    #[Route('/account/settings/password', methods:['POST'], name: 'account_settings_password_change')]
     public function passwordChange(Request $request): Response
     {
         // get post data
         $token = $request->request->get('token');
         $password = $request->request->get('password');
-        $re_password = $request->request->get('re_password');
+        $re_password = $request->request->get('re-password');
 
         // check if request is post
         if (!$request->isMethod('POST')) {
@@ -84,7 +84,7 @@ class PasswordChangeController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'required post data: re_password'
+                'message' => 'required post data: re-password'
             ]);
         }
 

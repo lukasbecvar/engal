@@ -60,7 +60,7 @@ export default function PasswordChangeComponent(props)
             // build request data
             formData.append('token', user_token);
             formData.append('password', password);
-            formData.append('re_password', re_password);
+            formData.append('re-password', re_password);
 
             // make post request
             const response = await fetch(api_url + '/account/settings/password', {

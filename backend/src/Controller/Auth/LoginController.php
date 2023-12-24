@@ -42,7 +42,7 @@ class LoginController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/login', methods:['POST'], name: 'user_login')]
+    #[Route('/login', methods:['POST'], name: 'auth_login')]
     public function login(Request $request): Response
     {
         // get post data

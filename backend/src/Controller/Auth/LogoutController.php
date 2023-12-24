@@ -42,7 +42,7 @@ class LogoutController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/logout', methods:['POST'], name: 'user_logout')]
+    #[Route('/logout', methods:['POST'], name: 'auth_logout')]
     public function logout(Request $request): Response
     {
         // get user token

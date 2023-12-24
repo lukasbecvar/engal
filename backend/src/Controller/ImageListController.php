@@ -42,7 +42,7 @@ class ImageListController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/images', methods:['POST'], name: 'app_images_list')]
+    #[Route('/images', methods:['POST'], name: 'get_images_list')]
     public function imageList(Request $request): Response
     {
         // get post data

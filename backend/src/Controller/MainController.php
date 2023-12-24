@@ -17,7 +17,7 @@ class MainController extends AbstractController
      *
      * @return Response The JSON response.
      */
-    #[Route('/', methods:['GET'], name: 'app_main')]
+    #[Route('/', methods:['GET'], name: 'main')]
     public function main(): Response
     {
         return $this->json([

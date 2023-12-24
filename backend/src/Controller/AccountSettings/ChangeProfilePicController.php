@@ -44,7 +44,7 @@ class ChangeProfilePicController extends AbstractController
      *
      * @return Response The HTTP response.
      */
-    #[Route('/account/settings/pic', methods:['POST'], name: 'app_account_settings_profile_pic_change')]
+    #[Route('/account/settings/pic', methods:['POST'], name: 'account_settings_profile_pic_change')]
     public function profilePicChange(Request $request): Response
     {
         // get post data

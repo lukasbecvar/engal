@@ -53,7 +53,7 @@ class UploaderController extends AbstractController
      * @param Request $request The HTTP request.
      * @return Response The JSON response.
      */
-    #[Route('/media/upload', methods:['POST'], name: 'app_media_upload')]
+    #[Route('/media/upload', methods:['POST'], name: 'media_upload')]
     public function uploader(Request $request): Response
     {
         // get post data

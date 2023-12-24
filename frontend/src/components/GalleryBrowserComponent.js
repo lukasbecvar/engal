@@ -29,16 +29,19 @@ import CustomErrorComponent from './errors/CustomErrorComponent';
 
 export default function GalleryBrowserComponent(props) 
 {
+    // get gallery name
+    let gallery_name = props.gallery_name;
+
     // update app title
-    document.title = 'Engal: gallery ' + props.gallery_name;
+    document.title = 'Engal: gallery ' + gallery_name;
 
     // state variables for managing component state
     const [error, setError] = useState(null);
     
     // content data
     const [image_list, setImageList] = useState([]);
-    const [image_content_list, setImageContentList] = useState([]);
     const [current_index, setCurrentIndex] = useState(0);
+    const [image_content_list, setImageContentList] = useState([]);
 
     // get user token
     let user_token = getUserToken();
@@ -46,6 +49,7 @@ export default function GalleryBrowserComponent(props)
     // get api url
     let api_url = getApiUrl();
 
+    // build image list
     useEffect(function() {
         async function fetchData() { // fetch images list
             try {
@@ -53,7 +57,7 @@ export default function GalleryBrowserComponent(props)
                 
                 // set request data
                 formData.append('token', user_token);
-                formData.append('gallery', props.gallery_name);
+                formData.append('gallery', gallery_name);
 
                 // fetch response
                 const response = await fetch(api_url + '/images', {
@@ -82,8 +86,9 @@ export default function GalleryBrowserComponent(props)
         };
 
         fetchData();
-    }, [api_url, user_token, props.gallery_name]);
+    }, [api_url, user_token, gallery_name]);
 
+    // build image content list
     useEffect(function() {
         async function fetchNextImageContent() { // fetch image content
             if (current_index < image_list.length) {
@@ -94,7 +99,7 @@ export default function GalleryBrowserComponent(props)
                     
                     // set post data
                     formData.append('token', user_token);
-                    formData.append('gallery', props.gallery_name);
+                    formData.append('gallery', gallery_name);
                     formData.append('image', name);
 
                     // fetch response
@@ -130,7 +135,7 @@ export default function GalleryBrowserComponent(props)
         if (current_index < image_list.length) {
             fetchNextImageContent();
         }
-    }, [current_index, image_list, api_url, user_token, props.gallery_name]);
+    }, [current_index, image_list, api_url, user_token, gallery_name]);
 
     // check if image loaded 
     if (image_list.length !== image_content_list.length) {

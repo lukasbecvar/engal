@@ -25,8 +25,8 @@ export default function GalleryListComponent()
     let user_token = getUserToken();
 
     // state variables for managing component state
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [current_gallery, setGallery] = useState(null);
 
     // gallery list array

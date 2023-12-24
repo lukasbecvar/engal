@@ -15,8 +15,6 @@ This is only the basic version which will be extended and improved in the future
 - [X] Check server free space before upload new images
 - [X] Dashboard user panel (show profile pic, username, role, link to account settings)
 - [X] Account settings
-- [ ] Replace spaces in gallery names with _ block _ in gallery names
-- [ ] Max image & gallery name lenght limit
 - [ ] All images browser
 - [ ] Sort by upload date, name, size, random + reverse
 - [ ] Page system (infinite scroll)

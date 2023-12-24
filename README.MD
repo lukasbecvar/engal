@@ -32,6 +32,7 @@ This is only the basic version which will be extended and improved in the future
 - [ ] Favorite images
 - [ ] Redesign UI
 - [ ] Storage data dumper (CLI)
+- [ ] Video formats support
 
 ## Dependencies 
 * Symfony

@@ -10,7 +10,7 @@ This is only the basic version which will be extended and improved in the future
 - Self-hosted backend
 - Register disable & maintenance mode
 
-## Version 4.0 TODO-LIST
+## Version 3.5 TODO-LIST
 - [X] Upload progress bar
 - [X] Check server free space before upload new images
 - [X] Dashboard user panel (show profile pic, username, role, link to account settings)

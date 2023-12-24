@@ -334,8 +334,21 @@ class StorageManager
     public function getImageContent(string $storage_name, string $gallery_name, string $image_name): ?string
     {
         if ($this->checkIfImageExist($storage_name, $gallery_name, $image_name)) {
+            
+            // build image path
+            $image_path = $this->storage_directory.'/'.$storage_name.'/'.$gallery_name.'/'.$image_name;
+            
+            // get image content
             $content = file_get_contents($this->storage_directory.'/'.$storage_name.'/'.$gallery_name.'/'.$image_name);
-            return base64_encode($content);
+            
+            // get image format
+            $file_format = pathinfo($image_path, PATHINFO_EXTENSION);
+            
+            // build image identificator
+            $identification = "data:image/$file_format;base64,";
+            
+            // return image content
+            return $identification.base64_encode($content);
         }
         return null;
     }

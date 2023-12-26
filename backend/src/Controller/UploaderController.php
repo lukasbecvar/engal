@@ -97,11 +97,11 @@ class UploaderController extends AbstractController
         }
 
         // check if gallery reached maximal length
-        if (strlen($gallery) >= 30) {
+        if (strlen($gallery) >= 51) {
             return $this->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'gallery name maximal length is 30 characters'
+                'message' => 'gallery name maximal length is 50 characters'
             ]);
         }
 

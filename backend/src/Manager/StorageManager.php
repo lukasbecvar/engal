@@ -154,7 +154,7 @@ class StorageManager
         if ($this->systemUtil->getDriveUsage() > 95) {
             return [
                 'status' => 'error',
-                'code' => 200,
+                'code' => 500,
                 'message' => 'maximal server storage space is reached, please contact you server admin for fix this problem'
             ];
         }
@@ -163,6 +163,15 @@ class StorageManager
             // get file name
             $file_name = $uploaded_file['name'];
             
+            // check maximal file name length
+            if (strlen($file_name) >= 81) {
+                return [
+                    'status' => 'error',
+                    'code' => 400,
+                    'message' => 'maximal file name is 80 characters'
+                ];
+            }
+
             // build final upload path
             $destination = $this->storage_directory.'/'.$username.'/'.$gallery.'/'.$file_name;
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { DEV_MODE } from "./config";
 
 // import engal utils
-import { getUserToken } from "./utils/AuthUtils";
+import { getUserToken, userLogout } from "./utils/AuthUtils";
 import { checkApiAvailability, getApiUrl } from './utils/ApiUtils';
 
 // import engal components
@@ -27,6 +27,42 @@ export default function InitComponent()
     const [api_error, setApiError] = useState(false);
     const [maintenance, setMaintenance] = useState(false);
     const [api_connction_error, setApiConnectionError] = useState(false);
+
+    // check if user token is valid
+    useEffect(function() {
+        const checkToken = async () => {
+            try {
+                const formData = new FormData();
+    
+                // set post data
+                formData.append('token', getUserToken());
+
+                // send request
+                const response = await fetch(api_url + '/user/status', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // get response
+                const result = await response.json();
+
+                // check response
+                if (result.status !== 'success') {
+                    userLogout();
+                }
+            } catch (error) {
+                if (DEV_MODE) {
+                    console.error('error fetching user status: ', error);
+                }
+            }
+        };
+    
+        // check if token is valid
+        if (getUserToken() !== null) {
+            checkToken();
+        }
+    
+    }, [api_url])
 
     // check if api is reachable
     useEffect(function() {

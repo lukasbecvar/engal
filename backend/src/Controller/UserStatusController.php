@@ -84,7 +84,7 @@ class UserStatusController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => 403,
-                'message' => 'invalid token value'
+                'message' => $token
             ]);
         }
     }

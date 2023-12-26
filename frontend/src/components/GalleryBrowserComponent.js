@@ -114,7 +114,7 @@ export default function GalleryBrowserComponent(props)
                     if (data.status === 'success') {
                         setImageContentList((prev_list) => [
                             ...prev_list,
-                            {id, name, content: data.content}
+                            {id, name: data.image_name, content: data.content}
                         ]);
                     } else {
                         if (DEV_MODE) {

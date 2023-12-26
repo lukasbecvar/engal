@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Util\SecurityUtil;
 use App\Manager\UserManager;
 use App\Manager\StorageManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,18 +22,28 @@ class ImageListController extends AbstractController
     private UserManager $userManager;
 
     /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
+    private SecurityUtil $securityUtil;
+
+    /**
      * @var StorageManager $storageManager The storage manager.
      */
     private StorageManager $storageManager;
 
     /**
-     * ImageListController constructor.
+     * ImageContentController constructor.
      * @param UserManager $userManager The user manager.
+     * @param SecurityUtil $securityUtil The security utility.
      * @param StorageManager $storageManager The storage manager.
      */
-    public function __construct(UserManager $userManager, StorageManager $storageManager)
-    {
+    public function __construct(
+        UserManager $userManager, 
+        SecurityUtil $securityUtil,
+        StorageManager $storageManager
+    ) {
         $this->userManager = $userManager;
+        $this->securityUtil = $securityUtil;
         $this->storageManager = $storageManager;
     }
 
@@ -75,6 +86,10 @@ class ImageListController extends AbstractController
                 'message' => 'required post data: gallery (gallery name)'
             ]);
         }
+
+        // escape values
+        $token = $this->securityUtil->escapeString($token);
+        $gallery = $this->securityUtil->escapeString($gallery);
 
         // check if user found in database
         if ($this->userManager->getUserRepository(['token' => $token]) != null) {

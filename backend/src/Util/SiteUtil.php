@@ -55,8 +55,23 @@ class SiteUtil
      */
     public function isRegisterEnabled(): bool 
     {
-        // check if dev mode enabled in app enviroment
+        // check if registration enabled in app enviroment
         if ($_ENV['REGISTRATIONS'] == 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if file storage enctyption is enabled.
+     *
+     * @return bool True if encryption are enabled, false otherwise.
+     */
+    public function isEncryptionEnabled(): bool 
+    {
+        // check if encryption enabled in app enviroment
+        if ($_ENV['STORAGE_ENCRYPTION'] == 'true') {
             return true;
         } else {
             return false;

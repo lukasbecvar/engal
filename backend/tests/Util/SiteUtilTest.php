@@ -59,6 +59,18 @@ class SiteUtilTest extends TestCase
     }
 
     /**
+     * Test the isEncryptionEnabled method to check if the encryption is enabled.
+     */
+    public function testisEncryptionEnabled(): void
+    {
+        $_ENV['STORAGE_ENCRYPTION'] = 'true';
+        $this->assertTrue($this->siteUtil->isEncryptionEnabled());
+
+        $_ENV['STORAGE_ENCRYPTION'] = 'false';
+        $this->assertFalse($this->siteUtil->isEncryptionEnabled());
+    }
+
+    /**
      * Test the isRegisterEnabled method to check if user registrations are enabled.
      */
     public function testIsRegisterEnabled(): void

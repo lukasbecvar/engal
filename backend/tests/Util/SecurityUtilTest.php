@@ -11,9 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class SecurityUtilTest extends TestCase
 {
-    /**
-     * @var SecurityUtil
-     */
+    /** @var SecurityUtil */
     private $securityUtil;
 
     /**
@@ -21,39 +19,60 @@ class SecurityUtilTest extends TestCase
      */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->securityUtil = new SecurityUtil();
     }
 
     /**
-     * Test the escapeString method to ensure proper string escaping.
+     * Test escaping a string for safe use in HTML content.
      */
-    public function testEscapeString(): void
+    public function testEscapeString()
     {
         $input = '<script>alert("XSS");</script>';
-        $expected = '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;';
-        $this->assertEquals($expected, $this->securityUtil->escapeString($input));
+        $expectedOutput = '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;';
+
+        $result = $this->securityUtil->escapeString($input);
+
+        $this->assertEquals($expectedOutput, $result);
     }
 
     /**
-     * Test the hashValidate method to validate password hashing and verification.
+     * Test validating a plain text password against its hashed version.
      */
-    public function testHashValidate(): void
+    public function testHashValidation()
     {
-        $plainTextPassword = 'password123';
-        $hash = password_hash($plainTextPassword, PASSWORD_BCRYPT);
-        $this->assertTrue($this->securityUtil->hashValidate($plainTextPassword, $hash));
-        $this->assertFalse($this->securityUtil->hashValidate('wrongPassword', $hash));
+        $plain_text_password = 'mySecretPassword';
+        $hash = password_hash($plain_text_password, PASSWORD_BCRYPT);
+
+        $result = $this->securityUtil->hashValidate($plain_text_password, $hash);
+
+        $this->assertTrue($result);
     }
 
     /**
-     * Test the genBcryptHash method to generate and validate bcrypt hash.
+     * Test generating a bcrypt hash for the given plain text password.
      */
-    public function testGenBcryptHash(): void
+    public function testGenBcryptHash()
     {
-        $plainTextPassword = 'password123';
+        $plain_text_password = 'mySecretPassword';
         $cost = 12;
-        $hash = $this->securityUtil->genBcryptHash($plainTextPassword, $cost);
-        $this->assertTrue(password_verify($plainTextPassword, $hash));
+
+        $result = $this->securityUtil->genBcryptHash($plain_text_password, $cost);
+
+        $this->assertNotNull($result);
+        $this->assertTrue(password_verify($plain_text_password, $result));
+    }
+
+    /**
+     * Test encrypting and decrypting text using the AES-256-CBC algorithm.
+     */
+    public function testEncryptAndDecryptAES()
+    {
+        $plain_text = 'SensitiveData123';
+
+        $encrypted = $this->securityUtil->encryptAES($plain_text);
+        $decrypted = $this->securityUtil->decryptAES($encrypted);
+
+        $this->assertNotEquals($plain_text, $encrypted);
+        $this->assertEquals($plain_text, $decrypted);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Manager;
 
+use App\Util\SiteUtil;
 use App\Util\SystemUtil;
+use App\Util\SecurityUtil;
 
 /**
  * Class StorageManager
@@ -10,6 +12,11 @@ use App\Util\SystemUtil;
  */
 class StorageManager
 {
+    /**
+     * @var SiteUtil $siteUtil The site utility.
+     */
+    private SiteUtil $siteUtil;
+
     /**
      * @var LogManager $logManager The log manager.
      */
@@ -26,10 +33,14 @@ class StorageManager
     private UserManager $userManager;
 
     /**
+     * @var SecurityUtil $securityUtil The security utility.
+     */
+    private SecurityUtil $securityUtil;
+
+    /**
      * @var ErrorManager $errorManager The error manager.
      */
     private ErrorManager $errorManager;
-
 
     /**
      * @var string $storage_directory The base directory for storage.
@@ -38,20 +49,26 @@ class StorageManager
 
     /**
      * StorageManager constructor.
+     * @param SiteUtil $siteUtil The site utility.
      * @param LogManager $logManager The log manager.
      * @param SystemUtil $systemUtil The user manager.
      * @param UserManager $userManager The user manager.
+     * @param SecurityUtil $securityUtil The security utility.
      * @param ErrorManager $errorManager The error manager.
      */
     public function __construct(
+        SiteUtil $siteUtil,
         LogManager $logManager, 
         SystemUtil $systemUtil,
         UserManager $userManager,
+        SecurityUtil $securityUtil,
         ErrorManager $errorManager
     ) {
+        $this->siteUtil = $siteUtil;
         $this->logManager = $logManager;
         $this->systemUtil = $systemUtil;
         $this->userManager = $userManager;
+        $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
 
         // init file storage directory (in app root)
@@ -76,7 +93,7 @@ class StorageManager
      * @throws \Exception If an unexpected error occurs during the upload process.
      */
     public function mediaUpload(string $token, string $gallery, array $uploaded_file): array 
-    {
+    {   
         // list of allowend media fromats
         $allowed_formats = explode(',', $_ENV['ALLOWED_MEDIA_FORMATS']);
 
@@ -172,11 +189,22 @@ class StorageManager
                 ];
             }
 
+            // encrypt file name data
+            if ($this->siteUtil->isEncryptionEnabled()) {
+                $file_name = $this->securityUtil->encryptAES($file_name);
+            }
+
             // build final upload path
             $destination = $this->storage_directory.'/'.$username.'/'.$gallery.'/'.$file_name;
 
             // check if image exist
             if (file_exists($destination)) {
+                
+                // decrypt file name
+                if ($this->siteUtil->isEncryptionEnabled()) {
+                    $file_name = $this->securityUtil->decryptAES($file_name);
+                }
+
                 return [
                     'status' => 'error',
                     'code' => 400,
@@ -184,9 +212,27 @@ class StorageManager
                 ];
 
             } else {
-                // move file to upload dir
-                move_uploaded_file($uploaded_file['tmp_name'], $destination);
-                                
+
+                // encrypt file content data
+                if ($this->siteUtil->isEncryptionEnabled()) {
+
+                    // get file content
+                    $file_content = file_get_contents($uploaded_file['tmp_name']);
+
+                    // encrypt file
+                    $encrypted_file = $this->securityUtil->encryptAES($file_content);
+
+                    // save encrypted file
+                    file_put_contents($destination, $encrypted_file);
+                
+                    // delete temp file
+                    unlink($uploaded_file['tmp_name']);
+                } else {
+
+                    // move file to upload dir
+                    move_uploaded_file($uploaded_file['tmp_name'], $destination);
+                }
+
                 // log action
                 $this->logManager->log('uploader', 'user: '.$username.' upload new media: '.$file_name.' to gallery: '.$gallery);
 
@@ -266,11 +312,16 @@ class StorageManager
      */
     public function getThumbnail(string $storage_name, string $gallery_name): ?string 
     {
-        $allowed_extensions =  explode(',', $_ENV['ALLOWED_MEDIA_FORMATS']);
-
-        foreach (glob($this->storage_directory.'/'.$storage_name.'/'.$gallery_name . '/*.{'.implode(',', $allowed_extensions).'}', GLOB_BRACE) as $file) {
+        foreach (glob($this->storage_directory.'/'.$storage_name.'/'.$gallery_name . '/*') as $file) {
             $image_content = file_get_contents($file);
+            
+            // decrypt thumbnail
+            if ($this->siteUtil->isEncryptionEnabled()) {
+                $image_content = $this->securityUtil->decryptAES($image_content);
+            }
+
             $base64_image = base64_encode($image_content);
+    
             return $base64_image;
         }
         return null;
@@ -309,7 +360,7 @@ class StorageManager
 
             // remove dots links
             $images = array_diff($images, array('..', '.'));
-            
+
             return $images;
         }
         return null;
@@ -350,6 +401,11 @@ class StorageManager
             // get image content
             $content = file_get_contents($this->storage_directory.'/'.$storage_name.'/'.$gallery_name.'/'.$image_name);
             
+            // decrypt content
+            if ($this->siteUtil->isEncryptionEnabled()) {
+                $content = $this->securityUtil->decryptAES($content);
+            }
+
             // get image format
             $file_format = pathinfo($image_path, PATHINFO_EXTENSION);
             

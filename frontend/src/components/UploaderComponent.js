@@ -70,8 +70,8 @@ export default function UploaderComponent()
         }
 
         // check gallery name length reached
-        if (gallery_name.length >= 31) {
-            setErrorMsg('maximal gallery name length is 30 characters');
+        if (gallery_name.length >= 51) {
+            setErrorMsg('maximal gallery name length is 50 characters');
 
         // check gallery name minimal length
         } else if (gallery_name.length <= 3) {
@@ -273,7 +273,7 @@ export default function UploaderComponent()
                                                     {gallery_options.length <= 1 && (
                                                         <div>
                                                             <label htmlFor='newGalleryName' className='form-label'>New Gallery Name</label>
-                                                            <input type='text' id='newGalleryName' name='newGalleryName' className='form-control form-control-lg mb-3' placeholder='New Gallery name' maxLength={30} onChange={handleNewGalleryNameChange}/>
+                                                            <input type='text' id='newGalleryName' name='newGalleryName' className='form-control form-control-lg mb-3' placeholder='New Gallery name' maxLength={50} onChange={handleNewGalleryNameChange}/>
                                                         </div>
                                                     )}
     

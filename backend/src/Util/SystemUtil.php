@@ -38,4 +38,20 @@ class SystemUtil
             return null;
         }
     }
+
+    /**
+     * Extracts and returns an array of integers from a given string.
+     *
+     * This method uses regular expression matching to find all numeric sequences
+     * within the input string and returns them as an array of integers.
+     *
+     * @param string $str The input string from which to extract numeric sequences.
+     *
+     * @return array An array of integers extracted from the input string.
+     */
+    public function getNumbers(string $str): array
+    {
+        preg_match_all('/\d+/', $str, $matches);
+        return array_map('intval', $matches[0]);
+    }
 }

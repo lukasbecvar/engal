@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Util\SiteUtil;
 use App\Util\SecurityUtil;
 use App\Manager\UserManager;
 use App\Manager\StorageManager;
@@ -17,11 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ImageContentController extends AbstractController
 {
-    /**
-     * @var SiteUtil $siteUtil The site utility.
-     */
-    private SiteUtil $siteUtil;
-
     /**
      * @var UserManager $userManager The user manager.
      */
@@ -39,18 +33,15 @@ class ImageContentController extends AbstractController
 
     /**
      * ImageContentController constructor.
-     * @param SiteUtil $siteUtil The site utility.
      * @param UserManager $userManager The user manager.
      * @param SecurityUtil $securityUtil The security utility.
      * @param StorageManager $storageManager The storage manager.
      */
     public function __construct(
-        SiteUtil $siteUtil,
         UserManager $userManager, 
         SecurityUtil $securityUtil,
         StorageManager $storageManager
     ) {
-        $this->siteUtil = $siteUtil;
         $this->userManager = $userManager;
         $this->securityUtil = $securityUtil;
         $this->storageManager = $storageManager;
@@ -122,18 +113,11 @@ class ImageContentController extends AbstractController
 
                 // check if image exist
                 if ($this->storageManager->checkIfImageExist($username, $gallery, $image)) {
-                    
-                    // decrypt image name
-                    if ($this->siteUtil->isEncryptionEnabled()) {
-                        $image_name = $this->securityUtil->decryptAES($image);
-                    } else {
-                        $image_name = $image;
-                    }
 
                     return $this->json([
                         'status' => 'success',
                         'code' => 200,
-                        'image_name' => $image_name,
+                        'image_name' => $image,
                         'content' => $this->storageManager->getImageContent($username, $gallery, $image)
                     ]);
                 } else {

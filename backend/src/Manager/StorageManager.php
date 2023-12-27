@@ -189,22 +189,11 @@ class StorageManager
                 ];
             }
 
-            // encrypt file name data
-            if ($this->siteUtil->isEncryptionEnabled()) {
-                $file_name = $this->securityUtil->encryptAES($file_name);
-            }
-
             // build final upload path
             $destination = $this->storage_directory.'/'.$username.'/'.$gallery.'/'.$file_name;
 
             // check if image exist
             if (file_exists($destination)) {
-                
-                // decrypt file name
-                if ($this->siteUtil->isEncryptionEnabled()) {
-                    $file_name = $this->securityUtil->decryptAES($file_name);
-                }
-
                 return [
                     'status' => 'error',
                     'code' => 400,
@@ -327,6 +316,7 @@ class StorageManager
         return null;
     }
 
+
     /**
      * Checks if a gallery exists.
      *
@@ -344,25 +334,57 @@ class StorageManager
     }
 
     /**
-     * Gets the list of images for a given gallery.
+     * Retrieves a list of images from a specified gallery within a storage directory.
      *
-     * @param string $storage_name The storage name.
-     * @param string $gallery_name The gallery name.
-     * @return array|null The list of images or null if the gallery doesn't exist.
+     * This method checks if the specified gallery exists, then fetches the list of images
+     * from the storage directory associated with the given gallery. Optionally, the list
+     * can be sorted by name.
+     *
+     * @param string $storage_name The name of the storage directory.
+     * @param string $gallery_name The name of the gallery within the storage directory.
+     * @param string $sort Optional. Sorting criteria for the images. Default is 'by-name'.
+     *
+     * @return array|null An array of image names if the gallery exists, or null if the gallery
+     *                   does not exist.
      */
-    public function getImageListWhereGallery(string $storage_name, string $gallery_name): ?array
+    public function getImageListWhereGallery(string $storage_name, string $gallery_name, string $sort = 'by-name'): ?array
     {
-        // check if gallery exist
+        // check if gallery exists
         if ($this->checkIfGalleryExist($storage_name, $gallery_name)) {
-
+    
             // get images list from storage
             $images = scandir($this->storage_directory.'/'.$storage_name.'/'.$gallery_name);
-
+    
             // remove dots links
             $images = array_diff($images, array('..', '.'));
-
+    
+            // sort files by name and then by creation time (ascending order)
+            if ($sort === 'by-name') {
+                usort($images, function ($a, $b) {    
+                    $name_A = strtolower($a);
+                    $name_B = strtolower($b);
+    
+                    $numA = $this->systemUtil->getNumbers($name_A);
+                    $numB = $this->systemUtil->getNumbers($name_B);
+    
+                    foreach (range(0, max(count($numA), count($numB)) - 1) as $i) {
+                        // check if the key exists before accessing it
+                        $valueA = $numA[$i] ?? null;
+                        $valueB = $numB[$i] ?? null;
+    
+                        if ($valueA !== $valueB) {
+                            return $valueA - $valueB;
+                        }
+                    }
+    
+                    // if numbers are equal, use localeCompare for the remaining part of the string
+                    return strcmp($name_A, $name_B);
+                });
+            }
+    
             return $images;
         }
+    
         return null;
     }
 

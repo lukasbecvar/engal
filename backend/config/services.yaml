@@ -20,7 +20,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # set haders service
+    # set headers service
     App\Middleware\SetHeadersMiddleware:
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 1 }

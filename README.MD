@@ -10,15 +10,7 @@ This is only the basic version which will be extended and improved in the future
 - Self-hosted backend
 - Register disable & maintenance mode
 
-## Version 3.5 TODO-LIST
-- [X] Upload progress bar
-- [X] Check server free space before upload new images
-- [X] Dashboard user panel (show profile pic, username, role, link to account settings)
-- [X] Account settings
-- [X] Content encryption (only in backend storage)
-- [ ] Document api errors & endpoints
-
-## Version 4.0 TODO-LIST
+## TODO-LIST
 - [ ] Gallery actions
    - [ ] Gallery properties (show, images count, created data, last modified date, size)
    - [ ] Gallery delete function
@@ -27,7 +19,7 @@ This is only the basic version which will be extended and improved in the future
    - [ ] Image properties (show, gallery name, created data, last modified date, size)
    - [ ] Image delete function
    - [ ] Image edit function (move to gallery, rename)
-- [ ] Data sort
+- [ ] sort
    - [ ] All images browser
    - [ ] Sort by upload date, name, size, random + reverse
 - [ ] Image rating
@@ -35,18 +27,18 @@ This is only the basic version which will be extended and improved in the future
    - [ ] Rate images 1 - 5
 - [ ] Page system (infinite scroll)
 - [ ] Share gallery with other user
-- [ ] Storage data dumper (CLI)
 - [ ] Video formats support
-- [ ] Redesign UI
-
-## Version 5.0 TODO-LIST
-- [ ] Port Frontend to electron + (react native mobile app)
-
-## Version 6.0 TODO-LIST
+   - [ ] Upload videos to special videos folder
+   - [ ] Get video list
+   - [ ] Video player
 - [ ] Admin system
    - [ ] Ban system
    - [ ] Disable/enable register/maintenance
    - [ ] Logs browser
+- [ ] Redesign UI
+- [ ] Port Frontend to electron + (react native mobile app)
+- [ ] Storage data dumper (CLI)
+- [ ] Document api errors & endpoints
 
 ## Dependencies 
 * Symfony

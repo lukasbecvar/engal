@@ -82,6 +82,25 @@ export default function UploaderComponent()
             setErrorMsg('your file input is empty');
         } else {
 
+            // sort files before upload
+            images.sort((a, b) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+            
+                const getNumbers = (str) => str.match(/\d+/g).map(Number);
+            
+                const numA = getNumbers(nameA);
+                const numB = getNumbers(nameB);
+            
+                for (let i = 0; i < Math.max(numA.length, numB.length); i++) {
+                    if (numA[i] !== numB[i]) {
+                        return numA[i] - numB[i];
+                    }
+                }
+            
+                return nameA.localeCompare(nameB, 'cs');
+            });
+
             // main upload process
             try {
                 let uploaded = 0;
@@ -91,7 +110,7 @@ export default function UploaderComponent()
 
                 // set minimal progress
                 setPercentage(1);
-            
+
                 // upload all images loop
                 for (const image of images) {
 

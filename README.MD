@@ -14,6 +14,7 @@ This is only the basic version which will be extended and improved in the future
 - [ ] Recode
    - [ ] Docker env
    - [ ] CI tests actions
+   - [ ] Auth with JWT
    - [ ] Recode API (nelmio/OpenAPI doc) 
 - [ ] Gallery actions
    - [ ] Gallery properties (show, images count, created data, last modified date, size)

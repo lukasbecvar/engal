@@ -38,7 +38,9 @@ jobs:
 
       # install dependencies
       - name: Install dependencies
-        run: composer install
+        run: |
+          composer install
+          php bin/console lexik:jwt:generate-keypair
         working-directory: ./backend
 
       # create database
@@ -52,7 +54,7 @@ jobs:
         run: |
           rm -rf migrations
           mkdir migrations
-          php bin/console make:migration --no-interaction
+          php bin/console make:migration --no-interaction --env=test
           php bin/console doctrine:migrations:migrate --no-interaction --env=test
         working-directory: ./backend
 

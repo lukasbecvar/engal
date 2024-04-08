@@ -38,17 +38,19 @@ jobs:
 
       # install dependencies
       - name: Install dependencies
-        run: sh scripts/install.sh
+        run: composer install
         working-directory: ./backend
 
       # create database
       - name: Create database
-        run: sh scripts/create-database.sh
+        run: php bin/console doctrine:database:create --env=test
         working-directory: ./backend
 
       # migrate database
       - name: Migrate database
-        run: sh scripts/migrate.sh
+        run: 
+          php bin/console make:migration --no-interaction
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test
         working-directory: ./backend
 
       # run PHPUnit tests

@@ -48,7 +48,7 @@ jobs:
 
       # migrate database
       - name: Migrate database
-        run: 
+        run: |
           php bin/console make:migration --no-interaction
           php bin/console doctrine:migrations:migrate --no-interaction --env=test
         working-directory: ./backend

@@ -1,63 +1,53 @@
-# Encrypted media gallery
-Self-hosted encrypted media gallery
+# Engal
+Self-hosted encrypted media gallery.
 
-## Warning
-This is only the basic version which will be extended and improved in the future for a better user experience
-
-## Features
-- User system
-- Gallery browser
-- Self-hosted backend
-- Register disable & maintenance mode
-
-## TODO-LIST
-- [ ] Recode
-   - [ ] Docker env
-   - [ ] CI tests actions
-   - [ ] Auth with JWT
-   - [ ] Recode API (nelmio/OpenAPI doc) 
-- [ ] Gallery actions
-   - [ ] Gallery properties (show, images count, created data, last modified date, size)
-   - [ ] Gallery delete function
-   - [ ] Gallery rename
-- [ ] Images actions
-   - [ ] Image properties (show, gallery name, created data, last modified date, size)
-   - [ ] Image delete function
-   - [ ] Image edit function (move to gallery, rename)
-- [ ] sort
-   - [ ] All images browser
-   - [ ] Sort by upload date, name, size, random + reverse
-- [ ] Image rating
-   - [ ] Favorite images
-   - [ ] Rate images 1 - 5
-- [ ] Page system (infinite scroll)
-- [ ] Share gallery with other user
-- [ ] Video formats support
-   - [ ] Upload videos to special videos folder
-   - [ ] Get video list
-   - [ ] Video player
+## Dev Plan (Version 4.0)
+### Phase 1
+- [ ] Setup React & Symfony + configure
+- [ ] Setup (PHPStan & PHPunit github actions)
+### Phase 2
+- [ ] Error manager
+- [ ] Log manager
+- [ ] Security middleware (XSS escape, SSL check)
+- [ ] Database online check middleware
+- [ ] Maintenance mode middleware
+### Phase 3
+- [ ] User system (JWT auth)
+- [ ] Register function (default role USER)
+- [ ] Auth actions log
+- [ ] Command for granting admin permissions to a user
+### Phase 4
+- [ ] Frontend base (React Router, login check)
+- [ ] Login & register components in frontend
+- [ ] Store login token to local storage
+- [ ] Check if stored login token is valid
+- [ ] Logout function
+### Phase 5
+- [ ] User dashboard (component)
+    - [ ] Nav bar (user panel with logout)
+### Phase 6
+- [ ] Encryption utils
+- [ ] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
+- [ ] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
+    - [ ] Insert data into database
+    - [ ] Upload data to storage dir (filesystem: storage/username/{files})
+### Phase 7
+- [ ] Dashboard sections (photos, videos)
+- [ ] Display galleries in the dashboard
+- [ ] Gallery browser
+- [ ] All images/videos browser
+- [ ] Sorting (by: name, upload_time, edit_time, random)
+### Phase 8
+- [ ] Image browser
+- [ ] Video player
+### Phase 9
 - [ ] Admin system
-   - [ ] Ban system
-   - [ ] Disable/enable register/maintenance
-   - [ ] Logs browser
-- [ ] Redesign UI
-- [ ] Port Frontend to electron + (react native mobile app)
-- [ ] Storage data dumper (CLI)
-- [ ] Document api errors & endpoints
-
-## Dependencies 
-* Symfony
-   * Version: **6.4**
-   * [Website](https://symfony.com/)   
-* React
-   * Version: **18.2.0**
-   * [Website](https://react.dev/)   
-* Bootstrap
-   * Version: **5.3.2**
-   * [Website](https://getbootstrap.com/)
-* Light-Gallery
-   * Version: **2.7.2**
-   * [Github](https://github.com/sachinchoolur/lightGallery)
+    - [ ] Dashboard
+    - [ ] Log viewer
+    - [ ] User management
+    - [ ] Ban system
+### Phase 10
+- [ ] Backup command (extract all media to tar.gz archive).
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -1,0 +1,9 @@
+parameters:
+    level: 6
+    paths:
+        - config
+        - src
+        - tests
+    treatPhpDocTypesAsCertain: false
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon

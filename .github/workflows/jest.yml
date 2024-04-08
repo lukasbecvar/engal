@@ -1,0 +1,33 @@
+name: Jest
+
+# specify when the workflow should be triggered
+on:
+  push:
+    branches:
+      - main
+      - rework
+
+# define the jobs to be executed in the workflow
+jobs:
+  run_jest_tests:
+    name: Run Jest tests
+    runs-on: ubuntu-latest
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '21.7.2'
+  
+      # install node modules
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+  
+      # run tests
+      - name: Run Jest tests
+        run: npx jest
+        working-directory: ./frontend

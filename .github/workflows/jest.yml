@@ -14,9 +14,11 @@ jobs:
     runs-on: ubuntu-latest
         
     steps:
+      # checkout code
       - name: Checkout code
         uses: actions/checkout@v2
   
+      # setup node
       - name: Install Node.js and npm
         uses: actions/setup-node@v2
         with:

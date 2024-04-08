@@ -3,8 +3,10 @@ Self-hosted encrypted media gallery.
 
 ## Dev Plan (Version 4.0)
 ### Phase 1
-- [ ] Setup React & Symfony + configure
+- [X] Setup React (frontend)
+- [ ] Setup Symfony (backend)
 - [ ] Setup (PHPStan & PHPunit github actions)
+- [ ] Setup docker env
 ### Phase 2
 - [ ] Error manager
 - [ ] Log manager

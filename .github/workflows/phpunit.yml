@@ -43,13 +43,18 @@ jobs:
 
       # create database
       - name: Create database
-        run: php bin/console doctrine:database:create --env=test
+        run: |
+          php bin/console doctrine:database:create
+          php bin/console doctrine:database:create --env=test
         working-directory: ./backend
 
       # migrate database
       - name: Migrate database
         run: |
-          php bin/console make:migration --no-interaction --env=test
+          rm -rf migrations
+          mkdir migrations
+          php bin/console make:migration --no-interaction
+          php bin/console doctrine:migrations:migrate --no-interaction
           php bin/console doctrine:migrations:migrate --no-interaction --env=test
         working-directory: ./backend
 

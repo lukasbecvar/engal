@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# clear docker
+sudo rm -rf docker/services
+
 # clear frontend
 cd ./frontend
 rm -rf build
-rm -rf node_modules
+sudo rm -rf node_modules
 rm -rf package-lock.json
 
 # clear backend

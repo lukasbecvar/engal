@@ -1,0 +1,5 @@
+# size of the buffer used for index blocks
+key_buffer_size = 16M
+
+# maximum size of one packet or any generated or intermediate string
+max_allowed_packet = 256M

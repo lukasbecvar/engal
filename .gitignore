@@ -1,0 +1,17 @@
+# common
+docker/services
+
+# frontend
+frontend/node_modules
+frontend/package-lock.json
+frontend/build
+frontend/coverage
+
+# backend
+backend/.env.prod
+backend/config/jwt
+backend/composer.lock
+backend/vendor
+backend/var
+backend/public/bundles
+backend/config/secrets/prod/prod.decrypt.private.php

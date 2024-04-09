@@ -2,7 +2,6 @@
 
 # install frontend
 cd ./frontend
-
 # install node-modules
 if [ ! -d './node_modules/' ]
 then
@@ -11,13 +10,11 @@ fi
 
 # install backend
 cd ../backend
-
 # install composer
 if [ ! -d './vendor/' ]
 then
     composer install
 fi
-
 # generate jwk key
 if [ ! -d 'config/jwt/' ]
 then

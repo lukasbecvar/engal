@@ -14,7 +14,7 @@ Self-hosted encrypted media gallery.
 - [X] Setup NelmioApiDocBundle 
 - [X] Security middleware (XSS escape, SSL check)
 - [X] Database online check middleware
-- [ ] Maintenance mode middleware
+- [X] Maintenance mode middleware
 ### Phase 3
 - [ ] User system (JWT auth)
 - [ ] Register function (default role USER)

@@ -1,4 +1,4 @@
-# This Docker Compose configuration defines local development services.
+# This Docker Compose configuration defines local development services (this is only dev env).
 version: '3'
 
 # docker network config
@@ -15,8 +15,8 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=root
         volumes:
-            - ./docker/configs/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
-            - ./docker/services/mysql_database:/var/lib/mysql
+            - ./_docker/configs/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+            - ./_docker/services/mysql_database:/var/lib/mysql
         ports:
             - "3306:3306"
         networks:
@@ -26,18 +26,16 @@ services:
     backend:
         build:
             context: .
-            dockerfile: ./docker/Dockerfile
+            dockerfile: ./_docker/Dockerfile
         container_name: engal_backend
         restart: always
         depends_on:
             - mysql
         environment:
-            - DATABASE_DRIVER=pdo_mysql
             - DATABASE_HOST=mysql
-            - DATABASE_PORT=3306
         volumes:
-            - ./docker/configs/apache-api.conf:/etc/apache2/sites-available/000-default.conf
-            - ./docker/configs/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./_docker/configs/apache-api.conf:/etc/apache2/sites-available/000-default.conf
+            - ./_docker/configs/php.ini:/usr/local/etc/php/php.ini:ro
             - ./:/var/www
         ports:
             - "1337:80"

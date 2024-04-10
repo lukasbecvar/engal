@@ -8,6 +8,7 @@ Self-hosted encrypted media gallery.
 - [X] Setup (tests github actions)
 - [X] Setup docker env
 ### Phase 2
+- [ ] Index/status controller
 - [ ] Error manager
 - [ ] Log manager
 - [ ] Security middleware (XSS escape, SSL check)
@@ -22,6 +23,7 @@ Self-hosted encrypted media gallery.
 - [ ] Frontend base (React Router, api-url set, login check)
 - [ ] Login & register components in frontend
 - [ ] Store login token to local storage
+- [ ] App init check backend errors
 - [ ] Check if stored login token is valid
 - [ ] Logout function
 ### Phase 5
@@ -54,8 +56,14 @@ Self-hosted encrypted media gallery.
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 ### Phase 12
-- [ ] Frontend app version check (check if app versions is valid with backend)
-- [ ] Deploy system (build backend/frontend packages, backend update/install script)
+- [ ] Deploy system
+    - [ ] Build script (build final frontend & symfony for production use to deploy archives)
+    - [ ] Backend install script (install backend project to new server)
+    - [ ] Backend update script (autoupdate backend)
+    - [ ] Check frontend app version (check if versions matching with backend version)
+### Phase 13
+- [ ] Refactor / code clean & check
+- [ ] Complete doc
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

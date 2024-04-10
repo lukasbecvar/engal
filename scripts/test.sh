@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# colored print
 yellow_echo () { echo "\033[33m\033[1m$1\033[0m"; }
 
 # clear terminal history

@@ -13,12 +13,13 @@ Self-hosted encrypted media gallery.
 - [X] Log manager
 - [X] Setup NelmioApiDocBundle 
 - [X] Security middleware (XSS escape, SSL check)
-- [ ] Database online check middleware
+- [X] Database online check middleware
 - [ ] Maintenance mode middleware
 ### Phase 3
 - [ ] User system (JWT auth)
 - [ ] Register function (default role USER)
 - [ ] Auth actions log
+- [ ] Command for create user
 - [ ] Command for granting admin permissions to a user
 ### Phase 4
 - [ ] Frontend base (React Router, api-url set, login check)

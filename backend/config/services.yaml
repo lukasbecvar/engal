@@ -19,6 +19,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # maintenance mode checker
+    App\Middleware\MaintenanceMiddleware:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 3 }
+
     # database online checker
     App\Middleware\DatabaseOnlineMiddleware:
         tags:

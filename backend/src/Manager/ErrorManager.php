@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Util\SiteUtil;
 use App\Event\ErrorEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -15,14 +16,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ErrorManager
 {
+    private SiteUtil $siteUtil;
     private EventDispatcherInterface $eventDispatcherInterface;
 
     /**
      * ErrorManager constructor.
+     * @param SiteUtil $siteUtil
      * @param EventDispatcherInterface $eventDispatcherInterface
      */
-    public function __construct(EventDispatcherInterface $eventDispatcherInterface)
+    public function __construct(SiteUtil $siteUtil, EventDispatcherInterface $eventDispatcherInterface)
     {
+        $this->siteUtil = $siteUtil;
         $this->eventDispatcherInterface = $eventDispatcherInterface;
     }
 
@@ -36,12 +40,12 @@ class ErrorManager
     public function handleError(string $message, int $code): void
     {
         // dispatch error event
-        if ($this->canBeEventDispatched($message)) {
+        if ($this->canBeEventDispatched($message) && !$this->siteUtil->isMaintenance()) {
             $this->eventDispatcherInterface->dispatch(new ErrorEvent($code, 'internal-error', $message), ErrorEvent::NAME);
         }
 
         // protect error message in production env
-        if ($_ENV['APP_ENV'] == 'prod') {
+        if ($_ENV['APP_ENV'] == 'prod' && $message != 'maintenance') {
             $code = 500;
             $message = 'Unexpected server error';
         }

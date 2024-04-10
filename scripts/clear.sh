@@ -18,6 +18,7 @@ rm -rf package-lock.json
 red_echo "[Clear]: clearing backend files"
 cd ../backend
 php bin/console cache:clear
+rm -rf public/bundles
 rm -rf var/
 rm -rf vendor/
 rm -rf composer.lock

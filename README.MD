@@ -11,7 +11,7 @@ Self-hosted encrypted media gallery.
 - [X] Index/status controller
 - [X] Error manager
 - [X] Log manager
-- [ ] Setup NelmioApiDocBundle 
+- [X] Setup NelmioApiDocBundle 
 - [ ] Security middleware (XSS escape, SSL check)
 - [ ] Database online check middleware
 - [ ] Maintenance mode middleware

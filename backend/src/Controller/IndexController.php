@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Manager\ErrorManager;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,10 +21,8 @@ class IndexController extends AbstractController
      * @return JsonResponse Returns a JSON response with status, code, and backend version.
      */
     #[Route('/', name: 'app_index', methods: ['GET'])]
-    public function index(ErrorManager $test): JsonResponse
+    public function index(): JsonResponse
     {
-        //$test->handleError('idk', 200);
-
         return $this->json([
             'status' => 'success',
             'code' => 200,

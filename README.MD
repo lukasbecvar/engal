@@ -9,8 +9,9 @@ Self-hosted encrypted media gallery.
 - [X] Setup docker env
 ### Phase 2
 - [X] Index/status controller
-- [ ] Error manager
-- [ ] Log manager
+- [X] Error manager
+- [X] Log manager
+- [ ] Setup NelmioApiDocBundle 
 - [ ] Security middleware (XSS escape, SSL check)
 - [ ] Database online check middleware
 - [ ] Maintenance mode middleware

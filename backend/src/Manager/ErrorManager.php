@@ -35,15 +35,15 @@ class ErrorManager
      */
     public function handleError(string $message, int $code): void
     {
+        // dispatch error event
+        if ($this->canBeEventDispatched($message)) {
+            $this->eventDispatcherInterface->dispatch(new ErrorEvent($code, 'internal-error', $message), ErrorEvent::NAME);
+        }
+
         // protect error message in production env
         if ($_ENV['APP_ENV'] == 'prod') {
             $code = 500;
             $message = 'Unexpected server error';
-        }
-
-        // dispatch error event
-        if ($this->canBeEventDispatched($message)) {
-            $this->eventDispatcherInterface->dispatch(new ErrorEvent($code, 'internal-error', $message), ErrorEvent::NAME);
         }
 
         // build error response

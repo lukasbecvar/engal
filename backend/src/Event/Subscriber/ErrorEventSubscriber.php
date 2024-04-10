@@ -3,6 +3,7 @@
 namespace App\Event\Subscriber;
 
 use App\Event\ErrorEvent;
+use App\Manager\LogManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -14,6 +15,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ErrorEventSubscriber implements EventSubscriberInterface
 {
+    private LogManager $logManager;
+
+    /**
+     * Constructs ErrorEventSubscriber.
+     *
+     * @param LogManager $logManager The LogManager instance to handle logging.
+     */
+    public function __construct(LogManager $logManager)
+    {
+        $this->logManager = $logManager;
+    }
+
     /**
      * Returns an array of subscribed events that this object should listen to.
      *
@@ -38,6 +51,7 @@ class ErrorEventSubscriber implements EventSubscriberInterface
         $error_name = $event->getErrorName();
         $error_message = $event->getErrorMessage();
 
-        // log error here
+        // log error
+        $this->logManager->log($error_name, $error_message);
     }
 }

@@ -19,6 +19,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # database online checker
+    App\Middleware\DatabaseOnlineMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 2 }
+
     # escape request data
     App\Middleware\EscapeRequestDataMiddleware:
         tags:

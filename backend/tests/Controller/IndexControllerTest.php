@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class IndexControllerTest
+ * 
+ * Test main app index/status controller response
+ * 
  * @package App\Tests\Controller
  */
 class IndexControllerTest extends WebTestCase

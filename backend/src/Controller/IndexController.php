@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class IndexController
+ * 
+ * Main app index controller for check api status
+ * 
  * @package App\Controller
  */
 class IndexController extends AbstractController
@@ -21,7 +24,7 @@ class IndexController extends AbstractController
     #[Route('/', name: 'app_index', methods: ['GET'])]
     public function index(ErrorManager $test): JsonResponse
     {
-        $test->handleError('idk', 200);
+        //$test->handleError('idk', 200);
 
         return $this->json([
             'status' => 'success',

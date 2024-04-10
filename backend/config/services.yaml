@@ -19,3 +19,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # escape request data
+    App\Middleware\EscapeRequestDataMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }

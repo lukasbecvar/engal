@@ -8,7 +8,7 @@ Self-hosted encrypted media gallery.
 - [X] Setup (tests github actions)
 - [X] Setup docker env
 ### Phase 2
-- [ ] Index/status controller
+- [X] Index/status controller
 - [ ] Error manager
 - [ ] Log manager
 - [ ] Security middleware (XSS escape, SSL check)

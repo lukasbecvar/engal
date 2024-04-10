@@ -19,6 +19,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # security check service
+    App\Middleware\SecurityCheckMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 4 }
+
     # maintenance mode checker
     App\Middleware\MaintenanceMiddleware:
         tags:

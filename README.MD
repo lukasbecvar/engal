@@ -15,6 +15,7 @@ Self-hosted encrypted media gallery.
 - [X] Security middleware (XSS escape, SSL check)
 - [X] Database online check middleware
 - [X] Maintenance mode middleware
+- [X] SSL Only mode middleware
 ### Phase 3
 - [ ] User system (JWT auth)
 - [ ] Register function (default role USER)

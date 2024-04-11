@@ -18,7 +18,7 @@ security:
             stateless: true
             provider: app_user_provider
             json_login:
-                username_path: email
+                username_path: username
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
@@ -32,5 +32,6 @@ security:
 
     # app access manager 
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/product,       roles: ROLE_USER }
+        - { path: ^/api/login,         roles: PUBLIC_ACCESS }
+        - { path: ^/api/doc,           roles: PUBLIC_ACCESS }
+        - { path: ^/api,               roles: ROLE_USER }

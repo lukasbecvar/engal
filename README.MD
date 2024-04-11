@@ -17,11 +17,15 @@ Self-hosted encrypted media gallery.
 - [X] Maintenance mode middleware
 - [X] SSL Only mode middleware
 ### Phase 3
-- [ ] User system (JWT auth)
+- [X] User system (JWT auth)
+- [X] Auth actions log
+- [ ] Use redis for cache
+- [ ] Token invalidation
+- [ ] Last login & register time in user entity
 - [ ] Register function (default role USER)
-- [ ] Auth actions log
 - [ ] Command for create user
 - [ ] Command for granting admin permissions to a user
+- [ ] User status api endpoint
 ### Phase 4
 - [ ] Frontend base (React Router, api-url set, login check)
 - [ ] Login & register components in frontend

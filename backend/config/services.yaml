@@ -19,6 +19,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    # handles success login event
+    App\Event\Subscriber\LoginEventSubscriber:
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     # security check service
     App\Middleware\SecurityCheckMiddleware:
         tags:

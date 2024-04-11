@@ -35,9 +35,9 @@ class ErrorManager
      *
      * @param string $message The error message.
      * @param int $code The error code.
-     * @return void
+     * @return JsonResponse
      */
-    public function handleError(string $message, int $code): void
+    public function handleError(string $message, int $code): JsonResponse
     {
         // dispatch error event
         if ($this->canBeEventDispatched($message) && !$this->siteUtil->isMaintenance()) {
@@ -51,19 +51,15 @@ class ErrorManager
         }
 
         // build error response
-        $response = new JsonResponse([
+        $response = [
             'error' => [
                 'status' => 'error',
                 'code' => $code,
                 'message' => $message
             ]
-        ], $code);
+        ];
 
-        // send error response
-        $response->send();
-
-        // force die app
-        die();
+        return die(json_encode($response));
     }
 
     /**

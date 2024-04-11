@@ -24,7 +24,12 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    # security check service
+    # validate jwt tokens middleware
+    App\Middleware\AuthTokenValidateMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 5 }
+
+    # security check middleware
     App\Middleware\SecurityCheckMiddleware:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request', priority: 4 }

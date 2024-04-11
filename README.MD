@@ -20,8 +20,7 @@ Self-hosted encrypted media gallery.
 - [X] User system (JWT auth)
 - [X] Auth actions log
 - [X] Token invalidation
-- [ ] Blacklisted token check middleware
-- [ ] Implement redis cache (can disable in env config)
+- [X] Blacklisted token check middleware
 - [ ] Last login & register time in user entity
 - [ ] Register function (default role USER)
 - [ ] Command for create user

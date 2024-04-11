@@ -35,9 +35,10 @@ class ErrorManager
      *
      * @param string $message The error message.
      * @param int $code The error code.
+     * @param bool $msg_protect The error message protect (hide errors in prod env).
      * @return JsonResponse
      */
-    public function handleError(string $message, int $code): JsonResponse
+    public function handleError(string $message, int $code, bool $msg_protect = true): JsonResponse
     {
         // dispatch error event
         if ($this->canBeEventDispatched($message) && !$this->siteUtil->isMaintenance()) {
@@ -45,7 +46,7 @@ class ErrorManager
         }
 
         // protect error message in production env
-        if ($_ENV['APP_ENV'] == 'prod' && $message != 'maintenance') {
+        if ($_ENV['APP_ENV'] == 'prod' && $msg_protect == true) {
             $code = 500;
             $message = 'Unexpected server error';
         }

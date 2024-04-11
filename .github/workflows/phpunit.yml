@@ -61,6 +61,7 @@ jobs:
       # load testing data
       - name: Load fixtures
         run: php bin/console doctrine:fixtures:load --no-interaction --env=test
+        working-directory: ./backend
 
       # run PHPUnit tests
       - name: Run PHPUnit tests

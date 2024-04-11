@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Tests\Security;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+/**
+ * Class LogoutTest
+ *
+ * This class contains unit tests for the logout functionality.
+ *
+ * @package App\Tests\Security
+ */
+class LogoutTest extends WebTestCase
+{
+    /**
+     * Test logout with valid JWT token.
+     *
+     * This test authenticates a testing user and obtains a JWT token.
+     * It then sends a logout request with the obtained token and asserts that the logout is successful.
+     */
+    public function testLogoutWithValidToken(): void
+    {
+        $client = static::createClient();
+
+        // authenticate testing user and get JWT token
+        $client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'username' => 'test',
+                'password' => 'test',
+            ])
+        );
+
+        $response = $client->getResponse();
+        $responseData = json_decode($response->getContent(), true);
+
+        // check if login was successful
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertArrayHasKey('token', $responseData);
+
+        $token = $responseData['token'];
+
+        // make logout request with JWT token
+        $client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
+
+        $logoutResponse = $client->getResponse();
+        $logoutResponseData = json_decode($logoutResponse->getContent(), true);
+
+        // check if logout was successful
+        $this->assertSame(Response::HTTP_OK, $logoutResponse->getStatusCode());
+        $this->assertArrayHasKey('status', $logoutResponseData);
+        $this->assertSame('success', $logoutResponseData['status']);
+        $this->assertSame('Logout successful', $logoutResponseData['message']);
+    }
+
+    /**
+     * Test logout with invalid JWT token.
+     *
+     * This test sends a logout request with an invalid JWT token and asserts that the logout fails due to the invalid token.
+     */
+    public function testLogoutWithInvalidToken(): void
+    {
+        $client = static::createClient();
+
+        // make logout request with invalid JWT token
+        $client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer invalid_token']);
+
+        $logoutResponse = $client->getResponse();
+        $logoutResponseData = json_decode($logoutResponse->getContent(), true);
+
+        // check if logout failed due to invalid token
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $logoutResponse->getStatusCode());
+        $this->assertSame('Invalid JWT Token', $logoutResponseData['message']);
+    }
+}

@@ -19,8 +19,9 @@ Self-hosted encrypted media gallery.
 ### Phase 3
 - [X] User system (JWT auth)
 - [X] Auth actions log
-- [ ] Use redis for cache
-- [ ] Token invalidation
+- [X] Token invalidation
+- [ ] Blacklisted token check middleware
+- [ ] Implement redis cache (can disable in env config)
 - [ ] Last login & register time in user entity
 - [ ] Register function (default role USER)
 - [ ] Command for create user

@@ -23,7 +23,7 @@ Self-hosted encrypted media gallery.
 - [X] Blacklisted token check middleware
 - [X] Last login & register time in user entity
 - [X] Command for create user
-- [ ] Command for granting admin permissions to a user
+- [X] Command for granting admin permissions to a user
 - [ ] User status api endpoint
 - [ ] Register api endpoint
 ### Phase 4

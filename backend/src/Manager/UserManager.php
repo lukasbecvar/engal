@@ -42,6 +42,19 @@ class UserManager
     }
 
     /**
+     * Gets the user repository for the given username.
+     *
+     * @param string $username The username to retrieve the repository for
+     * 
+     * @return object|null The user repository if found, otherwise null
+     */
+    public function getUserRepo(string $username): ?object
+    {
+        // get user repo
+        return $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+    }
+
+    /**
      * Updates user data on login.
      *
      * Finds the user by username and updates the last login time and IP address.
@@ -55,10 +68,10 @@ class UserManager
     public function updateUserDataOnLogin(string $identifier): void
     {
         // get user repo
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $identifier]);
+        $user = $this->getUserRepo($identifier);
 
         // check if user is found
-        if ($user) {
+        if ($user != null) {
             try {
                 // set new data
                 $user->setLastLoginTime(date('d.m.Y H:i:s'));
@@ -70,26 +83,6 @@ class UserManager
             } catch (\Exception $e) {
                 $this->errorManager->handleError('error to update user data with login: '.$e->getMessage(), 500);
             }
-        }
-    }
-
-    /**
-     * Checks if a user exists in the database.
-     *
-     * @param string $username The username to check
-     * 
-     * @return bool True if the user exists, false otherwise
-     */
-    public function isUserExist(string $username): bool
-    {
-        // get user repo
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
-
-        // check if user found in database
-        if ($user != null) {
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -106,7 +99,7 @@ class UserManager
     public function registerUser(string $username, string $password): void
     {
         // check if user exist
-        if (!$this->isUserExist($username)) {
+        if ($this->getUserRepo($username) == null) {
             
             try {
                 // init user entity
@@ -128,6 +121,53 @@ class UserManager
                 $this->entityManager->flush();
             } catch (\Exception $e) {
                 $this->errorManager->handleError('error to register new user: '.$e->getMessage(), 500);
+            }
+        }
+    }
+
+    /**
+     * Checks if the specified user has the admin role.
+     *
+     * @param string $username The username of the user to check
+     * 
+     * @return bool True if the user has the admin role, otherwise false
+     */
+    public function isUserAdmin(string $username): bool
+    {
+        $user = $this->getUserRepo($username);
+    
+        if ($user !== null) {
+            $roles = $user->getRoles();
+            return in_array('ROLE_ADMIN', $roles);
+        }
+    
+        return false;
+    }
+
+    /**
+     * Adds the admin role to a user.
+     *
+     * @param string $username The username of the user to add the admin role to
+     * 
+     * @return void
+     * 
+     * @throws \Exception If there is an error while adding the admin role
+     */
+    public function addAdminRoleToUser(string $username): void
+    {
+        // check if user exist
+        if ($this->getUserRepo($username) != null) {
+            try {
+                // get user repo
+                $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+
+                // update role
+                $user->setRoles(['ROLE_ADMIN']);
+
+                // flush updated user data
+                $this->entityManager->flush();
+            } catch (\Exception $e) {
+                $this->errorManager->handleError('error to grant admin permissions: '.$e->getMessage(), 500);
             }
         }
     }

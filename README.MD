@@ -22,10 +22,10 @@ Self-hosted encrypted media gallery.
 - [X] Token invalidation
 - [X] Blacklisted token check middleware
 - [X] Last login & register time in user entity
-- [ ] Register function (default role USER)
-- [ ] Command for create user
+- [X] Command for create user
 - [ ] Command for granting admin permissions to a user
 - [ ] User status api endpoint
+- [ ] Register api endpoint
 ### Phase 4
 - [ ] Frontend base (React Router, api-url set, login check)
 - [ ] Login & register components in frontend

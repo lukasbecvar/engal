@@ -3,6 +3,7 @@
 namespace App\Event\Subscriber;
 
 use App\Manager\LogManager;
+use App\Manager\UserManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
@@ -16,15 +17,18 @@ use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 class LoginEventSubscriber implements EventSubscriberInterface
 {
     private LogManager $logManager;
+    private UserManager $userManager;
 
     /**
      * LoginEventSubscriber constructor.
      *
      * @param LogManager $logManager
+     * @param UserManager $userManager
      */
-    public function __construct(LogManager $logManager)
+    public function __construct(LogManager $logManager, UserManager $userManager)
     {
         $this->logManager = $logManager;
+        $this->userManager = $userManager;
     }
 
     /**
@@ -46,9 +50,12 @@ class LoginEventSubscriber implements EventSubscriberInterface
      */
     public function onSecurityAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        $user = $event->getAuthenticationToken()->getUser();
+        $identifier = $event->getAuthenticationToken()->getUser()->getUserIdentifier();
+
+        // update user data
+        $this->userManager->updateUserDataOnLogin($identifier);
 
         // log user auth
-        $this->logManager->log('authenticator', 'user: '.$user->getUserIdentifier().' loggedin');
+        $this->logManager->log('authenticator', 'user: '.$identifier.' loggedin');
     }
 }

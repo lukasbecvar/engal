@@ -21,7 +21,7 @@ Self-hosted encrypted media gallery.
 - [X] Auth actions log
 - [X] Token invalidation
 - [X] Blacklisted token check middleware
-- [ ] Last login & register time in user entity
+- [X] Last login & register time in user entity
 - [ ] Register function (default role USER)
 - [ ] Command for create user
 - [ ] Command for granting admin permissions to a user

@@ -32,6 +32,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $register_time = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $last_login_time = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $ip_address = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +105,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getRegisterTime(): string
+    {
+        return $this->register_time;
+    }
+
+    public function setRegisterTime(string $register_time): void
+    {
+        $this->register_time = $register_time;
+    }
+
+    public function getLastLoginTime(): string
+    {
+        return $this->last_login_time;
+    }
+
+    public function setLastLoginTime(string $last_login_time): void
+    {
+        $this->last_login_time = $last_login_time;
+    }
+
+    public function getIpAddress(): string
+    {
+        return $this->ip_address;
+    }
+
+    public function setIpAddress(string $ip_address): void
+    {
+        $this->ip_address = $ip_address;
     }
 
     /**

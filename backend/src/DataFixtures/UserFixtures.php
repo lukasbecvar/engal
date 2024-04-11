@@ -42,6 +42,9 @@ class UserFixtures extends Fixture
         $user->setUsername('test');
         $user->setRoles(['ROLE_USER']);
         $user->setPassword($this->passwordHasher->hashPassword($user, 'test'));
+        $user->setRegisterTime(date('d.m.Y H:i:s'));
+        $user->setLastLoginTime('not-logged');
+        $user->setIpAddress('unknown');
 
         // save test user
         $manager->persist($user);

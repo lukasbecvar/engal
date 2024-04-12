@@ -1,5 +1,5 @@
 # Engal
-Self-hosted encrypted media gallery.
+Self-hosted encrypted media cloud storage.
 
 ## Dev Plan (Version 4.0)
 ### Phase 1

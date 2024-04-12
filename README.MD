@@ -1,7 +1,8 @@
 # Engal
 Self-hosted encrypted media cloud storage.
 
-## Dev Plan (Version 4.0)
+## Recode (Version 4.0)
+I am currently working on a complete recode of the application.
 ### Phase 1
 - [X] Setup React (frontend)
 - [X] Setup Symfony (backend)

@@ -35,10 +35,10 @@ I am currently working on a complete recode of the application.
     - [ ] Check backend availability
     - [ ] Check backend status
     - [ ] Check app version
-    - [ ] Check login status
+    - [ ] Login component
+        - [ ] Check login status
 - [ ] Sub components design
 - [ ] Register component
-- [ ] Login component
 - [ ] User dashboard
 - [ ] Logout function
 ### Phase 5

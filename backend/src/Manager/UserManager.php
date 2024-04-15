@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\User;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -170,5 +171,18 @@ class UserManager
                 $this->errorManager->handleError('error to grant admin permissions: '.$e->getMessage(), 500);
             }
         }
+    }
+
+    /**
+     * Retrieves user data based on the provided security context.
+     *
+     * This method retrieves user data using the provided security context.
+     *
+     * @param Security $security The security service providing the context for the user.
+     * @return object The user data object.
+     */
+    public function getUserData(Security $security): object
+    {
+        return $this->getUserRepo($security->getUser()->getUserIdentifier());
     }
 }

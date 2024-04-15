@@ -25,14 +25,18 @@ I am currently working on a complete recode of the application.
 - [X] Last login & register time in user entity
 - [X] Command for create user
 - [X] Command for granting admin permissions to a user
-- [ ] User status api endpoint
+- [X] User status api endpoint
 - [ ] Register api endpoint
 ### Phase 4
-- [ ] Frontend base (React Router, api-url set, login check)
-- [ ] Login & register components in frontend
-- [ ] Store login token to local storage
-- [ ] App init check backend errors
-- [ ] Check if stored login token is valid
+- [ ] Frontend base
+    - [ ] Set Api url
+    - [ ] Check backend availability
+    - [ ] Check backend status
+    - [ ] Check app version
+    - [ ] Check login status
+- [ ] Register component
+- [ ] Login component
+- [ ] User dashboard
 - [ ] Logout function
 ### Phase 5
 - [ ] User dashboard (component)

@@ -55,6 +55,12 @@ class UserManager
         return $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
     }
 
+    /**
+     * Retrieves a user entity by their IP address.
+     *
+     * @param string $ip_address The IP address of the user.
+     * @return object|null The user entity if found, or null if not found.
+     */
     public function getUserRepoByIP(string $ip_address): ?object
     {
         // get user repo

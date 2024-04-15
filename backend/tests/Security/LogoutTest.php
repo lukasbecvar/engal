@@ -15,6 +15,20 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class LogoutTest extends WebTestCase
 {
     /**
+     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
+     */
+    private $client;
+
+    /**
+     * Set up before each test.
+     */
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+        parent::setUp();
+    }
+
+    /**
      * Test logout with valid JWT token.
      *
      * This test authenticates a testing user and obtains a JWT token.
@@ -22,17 +36,15 @@ class LogoutTest extends WebTestCase
      */
     public function testLogoutWithValidToken(): void
     {
-        $client = static::createClient();
-
         // authenticate testing user and get JWT token
-        $client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
             json_encode([
                 'username' => 'test',
                 'password' => 'test',
             ])
         );
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
         // check if login was successful
@@ -42,9 +54,9 @@ class LogoutTest extends WebTestCase
         $token = $responseData['token'];
 
         // make logout request with JWT token
-        $client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
+        $this->client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
 
-        $logoutResponse = $client->getResponse();
+        $logoutResponse = $this->client->getResponse();
         $logoutResponseData = json_decode($logoutResponse->getContent(), true);
 
         // check if logout was successful
@@ -61,12 +73,10 @@ class LogoutTest extends WebTestCase
      */
     public function testLogoutWithInvalidToken(): void
     {
-        $client = static::createClient();
-
         // make logout request with invalid JWT token
-        $client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer invalid_token']);
+        $this->client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer invalid_token']);
 
-        $logoutResponse = $client->getResponse();
+        $logoutResponse = $this->client->getResponse();
         $logoutResponseData = json_decode($logoutResponse->getContent(), true);
 
         // check if logout failed due to invalid token

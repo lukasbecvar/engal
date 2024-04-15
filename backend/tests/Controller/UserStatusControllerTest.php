@@ -15,6 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 class UserStatusControllerTest extends CustomCase
 {
     /**
+     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
+     */
+    private $client;
+
+    /**
+     * Set up before each test.
+     */
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+        parent::setUp();
+    }
+
+    /**
      * Tests the getUserStatus endpoint.
      *
      * This method tests the behavior of the getUserStatus endpoint by sending a GET request
@@ -24,16 +38,14 @@ class UserStatusControllerTest extends CustomCase
      */
     public function testGetUserStatus(): void
     {
-        $client = static::createClient();
-
         // simulate user authentication
-        $this->simulateUserAuthentication($client);
+        $this->simulateUserAuthentication($this->client);
 
         // GET request to the API endpoint
-        $client->request('GET', '/api/user/status');
+        $this->client->request('GET', '/api/user/status');
 
         // decoding the content of the JsonResponse
-        $response_data = json_decode($client->getResponse()->getContent(), true);
+        $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // asserts
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
@@ -48,13 +60,11 @@ class UserStatusControllerTest extends CustomCase
      */
     public function testGetUserStatusNonAuth(): void
     {
-        $client = static::createClient();
-
         // GET request to the API endpoint
-        $client->request('GET', '/api/user/status');
+        $this->client->request('GET', '/api/user/status');
 
         // decoding the content of the JsonResponse
-        $response_data = json_decode($client->getResponse()->getContent(), true);
+        $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // asserts
         $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);

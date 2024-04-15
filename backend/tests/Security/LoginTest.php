@@ -15,6 +15,20 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class LoginTest extends WebTestCase
 {
     /**
+     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
+     */
+    private $client;
+
+    /**
+     * Set up before each test.
+     */
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+        parent::setUp();
+    }
+
+    /**
      * Test successful login with valid credentials.
      *
      * This test checks if a user can successfully log in with valid credentials.
@@ -24,15 +38,13 @@ class LoginTest extends WebTestCase
      */
     public function testLoginValid(): void
     {
-        $client = static::createClient();
-
         // make request
-        $client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
             '{"username": "test", "password": "test"}'
         );
 
         // get response data
-        $response_content = $client->getResponse()->getContent();
+        $response_content = $this->client->getResponse()->getContent();
         $response_data = json_decode($response_content, true);
 
         // check response
@@ -52,15 +64,13 @@ class LoginTest extends WebTestCase
      */
     public function testLoginInvalid(): void
     {
-        $client = static::createClient();
-
         // make request
-        $client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
             '{"username": "invalid_ěěěščě", "password": "invalid_ěěěščě"}'
         );
 
         // get response data
-        $response_content = $client->getResponse()->getContent();
+        $response_content = $this->client->getResponse()->getContent();
         $response_data = json_decode($response_content, true);
 
         // check response

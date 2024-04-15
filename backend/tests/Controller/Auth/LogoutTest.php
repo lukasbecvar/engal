@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Security;
+namespace App\Tests\Auth;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *
  * This class contains unit tests for the logout functionality.
  *
- * @package App\Tests\Security
+ * @package App\Tests\Auth
  */
 class LogoutTest extends WebTestCase
 {

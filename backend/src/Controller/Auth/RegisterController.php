@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\User\Auth;
+namespace App\Controller\Auth;
 
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * 
  * Controller handling user registration.
  * 
- * @package App\Controller\User\Auth
+ * @package App\Controller\Auth
  */
 class RegisterController extends AbstractController
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Security;
+namespace App\Tests\Auth;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\ByteString;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class RegisterTest
  * 
- * @package App\Tests\Security
+ * @package App\Tests\Auth
  */
 class RegisterTest extends WebTestCase
 {

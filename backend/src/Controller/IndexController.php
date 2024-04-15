@@ -28,7 +28,8 @@ class IndexController extends AbstractController
         return $this->json([
             'status' => 'success',
             'code' => 200,
-            'backend_version' => $_ENV['APP_VERSION']
+            'backend_version' => $_ENV['APP_VERSION'],
+            'enabled_registration' => boolval($_ENV['REGISTER_ENABLED'])
         ], 200);
     }
 }

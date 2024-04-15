@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\User;
 
 use App\Tests\CustomCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  * 
  * Unit test case for the UserStatusController class.
  * 
- * @package App\Tests\Controller
+ * @package App\Tests\Controller\User
  */
 class UserStatusControllerTest extends CustomCase
 {

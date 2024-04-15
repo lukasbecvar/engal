@@ -31,11 +31,12 @@ I am currently working on a complete recode of the application.
 - [X] Register api endpoint
 ### Phase 4
 - [ ] Frontend base
-    - [ ] Set Api url
+    - [X] Set Api url
     - [ ] Check backend availability
     - [ ] Check backend status
     - [ ] Check app version
     - [ ] Check login status
+- [ ] Sub components design
 - [ ] Register component
 - [ ] Login component
 - [ ] User dashboard

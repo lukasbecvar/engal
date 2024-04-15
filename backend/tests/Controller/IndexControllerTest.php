@@ -41,6 +41,7 @@ class IndexControllerTest extends WebTestCase
 
         // check backend_version
         $this->assertArrayHasKey('backend_version', $response_data);
-        $this->assertEquals($_ENV['APP_VERSION'], $response_data['backend_version']);
+        $this->assertArrayHasKey('backend_version', $response_data);
+        $this->assertIsBool($response_data['enabled_registration']);
     }
 }

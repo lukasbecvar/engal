@@ -41,4 +41,19 @@ class SiteUtil
         // check if HTTPS header is set and its value is either 1 or 'on'
         return isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 1 || strtolower($_SERVER['HTTPS']) === 'on');
     }
+
+    /**
+     * Sends API headers for cross-origin resource sharing (CORS).
+     */
+    public function sendAPIHeaders(): void
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            if (!headers_sent()) {
+                header('Access-Control-Allow-Origin: *');
+                header('Access-Control-Allow-Methods: GET, POST');
+                header('Access-Control-Allow-Headers: X-Requested-With'); 
+                header('Content-Type: application/json; charset=utf-8');
+            }
+        }
+    }
 }

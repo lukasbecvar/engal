@@ -51,6 +51,7 @@ services:
             - ./frontend:/app
         ports:
             - "80:3000"
+            - "3000:3000" # fix for dev websocket re-map
         networks:
             - dev 
         depends_on:

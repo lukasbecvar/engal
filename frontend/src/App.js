@@ -1,18 +1,33 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 // import components
-import Home from './component/Home';
-import Login from './component/Auth/Login';
-import NotFound from './component/sub-component/NotFound';
+import SetupComponent from './component/SetupComponent';
+import DashboardComponent from './component/DashboardComponent';
+import NotFoundComponent from './component/sub-component/NotFoundComponent';
+
+// import engal utils
+import { getApiUrl } from './util/StorageUtil';
+
+// import app style
+import './assets/css/main.css';
 
 export default function App() {
+    // get api url from local storage
+    let api_url = getApiUrl();
+    
+    // check if api url seted
+    if (api_url == null) {
+        // render api setup component
+        return <SetupComponent/>
+    }
+
+    // render component by route
     return (
         <Router>
             <Routes>
-                <Route exact path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="*" element={<NotFound/>}/>
+                <Route exact path="/" element={<DashboardComponent/>}/>
+                <Route path="*" element={<NotFoundComponent/>}/>
             </Routes>
         </Router>
     );

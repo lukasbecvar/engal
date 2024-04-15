@@ -1,6 +1,8 @@
 # Engal
 Self-hosted encrypted media cloud storage.
 
+[Version before recode](https://github.com/lordbecvold/engal/tree/698ccc857566f8156dc768e4a8bf1e637f97002a)
+
 ## Recode (Version 4.0) - in progress
 I am currently working on a complete recode of the application.
 ### Phase 1

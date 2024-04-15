@@ -55,6 +55,12 @@ class UserManager
         return $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
     }
 
+    public function getUserRepoByIP(string $ip_address): ?object
+    {
+        // get user repo
+        return $this->entityManager->getRepository(User::class)->findOneBy(['ip_address' => $ip_address]);
+    }
+
     /**
      * Updates user data on login.
      *

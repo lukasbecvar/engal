@@ -42,4 +42,23 @@ class UserStatusControllerTest extends CustomCase
         $this->assertEquals('test', $response_data['username']);
         $this->assertEquals(['ROLE_USER'], $response_data['roles']);
     }
+
+    /**
+     * Test retrieving user status when the user is not authenticated.
+     */
+    public function testGetUserStatusNonAuth(): void
+    {
+        $client = static::createClient();
+
+        // GET request to the API endpoint
+        $client->request('GET', '/api/user/status');
+
+        // decoding the content of the JsonResponse
+        $response_data = json_decode($client->getResponse()->getContent(), true);
+
+        // asserts
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertEquals('JWT Token not found', $response_data['message']);
+        $this->assertEquals(401, $response_data['code']);
+    }
 }

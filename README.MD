@@ -26,7 +26,7 @@ I am currently working on a complete recode of the application.
 - [X] Command for create user
 - [X] Command for granting admin permissions to a user
 - [X] User status api endpoint
-- [ ] Register api endpoint
+- [X] Register api endpoint
 ### Phase 4
 - [ ] Frontend base
     - [ ] Set Api url

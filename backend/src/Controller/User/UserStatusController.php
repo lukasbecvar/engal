@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
@@ -10,6 +10,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class UserStatusController
+ * 
+ * Controller handling user information.
+ * 
+ * @package App\Controller\User
+ */
 class UserStatusController extends AbstractController
 {
     /**

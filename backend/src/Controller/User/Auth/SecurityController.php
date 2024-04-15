@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User\Auth;
 
 use OpenApi\Attributes\Tag;
 use App\Manager\LogManager;
@@ -18,7 +18,7 @@ use Symfony\Bundle\SecurityBundle\Security as SecurityBundleSecurity;
  *
  * Controller handling security-related actions such as logout.
  *
- * @package App\Controller
+ * @package App\Controller\User\Auth
  */
 class SecurityController extends AbstractController
 {

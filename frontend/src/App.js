@@ -42,12 +42,8 @@ export default function App() {
             .catch((error) => {
                 console.log('api connection error: ' + error)
                 setApiAvailable(false)
+                setLoading(false)
             })
-            .finally(() => {
-                if (!is_api_available) {
-                    setLoading(false)
-                }
-            });
     }, [api_url]);
     
     // check if response is error

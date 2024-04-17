@@ -5,13 +5,14 @@
  * 
  * @returns {JSX.Element} SetupComponent
  */
-import React, { useState } from 'react';
-import { setApiUrlStorage } from '../util/StorageUtil';
-import { isValidUrl } from '../util/UrlUtil';
+import React, { useState } from 'react'
+import { setApiUrlStorage } from '../util/StorageUtil'
+import { isValidUrl } from '../util/UrlUtil'
+import { isApiAvailable } from '../util/ApiUtils'
 
 export default function SetupComponent() {
-    const [apiUrl, setApiUrl] = useState('');
-    const [error, setError] = useState('');
+    const [apiUrl, setApiUrl] = useState('')
+    const [error, setError] = useState('')
 
     /**
      * Handles form submission to validate the URL and save it if valid.
@@ -19,29 +20,17 @@ export default function SetupComponent() {
      * @param {Event} event - The form submission event.
      */
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
         if (!isValidUrl(apiUrl)) {
-            setError('Invalid URL');
-            return;
+            setError('Invalid URL')
+            return
         }
 
-        // process request to API
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-
-            if (response.ok && data.status === 'success') {
-                setApiUrlStorage(apiUrl);
-            } else {
-                if (data.message != null) {
-                    setError(data.message);
-                } else {
-                    setError('Unknown API error');
-                }
-            }
-        } catch (error) {
-            setError('API connection error');
+        if (await isApiAvailable(apiUrl)) {
+            setApiUrlStorage(apiUrl)
+        } else {
+            setError('API connection error')
         }
     };
 

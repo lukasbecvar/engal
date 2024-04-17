@@ -81,14 +81,10 @@ describe('SetupComponent', () => {
         fireEvent.change(input, { target: { value: 'http://valid-url.com' } });
         fireEvent.click(submitButton);
 
-        // wait for API call to be made
-        await waitFor(() => {
-            expect(fetch).toHaveBeenCalledWith('http://valid-url.com');
-        });
-
         // wait for API response to be processed
         await waitFor(() => {
             expect(setApiUrlStorage).toHaveBeenCalledWith('http://valid-url.com');
         });
     });
 });
+ 

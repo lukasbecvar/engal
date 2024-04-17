@@ -32,16 +32,18 @@ I am currently working on a complete recode of the application.
 ### Phase 4
 - [ ] Frontend base
     - [X] Set Api url
-    - [ ] Check backend availability
-    - [ ] Check backend status
-    - [ ] Check app version
-    - [ ] Login component
-        - [ ] Check login status
-- [ ] Sub components design
+    - [X] Check backend availability
+    - [X] Check backend status
+    - [X] Check app version
+- [ ] Login component
+    - [ ] Check login status
 - [ ] Register component
 - [ ] User dashboard
 - [ ] Logout function
-- [ ] Frontend app devmode
+- [ ] Sub components design
+- [ ] Frontend app devmode (console.log errors)
+### Phase 4,5
+- [ ] Preventive refactor
 ### Phase 5
 - [ ] User dashboard (component)
     - [ ] Nav bar (user panel with logout)

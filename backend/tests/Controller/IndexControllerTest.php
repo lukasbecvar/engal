@@ -43,5 +43,8 @@ class IndexControllerTest extends WebTestCase
         $this->assertArrayHasKey('backend_version', $response_data);
         $this->assertArrayHasKey('backend_version', $response_data);
         $this->assertIsBool($response_data['enabled_registration']);
+
+        // check message
+        $this->assertSame('Engal API is loaded success', $response_data['message']);
     }
 }

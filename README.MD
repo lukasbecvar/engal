@@ -41,6 +41,7 @@ I am currently working on a complete recode of the application.
 - [ ] Register component
 - [ ] User dashboard
 - [ ] Logout function
+- [ ] Frontend app devmode
 ### Phase 5
 - [ ] User dashboard (component)
     - [ ] Nav bar (user panel with logout)

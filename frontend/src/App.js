@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 // import config
 import { APP_VERSION } from './config'
 
 // import components
 import SetupComponent from './component/SetupComponent'
-import DashboardComponent from './component/DashboardComponent'
-import NotFoundComponent from './component/sub-component/NotFoundComponent'
 import LoadingComponent from './component/sub-component/LoadingComponent'
 import ErrorMessageComponent from './component/sub-component/ErrorMessageComponent'
 
@@ -17,6 +14,7 @@ import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 
 // import app style
 import './assets/css/main.css'
+import { AppRouter } from './AppRouter'
 
 export default function App() {
     const [is_api_available, setApiAvailable] = useState(false)
@@ -84,13 +82,6 @@ export default function App() {
         return <ErrorMessageComponent message={api_error}/>
     }
 
-    // render component by route
-    return (
-        <Router>
-            <Routes>
-                <Route exact path="/" element={<DashboardComponent/>}/>
-                <Route path="*" element={<NotFoundComponent/>}/>
-            </Routes>
-        </Router>
-    )
+    // return main router component
+    return <AppRouter/>
 }

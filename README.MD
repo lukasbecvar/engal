@@ -35,14 +35,16 @@ I am currently working on a complete recode of the application.
     - [X] Check backend availability
     - [X] Check backend status
     - [X] Check app version
-- [ ] Login component
-    - [ ] Check login status
+- [X] Login component
+    - [X] Check login status
+    - [X] Login refactor
 - [ ] Register component
 - [ ] User dashboard
 - [ ] Logout function
-- [ ] Sub components design
+- [ ] Design base components
 - [ ] Frontend app devmode (console.log errors)
 ### Phase 4,5
+- [ ] Token auth (token in request header for block CSRF)
 - [ ] Preventive refactor
 ### Phase 5
 - [ ] User dashboard (component)

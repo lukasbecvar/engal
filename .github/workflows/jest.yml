@@ -31,5 +31,5 @@ jobs:
   
       # run tests
       - name: Run Jest tests
-        run: npx jest
+        run: NODE_OPTIONS=--no-warnings npx jest
         working-directory: ./frontend

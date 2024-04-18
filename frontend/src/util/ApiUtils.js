@@ -1,9 +1,3 @@
-/**
- * Checks the availability of an API at the given URL.
- * 
- * @param {string} url - The URL of the API.
- * @returns {boolean} - Returns true if the API is available, false otherwise.
- */
 export async function isApiAvailable(url) {
     try {
         const response = await fetch(url, { method: 'HEAD' })
@@ -17,36 +11,40 @@ export async function isApiAvailable(url) {
     }
 }
 
-/**
- * Retrieves the status and message from the API at the given URL.
- * 
- * @param {string} url - The URL of the API.
- * @returns {Object} - Returns an object containing the status and message from the API.
- *                     The status can be 'success' or 'error'.
- *                     If an error occurs during the request, the status will be 'error'.
- *                     The message will contain the response message from the API.
- *                     If an error occurs, it will be logged to the console.
- */
 export async function getApiStatus(url) {
     try {
-        const response = await fetch(url)
-        const data = await response.json()
+        const response = await fetch(url);
         
-        if (data.status === "success") {
-            return {
-                status: 'success',
-                message: data.message,
-                backend_version: data.backend_version
-            }
-        } else {
+        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
+            console.log("api connection error: content-type is not json");
             return {
                 status: 'error',
-                message: data.message,
+                message: 'Unknown error',
                 backend_version: null
-            }
+            };
+        } else {
+            const data = await response.json();
+        
+            if (data.status === "success") {
+                return {
+                    status: 'success',
+                    message: data.message,
+                    backend_version: data.backend_version
+                };
+            } else {
+                return {
+                    status: 'error',
+                    message: data.message,
+                    backend_version: null
+                };
+            }    
         }
     } catch (error) {
-        console.error("api connection error:", error)
+        console.log("api connection error: Unknown error");
+        return {
+            status: 'error',
+            message: 'Unknown error',
+            backend_version: null
+        };
     }
 }
-

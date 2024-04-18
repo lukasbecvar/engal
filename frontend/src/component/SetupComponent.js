@@ -1,24 +1,11 @@
-/**
- * Component for setting up the API URL.
- * 
- * This component allows users to set up the API URL by entering the URL.
- * 
- * @returns {JSX.Element} SetupComponent
- */
 import React, { useState } from 'react'
-import { setApiUrlStorage } from '../util/StorageUtil'
 import { isValidUrl } from '../util/UrlUtil'
-import { isApiAvailable } from '../util/ApiUtils'
+import { getApiStatus, isApiAvailable } from '../util/ApiUtils'
 
 export default function SetupComponent() {
     const [apiUrl, setApiUrl] = useState('')
     const [error, setError] = useState('')
 
-    /**
-     * Handles form submission to validate the URL and save it if valid.
-     * 
-     * @param {Event} event - The form submission event.
-     */
     const handleSubmit = async (event) => {
         event.preventDefault()
 
@@ -28,7 +15,16 @@ export default function SetupComponent() {
         }
 
         if (await isApiAvailable(apiUrl)) {
-            setApiUrlStorage(apiUrl)
+
+            let api_response = await getApiStatus(apiUrl)
+
+            if (api_response.status == 'success') {
+                localStorage.setItem('api-url', apiUrl)
+                window.location.reload()
+            } else {
+                setError(api_response.message)
+            }
+
         } else {
             setError('API connection error')
         }

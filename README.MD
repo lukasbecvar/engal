@@ -39,7 +39,7 @@ I am currently working on a complete recode of the application.
     - [X] Check login status
     - [X] Login refactor
 - [X] Register component
-- [ ] Autologin after register
+- [X] Autologin after register
 - [ ] User dashboard
 - [ ] Logout function
 - [ ] Design base components

@@ -13,30 +13,37 @@ export default function LoginComponent() {
     // login submit
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            // build POST request data
-            const response = await fetch(api_url + '/api/login_check', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-      
-            // check if respone is valid
-            if (response.ok) {
+
+        // check if data is seted
+        if (username.length < 1 || password.length < 1) {
+            setError('Username & password is required inputs')
+        } else {
+            try {
+                // build POST request data
+                const response = await fetch(api_url + '/api/login_check', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+    
                 const data = await response.json();
-                
-                // set login-token & reinit app
-                localStorage.setItem('login-token', data.token);
-                window.location.reload(); 
-            } else {
-                setError('Invalid credentials.');
+          
+                // check if respone is valid
+                if (response.ok) {
+                    
+                    // set login-token & reinit app
+                    localStorage.setItem('login-token', data.token);
+                    window.location.href = '/'; 
+                } else {
+                    setError(data.message);
+                }
+            } catch (error) {
+                console.error('error:' + error);
+                setError('API connection error');
             }
-        } catch (error) {
-            console.error('error:' + error);
-            setError('API connection error');
         }
     };
 

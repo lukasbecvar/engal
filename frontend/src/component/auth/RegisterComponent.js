@@ -56,23 +56,37 @@ export default function RegisterComponent() {
                     body: formData,
                 });
           
-                // check if respone is valid
-                if (response.ok) {
-                    const data = await response.json();
+                const data = await response.json();
 
-                    // check if register is success
-                    if (data.status == 'success') {
-                    
-                        // auto login HERE
-                        console.log(data.message)
-                    
-                    
-                    } else {
-                        setError(data.message)
+                // check if register is success
+                if (data.status == 'success') {
+                    try {
+                        // build POST request data
+                        const response = await fetch(api_url + '/api/login_check', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ username, password })
+                        });
+                  
+                        // check if respone is valid
+                        if (response.ok) {
+                            const data = await response.json();
+                            
+                            // set login-token & reinit app
+                            localStorage.setItem('login-token', data.token);
+                            window.location.href = '/'; 
+                        } else {
+                            setError('Invalid credentials.');
+                        }
+                    } catch (error) {
+                        console.error('error:' + error);
+                        setError('API connection error');
                     }
                 } else {
-                    console.log(await response.json())
-                    setApiError('Unknown connection error');
+                    setError(data.message)
                 }
             } catch (error) {
                 console.error('error:' + error);

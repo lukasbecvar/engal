@@ -81,6 +81,13 @@ class RegisterController extends AbstractController
                 'message' => 'username must be at least '.$_ENV['MIN_USERNAME_LENGTH'].' characters long'
             ], 400);
         }
+        if (strlen($username) > $_ENV['MAX_USERNAME_LENGTH']) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'username must be maximal '.$_ENV['MAX_USERNAME_LENGTH'].' characters long'
+            ], 400);
+        }
 
         // check password length
         if (strlen($password) < $_ENV['MIN_PASSWORD_LENGTH']) {
@@ -88,6 +95,13 @@ class RegisterController extends AbstractController
                 'status' => 'error',
                 'code' => 400,
                 'message' => 'password must be at least '.$_ENV['MIN_PASSWORD_LENGTH'].' characters long'
+            ], 400);
+        }
+        if (strlen($password) > $_ENV['MAX_PASSWORD_LENGTH']) {
+            return $this->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'password must be maximal '.$_ENV['MAX_PASSWORD_LENGTH'].' characters long'
             ], 400);
         }
 

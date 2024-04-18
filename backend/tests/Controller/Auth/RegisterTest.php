@@ -65,6 +65,25 @@ class RegisterTest extends WebTestCase
     }
 
     /**
+     * Test registration with a username longer than the maximu length.
+     */
+    public function testRegisterUsernameLong(): void
+    {
+        $this->client->request('POST', '/api/register', [
+            'username' => ByteString::fromRandom($_ENV['MAX_USERNAME_LENGTH']+1)->toString(),
+            'password' => ByteString::fromRandom(8)->toString()
+        ]);
+
+        // decode response content
+        $response_data = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check reponse
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame('error', $response_data['status']);
+        $this->assertSame('username must be maximal '.$_ENV['MAX_USERNAME_LENGTH'].' characters long', $response_data['message']);
+    }
+
+    /**
      * Test registration with a password shorter than the minimum length.
      */
     public function testRegisterPasswordShort(): void
@@ -81,6 +100,25 @@ class RegisterTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('password must be at least '.$_ENV['MIN_PASSWORD_LENGTH'].' characters long', $response_data['message']);
+    }
+
+    /**
+     * Test registration with a password longer than the maximum length.
+     */
+    public function testRegisterPasswordLong(): void
+    {
+        $this->client->request('POST', '/api/register', [
+            'username' => ByteString::fromRandom(5)->toString(),
+            'password' => ByteString::fromRandom($_ENV['MAX_PASSWORD_LENGTH']+1)->toString()
+        ]);
+
+        // decode response content
+        $response_data = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check reponse
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame('error', $response_data['status']);
+        $this->assertSame('password must be maximal '.$_ENV['MAX_PASSWORD_LENGTH'].' characters long', $response_data['message']);
     }
 
     /**

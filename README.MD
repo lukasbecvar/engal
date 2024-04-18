@@ -30,7 +30,7 @@ I am currently working on a complete recode of the application.
 - [X] User status api endpoint
 - [X] Register api endpoint
 ### Phase 4
-- [ ] Frontend base
+- [X] Frontend base
     - [X] Set Api url
     - [X] Check backend availability
     - [X] Check backend status
@@ -38,13 +38,15 @@ I am currently working on a complete recode of the application.
 - [X] Login component
     - [X] Check login status
     - [X] Login refactor
-- [ ] Register component
+- [X] Register component
+- [ ] Autologin after register
 - [ ] User dashboard
 - [ ] Logout function
 - [ ] Design base components
 - [ ] Frontend app devmode (console.log errors)
 ### Phase 4,5
 - [ ] Token auth (token in request header for block CSRF)
+- [ ] Frontend base test (Jest)
 - [ ] Preventive refactor
 ### Phase 5
 - [ ] User dashboard (component)

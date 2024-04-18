@@ -14,7 +14,7 @@ import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 // import app style
 import './assets/css/main.css'
 import { AppRouter } from './AppRouter'
-import LoginComponent from './component/auth/LoginComponent'
+import { AuthComponent } from './component/auth/AuthComponent'
 
 export default function App() {
     const [is_api_available, setApiAvailable] = useState(false)
@@ -100,7 +100,7 @@ export default function App() {
         };
     
         fetchData();
-    }, [api_url]);
+    }, [api_url, login_token]);
     
     // show loading component
     if (loading) {
@@ -124,7 +124,7 @@ export default function App() {
 
     // check if user is loggedin
     if (localStorage.getItem('login-token') == null) {
-        return <LoginComponent/>
+        return <AuthComponent/>
     }
 
     // return main router component

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use OpenApi\Attributes\Response;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,7 @@ class IndexController extends AbstractController
      *
      * @return JsonResponse Returns a JSON response with status, code, and backend version.
      */
-    #[Route('/', name: 'index', methods: ['GET'])]
+    #[Route(['/', '/api'], name: 'index', methods: ['GET'])]
     #[Response(response: 200, description: 'The backend app version and status.')]
     public function index(): JsonResponse
     {
@@ -30,7 +31,13 @@ class IndexController extends AbstractController
             'code' => 200,
             'message' => 'Engal API is loaded success',
             'backend_version' => $_ENV['APP_VERSION'],
-            'enabled_registration' => boolval($_ENV['REGISTER_ENABLED']),
+            'security_policy' => [
+                'REGISTER_ENABLED' => $_ENV['REGISTER_ENABLED'],
+                'MIN_USERNAME_LENGTH' => intval($_ENV['MIN_USERNAME_LENGTH']),
+                'MAX_USERNAME_LENGTH' => intval($_ENV['MAX_USERNAME_LENGTH']),
+                'MIN_PASSWORD_LENGTH' => intval($_ENV['MIN_PASSWORD_LENGTH']),
+                'MAX_PASSWORD_LENGTH' => intval($_ENV['MAX_PASSWORD_LENGTH'])
+            ]
         ], 200);
     }
 }

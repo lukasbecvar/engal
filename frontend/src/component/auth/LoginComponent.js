@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import ErrorMessageComponent from '../sub-component/ErrorMessageComponent';
 
 export default function LoginComponent() {
     const [username, setUsername] = useState('');
@@ -38,6 +40,10 @@ export default function LoginComponent() {
         }
     };
 
+    if (error == 'API connection error') {
+        return <ErrorMessageComponent message={error}/>
+    }
+
     return (
         <div>
             <h2>Login</h2>
@@ -65,6 +71,7 @@ export default function LoginComponent() {
                 </div>
                 <button type="submit">Login</button>
             </form>
+            <p>Don't have an account? <Link to="/register">Register here</Link></p>
         </div>
     );
 };

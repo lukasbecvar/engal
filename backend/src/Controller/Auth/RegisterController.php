@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use App\Manager\LogManager;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use App\Util\VisitorInfoUtil;
@@ -39,7 +40,7 @@ class RegisterController extends AbstractController
     #[Response(response: 409, description: 'Username is already exist error')]
     #[Parameter(name: 'username', in: 'query', schema: new Schema(type: 'string'), description: 'New username', required: true)]
     #[Parameter(name: 'password', in: 'query', schema: new Schema(type: 'string'), description: 'New password', required: true)]
-    public function register(Request $request, UserManager $userManager, VisitorInfoUtil $visitorInfoUtil): JsonResponse
+    public function register(Request $request, UserManager $userManager, LogManager $logManager, VisitorInfoUtil $visitorInfoUtil): JsonResponse
     {
         // check if register is enabled
         if ($_ENV['REGISTER_ENABLED'] != 'true') {
@@ -130,6 +131,9 @@ class RegisterController extends AbstractController
 
             // execute register
             $userManager->registerUser($username, $password);
+
+            // log registration
+            $logManager->log('authenticator', 'new user register: '.$username);
 
             // return success message
             return $this->json([

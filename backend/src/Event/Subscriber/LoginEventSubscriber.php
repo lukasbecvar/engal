@@ -5,6 +5,7 @@ namespace App\Event\Subscriber;
 use App\Manager\LogManager;
 use App\Manager\UserManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
 /**
@@ -18,17 +19,20 @@ class LoginEventSubscriber implements EventSubscriberInterface
 {
     private LogManager $logManager;
     private UserManager $userManager;
+    private RequestStack $requestStack;
 
     /**
      * LoginEventSubscriber constructor.
      *
      * @param LogManager $logManager
      * @param UserManager $userManager
+     * @param RequestStack $requestStack
      */
-    public function __construct(LogManager $logManager, UserManager $userManager)
+    public function __construct(LogManager $logManager, UserManager $userManager, RequestStack $requestStack)
     {
         $this->logManager = $logManager;
         $this->userManager = $userManager;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -50,12 +54,20 @@ class LoginEventSubscriber implements EventSubscriberInterface
      */
     public function onSecurityAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        $identifier = $event->getAuthenticationToken()->getUser()->getUserIdentifier();
-
-        // update user data
-        $this->userManager->updateUserDataOnLogin($identifier);
-
-        // log user auth
-        $this->logManager->log('authenticator', 'user: '.$identifier.' loggedin');
+        $request = $this->requestStack->getCurrentRequest();
+        $path_info = $request->getPathInfo();
+    
+        // check if request is login
+        if ($path_info == '/api/login_check') {
+    
+            // get username
+            $identifier = $event->getAuthenticationToken()->getUser()->getUserIdentifier();
+    
+            // update user data
+            $this->userManager->updateUserDataOnLogin($identifier);
+    
+            // log user auth
+            $this->logManager->log('authenticator', 'user: '.$identifier.' loggedin');
+        }
     }
 }

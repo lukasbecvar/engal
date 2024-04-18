@@ -40,17 +40,15 @@ I am currently working on a complete recode of the application.
     - [X] Login refactor
 - [X] Register component
 - [X] Autologin after register
+- [X] Logout function
 - [ ] User dashboard
-- [ ] Logout function
+    - [ ] Nav bar (user panel with logout button)
 - [ ] Design base components
 - [ ] Frontend app devmode (console.log errors)
-### Phase 4,5
+### Phase 5
 - [ ] Token auth (token in request header for block CSRF)
 - [ ] Frontend base test (Jest)
 - [ ] Preventive refactor
-### Phase 5
-- [ ] User dashboard (component)
-    - [ ] Nav bar (user panel with logout)
 ### Phase 6
 - [ ] Encryption utils
 - [ ] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)

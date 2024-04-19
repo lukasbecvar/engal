@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use OpenApi\Attributes\Tag;
 use OpenApi\Attributes\Response;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +22,7 @@ class IndexController extends AbstractController
      *
      * @return JsonResponse Returns a JSON response with status, code, and backend version.
      */
+    #[Tag(name: "Index")]
     #[Route(['/', '/api'], name: 'index', methods: ['GET'])]
     #[Response(response: 200, description: 'The backend app version and status.')]
     public function index(): JsonResponse

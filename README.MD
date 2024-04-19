@@ -41,10 +41,10 @@ I am currently working on a complete recode of the application.
 - [X] Register component
 - [X] Autologin after register
 - [X] Logout function
-- [ ] User dashboard
-    - [ ] Nav bar (user panel with logout button)
-- [ ] Design base components
+- [X] User dashboard
+    - [X] Nav bar (user panel with logout button)
 - [ ] Frontend app devmode (console.log errors)
+- [ ] Design base components
 ### Phase 5
 - [ ] Token auth (token in request header for block CSRF)
 - [ ] Frontend base test (Jest)

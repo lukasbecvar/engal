@@ -35,7 +35,8 @@
         "symfony/twig-bundle": "7.0.*",
         "symfony/validator": "7.0.*",
         "symfony/web-link": "7.0.*",
-        "symfony/yaml": "7.0.*"
+        "symfony/yaml": "7.0.*",
+        "zircote/swagger-php": "^4.9"
     },
     "config": {
         "allow-plugins": {

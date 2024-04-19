@@ -46,8 +46,8 @@ I am currently working on a complete recode of the application.
 - [X] API connecton error with url config reset
 - [X] Error component reload
 - [ ] Frontend app devmode (console.log errors)
-- [ ] Design base components
 ### Phase 5
+- [ ] Design base components
 - [ ] Preventive refactor
 - [ ] Frontend base test (Jest)
 ### Phase 6

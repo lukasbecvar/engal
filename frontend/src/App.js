@@ -14,6 +14,7 @@ import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 
 import { AppRouter } from './AppRouter'
 import { AuthComponent } from './component/auth/AuthComponent'
+import ApiErrorComponent from './component/sub-component/ApiErrorComponent'
 
 export default function App() {
     const [is_api_available, setApiAvailable] = useState(false)
@@ -108,7 +109,7 @@ export default function App() {
 
     // handle error api connection error
     if (!is_api_available) {
-        return <ErrorMessageComponent message="API connection error"/>
+        return <ApiErrorComponent/>
     }
 
     // handle app version error

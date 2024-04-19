@@ -43,6 +43,8 @@ I am currently working on a complete recode of the application.
 - [X] Logout function
 - [X] User dashboard
     - [X] Nav bar (user panel with logout button)
+- [X] API connecton error with url config reset
+- [X] Error component reload
 - [ ] Frontend app devmode (console.log errors)
 - [ ] Design base components
 ### Phase 5

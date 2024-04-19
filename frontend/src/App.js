@@ -11,8 +11,7 @@ import ErrorMessageComponent from './component/sub-component/ErrorMessageCompone
 // import engal utils
 import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 
-// import app style
-import './assets/css/main.css'
+
 import { AppRouter } from './AppRouter'
 import { AuthComponent } from './component/auth/AuthComponent'
 

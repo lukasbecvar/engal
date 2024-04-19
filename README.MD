@@ -47,10 +47,10 @@ I am currently working on a complete recode of the application.
 - [X] Error component reload
 - [ ] Frontend app devmode (console.log errors)
 - [ ] Design base components
+- [ ] Preventive refactor
 ### Phase 5
 - [ ] Token auth (token in request header for block CSRF)
 - [ ] Frontend base test (Jest)
-- [ ] Preventive refactor
 ### Phase 6
 - [ ] Encryption utils
 - [ ] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)

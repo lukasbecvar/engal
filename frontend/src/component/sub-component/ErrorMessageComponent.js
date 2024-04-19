@@ -3,7 +3,7 @@ export default function ErrorMessageComponent(props) {
 
 
     function reload() {
-        window.location.reload()
+        window.location.href = '/'
     }
 
     return (

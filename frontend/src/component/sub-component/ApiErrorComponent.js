@@ -3,13 +3,13 @@ export default function ApiErrorComponent() {
     let api_url = localStorage.getItem('api-url')
 
     function reload() {
-        window.location.reload()
+        window.location.href = '/'
     }
 
     function removeApiUrl() {
         localStorage.removeItem('api-url')
         localStorage.removeItem('login-token')
-        window.location.reload()
+        window.location.href = '/'
     }
 
     return (

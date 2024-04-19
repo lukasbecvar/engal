@@ -47,9 +47,8 @@ I am currently working on a complete recode of the application.
 - [X] Error component reload
 - [ ] Frontend app devmode (console.log errors)
 - [ ] Design base components
-- [ ] Preventive refactor
 ### Phase 5
-- [ ] Token auth (token in request header for block CSRF)
+- [ ] Preventive refactor
 - [ ] Frontend base test (Jest)
 ### Phase 6
 - [ ] Encryption utils

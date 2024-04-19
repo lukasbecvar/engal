@@ -5,6 +5,7 @@ import ErrorMessageComponent from '../sub-component/ErrorMessageComponent';
 export default function LoginComponent() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [status, setStatus] = useState(null);
     const [error, setError] = useState('');
 
     // get api url form local storage
@@ -18,6 +19,9 @@ export default function LoginComponent() {
         if (username.length < 1 || password.length < 1) {
             setError('Username & password is required inputs')
         } else {
+            
+            setStatus('logging in...')
+
             try {
                 // build POST request data
                 const response = await fetch(api_url + '/api/login_check', {
@@ -44,6 +48,8 @@ export default function LoginComponent() {
                 console.error('error:' + error);
                 setError('API connection error');
             }
+
+            setStatus(null)
         }
     };
 
@@ -58,6 +64,9 @@ export default function LoginComponent() {
             {/* error message box */}
             {error && <p>{error}</p>}
             
+            {/* status message box */}
+            {status && <p>{status}</p>}
+
             {/* login form */}
             <form onSubmit={handleSubmit}>
                 <div>

@@ -14,6 +14,7 @@ export default function RegisterComponent() {
     const [security_policy, setSecurityPolicy] = useState([true]);
     const [register_status, setRegisterStatus] = useState(false);
     const [api_error, setApiError] = useState(null);
+    const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
@@ -41,6 +42,9 @@ export default function RegisterComponent() {
 
         // register (if input is valid)
         } else {
+
+            setStatus('processing...')
+
             try {
                 // build POST request data
                 const formData = new FormData();
@@ -92,6 +96,8 @@ export default function RegisterComponent() {
                 console.error('error:' + error);
                 setApiError('API connection error');
             }
+
+            setStatus(null)
         }
     }
 
@@ -146,6 +152,9 @@ export default function RegisterComponent() {
             {/* error message box */}
             {error && <p>{error}</p>}
             
+            {/* status message box */}
+            {status && <p>{status}</p>}
+
             {/* login form */}
             <form onSubmit={handleSubmit}>
                 <div>

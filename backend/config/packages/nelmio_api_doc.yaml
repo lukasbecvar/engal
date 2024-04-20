@@ -28,7 +28,7 @@ nelmio_api_doc:
         # static docs
         paths:
             # JWT Security endpoint
-            /api/login_check:
+            /api/login:
                 post:
                     summary: User Loging
                     requestBody:

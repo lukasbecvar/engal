@@ -128,7 +128,6 @@ class RegisterController extends AbstractController
 
         // final user register
         try {
-
             // execute register
             $userManager->registerUser($username, $password);
 

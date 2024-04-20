@@ -1,58 +1,81 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import ErrorMessageComponent from '../sub-component/ErrorMessageComponent';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
+// engal components
+import ErrorMessageComponent from '../sub-component/ErrorMessageComponent'
+
+// engal config
+import { DEV_MODE } from '../../config'
+
+/**
+ * Component Auth/user login
+ */
 export default function LoginComponent() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [status, setStatus] = useState(null);
-    const [error, setError] = useState('');
-
     // get api url form local storage
     let api_url = localStorage.getItem('api-url')
+    
+    // input states
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    // status states
+    const [error, setError] = useState('')
+    const [status, setStatus] = useState(null)
 
     // login submit
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        // check if data is seted
+        // check if input data is set
         if (username.length < 1 || password.length < 1) {
             setError('Username & password is required inputs')
         } else {
             
-            setStatus('logging in...')
+            // update process status
+            setStatus('processing...')
 
             try {
-                // build POST request data
-                const response = await fetch(api_url + '/api/login_check', {
+                // build login POST request
+                const response = await fetch(api_url + '/api/login', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ username, password })
-                });
+                })
     
-                const data = await response.json();
-          
-                // check if respone is valid
-                if (response.ok) {
-                    
-                    // set login-token & reinit app
-                    localStorage.setItem('login-token', data.token);
-                    window.location.href = '/'; 
-                } else {
-                    setError(data.message);
+                try {
+                    // decode response data
+                    const data = await response.json()
+            
+                    // check if respone is valid
+                    if (response.ok) {
+                        // set login-token & reinit app
+                        localStorage.setItem('login-token', data.token)
+                        window.location.href = '/'
+                    } else {
+                        setError(data.message)
+                    }
+                } catch (error) {
+                    if (DEV_MODE) {
+                        console.log('ERROR: ' + error)
+                    }
+                    setError('API connection error')
                 }
             } catch (error) {
-                console.error('error:' + error);
-                setError('API connection error');
+                if (DEV_MODE) {
+                    console.log('ERROR: ' + error)
+                }
+                setError('API connection error')
             }
 
+            // reset process status
             setStatus(null)
         }
-    };
+    }
 
+    // handle api error component
     if (error == 'API connection error') {
         return <ErrorMessageComponent message={error}/>
     }
@@ -89,5 +112,5 @@ export default function LoginComponent() {
             </form>
             <p>Don't have an account? <Link to="/register">Register here</Link></p>
         </div>
-    );
-};
+    )
+}

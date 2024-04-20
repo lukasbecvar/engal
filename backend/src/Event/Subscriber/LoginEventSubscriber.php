@@ -4,8 +4,8 @@ namespace App\Event\Subscriber;
 
 use App\Manager\LogManager;
 use App\Manager\UserManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
 /**
@@ -58,7 +58,7 @@ class LoginEventSubscriber implements EventSubscriberInterface
         $path_info = $request->getPathInfo();
     
         // check if request is login
-        if ($path_info == '/api/login_check') {
+        if ($path_info == '/api/login') {
     
             // get username
             $identifier = $event->getAuthenticationToken()->getUser()->getUserIdentifier();

@@ -37,7 +37,7 @@ class LogoutTest extends WebTestCase
     public function testLogoutWithValidToken(): void
     {
         // authenticate testing user and get JWT token
-        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'],
             json_encode([
                 'username' => 'test',
                 'password' => 'test',

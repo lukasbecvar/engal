@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from 'react'
 
 // import config
-import { APP_VERSION } from './config'
+import { APP_VERSION, DEV_MODE } from './config'
 
 // import components
+import { AppRouter } from './AppRouter'
 import SetupComponent from './component/SetupComponent'
+import { AuthComponent } from './component/auth/AuthComponent'
 import LoadingComponent from './component/sub-component/LoadingComponent'
+import ApiErrorComponent from './component/sub-component/ApiErrorComponent'
 import ErrorMessageComponent from './component/sub-component/ErrorMessageComponent'
 
 // import engal utils
 import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 
-
-import { AppRouter } from './AppRouter'
-import { AuthComponent } from './component/auth/AuthComponent'
-import ApiErrorComponent from './component/sub-component/ApiErrorComponent'
-
+/**
+ * Component with default app init
+ */
 export default function App() {
+    // storage data
+    let api_url = localStorage.getItem('api-url')
+    let login_token = localStorage.getItem('login-token')
+
+    // status states
     const [is_api_available, setApiAvailable] = useState(false)
     const [app_version, setAppVersion] = useState(null)
     const [api_error, setApiError] = useState(null)
     const [loading, setLoading] = useState(true)
-
-    // get api url from local storage
-    let api_url = localStorage.getItem('api-url')
-
-    // get login token from local storage
-    let login_token = localStorage.getItem('login-token')
 
     // check if api url seted
     if (api_url == null) {
@@ -38,14 +38,16 @@ export default function App() {
     useEffect(() => {
         isApiAvailable(api_url)
             .then((available) => {
-                setApiAvailable(available);
+                setApiAvailable(available)
             })
             .catch((error) => {
-                console.log('api connection error: ' + error)
+                if (DEV_MODE) {
+                    console.log('ERROR: ' + error)
+                }
                 setApiAvailable(false)
                 setLoading(false)
             })
-    }, [api_url]);
+    }, [api_url])
     
     // check if response is error
     useEffect(() => {
@@ -58,13 +60,15 @@ export default function App() {
                 }
             })
             .catch((error) => {
-                console.error('Error:', error)
+                if (DEV_MODE) {
+                    console.log('ERROR: ' + error)
+                }
             })
             .finally(() => {
                 if (login_token == null) {
                     setLoading(false)
                 }
-            });
+            })
     }, [api_url])
 
     // check user status
@@ -80,10 +84,10 @@ export default function App() {
                             'Accept': '*/*',
                             'Authorization': 'Bearer ' + localStorage.getItem('login-token')
                         },
-                    });
+                    })
     
                     // get response data
-                    const data = await response.json();
+                    const data = await response.json()
                     
                     // check if user tokne is valid
                     if (data.status != 'success') {
@@ -91,16 +95,18 @@ export default function App() {
                         window.location.reload()
                     }
                 } catch (error) {
+                    if (DEV_MODE) {
+                        console.log('ERROR: ' + error)
+                    }
                     setApiError('Error with API connection')
                     setLoading(false)
                 } finally {
                     setLoading(false)
                 }
             }
-        };
-    
-        fetchData();
-    }, [api_url, login_token]);
+        }
+        fetchData()
+    }, [api_url, login_token])
     
     // show loading component
     if (loading) {

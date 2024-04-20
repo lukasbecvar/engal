@@ -1,111 +1,135 @@
-import { getApiStatus, isApiAvailable } from "../../src/util/ApiUtils";
+import { getApiStatus, isApiAvailable } from "../../src/util/ApiUtils"
 
-global.console.log = jest.fn();
+global.console.log = jest.fn()
 
+/**
+ * Test suite for the isApiAvailable function.
+ */
 describe('isApiAvailable function', () => {
+    /**
+     * Test case to verify that isApiAvailable returns true when the API is available.
+     */
     test('should return true when API is available', async () => {
-        // Mock the fetch function to simulate a successful response
-        global.fetch = jest.fn().mockResolvedValueOnce({ ok: true });
+        global.fetch = jest.fn().mockResolvedValueOnce({ ok: true })
 
-        const url = 'http://example.com/api';
-        const result = await isApiAvailable(url);
+        const url = 'http://example.com/api'
+        const result = await isApiAvailable(url)
 
-        expect(result).toBe(true);
-    });
+        expect(result).toBe(true)
+    })
 
+    /**
+     * Test case to verify that isApiAvailable returns false when the API is not available.
+     */
     test('should return false when API is not available', async () => {
-        // Mock the fetch function to simulate a failed response
-        global.fetch = jest.fn().mockResolvedValueOnce({ ok: false });
+        global.fetch = jest.fn().mockResolvedValueOnce({ ok: false })
 
-        const url = 'http://example.com/api';
-        const result = await isApiAvailable(url);
+        const url = 'http://example.com/api'
+        const result = await isApiAvailable(url)
 
-        expect(result).toBe(false);
-    });
+        expect(result).toBe(false)
+    })
 
+    /**
+     * Test case to verify that isApiAvailable returns false when fetch throws an error.
+     */
     test('should return false when fetch throws an error', async () => {
-        // Mock the fetch function to simulate an error
-        global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network error'));
+        global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network error'))
 
-        const url = 'http://example.com/api';
-        const result = await isApiAvailable(url);
+        const url = 'http://example.com/api'
+        const result = await isApiAvailable(url)
 
-        expect(result).toBe(false);
-    });
-});
+        expect(result).toBe(false)
+    })
+})
 
+/**
+ * Test suite for the getApiStatus function.
+ */
 describe('getApiStatus function', () => {
+    /**
+     * Test case to verify that getApiStatus returns the correct status and data when API returns success.
+     */
     test('should return the correct status and data when API returns success', async () => {
         const mockData = {
             status: 'success',
             message: 'API is up and running',
             backend_version: '1.0.0'
-        };
+        }
 
         global.fetch = jest.fn().mockResolvedValueOnce({
             ok: true,
             headers: { get: () => 'application/json' },
             json: () => Promise.resolve(mockData)
-        });
+        })
 
-        const url = 'http://example.com/api';
-        const result = await getApiStatus(url);
+        const url = 'http://example.com/api'
+        const result = await getApiStatus(url)
 
         expect(result).toEqual({
             status: 'success',
             message: 'API is up and running',
             backend_version: '1.0.0'
-        });
-    });
+        })
+    })
 
+    /**
+     * Test case to verify that getApiStatus returns error status and message when API returns an error.
+     */
     test('should return error status and message when API returns error', async () => {
         const mockData = {
             status: 'error',
             message: 'API is down'
-        };
+        }
 
         global.fetch = jest.fn().mockResolvedValueOnce({
             ok: true,
             headers: { get: () => 'application/json' },
             json: () => Promise.resolve(mockData)
-        });
+        })
 
-        const url = 'http://example.com/api';
-        const result = await getApiStatus(url);
+        const url = 'http://example.com/api'
+        const result = await getApiStatus(url)
 
         expect(result).toEqual({
             status: 'error',
             message: 'API is down',
             backend_version: null
-        });
-    });
+        })
+    })
 
+    /**
+     * Test case to verify that getApiStatus returns error status and message when API response is not JSON.
+     */
     test('should return error status and message when API response is not JSON', async () => {
         global.fetch = jest.fn().mockResolvedValueOnce({
             ok: true,
             headers: { get: () => 'text/html' }
-        });
+        })
 
-        const url = 'http://example.com/api';
-        const result = await getApiStatus(url);
+        const url = 'http://example.com/api'
+        const result = await getApiStatus(url)
 
         expect(result).toEqual({
             status: 'error',
             message: 'Unknown error',
             backend_version: null
-        });
-    });
+        })
+    })
 
+    /**
+     * Test case to verify that getApiStatus returns error status and message when fetch throws an error.
+     */
     test('should return error status and message when fetch throws an error', async () => {
-        global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network error'));
+        global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network error'))
 
-        const url = 'http://example.com/api';
-        const result = await getApiStatus(url);
+        const url = 'http://example.com/api'
+        const result = await getApiStatus(url)
 
         expect(result).toEqual({
             status: 'error',
             message: 'Unknown error',
             backend_version: null
-        });
-    });
-});
+        })
+    })
+})

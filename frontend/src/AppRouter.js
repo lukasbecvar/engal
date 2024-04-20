@@ -1,8 +1,13 @@
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+
+// engal components
+import LogoutComponent from './component/auth/LogoutComponent'
 import DashboardComponent from './component/DashboardComponent'
 import NotFoundComponent from './component/sub-component/NotFoundComponent'
-import LogoutComponent from './component/auth/LogoutComponent'
 
+/**
+ * Component defining the routing structure of the application.
+ */
 export function AppRouter() {
     return (
         <Router>

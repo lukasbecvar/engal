@@ -45,10 +45,10 @@ I am currently working on a complete recode of the application.
     - [X] Nav bar (user panel with logout button)
 - [X] API connecton error with url config reset
 - [X] Error component reload
-- [ ] Frontend app devmode (console.log errors)
+- [X] Frontend app devmode (console.log errors)
+- [X] Preventive refactor
 ### Phase 5
 - [ ] Design base components
-- [ ] Preventive refactor
 - [ ] Frontend base test (Jest)
 ### Phase 6
 - [ ] Encryption utils

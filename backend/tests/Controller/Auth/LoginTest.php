@@ -39,7 +39,7 @@ class LoginTest extends WebTestCase
     public function testLoginValid(): void
     {
         // make request
-        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'],
             '{"username": "test", "password": "test"}'
         );
 
@@ -65,7 +65,7 @@ class LoginTest extends WebTestCase
     public function testLoginInvalid(): void
     {
         // make request
-        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'],
             '{"username": "invalid_ěěěščě", "password": "invalid_ěěěščě"}'
         );
 

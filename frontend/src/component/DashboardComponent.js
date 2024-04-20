@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react"
+import { Link } from 'react-router-dom'
 
-import LoadingComponent from "./sub-component/LoadingComponent";
-import ErrorMessageComponent from "./sub-component/ErrorMessageComponent";
+// engal components
+import LoadingComponent from "./sub-component/LoadingComponent"
+import ErrorMessageComponent from "./sub-component/ErrorMessageComponent"
 
+// engal utils
+import { DEV_MODE } from "../config"
+
+/**
+ * Component main app (user) dashboard
+ */
 export default function DashboardComponent() {
-
-    const [user_data, setUserData] = useState([])
-
-    const [loading, setLoading] = useState(true)
-
+    // storage data
     let api_url = localStorage.getItem('api-url')
     let login_token = localStorage.getItem('login-token')
+
+    // status state
+    const [user_data, setUserData] = useState([])
+    const [loading, setLoading] = useState(true)
     
-    // fetch user data
+    // fetch dashboard/user data
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserData = async () => {
             // check if user loggedin
             if (login_token != null) {
                 try {
@@ -26,10 +33,10 @@ export default function DashboardComponent() {
                             'Accept': '*/*',
                             'Authorization': 'Bearer ' + localStorage.getItem('login-token')
                         },
-                    });
+                    })
         
                     // get response data
-                    const data = await response.json();
+                    const data = await response.json()
                         
                     // check if user tokne is valid
                     if (data.status == 'success') {
@@ -41,23 +48,24 @@ export default function DashboardComponent() {
                         return <ErrorMessageComponent message={data.message}/>                   
                     }
                 } catch (error) {
-                    console.log(error)
+                    if (DEV_MODE) {
+                        console.log('error: ' + error)
+                    }
                 } finally {
                     setLoading(false)
                 }
             }
-        };
-        
-        fetchData();
-    }, [api_url, login_token]);
+        }
+        fetchUserData()
+    }, [api_url, login_token])
     
+    // show loading
     if (loading) {
         return <LoadingComponent/>
     }
 
     return (
         <div>
-
             <div>
                 <p>Engal</p>
                 <p>user: {user_data.username}</p>
@@ -65,7 +73,7 @@ export default function DashboardComponent() {
                 <Link to='/logout'>logout</Link>
             </div>
 
-            <p>dashboard</p>
+            <p>! app dashboard !</p>
         </div>
     )
 }

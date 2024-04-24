@@ -50,6 +50,8 @@ I am currently working on a complete recode of the application.
 ### Phase 5
 - [ ] Design base components
 - [ ] Frontend base test (Jest)
+### Phase 5,5
+- [ ] Backend redis service (cache media data & token blacklist)
 ### Phase 6
 - [ ] Encryption utils
 - [ ] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)

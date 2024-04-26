@@ -48,7 +48,8 @@ I am currently working on a complete recode of the application.
 - [X] Frontend app devmode (console.log errors)
 - [X] Preventive refactor
 ### Phase 5
-- [ ] Design base components
+- [X] Design base components
+- [ ] Split frontend into smaller components
 - [ ] Frontend base test (Jest)
 ### Phase 5,5
 - [ ] Backend redis service (cache media data & token blacklist)

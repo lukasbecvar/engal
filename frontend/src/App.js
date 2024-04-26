@@ -14,6 +14,9 @@ import ErrorMessageComponent from './component/sub-component/ErrorMessageCompone
 // import engal utils
 import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 
+// import app styles
+import './assets/css/main.css'
+
 /**
  * Component with default app init
  */

@@ -169,44 +169,46 @@ export default function RegisterComponent() {
     }
 
     return (
-        <div>
-            <h2>Register</h2>
-            
-            {/* error message box */}
-            {error && <p>{error}</p>}
-            
-            {/* status message box */}
-            {status && <p>{status}</p>}
-
+        <div className="auth-container">
             {/* login form */}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="auth-form">
+                <h2>Register</h2>
+                
+                {/* error message box */}
+                {error && <p className="color-red status-box">{error}</p>}
+                
+                {/* status message box */}
+                {status && <p className="color-blue status-box">{status}</p>}
                 <div>
-                    <label>Username:</label>
+                    <label>Username</label>
                     <input
                         type="text"
                         value={username}
+                        placeholder="Username"
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label>Password</label>
                     <input
                         type="password"
                         value={password}
+                        placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 <div>
-                    <label>Password again:</label>
+                    <label>Password again</label>
                     <input
                         type="password"
+                        placeholder="Password again"
                         value={re_password}
                         onChange={(e) => setRePassword(e.target.value)}
                     />
                 </div>
                 <button type="submit">Register</button>
+                <p className="form-link">You have account? <Link to="/login" className="color-blue">Login here</Link></p>
             </form>
-            <p>You have account? <Link to="/login">Login here</Link></p>
         </div>
     )
 }

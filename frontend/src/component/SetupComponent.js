@@ -43,14 +43,14 @@ export default function SetupComponent() {
 
     // render setup form component view
     return (
-        <div>
-            <h1>Setup API URL</h1>
-            
-            {/* error box component */}
-            {error && <div>{error}</div>}
-            
-            {/* api url set form */}
-            <form onSubmit={handleSubmit}>
+        <div className="auth-container">
+            <form onSubmit={handleSubmit} className="auth-form">
+                <h1 className="center-content m-b-3">Setup API URL</h1>
+                
+                {/* error box component */}
+                {error && <p className="color-red status-box">{error}</p>}
+                
+                {/* api url set form */}
                 <label>
                     <input
                         type="text"

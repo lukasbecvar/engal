@@ -2,5 +2,9 @@
  * Component element loading
  */
 export default function LoadingComponent() {
-    return <h1>loading...</h1>
+    return (
+        <div className="loading-container">
+            <div className="loading-spinner"></div>
+        </div>
+    );
 }

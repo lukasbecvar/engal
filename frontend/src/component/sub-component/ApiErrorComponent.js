@@ -18,12 +18,14 @@ export default function ApiErrorComponent() {
     }
 
     return (
-        <div>
-            <p>API connection error</p>
-            <p>Your API server ({api_url}) is unreachable</p>
-            <p>Please wait and try again later, or you can set up a different API server</p>
+        <div className="error-container">
+            <p className="error-message">API connection error</p>
+            <p className="error-server-info">
+                Your API server ({api_url}) is unreachable <br/>
+                Please wait and try again later, or you can set up a different API server
+            </p>
 
-            <div>
+            <div className="error-buttons">
                 <button type="button" onClick={reload}>reload</button>
                 <button type="button" onClick={removeApiUrl}>Set new API</button>
             </div>

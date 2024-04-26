@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { Link } from 'react-router-dom'
 
 // engal components
 import LoadingComponent from "./sub-component/LoadingComponent"
 import ErrorMessageComponent from "./sub-component/ErrorMessageComponent"
+import MainNavigationComponent from "./sub-component/MainNavigationComponent"
 
 // engal utils
 import { DEV_MODE } from "../config"
@@ -66,14 +66,10 @@ export default function DashboardComponent() {
 
     return (
         <div>
-            <div>
-                <p>Engal</p>
-                <p>user: {user_data.username}</p>
-                <p>role: {user_data.roles}</p>
-                <Link to='/logout'>logout</Link>
-            </div>
-
-            <p>! app dashboard !</p>
+            <MainNavigationComponent/>
+            <p>
+                ! dashboard component !
+            </p>
         </div>
     )
 }

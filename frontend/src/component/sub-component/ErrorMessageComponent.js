@@ -11,9 +11,11 @@ export default function ErrorMessageComponent(props) {
     }
 
     return (
-        <div>
-            <h1>{message}</h1>
-            <button type="button" onClick={reload}>reload</button>
+        <div className="error-container">
+            <h1 className="error-server-info">{message}</h1>
+            <div className="error-buttons">
+                <button type="button" onClick={reload}>reload</button>
+            </div>
         </div>
     )
 }

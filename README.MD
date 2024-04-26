@@ -1,7 +1,7 @@
 # Encrypted media gallery
 Self-hosted encrypted media gallery
 
-[Dev version (rework)](https://github.com/lordbecvold/engal/tree/main)
+[Dev version (rework)](https://github.com/lordbecvold/engal/tree/dev)
 
 ## Warning
 This is only the basic version which will be extended and improved in the future for a better user experience

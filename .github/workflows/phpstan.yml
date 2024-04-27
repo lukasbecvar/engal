@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - rework
+      - dev
 
 # define the jobs to be executed in the workflow
 jobs:

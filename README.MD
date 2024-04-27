@@ -51,7 +51,6 @@ I am currently working on a complete recode of the application.
 - [X] Design base components
 - [X] Sub navbar
 - [X] Frontend refactor
-- [ ] Frontend base test (Jest)
 ### Phase 5,5
 - [ ] Backend redis service (cache media data & token blacklist)
 ### Phase 6

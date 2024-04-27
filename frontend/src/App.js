@@ -91,8 +91,8 @@ export default function App() {
     
                     // get response data
                     const data = await response.json()
-                    
-                    // check if user tokne is valid
+
+                    // check if user token is valid
                     if (data.status != 'success') {
                         localStorage.removeItem('login-token')
                         window.location.reload()
@@ -101,8 +101,10 @@ export default function App() {
                     if (DEV_MODE) {
                         console.log('ERROR: ' + error)
                     }
-                    setApiError('Error with API connection')
-                    setLoading(false)
+
+                    // remove invalid token
+                    localStorage.removeItem('login-token')
+                    window.location.reload()
                 } finally {
                     setLoading(false)
                 }

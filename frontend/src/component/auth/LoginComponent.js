@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 // engal components
-import ErrorMessageComponent from '../sub-component/ErrorMessageComponent'
+import ErrorMessageComponent from '../sub-component/error/ErrorMessageComponent'
 
 // engal config
 import { DEV_MODE } from '../../config'

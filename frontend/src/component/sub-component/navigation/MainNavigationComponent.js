@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * Main dashboard navigation
+ */
 export default function MainNavigationComponent() {
     return (
         <div className="main-nav">

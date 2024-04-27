@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 // engal components
 import LoginComponent from './LoginComponent'
 import RegisterComponent from './RegisterComponent'
-import NotFoundComponent from '../sub-component/NotFoundComponent'
+import NotFoundComponent from '../sub-component/error/NotFoundComponent'
 
 /**
  * Component Auth/user router
  */
-export function AuthComponent() {
+export default function AuthComponent() {
     return (
         <Router>
             <Routes>

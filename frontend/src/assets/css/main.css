@@ -172,12 +172,12 @@ body {
     color: #fff;
     padding: 10px;
     overflow: auto;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .main-nav .nav-header {
     position: absolute;
-    margin-top: -3px;
+    margin-top: -7px;
 }
 
 .main-nav p {
@@ -186,6 +186,8 @@ body {
 
 .main-nav .right-content {
     float: right;
+    font-size: 22px !important;
+    margin: -5px;
 }
 
 .main-nav .right-content p {
@@ -206,6 +208,39 @@ body {
     margin-top: 5px;
     font-size: 20px;
     font-weight: bold;
+}
+
+/* user sub-navbar style */
+.user-navbar {
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #444;
+    position: absolute;
+    width: 100%;
+}
+
+.user-navbar .user-data {
+    float: right;
+    margin-right: 3px;
+    margin-top: 1.2px;
+}
+
+.user-navbar .sub-navigation-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 3px;
+    padding: 0.1px;
+    margin: 1px;
+}
+
+.user-navbar .sub-navigation-link:hover {
+    color: rgb(255, 86, 86);
+}
+
+/* main dashboard style */
+.dashboard-component {
+    margin-top: 23px;
 }
 
 /* mobile devices style */

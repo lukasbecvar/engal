@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 
 // engal components
 import LoadingComponent from "./sub-component/LoadingComponent"
-import ErrorMessageComponent from "./sub-component/ErrorMessageComponent"
-import MainNavigationComponent from "./sub-component/MainNavigationComponent"
+import ErrorMessageComponent from "./sub-component/error/ErrorMessageComponent"
+import MainNavigationComponent from "./sub-component/navigation/MainNavigationComponent"
+import UserNavigationComponent from "./sub-component/navigation/UserNavigationComponent"
 
 // engal utils
 import { DEV_MODE } from "../config"
@@ -66,10 +67,11 @@ export default function DashboardComponent() {
 
     return (
         <div>
-            <MainNavigationComponent/>
-            <p>
-                ! dashboard component !
-            </p>
+            <MainNavigationComponent/>            
+            <UserNavigationComponent username={user_data.username} roles={user_data.roles}/>
+            <div className="dashboard-component">
+                <p>! dashboard component !</p>
+            </div>
         </div>
     )
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 // engal components
 import LoadingComponent from "../sub-component/LoadingComponent"
-import ErrorMessageComponent from "../sub-component/ErrorMessageComponent"
+import ErrorMessageComponent from "../sub-component/error/ErrorMessageComponent"
 
 // engal utils
 import { DEV_MODE } from "../../config"
@@ -78,6 +78,9 @@ export default function RegisterComponent() {
 
                 // check if register is success
                 if (data.status == 'success') {
+                    // set process state
+                    setStatus('processing...')
+
                     try {
                         // login POST request (auto-login)
                         const response = await fetch(api_url + '/api/login', {
@@ -185,6 +188,7 @@ export default function RegisterComponent() {
                         type="text"
                         value={username}
                         placeholder="Username"
+                        maxLength={security_policy.MAX_USERNAME_LENGTH}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
@@ -194,6 +198,7 @@ export default function RegisterComponent() {
                         type="password"
                         value={password}
                         placeholder="Password"
+                        maxLength={security_policy.MAX_PASSWORD_LENGTH}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
@@ -201,8 +206,9 @@ export default function RegisterComponent() {
                     <label>Password again</label>
                     <input
                         type="password"
-                        placeholder="Password again"
                         value={re_password}
+                        placeholder="Password again"
+                        maxLength={security_policy.MAX_PASSWORD_LENGTH}
                         onChange={(e) => setRePassword(e.target.value)}
                     />
                 </div>

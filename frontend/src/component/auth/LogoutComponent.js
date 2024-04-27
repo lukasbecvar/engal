@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 // engal components
-import ErrorMessageComponent from "../sub-component/ErrorMessageComponent"
+import ErrorMessageComponent from "../sub-component/error/ErrorMessageComponent"
 
 // engal utils
 import { DEV_MODE } from '../../config'

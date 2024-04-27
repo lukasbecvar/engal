@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react'
 import { APP_VERSION, DEV_MODE } from './config'
 
 // import components
-import { AppRouter } from './AppRouter'
+import AppRouter from './AppRouter'
 import SetupComponent from './component/SetupComponent'
-import { AuthComponent } from './component/auth/AuthComponent'
+import AuthComponent from './component/auth/AuthComponent'
 import LoadingComponent from './component/sub-component/LoadingComponent'
-import ApiErrorComponent from './component/sub-component/ApiErrorComponent'
-import ErrorMessageComponent from './component/sub-component/ErrorMessageComponent'
+import ApiErrorComponent from './component/sub-component/error/ApiErrorComponent'
+import ErrorMessageComponent from './component/sub-component/error/ErrorMessageComponent'
 
 // import engal utils
 import { getApiStatus, isApiAvailable } from './util/ApiUtils'
@@ -114,6 +114,11 @@ export default function App() {
     // show loading component
     if (loading) {
         return <LoadingComponent/>
+    }
+
+    // handle resolution error
+    if (window.innerWidth < 160 || window.innerHeight < 150) {
+        return <ErrorMessageComponent message="Your screen size is not supported"/>
     }
 
     // handle error api connection error

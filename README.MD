@@ -52,6 +52,7 @@ I am currently working on a complete recode of the application.
 - [X] Sub navbar
 - [X] Frontend refactor
 ### Phase 5,5
+- [ ] Fix expirated login token error
 - [ ] Backend redis service (cache media data & token blacklist)
 ### Phase 6
 - [ ] Encryption utils

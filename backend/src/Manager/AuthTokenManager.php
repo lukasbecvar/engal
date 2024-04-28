@@ -2,8 +2,6 @@
 
 namespace App\Manager;
 
-use App\Entity\BlacklistedToken;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,18 +14,18 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthTokenManager
 {
     private ErrorManager $errorManager;
-    private EntityManagerInterface $entityManager;
+    private CacheManager $cacheManager;
 
     /**
      * AuthTokenManager constructor.
      *
      * @param ErrorManager $errorManager The error manager
-     * @param EntityManagerInterface $entityManager The entity manager
+     * @param CacheManager $cacheManager The token cache manager
      */
-    public function __construct(ErrorManager $errorManager, EntityManagerInterface $entityManager)
+    public function __construct(ErrorManager $errorManager, CacheManager $cacheManager)
     {
         $this->errorManager = $errorManager;
-        $this->entityManager = $entityManager;
+        $this->cacheManager = $cacheManager;
     }
 
     /**
@@ -42,8 +40,7 @@ class AuthTokenManager
     public function isTokenBlacklisted(string $token): bool
     {
         try {
-            $blacklistedToken = $this->entityManager->getRepository(BlacklistedToken::class)->findOneBy(['token' => $token]);
-            return $blacklistedToken !== null;
+            return $this->cacheManager->isCatched('auth_token_'.$token);
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to check if token is blacklisted: '.$e->getMessage(), 500);
             return false;
@@ -61,11 +58,7 @@ class AuthTokenManager
     {
         try {
             if (!$this->isTokenBlacklisted($token)) {
-                $blacklistedToken = new BlacklistedToken();
-                $blacklistedToken->setToken($token);
-                $blacklistedToken->setTime(date('d.m.Y H:i:s'));
-                $this->entityManager->persist($blacklistedToken);
-                $this->entityManager->flush();
+                $this->cacheManager->setValue('auth_token_'.$token, 'auth_token', 604800);
             }
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to blacklisted token: '.$e->getMessage(), 500);
@@ -82,38 +75,9 @@ class AuthTokenManager
     public function unblacklistToken(string $token): void
     {
         try {
-            $blacklistedToken = $this->entityManager->getRepository(BlacklistedToken::class)->findOneBy(['token' => $token]);
-            if ($blacklistedToken !== null) {
-                $this->entityManager->remove($blacklistedToken);
-                $this->entityManager->flush();
-            }
+            $this->cacheManager->deleteValue('auth_token_'.$token);
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to unblacklisted token: '.$e->getMessage(), 500);
-        }
-    }
-
-    /**
-     * Deletes all tokens from the database and resets ID sequence.
-     *
-     * @throws \Exception If there is an error while deleting tokens
-     */
-    public function truncateBlacklistedTokens(): void
-    {
-        try {
-            // create a query builder for the BlacklistedToken entity
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-
-            // create a delete query for the BlacklistedToken entity
-            $queryBuilder->delete(BlacklistedToken::class, 't')->getQuery()->execute();
-
-            // reset ID sequence
-            $connection = $this->entityManager->getConnection();
-            $platform = $connection->getDatabasePlatform();
-            $connection->executeStatement($platform->getTruncateTableSQL($this->entityManager->getClassMetadata(BlacklistedToken::class)->getTableName(), true));
-        } catch (\Exception $e) {
-            // handle the exception
-            $this->errorManager->handleError('error to deleting tokens: '.$e->getMessage(), 500);
-
         }
     }
 

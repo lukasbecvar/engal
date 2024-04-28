@@ -11,12 +11,5 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \ 
     && docker-php-ext-install zip pdo_mysql mysqli pdo intl
 
-# install OPCache
-RUN docker-php-ext-install opcache
-
-# install APCu
-RUN pecl install apcu \
-    && docker-php-ext-enable apcu
-
 # enable apache rewrite module
 RUN a2enmod rewrite

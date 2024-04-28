@@ -53,7 +53,8 @@ I am currently working on a complete recode of the application.
 - [X] Frontend refactor
 ### Phase 5,5
 - [X] Fix expirated login token error
-- [ ] Backend redis service (cache media data & token blacklist)
+- [X] Backend cache token blacklist (filesystem cache)
+- [ ] Frontend tests
 ### Phase 6
 - [ ] Encryption utils
 - [ ] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)

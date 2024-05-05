@@ -55,13 +55,12 @@ I am currently working on a complete recode of the application.
 - [X] Fix expirated login token error
 - [X] Backend cache token blacklist (filesystem cache)
 ### Phase 6
-- [ ] Encryption utils
-- [ ] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
+- [X] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
 - [ ] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
-    - [ ] Insert data into database
-    - [ ] Upload data to storage dir (filesystem: storage/username/{files})
+- [ ] Encryption system
+- [ ] Media fixtures
 ### Phase 7
-- [ ] Dashboard sections (photos, videos)
+- [ ] Dashboard sections (stats - userbar, photos, videos)
 - [ ] Display galleries in the dashboard
 - [ ] Gallery browser
 - [ ] All images/videos browser

@@ -57,7 +57,11 @@ export default function App() {
         getApiStatus(api_url)
             .then((response_data) => {
                 if (response_data.status !== 'success') {
-                    setApiError(response_data.message)
+                    if (response_data.message == 'Engal API is in maintenance mode') {
+                        setApiError('Engal API is in maintenance mode')
+                    } else {
+                        setApiError(response_data.message)
+                    }
                 } else {
                     setAppVersion(response_data.backend_version)
                 }
@@ -128,14 +132,14 @@ export default function App() {
         return <ApiErrorComponent/>
     }
 
-    // handle app version error
-    if (app_version != APP_VERSION) {
-        return <ErrorMessageComponent message={"Your app version is not valid matchend with server, required version: " + app_version}/>
-    }
-
     // handle api response error
     if (api_error != null) {
         return <ErrorMessageComponent message={api_error}/>
+    }
+
+    // handle app version error
+    if (app_version != APP_VERSION) {
+        return <ErrorMessageComponent message={"Your app version is not valid matchend with server, required version: " + app_version}/>
     }
 
     // check if user is loggedin

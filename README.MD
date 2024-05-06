@@ -55,7 +55,6 @@ I am currently working on a complete recode of the application.
 - [X] Fix expirated login token error
 - [X] Backend cache token blacklist (filesystem cache)
 ### Phase 6
-- [ ] Recode API status get
 - [X] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
 - [ ] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
 - [ ] Encryption system

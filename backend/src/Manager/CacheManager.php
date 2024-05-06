@@ -16,12 +16,6 @@ class CacheManager
     private ErrorManager $errorManager;
     private CacheItemPoolInterface $cacheItemPoolInterface;
 
-    /**
-     * CacheManager constructor.
-     *
-     * @param ErrorManager $errorManager               Error manager instance for handling errors.
-     * @param CacheItemPoolInterface $cacheItemPoolInterface  Cache item pool interface for cache operations.
-     */
     public function __construct(ErrorManager $errorManager, CacheItemPoolInterface $cacheItemPoolInterface)
     {
         $this->errorManager = $errorManager;

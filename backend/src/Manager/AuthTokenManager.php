@@ -16,12 +16,6 @@ class AuthTokenManager
     private ErrorManager $errorManager;
     private CacheManager $cacheManager;
 
-    /**
-     * AuthTokenManager constructor.
-     *
-     * @param ErrorManager $errorManager The error manager
-     * @param CacheManager $cacheManager The token cache manager
-     */
     public function __construct(ErrorManager $errorManager, CacheManager $cacheManager)
     {
         $this->errorManager = $errorManager;

@@ -3,9 +3,16 @@
 namespace App\Middleware;
 
 use App\Util\SiteUtil;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
+/**
+ * Class MaintenanceMiddleware
+ *
+ * This middleware is used to check if the application is in maintenance mode.
+ * 
+ * @package App\Service\Middleware
+ */
 class MaintenanceMiddleware
 {
     private SiteUtil $siteUtil;
@@ -15,6 +22,9 @@ class MaintenanceMiddleware
         $this->siteUtil = $siteUtil;
     }
 
+    /**
+     * Check if the application is in maintenance mode.
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
         // check if MAINTENANCE_MODE enabled

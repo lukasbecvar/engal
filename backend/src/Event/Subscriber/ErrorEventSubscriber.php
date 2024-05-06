@@ -17,11 +17,6 @@ class ErrorEventSubscriber implements EventSubscriberInterface
 {
     private LogManager $logManager;
 
-    /**
-     * Constructs ErrorEventSubscriber.
-     *
-     * @param LogManager $logManager The LogManager instance to handle logging.
-     */
     public function __construct(LogManager $logManager)
     {
         $this->logManager = $logManager;

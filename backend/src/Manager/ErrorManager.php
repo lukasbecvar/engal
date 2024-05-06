@@ -19,11 +19,6 @@ class ErrorManager
     private SiteUtil $siteUtil;
     private EventDispatcherInterface $eventDispatcherInterface;
 
-    /**
-     * ErrorManager constructor.
-     * @param SiteUtil $siteUtil
-     * @param EventDispatcherInterface $eventDispatcherInterface
-     */
     public function __construct(SiteUtil $siteUtil, EventDispatcherInterface $eventDispatcherInterface)
     {
         $this->siteUtil = $siteUtil;

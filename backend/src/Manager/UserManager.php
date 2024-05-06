@@ -17,25 +17,20 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  */
 class UserManager
 {
+    private LogManager $logManager;
     private ErrorManager $errorManager;
     private VisitorInfoUtil $visitorInfoUtil;
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $passwordHasherInterface;
 
-    /**
-     * UserManager constructor.
-     *
-     * @param ErrorManager $errorManager The error manager
-     * @param VisitorInfoUtil $visitorInfoUtil The visitor info utility
-     * @param EntityManagerInterface $entityManager The entity manager
-     * @param UserPasswordHasherInterface $passwordHasherInterface The password hasher utility
-     */
     public function __construct(
+        LogManager $logManager,
         ErrorManager $errorManager, 
         VisitorInfoUtil $visitorInfoUtil, 
         EntityManagerInterface $entityManager, 
         UserPasswordHasherInterface $passwordHasherInterface
     ) {
+        $this->logManager = $logManager;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
         $this->visitorInfoUtil = $visitorInfoUtil;
@@ -132,6 +127,9 @@ class UserManager
                 // flush user to database
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
+
+                // log action
+                $this->logManager->log('authenticator', 'new registration user: '.$username);
             } catch (\Exception $e) {
                 $this->errorManager->handleError('error to register new user: '.$e->getMessage(), 500);
             }
@@ -179,6 +177,9 @@ class UserManager
 
                 // flush updated user data
                 $this->entityManager->flush();
+
+                // log action
+                $this->logManager->log('role-granted', 'role admin granted to user: '.$username);
             } catch (\Exception $e) {
                 $this->errorManager->handleError('error to grant admin permissions: '.$e->getMessage(), 500);
             }

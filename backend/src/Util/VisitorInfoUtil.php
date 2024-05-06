@@ -18,19 +18,21 @@ class VisitorInfoUtil
      */
     public function getIP(): ?string 
     {
+        if (!isset($_SERVER['REMOTE_ADDR'])) {
+            return '127.0.0.1';
+        }
+
         // check client IP
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             return $_SERVER['HTTP_CLIENT_IP'];
         } 
         
         // check forwarded IP (get IP from cloudflare visitors) 
-        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
         } 
         
         // default addr get
-        else {
-            return $_SERVER['REMOTE_ADDR'];
-        }
+        return $_SERVER['REMOTE_ADDR'];
     }
 }

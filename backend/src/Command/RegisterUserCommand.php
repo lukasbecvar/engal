@@ -23,11 +23,6 @@ class RegisterUserCommand extends Command
 {
     private UserManager $userManager;
 
-    /**
-     * RegisterUserCommand constructor.
-     *
-     * @param UserManager $userManager The user manager
-     */
     public function __construct(UserManager $userManager)
     {
         $this->userManager = $userManager;
@@ -61,27 +56,26 @@ class RegisterUserCommand extends Command
         if ($username == null) {
             $io->error('You must add the new username argument!');
             return Command::FAILURE;
-        } else {
+        }
+    
+        // check if username is used
+        if ($this->userManager->getUserRepo($username) != null) {
+            $io->error('Error username: '.$username.' is already used!');
+            return Command::FAILURE;
+        }
+        
+        try {
+            // generate user password
+            $password = ByteString::fromRandom(32)->toString();
 
-            // check if username is used
-            if ($this->userManager->getUserRepo($username) != null) {
-                $io->error('Error username: '.$username.' is already used!');
-                return Command::FAILURE;
-            } else {
-                try {
-                    // generate user password
-                    $password = ByteString::fromRandom(32)->toString();
+            // register user
+            $this->userManager->registerUser($username, $password);
 
-                    // register user
-                    $this->userManager->registerUser($username, $password);
-
-                    $io->success('New user registred username: '.$username.' with password: '.$password);
-                    return Command::SUCCESS;
-                } catch (\Exception $e) {
-                    $io->success('error to register user: '.$e->getMessage());
-                    return Command::FAILURE;
-                }
-            }
+            $io->success('New user registred username: '.$username.' with password: '.$password);
+            return Command::SUCCESS;
+        } catch (\Exception $e) {
+            $io->success('error to register user: '.$e->getMessage());
+            return Command::FAILURE;
         }
     }
 }

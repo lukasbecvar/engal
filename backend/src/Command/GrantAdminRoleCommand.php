@@ -22,11 +22,6 @@ class GrantAdminRoleCommand extends Command
 {
     private UserManager $userManager;
 
-    /**
-     * GrantAdminRoleCommand constructor.
-     *
-     * @param UserManager $userManager The user manager
-     */
     public function __construct(UserManager $userManager)
     {
         $this->userManager = $userManager;
@@ -60,30 +55,29 @@ class GrantAdminRoleCommand extends Command
         if ($username == null) {
             $io->error('You must add the admin username argument!');
             return Command::FAILURE;
-        } else {
+        } 
 
-            // check if username is used
-            if ($this->userManager->getUserRepo($username) == null) {
-                $io->error('Error username: '.$username.' is not registred!');
+        // check if username is used
+        if ($this->userManager->getUserRepo($username) == null) {
+            $io->error('Error username: '.$username.' is not registred!');
+            return Command::FAILURE;
+        } 
+
+        try {
+            // check if user is admin
+            if ($this->userManager->isUserAdmin($username)) {
+                $io->error('User: '.$username.' is already admin');
                 return Command::FAILURE;
             } else {
-                try {
-                    // check if user is admin
-                    if ($this->userManager->isUserAdmin($username)) {
-                        $io->error('User: '.$username.' is already admin');
-                        return Command::FAILURE;
-                    } else {
-                        // grant role to user
-                        $this->userManager->addAdminRoleToUser($username);
-    
-                        $io->success('admin role granted to: '.$username);
-                        return Command::SUCCESS;
-                    }
-                } catch (\Exception $e) {
-                    $io->success('error to grant admin: '.$e->getMessage());
-                    return Command::FAILURE;
-                }
+                // grant role to user
+                $this->userManager->addAdminRoleToUser($username);
+
+                $io->success('admin role granted to: '.$username);
+                return Command::SUCCESS;
             }
+        } catch (\Exception $e) {
+            $io->success('error to grant admin: '.$e->getMessage());
+            return Command::FAILURE;
         }
     }
 }

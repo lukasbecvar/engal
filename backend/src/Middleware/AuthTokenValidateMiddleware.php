@@ -18,12 +18,6 @@ class AuthTokenValidateMiddleware
     private ErrorManager $errorManager;
     private AuthTokenManager $authTokenManager;
 
-    /**
-     * AuthTokenValidateMiddleware constructor.
-     *
-     * @param ErrorManager $errorManager The error manager
-     * @param AuthTokenManager $authTokenManager The authentication token manager
-     */
     public function __construct(ErrorManager $errorManager, AuthTokenManager $authTokenManager)
     {
         $this->errorManager = $errorManager;

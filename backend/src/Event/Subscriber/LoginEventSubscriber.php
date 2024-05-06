@@ -21,13 +21,6 @@ class LoginEventSubscriber implements EventSubscriberInterface
     private UserManager $userManager;
     private RequestStack $requestStack;
 
-    /**
-     * LoginEventSubscriber constructor.
-     *
-     * @param LogManager $logManager
-     * @param UserManager $userManager
-     * @param RequestStack $requestStack
-     */
     public function __construct(LogManager $logManager, UserManager $userManager, RequestStack $requestStack)
     {
         $this->logManager = $logManager;

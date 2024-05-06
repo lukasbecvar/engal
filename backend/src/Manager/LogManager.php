@@ -19,13 +19,6 @@ class LogManager
     private VisitorInfoUtil $visitorInfoUtil;
     private EntityManagerInterface $entityManager;
 
-    /**
-     * LogManager constructor.
-     *
-     * @param ErrorManager $errorManager The error manager instance.
-     * @param VisitorInfoUtil $visitorInfoUtil The visitor info utility instance.
-     * @param EntityManagerInterface $entityManager The entity manager instance.
-     */
     public function __construct(ErrorManager $errorManager, VisitorInfoUtil $visitorInfoUtil, EntityManagerInterface $entityManager)
     {
         $this->errorManager = $errorManager;

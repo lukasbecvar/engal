@@ -7,11 +7,11 @@ use App\Manager\LogManager;
 use App\Manager\ErrorManager;
 use OpenApi\Attributes\Response;
 use App\Manager\AuthTokenManager;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security as SecurityBundleSecurity;
 
 /**
  * Class SecurityController
@@ -26,13 +26,6 @@ class SecurityController extends AbstractController
     private ErrorManager $errorManager;
     private AuthTokenManager $authTokenManager;
 
-    /**
-     * SecurityController constructor.
-     *
-     * @param LogManager $logManager The log manager.
-     * @param ErrorManager $errorManager The error manager.
-     * @param AuthTokenManager $authTokenManager The auth token manager.
-     */
     public function __construct(LogManager $logManager, ErrorManager $errorManager, AuthTokenManager $authTokenManager) {
         $this->logManager = $logManager;
         $this->errorManager = $errorManager;
@@ -45,7 +38,7 @@ class SecurityController extends AbstractController
      * Logs out the user and blacklists the old authentication token.
      *
      * @param Request $request The HTTP request.
-     * @param SecurityBundleSecurity $security The security bundle security.
+     * @param Security $security The security bundle security.
      * @return JsonResponse The JSON response.
      */
     #[Tag(name: "Auth")]
@@ -53,7 +46,7 @@ class SecurityController extends AbstractController
     #[Response(response: 401, description: 'The JWT token Invalid message')]
     #[Response(response: 500, description: 'The logout error message')]
     #[Route('/api/logout', name: 'api_security_logout', methods: ['POST'])]
-    public function logout(Request $request, SecurityBundleSecurity $security): JsonResponse
+    public function logout(Request $request, Security $security): JsonResponse
     {
         // get user
         $user = $security->getUser();

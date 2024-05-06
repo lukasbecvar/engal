@@ -56,10 +56,18 @@ I am currently working on a complete recode of the application.
 - [X] Backend cache token blacklist (filesystem cache)
 ### Phase 6
 - [X] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
-- [ ] Upload form component
 - [ ] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
+    - [X] Upload form component
+    - [ ] Accept only media formats
+    - [ ] Upload limits policy config
+    - [ ] Insert data to Media entity
+    - [ ] Upload file filter (users, type)
+    - [ ] Design upload form
+    - [ ] Upload api doc
+    - [ ] Upload unit test
 - [ ] Encryption system
 - [ ] Media fixtures
+- [ ] Data wipe command (drop all users, logs, storage data)
 ### Phase 7
 - [ ] Dashboard sections (stats - userbar, photos, videos)
 - [ ] Display galleries in the dashboard
@@ -70,6 +78,7 @@ I am currently working on a complete recode of the application.
 - [ ] Image browser
 - [ ] Video player
 ### Phase 9
+- [ ] Account settings (change password, username, account delete)
 - [ ] Admin system
     - [ ] Dashboard
     - [ ] Log viewer

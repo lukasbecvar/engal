@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 // import fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Main dashboard navigation
@@ -14,7 +14,13 @@ export default function MainNavigationComponent() {
                 <h2 className="nav-header">Engal</h2>
             </div>
             <div className="right-content">
-                <Link to='/logout'>
+                {/* upload button */}
+                <Link className="m-r-5" to="/upload">
+                    <FontAwesomeIcon icon={faUpload}/>
+                </Link>
+
+                {/* logout button */}
+                <Link to="/logout">
                     <FontAwesomeIcon icon={faSignOutAlt}/>
                 </Link>
             </div>

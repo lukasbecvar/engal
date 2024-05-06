@@ -17,35 +17,28 @@ export default function LogoutComponent() {
     // status states
     const [error, setError] = useState(null)
 
-    function logout() {
-        // check if user loggedin
-        if (login_token != null) {
-            try {
-                // make logout request
-                fetch(api_url + '/api/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + login_token
-                    }
-                })
-    
-                // logout
-                localStorage.removeItem('login-token')
-                window.location.href = '/'
-            } catch (error) {
-                if (DEV_MODE) {
-                    console.error('ERROR: ' + error)
+    // check if user loggedin
+    if (login_token != null) {
+        try {
+            // make logout request
+            fetch(api_url + '/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + login_token
                 }
-                setError("API connection error")
+            })
+    
+            // logout
+            localStorage.removeItem('login-token')
+            window.location.href = '/'
+        } catch (error) {
+            if (DEV_MODE) {
+                console.error('ERROR: ' + error)
             }
+            setError("API connection error")
         }
     }
-
-    // call logout
-    useEffect(() => {
-        logout()
-    }, [api_url, login_token])
     
     return (
         <div>

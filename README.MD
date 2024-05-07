@@ -58,7 +58,8 @@ I am currently working on a complete recode of the application.
 - [X] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
 - [ ] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
     - [X] Upload form component
-    - [ ] Accept only media formats
+    - [X] Accept only media formats
+    - [X] Upload status
     - [ ] Upload limits policy config
     - [ ] Insert data to Media entity
     - [ ] Upload file filter (users, type)

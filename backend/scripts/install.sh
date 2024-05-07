@@ -16,5 +16,8 @@ then
     php bin/console lexik:jwt:generate-keypair
 fi
 
+# create storage directory
+mkdir ./storage
+
 # set storage dir permissions
 chmod -R 777 ./storage

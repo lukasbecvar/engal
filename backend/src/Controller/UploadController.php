@@ -30,6 +30,8 @@ class UploadController extends AbstractController
     public function fileUpload(Request $request, Security $security, EntityManagerInterface $entityManager, UserManager $userManager): JsonResponse
     {
         $uploadedFiles = $request->files->get('files');
+
+        $gallery_name = $request->get('gallery_name');
     
         // max files count check
         $maxFileCount = $_ENV['MAX_FILES_COUNT'];
@@ -87,13 +89,15 @@ class UploadController extends AbstractController
         foreach ($uploadedFiles as $file) {
 
             try {
+                $token = ByteString::fromRandom(32)->toString();
+
                 $media = new Media();
 
                 $media->setName($file->getClientOriginalName());
-                $media->setGalleryName('gallery_name');
+                $media->setGalleryName($gallery_name);
                 $media->setType($file->getMimeType());
                 $media->setOwnerId($userManager->getUserData($security)->getID());
-                $media->setToken(ByteString::fromRandom(32)->toString());
+                $media->setToken($token);
                 $media->setUploadTime(date('d.m.Y H:i:s'));
                 $media->setLastEditTime('non-edited');
 

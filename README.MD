@@ -62,8 +62,9 @@ I am currently working on a complete recode of the application.
     - [X] Upload status
     - [X] Upload limits policy config
     - [X] Insert data to Media entity
-    - [ ] Upload file filter (users, type)
-    - [ ] Upload gallery name value
+    - [X] Upload file filter (users, type)
+    - [X] Upload gallery name value
+    - [ ] Recode upload controller & create storage manager
     - [ ] Upload api doc
     - [ ] Upload unit test
     - [ ] Design upload form

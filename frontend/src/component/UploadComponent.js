@@ -10,11 +10,41 @@ export default function UploadComponent() {
 
     const [status, setStatus] = useState(null)
     const [files, setFiles] = useState([])
+
     const [progress, setProgress] = useState(0)
 
     const [upload_policy, setUploadPolicy] = useState([null])
 
+    const [galleryNames, setGalleryNames] = useState([]);
+    const [selectedGallery, setSelectedGallery] = useState('');
+    const [galleryNameInputVisible, setGalleryNameInputVisible] = useState(false);
+    const [newGalleryName, setNewGalleryName] = useState('');
 
+    useEffect(() => {
+        async function fetchGalleryNames() {
+            try {
+                const response = await axios.get(api_url + '/api/gallery/list', {
+                    headers: {
+                        'Authorization': `Bearer ${login_token}`
+                    },
+                });
+                setGalleryNames(response.data.gallery_names);
+            } catch (error) {
+                console.error('Error fetching gallery names:', error);
+            }
+        }
+    
+        fetchGalleryNames();
+    }, [api_url, login_token]);
+    
+    const handleNameChange = (event) => {
+        setSelectedGallery(event.target.value);
+        if (event.target.value === "new name") {
+            setGalleryNameInputVisible(true);
+        } else {
+            setGalleryNameInputVisible(false);
+        }
+    }
 
     useEffect(() => {
         async function getPolicy() {
@@ -84,12 +114,25 @@ export default function UploadComponent() {
     };
     
 
+
+
     const handleRemoveFile = (index) => {
         const updatedFiles = files.filter((_, i) => i !== index)
         setFiles(updatedFiles)
     }
 
     const handleSubmit = async () => {
+        if (files.length < 1) {
+            alert('Please add input files')
+            return
+        }
+
+
+        if (newGalleryName == '' && selectedGallery == '') {
+            alert('Please select gallery name')
+            return
+        }
+
         // get file list size
         const totalSizeBytes = files.reduce((total, file) => total + file.size, 0)
     
@@ -101,6 +144,12 @@ export default function UploadComponent() {
     
         const formData = new FormData()
         files.forEach((file) => formData.append('files[]', file))
+
+        if (newGalleryName != '') {
+            formData.append('gallery_name', newGalleryName)
+        } else {
+            formData.append('gallery_name', selectedGallery)
+        }
     
         try {
             const response = await axios.post(api_url + '/api/upload', formData, {
@@ -133,6 +182,31 @@ export default function UploadComponent() {
                 {status && <p>{status}</p>}
                 <progress value={progress} max="100" />
                 <input type="file" multiple onChange={handleFileChange} />
+               
+               
+
+
+                <select onChange={handleNameChange} value={selectedGallery}>
+                    <option value="">Select Gallery</option>
+                    {galleryNames.map((name, index) => (
+                        <option key={index} value={name}>{name}</option>
+                    ))}
+                    <option value="new name">New Name</option>
+                </select>
+                {galleryNameInputVisible && (
+                    <input 
+                        type="text" 
+                        value={newGalleryName} 
+                        onChange={(e) => setNewGalleryName(e.target.value)} 
+                        placeholder="Enter new gallery name" 
+                        maxLength={50}
+                    />
+                )}
+               
+
+
+
+
                 <button onClick={handleSubmit}>Submit</button>
                 <div>
                     {files.map((file, index) => (

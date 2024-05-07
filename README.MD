@@ -64,14 +64,17 @@ I am currently working on a complete recode of the application.
     - [X] Insert data to Media entity
     - [X] Upload file filter (users, type)
     - [X] Upload gallery name value
-    - [ ] Recode upload controller & create storage manager
+    - [X] Recode upload controller & create storage manager
     - [ ] Upload & gallery list api doc
     - [ ] Upload & gallery unit test
+    - [ ] Recode frontend upload component
     - [ ] Design upload form
-- [ ] Encryption system
+- [ ] All response codes get from response const
 - [ ] Media fixtures
-- [ ] Data wipe command (drop all users, logs, storage data)
+- [ ] Complete doc & code check / refactor
 ### Phase 7
+- [ ] Encryption system
+- [ ] Data wipe command (drop all users, logs, storage data)
 - [ ] Dashboard sections (stats - userbar, photos, videos)
 - [ ] Display galleries in the dashboard
 - [ ] Gallery browser

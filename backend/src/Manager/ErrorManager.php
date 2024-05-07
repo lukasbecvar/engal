@@ -46,16 +46,12 @@ class ErrorManager
             $message = 'Unexpected server error';
         }
 
-        // build error response
-        $response = [
-            'error' => [
-                'status' => 'error',
-                'code' => $code,
-                'message' => $message
-            ]
-        ];
-
-        return die(json_encode($response));
+        // return error response
+        return die(json_encode([
+            'status' => 'error',
+            'code' => $code,
+            'message' => $message
+        ]));
     }
 
     /**

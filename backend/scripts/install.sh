@@ -15,3 +15,6 @@ then
     yellow_echo "[Install]: generating new jwt keypair"
     php bin/console lexik:jwt:generate-keypair
 fi
+
+# set storage dir permissions
+chmod -R 777 ./storage

@@ -43,6 +43,7 @@ export default function UploadComponent() {
             setGalleryNameInputVisible(true);
         } else {
             setGalleryNameInputVisible(false);
+            setNewGalleryName('')
         }
     }
 
@@ -64,33 +65,7 @@ export default function UploadComponent() {
     const MAX_FILES = upload_policy.MAX_FILES_COUNT
     const MAX_FILE_LIST_SIZE_BYTES = upload_policy.MAX_FILES_SIZE * 1024 * 1024 * 1024 // 20 GB
 
-    const allowedFileExtensions = [
-        'jpeg', 
-        'jpg', 
-        'png', 
-        'gif',
-        
-        'qt', 
-        'mp4', 
-        'm4p', 
-        'm4v', 
-        'amv', 
-        'wmv',
-        'mov', 
-        'flv', 
-        'm4v', 
-        'mkv', 
-        '3gp', 
-        '3g2', 
-        'avi', 
-        'mpg', 
-        'MP2T', 
-        'webm', 
-        'mpeg', 
-        'x-m4v',
-        'x-ms-wmv', 
-        'quicktime'
-    ]; 
+    const allowedFileExtensions = upload_policy.ALLOWED_FILE_EXTENSIONS; 
 
     const handleFileChange = (e) => {
         const fileList = e.target.files;
@@ -127,8 +102,7 @@ export default function UploadComponent() {
             return
         }
 
-
-        if (newGalleryName == '' && selectedGallery == '') {
+        if ((newGalleryName == '' && selectedGallery == '') || (selectedGallery == 'new name' && newGalleryName == '')) {
             alert('Please select gallery name')
             return
         }

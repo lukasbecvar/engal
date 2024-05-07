@@ -2,18 +2,32 @@
 
 namespace App\Controller;
 
+use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use App\Manager\ErrorManager;
+use OpenApi\Attributes\Items;
+use OpenApi\Attributes\Schema;
 use App\Manager\StorageManager;
+use OpenApi\Attributes\Property;
+use OpenApi\Attributes\MediaType;
+use OpenApi\Attributes\RequestBody;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use OpenApi\Attributes\Response as AttributesResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class UploadController
+ * 
+ * Media upload controller api
+ * 
+ * @package App\Controller
+ */
 class UploadController extends AbstractController
 {
     private UserManager $userManager;
@@ -33,6 +47,15 @@ class UploadController extends AbstractController
         $this->storageManager = $storageManager;
     }
 
+    /**
+     * Get upload policy config
+     * 
+     * @Route("/config/policy", methods={"GET"}, name="api_file_upload_policy")
+     * 
+     * @return JsonResponse
+     */
+    #[Tag(name: "Resources")]
+    #[AttributesResponse(response: 200, description: 'Get upload policy config')]
     #[Route('/api/upload/config/policy', methods: ['GET'], name: 'api_file_upload_policy')]
     public function uploadConfigPolicy(): JsonResponse
     {        
@@ -45,6 +68,37 @@ class UploadController extends AbstractController
         ], 200);
     }
 
+    /**
+     * File upload endpoint
+     * 
+     * @param Request $request
+     * @param Security $security
+     * @return JsonResponse
+     */
+    #[Tag(name: "Resources")]
+    #[RequestBody(
+        content: [
+            new MediaType(
+                mediaType: "multipart/form-data",
+                schema: new Schema(properties: [
+                    new Property(
+                        property: "gallery_name",
+                        type: "string",
+                        description: "Media gallery name",
+                    ),
+                    new Property(
+                        property: "files[]",
+                        type: "array",
+                        description: "Files to upload",
+                        items: new Items(type: "string", format: "binary")
+                    )
+                ])
+            )
+        ]
+    )]
+    #[AttributesResponse(response: 200, description: 'File upload success message')]
+    #[AttributesResponse(response: 400, description: 'Bad data request error')]
+    #[AttributesResponse(response: 500, description: 'Internal upload error')]
     #[Route('/api/upload', methods: ['POST'], name: 'api_file_upload')]
     public function fileUpload(Request $request, Security $security): JsonResponse
     {
@@ -54,13 +108,40 @@ class UploadController extends AbstractController
         // get gallery name from request
         $gallery_name = $request->get('gallery_name');
     
+        // check if gallery name 
+        if ($uploaded_files == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'your files input is empty'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // check if gallery name 
+        if (empty($gallery_name)) {
+            return $this->json([
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'your gallery name is empty'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // check gallery name lenth
+        if (strlen($gallery_name) > intval($_ENV['MAX_GALLERY_NAME_LENGTH'])) {
+            return $this->json([
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'your gallery name is too long'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         // max files count check
         $total_files = count($uploaded_files);
         if ($total_files > intval($_ENV['MAX_FILES_COUNT'])) {
             return $this->json([
-                    'status' => 'error',
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'maximum number of allowable file uploads (2000) has been exceeded.'
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'maximum number of allowable file uploads (2000) has been exceeded.'
             ], Response::HTTP_BAD_REQUEST);
         }
     

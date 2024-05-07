@@ -7,12 +7,11 @@ use OpenApi\Attributes\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * Class IndexController
  * 
- * Main app index controller for check api status
+ * Main app index Controller for check api status
  * 
  * @package App\Controller
  */
@@ -26,7 +25,7 @@ class IndexController extends AbstractController
     #[Tag(name: "Index")]
     #[Route(['/', '/api'], name: 'index', methods: ['GET'])]
     #[Response(response: 200, description: 'The backend app version and status.')]
-    public function index(Security $security): JsonResponse
+    public function index(): JsonResponse
     {
         return $this->json([
             'status' => 'success',

@@ -2,35 +2,67 @@
 
 namespace App\Controller;
 
-use App\Entity\Media;
+use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Manager\ErrorManager;
+use OpenApi\Attributes\Response;
+use App\Repository\MediaRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class GalleryController
+ * 
+ * GalleryController: get gallery data info
+ * 
+ * @package App\Controller
+ */
 class GalleryController extends AbstractController
 {
-    #[Route('/api/gallery/list', name: 'gallery_list', methods: ['GET'])]
-    public function index(Security $security, EntityManagerInterface $entityManager, UserManager $userManager): JsonResponse
+    private UserManager $userManager;
+    private ErrorManager $errorManager;
+
+    public function __construct(UserManager $userManager, ErrorManager $errorManager)
     {
-        $query_builder = $entityManager->createQueryBuilder();
+        $this->userManager = $userManager;
+        $this->errorManager = $errorManager;
+    }
 
-        $gallery_names = $query_builder
-            ->select('DISTINCT m.gallery_name')
-            ->where('m.owner_id = :user_id')
-            ->setParameter('user_id', $userManager->getUserData($security)->getId())
-            ->from(Media::class, 'm')
-            ->getQuery()
-            ->getResult();
-
+    /**
+     * Retrieves the gallery list for the logged-in user.
+     *
+     * @param Security $security The security component for user authentication
+     * @param MediaRepository $mediaRepository The repository for managing media entities
+     * @return JsonResponse The JSON response containing the gallery list
+     */
+    #[Tag(name: "Resources")]
+    #[Response(response: 200, description: 'Gallery list by user')]
+    #[Response(response: 500, description: 'Gallery list get error')]
+    #[Route('/api/gallery/list', name: 'gallery_list', methods: ['GET'])]
+    public function index(Security $security, MediaRepository $mediaRepository): JsonResponse
+    {
         $gallery_names_array = [];
-        foreach ($gallery_names as $name) {
-            $gallery_names_array[] = $name['gallery_name'];
+
+        try {
+            // get logged user ID
+            $user_id = $this->userManager->getUserData($security)->getId();
+
+            // get gallery names
+            $gallery_names = $mediaRepository->findDistinctGalleryNamesByUserId($user_id);
+
+            // build gallery list array
+            foreach ($gallery_names as $name) {
+                $gallery_names_array[] = $name['gallery_name'];
+            }
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to get gallery list: '.$e->getMessage(), 500);
         }
 
         return $this->json([
+            'status' => 'success',
+            'code' => 200,
             'gallery_names' => $gallery_names_array
         ], 200);
     }

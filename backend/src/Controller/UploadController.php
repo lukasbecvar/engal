@@ -106,7 +106,12 @@ class UploadController extends AbstractController
 
 
             try {
-                $file->move(__DIR__.'/../../storage/', $file->getClientOriginalName());
+                if (str_contains($file->getMimeType(), 'video')) {
+                    $file->move(__DIR__.'/../../storage/'.$userManager->getUserData($security)->getID().'/videos', $file->getClientOriginalName());
+                } else {
+                    $file->move(__DIR__.'/../../storage/'.$userManager->getUserData($security)->getID().'/images', $file->getClientOriginalName());
+
+                }
             } catch (\Exception $e) {
                 return $this->json(['error' => 'Failed to move file: '.$file->getClientOriginalName()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }

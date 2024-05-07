@@ -1,11 +1,9 @@
-import React, { useState } from 'react' 
+import React, { useEffect, useState } from 'react' 
 import axios from 'axios'
 import UserNavigationComponent from './sub-component/navigation/UserNavigationComponent'
 import MainNavigationComponent from './sub-component/navigation/MainNavigationComponent'
 
 export default function UploadComponent() {
-    const MAX_FILES = 2000
-    const MAX_FILE_LIST_SIZE_BYTES = 8 * 1024 * 1024 * 1024 // 20 GB
 
     let api_url = localStorage.getItem('api-url')
     let login_token = localStorage.getItem('login-token')
@@ -13,6 +11,28 @@ export default function UploadComponent() {
     const [status, setStatus] = useState(null)
     const [files, setFiles] = useState([])
     const [progress, setProgress] = useState(0)
+
+    const [upload_policy, setUploadPolicy] = useState([null])
+
+
+
+    useEffect(() => {
+        async function getPolicy() {
+            const response = await axios.get(api_url + '/api/upload/config/policy', {
+                headers: {
+                    'Authorization': `Bearer ${login_token}`
+                },
+            })
+            setUploadPolicy(response.data)
+        }
+
+        getPolicy()
+
+    }, [api_url, login_token])
+
+
+    const MAX_FILES = upload_policy.MAX_FILES_COUNT
+    const MAX_FILE_LIST_SIZE_BYTES = upload_policy.MAX_FILES_SIZE * 1024 * 1024 * 1024 // 20 GB
 
     const allowedFileExtensions = [
         'jpeg', 

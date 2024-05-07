@@ -7,23 +7,34 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UploadController extends AbstractController
 {
+    #[Route('/api/upload/config/policy', methods: ['GET'], name: 'api_file_upload_policy')]
+    public function uploadConfigPolicy(): JsonResponse
+    {
+        return $this->json([
+            'FILE_UPLOAD_STATUS' => $_ENV['FILE_UPLOAD_STATUS'],
+            'MAX_FILES_COUNT' => $_ENV['MAX_FILES_COUNT'],
+            'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE']
+        ], 200);
+    }
+
     #[Route('/api/upload', methods: ['POST'], name: 'api_file_upload')]
-    public function fileUpload(Request $request): Response
+    public function fileUpload(Request $request): JsonResponse
     {
         $uploadedFiles = $request->files->get('files');
     
         // max files count check
-        $maxFileCount = 2000;
+        $maxFileCount = $_ENV['MAX_FILES_COUNT'];
         $totalFiles = count($uploadedFiles);
         if ($totalFiles > intval($maxFileCount)) {
             return $this->json(['error' => 'Maximum number of allowable file uploads (2000) has been exceeded.'], Response::HTTP_BAD_REQUEST);
         }
     
         // max files size check
-        $maxFileSizeBytes = 8 * 1024 * 1024 * 1024; // 20 GB
+        $maxFileSizeBytes = $_ENV['MAX_FILES_SIZE'] * 1024 * 1024 * 1024; // 20 GB
         foreach ($uploadedFiles as $file) {
             if ($file instanceof UploadedFile && $file->getSize() > $maxFileSizeBytes) {
                 return $this->json(['error' => 'Maximum file size (20 GB) has been exceeded for file: '.$file->getClientOriginalName()], Response::HTTP_BAD_REQUEST);

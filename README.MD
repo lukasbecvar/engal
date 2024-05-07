@@ -60,12 +60,13 @@ I am currently working on a complete recode of the application.
     - [X] Upload form component
     - [X] Accept only media formats
     - [X] Upload status
-    - [ ] Upload limits policy config
+    - [X] Upload limits policy config
     - [ ] Insert data to Media entity
     - [ ] Upload file filter (users, type)
-    - [ ] Design upload form
+    - [ ] Upload gallery name value
     - [ ] Upload api doc
     - [ ] Upload unit test
+    - [ ] Design upload form
 - [ ] Encryption system
 - [ ] Media fixtures
 - [ ] Data wipe command (drop all users, logs, storage data)

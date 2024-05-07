@@ -199,7 +199,7 @@ export default function UploadComponent() {
                         value={newGalleryName} 
                         onChange={(e) => setNewGalleryName(e.target.value)} 
                         placeholder="Enter new gallery name" 
-                        maxLength={50}
+                        maxLength={upload_policy.MAX_GALLERY_NAME_LENGTH}
                     />
                 )}
                

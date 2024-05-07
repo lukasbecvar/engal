@@ -22,7 +22,8 @@ class UploadController extends AbstractController
         return $this->json([
             'FILE_UPLOAD_STATUS' => $_ENV['FILE_UPLOAD_STATUS'],
             'MAX_FILES_COUNT' => $_ENV['MAX_FILES_COUNT'],
-            'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE']
+            'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE'],
+            'MAX_GALLERY_NAME_LENGTH' => $_ENV['MAX_GALLERY_NAME_LENGTH']
         ], 200);
     }
 

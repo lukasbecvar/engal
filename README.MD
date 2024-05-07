@@ -69,6 +69,7 @@ I am currently working on a complete recode of the application.
     - [ ] Upload & gallery unit test
     - [ ] Recode frontend upload component
     - [ ] Design upload form
+- [ ] Auth error (nonauth request) unit test
 - [ ] All response codes get from response const
 - [ ] Media fixtures
 - [ ] Complete doc & code check / refactor

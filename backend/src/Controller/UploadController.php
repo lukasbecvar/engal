@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
+use App\Manager\UserManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\String\ByteString;
 
 class UploadController extends AbstractController
 {
@@ -22,7 +27,7 @@ class UploadController extends AbstractController
     }
 
     #[Route('/api/upload', methods: ['POST'], name: 'api_file_upload')]
-    public function fileUpload(Request $request): JsonResponse
+    public function fileUpload(Request $request, Security $security, EntityManagerInterface $entityManager, UserManager $userManager): JsonResponse
     {
         $uploadedFiles = $request->files->get('files');
     
@@ -80,6 +85,26 @@ class UploadController extends AbstractController
     
         // move uploaded file
         foreach ($uploadedFiles as $file) {
+
+            try {
+                $media = new Media();
+
+                $media->setName($file->getClientOriginalName());
+                $media->setGalleryName('gallery_name');
+                $media->setType($file->getMimeType());
+                $media->setOwnerId($userManager->getUserData($security)->getID());
+                $media->setToken(ByteString::fromRandom(32)->toString());
+                $media->setUploadTime(date('d.m.Y H:i:s'));
+                $media->setLastEditTime('non-edited');
+
+                $entityManager->persist($media);
+                $entityManager->flush();
+
+            } catch (\Exception $e) {
+                return $this->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+
             try {
                 $file->move(__DIR__.'/../../storage/', $file->getClientOriginalName());
             } catch (\Exception $e) {

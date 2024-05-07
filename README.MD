@@ -61,7 +61,7 @@ I am currently working on a complete recode of the application.
     - [X] Accept only media formats
     - [X] Upload status
     - [X] Upload limits policy config
-    - [ ] Insert data to Media entity
+    - [X] Insert data to Media entity
     - [ ] Upload file filter (users, type)
     - [ ] Upload gallery name value
     - [ ] Upload api doc

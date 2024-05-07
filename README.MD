@@ -65,8 +65,8 @@ I am currently working on a complete recode of the application.
     - [X] Upload file filter (users, type)
     - [X] Upload gallery name value
     - [ ] Recode upload controller & create storage manager
-    - [ ] Upload api doc
-    - [ ] Upload unit test
+    - [ ] Upload & gallery list api doc
+    - [ ] Upload & gallery unit test
     - [ ] Design upload form
 - [ ] Encryption system
 - [ ] Media fixtures

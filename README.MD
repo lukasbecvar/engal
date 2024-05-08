@@ -67,7 +67,7 @@ I am currently working on a complete recode of the application.
     - [X] Recode upload controller & create storage manager
     - [X] Upload & gallery list api doc
     - [X] Upload & gallery unit test
-    - [ ] Recode frontend upload component
+    - [X] Recode frontend upload component
     - [ ] Design upload form
 - [X] All response codes get from response const
 - [X] Media fixtures

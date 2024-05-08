@@ -70,19 +70,20 @@ I am currently working on a complete recode of the application.
     - [ ] Recode frontend upload component
     - [ ] Design upload form
 - [X] All response codes get from response const
-- [ ] Media fixtures
+- [X] Media fixtures
 - [ ] Complete doc & code check / refactor
 ### Phase 7
-- [ ] Encryption system
-- [ ] Data wipe command (drop all users, logs, storage data)
-- [ ] Dashboard sections (stats - userbar, photos, videos)
+- [ ] Dashboard stats
 - [ ] Display galleries in the dashboard
-- [ ] Gallery browser
-- [ ] All images/videos browser
+- [ ] Gallery browser (video files priority)
 - [ ] Sorting (by: name, upload_time, edit_time, random)
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
+### Phase 8.5
+- [ ] Encryption system
+## Phase 8.6
+- [ ] Data wipe command (drop all users, logs, storage data)
 ### Phase 9
 - [ ] Account settings (change password, username, account delete)
 - [ ] Admin system
@@ -97,13 +98,6 @@ I am currently working on a complete recode of the application.
 - [ ] Port frontend to react-native
 ### Phase 12
 - [ ] Deploy system
-    - [ ] Build script (build final frontend & symfony for production use to deploy archives)
-    - [ ] Backend install script (install backend project to new server)
-    - [ ] Backend update script (autoupdate backend)
-    - [ ] Check frontend app version (check if versions matching with backend version)
-### Phase 13
-- [ ] Refactor / code clean & check
-- [ ] Complete doc
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -18,3 +18,6 @@ yellow_echo "[DB-Create]: running migrations"
 php bin/console make:migration --no-interaction
 php bin/console doctrine:migrations:migrate --no-interaction
 php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
+# run storage create
+sh ./scripts/create-storage.sh

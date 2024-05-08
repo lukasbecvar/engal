@@ -176,17 +176,20 @@ class UploadController extends AbstractController
 
         try {
             foreach ($uploaded_files as $file) {
+                // get owner ID
+                $owner_id = $this->userManager->getUserData($security)->getID();
+
                 // store media entity data
                 $token = $this->storageManager->storeMediaEntity([
                     'name' => $file->getClientOriginalName(),
                     'gallery_name' => $gallery_name,
                     'type' => $file->getMimeType(),
-                    'owner_id' => $this->userManager->getUserData($security)->getID(),
+                    'owner_id' => $owner_id,
                     'upload_time' => date('d.m.Y H:i:s'),
                 ]);
 
                 // store media file
-                $this->storageManager->storeMediaFile($token, $file, $security);
+                $this->storageManager->storeMediaFile($token, $file, $owner_id);
             }
 
             $this->entityManager->commit(); // commit transaction 

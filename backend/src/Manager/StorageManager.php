@@ -3,9 +3,9 @@
 namespace App\Manager;
 
 use App\Entity\Media;
+use Symfony\Component\String\ByteString;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\String\ByteString;
 
 /**
  * Class StorageManager
@@ -16,13 +16,11 @@ use Symfony\Component\String\ByteString;
  */
 class StorageManager
 {
-    private UserManager $userManager;
     private ErrorManager $errorManager;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(UserManager $userManager, ErrorManager $errorManager, EntityManagerInterface $entityManager)
+    public function __construct(ErrorManager $errorManager, EntityManagerInterface $entityManager)
     {
-        $this->userManager = $userManager;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
     }
@@ -36,25 +34,6 @@ class StorageManager
     public function getMediaEntityRepository(string $token): ?object
     {
         return $this->entityManager->getRepository(Media::class)->findOneBy(['token' => $token]);
-    }
-
-    /**
-     * Create storage directory.
-     * 
-     * @param int $id
-     * @param string $type
-     */
-    public function createStorageDir(int $id, string $type): void
-    {
-        $path = __DIR__.'/../../storage/'.$_ENV['APP_ENV'].'/'.$id.'/'.$type;
-        
-        if (!file_exists($path)) {
-            try {
-                mkdir($path, 777, true);
-            } catch (\Exception $e) {
-                $this->errorManager->handleError('error to create storage directory: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-            }
-        }
     }
 
     /**
@@ -102,16 +81,13 @@ class StorageManager
      * 
      * @param string $token
      * @param object $file
-     * @param object $security
+     * @param int $user_id
      * @param string $file_type
      */
-    public function storeMediaFile(string $token, object $file, object $security, string $file_type = 'photos'): void
+    public function storeMediaFile(string $token, object $file, int $user_id, string $file_type = 'photos'): void
     {
         // get uploaded file extension
         $file_extension = $file->getClientOriginalExtension();
-
-        // get uploader user ID
-        $user_id = $this->userManager->getUserData($security)->getID();
 
         try {
             // check file type

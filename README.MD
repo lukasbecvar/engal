@@ -71,6 +71,8 @@ I am currently working on a complete recode of the application.
     - [X] Design upload form
 - [X] All response codes get from response const
 - [X] Media fixtures
+### Phase 6.5
+- [ ] Setup PHP_codesniffer
 ### Phase 7
 - [ ] Dashboard stats
 - [ ] Display galleries in the dashboard

@@ -60,6 +60,8 @@ class UploadController extends AbstractController
     public function uploadConfigPolicy(): JsonResponse
     {        
         return $this->json([
+            'status' => 'success',
+            'code' => 200,
             'FILE_UPLOAD_STATUS' => $_ENV['FILE_UPLOAD_STATUS'],
             'MAX_FILES_COUNT' => $_ENV['MAX_FILES_COUNT'],
             'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE'],
@@ -107,17 +109,8 @@ class UploadController extends AbstractController
 
         // get gallery name from request
         $gallery_name = $request->get('gallery_name');
-    
-        // check if gallery name 
-        if ($uploaded_files == null) {
-            return $this->json([
-                'status' => 'error',
-                'code' => Response::HTTP_BAD_REQUEST,
-                'message' => 'your files input is empty'
-            ], Response::HTTP_BAD_REQUEST);
-        }
 
-        // check if gallery name 
+        // check gallery name set 
         if (empty($gallery_name)) {
             return $this->json([
                 'status' => 'error',
@@ -131,7 +124,16 @@ class UploadController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => Response::HTTP_BAD_REQUEST,
-                'message' => 'your gallery name is too long'
+                'message' => 'maximal gallery name length is '.$_ENV['MAX_GALLERY_NAME_LENGTH']
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // check file input set
+        if ($uploaded_files == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'your files input is empty'
             ], Response::HTTP_BAD_REQUEST);
         }
 

@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Tests\Controller\User;
+namespace App\Tests\Controller;
 
 use App\Tests\CustomCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class UserStatusControllerTest
+ * Class GalleryControllerTest
  * 
- * Unit test case for the UserStatusController class.
+ * Test get gallery list
  * 
- * @package App\Tests\Controller\User
+ * @package App\Tests\Controller
  */
-class UserStatusControllerTest extends CustomCase
-{
+class GalleryControllerTest extends CustomCase
+{   
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
-     */
+    */
     private $client;
 
     /**
      * Set up before each test.
-     */
+    */
     protected function setUp(): void
     {
         $this->client = static::createClient();
@@ -29,20 +29,15 @@ class UserStatusControllerTest extends CustomCase
     }
 
     /**
-     * Tests the getUserStatus endpoint.
-     *
-     * This method tests the behavior of the getUserStatus endpoint by sending a GET request
-     * and asserting the response status code and content.
-     *
-     * @return void
+     * Test retrieving the list of galleries with authentication.
      */
-    public function testGetUserStatus(): void
+    public function testGetGalleryList(): void
     {
         // simulate user authentication
         $this->simulateUserAuthentication($this->client);
 
         // GET request to the API endpoint
-        $this->client->request('GET', '/api/user/status');
+        $this->client->request('GET', '/api/gallery/list');
 
         // decoding the content of the JsonResponse
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
@@ -51,17 +46,16 @@ class UserStatusControllerTest extends CustomCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertEquals('success', $response_data['status']);
         $this->assertEquals(200, $response_data['code']);
-        $this->assertEquals('test', $response_data['username']);
-        $this->assertEquals(['ROLE_USER'], $response_data['roles']);
+        $this->assertIsArray($response_data['gallery_names']);
     }
 
     /**
-     * Test retrieving user status when the user is not authenticated.
+     * Test retrieving the list of galleries without authentication.
      */
-    public function testGetUserStatusNonAuth(): void
+    public function testGetGalleryListNonAuth(): void
     {
         // GET request to the API endpoint
-        $this->client->request('GET', '/api/user/status');
+        $this->client->request('GET', '/api/gallery/list');
 
         // decoding the content of the JsonResponse
         $response_data = json_decode($this->client->getResponse()->getContent(), true);

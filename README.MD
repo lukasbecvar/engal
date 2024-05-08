@@ -66,7 +66,7 @@ I am currently working on a complete recode of the application.
     - [X] Upload gallery name value
     - [X] Recode upload controller & create storage manager
     - [X] Upload & gallery list api doc
-    - [ ] Upload & gallery unit test
+    - [X] Upload & gallery unit test
     - [ ] Recode frontend upload component
     - [ ] Design upload form
 - [ ] Auth error (nonauth request) unit test

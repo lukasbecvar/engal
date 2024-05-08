@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -42,5 +43,28 @@ class CustomCase extends WebTestCase
 
         // set the token in the token storage
         $container->get('security.token_storage')->setToken($token);
+    }
+
+    /**
+     * Creates a fake UploadedFile instance for testing purposes.
+     *
+     * This method generates a fake temporary file with the given filename and MIME type.
+     * It creates an empty file in the system's temporary directory and returns an UploadedFile object
+     * representing that file. The file will be considered as uploaded.
+     *
+     * @param string $filename The name of the fake file.
+     * @param string $mimeType The MIME type of the fake file.
+     * @return UploadedFile A fake UploadedFile instance representing the fake file.
+     */
+    public function createFakeUploadedFile(string $filename, string $mimeType): UploadedFile
+    {
+        // Generate a temporary file path
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'test_file');
+        
+        // Create an empty temporary file
+        file_put_contents($tempFilePath, '');
+        
+        // Return an UploadedFile instance representing the fake file
+        return new UploadedFile($tempFilePath, $filename, $mimeType, null, true);
     }
 }

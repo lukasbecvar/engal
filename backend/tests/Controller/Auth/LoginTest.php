@@ -2,9 +2,8 @@
 
 namespace App\Tests\Auth;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class LoginTest

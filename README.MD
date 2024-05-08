@@ -68,10 +68,9 @@ I am currently working on a complete recode of the application.
     - [X] Upload & gallery list api doc
     - [X] Upload & gallery unit test
     - [X] Recode frontend upload component
-    - [ ] Design upload form
+    - [X] Design upload form
 - [X] All response codes get from response const
 - [X] Media fixtures
-- [ ] Complete doc & code check / refactor
 ### Phase 7
 - [ ] Dashboard stats
 - [ ] Display galleries in the dashboard

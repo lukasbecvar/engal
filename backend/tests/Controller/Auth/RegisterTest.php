@@ -3,8 +3,8 @@
 namespace App\Tests\Auth;
 
 use Symfony\Component\String\ByteString;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class RegisterTest

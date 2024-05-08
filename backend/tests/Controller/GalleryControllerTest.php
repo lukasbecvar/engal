@@ -3,7 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\CustomCase;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class GalleryControllerTest
@@ -43,9 +43,9 @@ class GalleryControllerTest extends CustomCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+        $this->assertSame(200, $response_data['code']);
         $this->assertEquals('success', $response_data['status']);
-        $this->assertEquals(200, $response_data['code']);
         $this->assertIsArray($response_data['gallery_names']);
     }
 
@@ -61,8 +61,8 @@ class GalleryControllerTest extends CustomCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
+        $this->assertSame(401, $response_data['code']);
         $this->assertEquals('JWT Token not found', $response_data['message']);
-        $this->assertEquals(401, $response_data['code']);
     }
 }

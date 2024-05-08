@@ -29,7 +29,7 @@ class IndexController extends AbstractController
     {
         return $this->json([
             'status' => 'success',
-            'code' => 200,
+            'code' => JsonResponse::HTTP_OK,
             'message' => 'Engal API is loaded success',
             'backend_version' => $_ENV['APP_VERSION'],
             'security_policy' => [
@@ -39,6 +39,6 @@ class IndexController extends AbstractController
                 'MIN_PASSWORD_LENGTH' => intval($_ENV['MIN_PASSWORD_LENGTH']),
                 'MAX_PASSWORD_LENGTH' => intval($_ENV['MAX_PASSWORD_LENGTH'])
             ]
-        ], 200);
+        ], JsonResponse::HTTP_OK);
     }
 }

@@ -40,12 +40,12 @@ class UserStatusController extends AbstractController
         // return user data
         return $this->json([
             'status' => 'success',
-            'code' => 200,
+            'code' => JsonResponse::HTTP_OK,
             'username' => $user_data->getUsername(),
             'roles' => $user_data->getRoles(),
             'register_time' => $user_data->getRegisterTime(),
             'last_login_time' => $user_data->getLastLoginTime(),
             'ip_address' => $user_data->getIpAddress()
-        ], 200);
+        ], JsonResponse::HTTP_OK);
     }
 }

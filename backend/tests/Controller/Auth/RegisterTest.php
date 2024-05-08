@@ -3,8 +3,8 @@
 namespace App\Tests\Auth;
 
 use Symfony\Component\String\ByteString;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class RegisterTest
@@ -40,7 +40,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('input password is required', $response_data['message']);
     }
@@ -59,7 +60,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('username must be at least '.$_ENV['MIN_USERNAME_LENGTH'].' characters long', $response_data['message']);
     }
@@ -78,7 +80,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('username must be maximal '.$_ENV['MAX_USERNAME_LENGTH'].' characters long', $response_data['message']);
     }
@@ -97,7 +100,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('password must be at least '.$_ENV['MIN_PASSWORD_LENGTH'].' characters long', $response_data['message']);
     }
@@ -116,7 +120,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('password must be maximal '.$_ENV['MAX_PASSWORD_LENGTH'].' characters long', $response_data['message']);
     }
@@ -135,7 +140,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_CONFLICT);
+        $this->assertSame(409, $response_data['code']);
         $this->assertSame('error', $response_data['status']);
         $this->assertSame('user: test is already exist', $response_data['message']);
     }
@@ -154,7 +160,8 @@ class RegisterTest extends WebTestCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check reponse
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+        $this->assertSame(200, $response_data['code']);
         $this->assertSame('success', $response_data['status']);
         $this->assertSame('Registration success', $response_data['message']);
     }

@@ -46,9 +46,9 @@ class RegisterController extends AbstractController
         if ($_ENV['REGISTER_ENABLED'] != 'true') {
             return $this->json([
                 'status' => 'error',
-                'code' => 403,
+                'code' => JsonResponse::HTTP_FORBIDDEN,
                 'message' => 'New registration is disabled by server admin'
-            ], 403);
+            ], JsonResponse::HTTP_FORBIDDEN);
         }
 
         // get data from request
@@ -69,50 +69,50 @@ class RegisterController extends AbstractController
             }
             return $this->json([
                 'status' => 'error',
-                'code' => 400,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => $error_message
-            ], 400);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // check username length
         if (strlen($username) < $_ENV['MIN_USERNAME_LENGTH']) {
             return $this->json([
                 'status' => 'error',
-                'code' => 400,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'username must be at least '.$_ENV['MIN_USERNAME_LENGTH'].' characters long'
-            ], 400);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
         if (strlen($username) > $_ENV['MAX_USERNAME_LENGTH']) {
             return $this->json([
                 'status' => 'error',
-                'code' => 400,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'username must be maximal '.$_ENV['MAX_USERNAME_LENGTH'].' characters long'
-            ], 400);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // check password length
         if (strlen($password) < $_ENV['MIN_PASSWORD_LENGTH']) {
             return $this->json([
                 'status' => 'error',
-                'code' => 400,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'password must be at least '.$_ENV['MIN_PASSWORD_LENGTH'].' characters long'
-            ], 400);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
         if (strlen($password) > $_ENV['MAX_PASSWORD_LENGTH']) {
             return $this->json([
                 'status' => 'error',
-                'code' => 400,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'password must be maximal '.$_ENV['MAX_PASSWORD_LENGTH'].' characters long'
-            ], 400);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // check if user is exist
         if ($userManager->getUserRepo($username) != null) {
             return $this->json([
                 'status' => 'error',
-                'code' => 409,
+                'code' => JsonResponse::HTTP_CONFLICT,
                 'message' => 'user: '.$username.' is already exist'
-            ], 409);
+            ], JsonResponse::HTTP_CONFLICT);
         }
 
         // check if IP is registred
@@ -120,9 +120,9 @@ class RegisterController extends AbstractController
             if ($userManager->getUserRepoByIP($ip_address) != null) {
                 return $this->json([
                     'status' => 'error',
-                    'code' => 409,
+                    'code' => JsonResponse::HTTP_CONFLICT,
                     'message' => 'Your ip address is already registred in the system'
-                ], 409);
+                ], JsonResponse::HTTP_CONFLICT);
             }    
         }
 
@@ -137,15 +137,15 @@ class RegisterController extends AbstractController
             // return success message
             return $this->json([
                 'status' => 'success',
-                'code' => 200,
+                'code' => JsonResponse::HTTP_OK,
                 'message' => 'Registration success'
-            ], 200);
+            ], JsonResponse::HTTP_OK);
         } catch (\Exception) {
             return $this->json([
                 'status' => 'error',
-                'code' => 500,
+                'code' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => 'Unexpected register error'
-            ], 500);
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

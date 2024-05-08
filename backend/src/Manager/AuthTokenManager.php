@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -36,7 +37,7 @@ class AuthTokenManager
         try {
             return $this->cacheManager->isCatched('auth_token_'.$token);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to check if token is blacklisted: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to check if token is blacklisted: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             return false;
         }
     }
@@ -55,7 +56,7 @@ class AuthTokenManager
                 $this->cacheManager->setValue('auth_token_'.$token, 'auth_token', 604800);
             }
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to blacklisted token: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to blacklisted token: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,7 +72,7 @@ class AuthTokenManager
         try {
             $this->cacheManager->deleteValue('auth_token_'.$token);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to unblacklisted token: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to unblacklisted token: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -89,7 +90,7 @@ class AuthTokenManager
         try {
             return $request->headers->get('Authorization');
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to get auth token: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to get auth token: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             return null;
         }
     }

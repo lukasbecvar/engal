@@ -4,6 +4,7 @@ namespace App\Middleware;
 
 use App\Util\SiteUtil;
 use App\Manager\ErrorManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class SecurityCheckMiddleware
@@ -31,7 +32,7 @@ class SecurityCheckMiddleware
         // check if SSL check enabled
         if ($this->siteUtil->isSSLOnly()) {
             if (!$this->siteUtil->isSsl()) {
-                $this->errorManager->handleError('SSL error: connection not running on ssl protocol', 500);
+                $this->errorManager->handleError('SSL error: connection not running on ssl protocol', JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }

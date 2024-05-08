@@ -4,6 +4,7 @@ namespace App\Middleware;
 
 use App\Manager\ErrorManager;
 use App\Manager\AuthTokenManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
@@ -39,7 +40,7 @@ class AuthTokenValidateMiddleware
         // check if token is not blacklisted
         if (!empty($token)) {
             if ($this->authTokenManager->isTokenBlacklisted($token)) {
-                $this->errorManager->handleError('Invalid JWT token', 401, false);
+                $this->errorManager->handleError('Invalid JWT token', JsonResponse::HTTP_UNAUTHORIZED, false);
             }
         }
     }

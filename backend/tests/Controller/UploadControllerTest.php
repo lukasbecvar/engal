@@ -3,7 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\CustomCase;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class UploadControllerTest
@@ -43,9 +43,9 @@ class UploadControllerTest extends CustomCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+        $this->assertSame(200, $response_data['code']);
         $this->assertEquals('success', $response_data['status']);
-        $this->assertEquals(200, $response_data['code']);
         $this->assertSame($response_data['FILE_UPLOAD_STATUS'], $_ENV['FILE_UPLOAD_STATUS']);
         $this->assertSame($response_data['MAX_FILES_COUNT'], $_ENV['MAX_FILES_COUNT']);
         $this->assertSame($response_data['MAX_FILES_SIZE'], $_ENV['MAX_FILES_SIZE']);
@@ -65,26 +65,9 @@ class UploadControllerTest extends CustomCase
         $response_data = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
+        $this->assertSame(401, $response_data['code']);
         $this->assertEquals('JWT Token not found', $response_data['message']);
-        $this->assertEquals(401, $response_data['code']);
-    }
-
-    /**
-     * Test file upload without authentication.
-     */
-    public function testUploadNonAuth(): void
-    {
-        // GET request to the API endpoint
-        $this->client->request('POST', '/api/upload');
-
-        // decoding the content of the JsonResponse
-        $response_data = json_decode($this->client->getResponse()->getContent(), true);
-
-        // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        $this->assertEquals('JWT Token not found', $response_data['message']);
-        $this->assertEquals(401, $response_data['code']);
     }
 
     /**
@@ -103,12 +86,13 @@ class UploadControllerTest extends CustomCase
 
         // get response
         $response = $this->client->getResponse();
-        $responseData = json_decode($response->getContent(), true);
+        $response_data = json_decode($response->getContent(), true);
 
         // check response
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame('error', $responseData['status']);
-        $this->assertSame('your gallery name is empty', $responseData['message']);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
+        $this->assertSame('error', $response_data['status']);
+        $this->assertSame('your gallery name is empty', $response_data['message']);
     }
 
     /**
@@ -128,12 +112,13 @@ class UploadControllerTest extends CustomCase
 
         // get response
         $response = $this->client->getResponse();
-        $responseData = json_decode($response->getContent(), true);
+        $response_data = json_decode($response->getContent(), true);
 
         // check response
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame('error', $responseData['status']);
-        $this->assertSame('maximal gallery name length is '.$_ENV['MAX_GALLERY_NAME_LENGTH'], $responseData['message']);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
+        $this->assertSame('error', $response_data['status']);
+        $this->assertSame('maximal gallery name length is '.$_ENV['MAX_GALLERY_NAME_LENGTH'], $response_data['message']);
     }
 
     /**
@@ -153,12 +138,13 @@ class UploadControllerTest extends CustomCase
 
         // get response
         $response = $this->client->getResponse();
-        $responseData = json_decode($response->getContent(), true);
+        $response_data = json_decode($response->getContent(), true);
 
         // check response
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame('error', $responseData['status']);
-        $this->assertSame('your files input is empty', $responseData['message']);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $response_data['code']);
+        $this->assertSame('error', $response_data['status']);
+        $this->assertSame('your files input is empty', $response_data['message']);
     }
 
     /**
@@ -185,11 +171,29 @@ class UploadControllerTest extends CustomCase
 
         // get response
         $response = $this->client->getResponse();
-        $responseData = json_decode($response->getContent(), true);
+        $response_data = json_decode($response->getContent(), true);
 
         // check response
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame('success', $responseData['status']);
-        $this->assertSame('files uploaded successfully', $responseData['message']);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+        $this->assertSame(200, $response_data['code']);
+        $this->assertSame('success', $response_data['status']);
+        $this->assertSame('files uploaded successfully', $response_data['message']);
+    }
+
+    /**
+     * Test file upload without authentication.
+     */
+    public function testUploadNonAuth(): void
+    {
+        // GET request to the API endpoint
+        $this->client->request('POST', '/api/upload');
+
+        // decoding the content of the JsonResponse
+        $response_data = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
+        $this->assertEquals(401, $response_data['code']);
+        $this->assertEquals('JWT Token not found', $response_data['message']);
     }
 }

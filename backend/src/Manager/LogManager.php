@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Log;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class LogManager
@@ -49,7 +50,7 @@ class LogManager
             $this->entityManager->persist($log);
             $this->entityManager->flush();
         } catch (\Exception $e) {
-            $this->errorManager->handleError('log-error: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('log-error: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

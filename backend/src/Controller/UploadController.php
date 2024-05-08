@@ -8,16 +8,15 @@ use App\Manager\ErrorManager;
 use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Schema;
 use App\Manager\StorageManager;
+use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Property;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\RequestBody;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use OpenApi\Attributes\Response as AttributesResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -55,19 +54,19 @@ class UploadController extends AbstractController
      * @return JsonResponse
      */
     #[Tag(name: "Resources")]
-    #[AttributesResponse(response: 200, description: 'Get upload policy config')]
+    #[Response(response: 200, description: 'Get upload policy config')]
     #[Route('/api/upload/config/policy', methods: ['GET'], name: 'api_file_upload_policy')]
     public function uploadConfigPolicy(): JsonResponse
     {        
         return $this->json([
             'status' => 'success',
-            'code' => 200,
+            'code' => JsonResponse::HTTP_OK,
             'FILE_UPLOAD_STATUS' => $_ENV['FILE_UPLOAD_STATUS'],
             'MAX_FILES_COUNT' => $_ENV['MAX_FILES_COUNT'],
             'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE'],
             'MAX_GALLERY_NAME_LENGTH' => $_ENV['MAX_GALLERY_NAME_LENGTH'],
             'ALLOWED_FILE_EXTENSIONS' => json_decode($_ENV['ALLOWED_FILE_EXTENSIONS'], true)
-        ], 200);
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
@@ -98,9 +97,9 @@ class UploadController extends AbstractController
             )
         ]
     )]
-    #[AttributesResponse(response: 200, description: 'File upload success message')]
-    #[AttributesResponse(response: 400, description: 'Bad data request error')]
-    #[AttributesResponse(response: 500, description: 'Internal upload error')]
+    #[Response(response: 200, description: 'File upload success message')]
+    #[Response(response: 400, description: 'Bad data request error')]
+    #[Response(response: 500, description: 'Internal upload error')]
     #[Route('/api/upload', methods: ['POST'], name: 'api_file_upload')]
     public function fileUpload(Request $request, Security $security): JsonResponse
     {
@@ -114,27 +113,27 @@ class UploadController extends AbstractController
         if (empty($gallery_name)) {
             return $this->json([
                 'status' => 'error',
-                'code' => Response::HTTP_BAD_REQUEST,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'your gallery name is empty'
-            ], Response::HTTP_BAD_REQUEST);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // check gallery name lenth
         if (strlen($gallery_name) > intval($_ENV['MAX_GALLERY_NAME_LENGTH'])) {
             return $this->json([
                 'status' => 'error',
-                'code' => Response::HTTP_BAD_REQUEST,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'maximal gallery name length is '.$_ENV['MAX_GALLERY_NAME_LENGTH']
-            ], Response::HTTP_BAD_REQUEST);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // check file input set
         if ($uploaded_files == null) {
             return $this->json([
                 'status' => 'error',
-                'code' => Response::HTTP_BAD_REQUEST,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'your files input is empty'
-            ], Response::HTTP_BAD_REQUEST);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // max files count check
@@ -142,9 +141,9 @@ class UploadController extends AbstractController
         if ($total_files > intval($_ENV['MAX_FILES_COUNT'])) {
             return $this->json([
                 'status' => 'error',
-                'code' => Response::HTTP_BAD_REQUEST,
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
                 'message' => 'maximum number of allowable file uploads (2000) has been exceeded.'
-            ], Response::HTTP_BAD_REQUEST);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
     
         // max files size check
@@ -153,9 +152,9 @@ class UploadController extends AbstractController
             if ($file instanceof UploadedFile && $file->getSize() > $max_file_size_bytes) {
                 return $this->json([
                     'status' => 'error',
-                    'code' => Response::HTTP_BAD_REQUEST,
+                    'code' => JsonResponse::HTTP_BAD_REQUEST,
                     'message' => 'maximum file size (20 GB) has been exceeded for file: '.$file->getClientOriginalName()
-                ], Response::HTTP_BAD_REQUEST);
+                ], JsonResponse::HTTP_BAD_REQUEST);
             }
         }
             
@@ -166,9 +165,9 @@ class UploadController extends AbstractController
             if (!in_array($fileExtension, $allowed_file_extensions)) {
                 return $this->json([
                     'status' => 'error',
-                    'code' => Response::HTTP_BAD_REQUEST,
+                    'code' => JsonResponse::HTTP_BAD_REQUEST,
                     'message' => 'file '.$file->getClientOriginalName().' has an invalid extension.'
-                ], Response::HTTP_BAD_REQUEST);
+                ], JsonResponse::HTTP_BAD_REQUEST);
             }
         }
     
@@ -193,14 +192,14 @@ class UploadController extends AbstractController
             $this->entityManager->commit(); // commit transaction 
         } catch (\Exception $e) {
             $this->entityManager->rollback(); 
-            $this->errorManager->handleError('error to upload media: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to upload media: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     
         // return success message
         return $this->json([
             'status' => 'success',
-            'code' => Response::HTTP_OK,
+            'code' => JsonResponse::HTTP_OK,
             'message' => 'files uploaded successfully'
-        ], Response::HTTP_OK);
+        ], JsonResponse::HTTP_OK);
     }
 }

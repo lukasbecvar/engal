@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class IndexControllerTest
@@ -28,8 +29,9 @@ class IndexControllerTest extends WebTestCase
         $response_data = json_decode($client->getResponse()->getContent(), true);
 
         // check response
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertResponseHeaderSame('content-type', 'application/json');
+        $this->assertSame(200, $response_data['code']);
 
         // check status response
         $this->assertArrayHasKey('status', $response_data);
@@ -37,7 +39,6 @@ class IndexControllerTest extends WebTestCase
 
         // check response code
         $this->assertArrayHasKey('code', $response_data);
-        $this->assertEquals(200, $response_data['code']);
 
         // check backend_version
         $this->assertArrayHasKey('backend_version', $response_data);

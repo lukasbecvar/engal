@@ -4,6 +4,7 @@ namespace App\Tests\Auth;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class LoginTest
@@ -48,7 +49,7 @@ class LoginTest extends WebTestCase
         $response_data = json_decode($response_content, true);
 
         // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertNotEmpty($response_content);
         $this->assertArrayHasKey('token', $response_data);
         $this->assertNotEmpty($response_data['token']);
@@ -74,7 +75,8 @@ class LoginTest extends WebTestCase
         $response_data = json_decode($response_content, true);
 
         // check response
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
+        $this->assertSame(401, $response_data['code']);
         $this->assertSame('Invalid credentials.', $response_data['message']);
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -89,7 +90,7 @@ class UserManager
                 $this->entityManager->flush();
 
             } catch (\Exception $e) {
-                $this->errorManager->handleError('error to update user data with login: '.$e->getMessage(), 500);
+                $this->errorManager->handleError('error to update user data with login: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
@@ -131,7 +132,7 @@ class UserManager
                 // log action
                 $this->logManager->log('authenticator', 'new registration user: '.$username);
             } catch (\Exception $e) {
-                $this->errorManager->handleError('error to register new user: '.$e->getMessage(), 500);
+                $this->errorManager->handleError('error to register new user: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
@@ -181,7 +182,7 @@ class UserManager
                 // log action
                 $this->logManager->log('role-granted', 'role admin granted to user: '.$username);
             } catch (\Exception $e) {
-                $this->errorManager->handleError('error to grant admin permissions: '.$e->getMessage(), 500);
+                $this->errorManager->handleError('error to grant admin permissions: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }

@@ -57,13 +57,13 @@ class GalleryController extends AbstractController
                 $gallery_names_array[] = $name['gallery_name'];
             }
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to get gallery list: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to get gallery list: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json([
             'status' => 'success',
-            'code' => 200,
+            'code' => JsonResponse::HTTP_OK,
             'gallery_names' => $gallery_names_array
-        ], 200);
+        ], JsonResponse::HTTP_OK);
     }
 }

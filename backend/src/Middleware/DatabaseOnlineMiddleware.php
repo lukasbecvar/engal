@@ -4,6 +4,7 @@ namespace App\Middleware;
 
 use App\Manager\ErrorManager;
 use \Doctrine\DBAL\Connection as Connection;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class DatabaseOnlineMiddleware
@@ -34,7 +35,7 @@ class DatabaseOnlineMiddleware
         } catch (\Exception $e) {
 
             // handle error if database not connected
-            $this->errorManager->handleError('database connection error: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('database connection error: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

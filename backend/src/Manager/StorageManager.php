@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Media;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\ByteString;
 
 /**
@@ -51,7 +52,7 @@ class StorageManager
             try {
                 mkdir($path, 777, true);
             } catch (\Exception $e) {
-                $this->errorManager->handleError('error to create storage directory: '.$e->getMessage(), 500);
+                $this->errorManager->handleError('error to create storage directory: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
@@ -91,7 +92,7 @@ class StorageManager
 
             return $token;
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to store entity data: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to store entity data: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             return null;
         }
     }
@@ -121,7 +122,7 @@ class StorageManager
             // move file to final storage directory
             $file->move(__DIR__.'/../../storage/'.$_ENV['APP_ENV'].'/'.$user_id.'/'.$file_type, $token.'.'.$file_extension);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to store media file: '.$e->getMessage(), 500);
+            $this->errorManager->handleError('error to store media file: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

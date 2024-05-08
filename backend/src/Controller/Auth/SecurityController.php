@@ -64,11 +64,11 @@ class SecurityController extends AbstractController
             // return response
             return new JsonResponse([
                 'status' => 'success',
-                'code' => 200,
+                'code' => JsonResponse::HTTP_OK,
                 'message' => 'Logout successful'
-            ], 200);
+            ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
-            return $this->errorManager->handleError('logout error: '.$e->getMessage(), 500);
+            return $this->errorManager->handleError('logout error: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

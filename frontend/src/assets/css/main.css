@@ -48,7 +48,9 @@ body {
 }
 
 .form-link {
-    margin-top: 5px;
+    margin-top: 1px;
+    margin-bottom: 2px;
+    font-weight: bold;
 }
 
 .form-link a {
@@ -143,6 +145,7 @@ body {
     width: 100%;
     text-align: right;
     padding-right: 3px;
+    padding-top: -15px;
 }
 
 .auth-form {

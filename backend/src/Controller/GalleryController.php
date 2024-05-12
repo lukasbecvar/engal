@@ -51,7 +51,7 @@ class GalleryController extends AbstractController
         return $this->json([
             'status' => 'success',
             'code' => JsonResponse::HTTP_OK,
-            'gallery_names' => $galleryNamesArray
+            'gallery_list' => $galleryNamesArray
         ], JsonResponse::HTTP_OK);
     }
 

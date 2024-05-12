@@ -44,7 +44,7 @@ export default function UploadComponent() {
                         'Authorization': `Bearer ${loginToken}`
                     },
                 })
-                setGalleryNames(response.data.gallery_names)
+                setGalleryNames(response.data.gallery_list)
             } catch (error) {
                 if (DEV_MODE) {
                     console.log('Error fetching gallery names: ' + error)
@@ -252,8 +252,8 @@ export default function UploadComponent() {
                     {galleryNameInputVisible == false &&
                         <select className="gallery-select" onChange={handleNameChange} value={selectedGallery}>
                             <option value="">Select Gallery</option>
-                            {galleryNames.map((name, index) => (
-                                <option key={index} value={name}>{name}</option>
+                            {galleryNames.map((gallery, index) => (
+                                <option key={index} value={gallery.name}>{gallery.name}</option>
                             ))}
                             <option value="new name">New Name</option>
                         </select>

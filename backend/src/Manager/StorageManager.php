@@ -113,7 +113,7 @@ class StorageManager
      *
      * @param int $userId The ID of the user whose gallery names are to be retrieved.
      *
-     * @return array<string> The array containing the gallery names.
+     * @return array<int<0,max>,array<string,string|null>> The array containing the gallery names.
      */
     public function getGalleryListByUserId(int $userId): array
     {
@@ -124,7 +124,13 @@ class StorageManager
 
         // build gallery list array
         foreach ($galleryNames as $name) {
-            $galleryNamesArray[] = $name['gallery_name'];
+            // get gallery name
+            $name = $name['gallery_name'];
+
+            $galleryNamesArray[] = [
+                'name' => $name,
+                'first_token' => $this->mediaRepository->findFirstTokenByGalleryName($name)
+            ];
         }
 
         return $galleryNamesArray;

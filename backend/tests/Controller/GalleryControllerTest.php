@@ -46,7 +46,7 @@ class GalleryControllerTest extends CustomCase
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertSame(200, $responseData['code']);
         $this->assertEquals('success', $responseData['status']);
-        $this->assertIsArray($responseData['gallery_names']);
+        $this->assertIsArray($responseData['gallery_list']);
     }
 
     /**

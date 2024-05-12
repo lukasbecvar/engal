@@ -57,4 +57,23 @@ class MediaRepository extends ServiceEntityRepository
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * Finds the first token by gallery name.
+     *
+     * @param string $galleryName The name of the gallery.
+     * @return string|null The token or null if not found.
+     */
+    public function findFirstTokenByGalleryName(string $galleryName): ?string
+    {
+        $result = $this->createQueryBuilder('m')
+            ->select('m.token')
+            ->andWhere('m.gallery_name = :gallery_name')
+            ->setParameter('gallery_name', $galleryName)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $result['token'] ?? null;
+    }
 }

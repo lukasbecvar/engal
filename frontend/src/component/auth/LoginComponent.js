@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 // engal components
+import AuthFooterComponent from '../sub-component/AuthFooterComponent'
 import ErrorMessageComponent from '../sub-component/error/ErrorMessageComponent'
 
 // engal config
@@ -112,6 +113,7 @@ export default function LoginComponent() {
                 <button type="submit">Login</button>
                 <p className="form-link">Don't have an account? <Link to="/register" className="color-blue">Register here</Link></p>
             </form>
+            <AuthFooterComponent/>
         </div>
     )
 }

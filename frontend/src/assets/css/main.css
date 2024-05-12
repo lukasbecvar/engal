@@ -134,6 +134,17 @@ body {
     height: 100vh;
 }
 
+.auth-footer {
+    position: absolute;
+    bottom: 0;
+    background-color: #222;
+    border-top: 2px solid #444;
+    border-bottom: 2px solid #444;
+    width: 100%;
+    text-align: right;
+    padding-right: 3px;
+}
+
 .auth-form {
     background-color: #222;
     border: 2px solid #444;

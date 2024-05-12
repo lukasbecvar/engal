@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 
 // engal components
 import LoadingComponent from "../sub-component/LoadingComponent"
+import AuthFooterComponent from '../sub-component/AuthFooterComponent'
 import ErrorMessageComponent from "../sub-component/error/ErrorMessageComponent"
 
 // engal utils
@@ -215,6 +216,7 @@ export default function RegisterComponent() {
                 <button type="submit">Register</button>
                 <p className="form-link">You have account? <Link to="/login" className="color-blue">Login here</Link></p>
             </form>
+            <AuthFooterComponent/>
         </div>
     )
 }

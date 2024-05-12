@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
     #[Response(response: 200, description: 'The logout successful message')]
     #[Response(response: 401, description: 'The JWT token Invalid message')]
     #[Response(response: 500, description: 'The logout error message')]
-    #[Route('/api/logout', name: 'api_security_logout', methods: ['POST'])]
+    #[Route('/api/logout', methods: ['POST'], name: 'api_security_logout')]
     public function logout(Request $request, Security $security): JsonResponse
     {
         // get user

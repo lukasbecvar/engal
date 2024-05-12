@@ -30,7 +30,7 @@ nelmio_api_doc:
             # JWT Security endpoint
             /api/login:
                 post:
-                    summary: User Loging
+                    summary: User Login.
                     requestBody:
                         required: true
                         content:

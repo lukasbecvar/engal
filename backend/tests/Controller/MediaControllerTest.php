@@ -5,14 +5,7 @@ namespace App\Tests\Controller;
 use App\Tests\CustomCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class GalleryControllerTest
- *
- * Test get gallery list
- *
- * @package App\Tests\Controller
- */
-class GalleryControllerTest extends CustomCase
+class MediaControllerTest extends CustomCase
 {
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
@@ -28,72 +21,60 @@ class GalleryControllerTest extends CustomCase
         parent::setUp();
     }
 
-    /**
-     * Test retrieving the list of galleries with authentication.
-     */
-    public function testGetGalleryList(): void
+    public function testGetMediaContentEmptyToken(): void
     {
-        // simulate user authentication
         $this->simulateUserAuthentication($this->client);
 
         // GET request to the API endpoint
-        $this->client->request('GET', '/api/gallery/list');
+        $this->client->request('GET', '/api/media/content');
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $responseData['code']);
+        $this->assertEquals('token parameter is required', $responseData['message']);
+    }
+
+    public function testGetMediaContentWrongToken(): void
+    {
+        $this->simulateUserAuthentication($this->client);
+
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/content', [
+            'token' => 'wrong-token'
+        ]);
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_NOT_FOUND);
+        $this->assertSame(404, $responseData['code']);
+        $this->assertEquals('media token: wrong-token not found', $responseData['message']);
+    }
+
+    public function testGetMediaContentSuccess(): void
+    {
+        $this->simulateUserAuthentication($this->client);
+
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/content', [
+            'token' => '853bc196bb6bdf5f72c33e1eeeb8a8e2'
+        ]);
 
         // decoding the content of the JsonResponse
         $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-        $this->assertSame(200, $responseData['code']);
-        $this->assertEquals('success', $responseData['status']);
-        $this->assertIsArray($responseData['gallery_names']);
     }
 
-    /**
-     * Test retrieving the list of galleries without authentication.
-     */
-    public function testGetGalleryListNonAuth(): void
+    public function testGetMediaContentNonAuth(): void
     {
         // GET request to the API endpoint
-        $this->client->request('GET', '/api/gallery/list');
-
-        // decoding the content of the JsonResponse
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-
-        // check response
-        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
-        $this->assertSame(401, $responseData['code']);
-        $this->assertEquals('JWT Token not found', $responseData['message']);
-    }
-
-    /**
-     * Test for retrieving gallery statistics with user authentication.
-     */
-    public function testGetGalleryStats(): void
-    {
-        // simulate user authentication
-        $this->simulateUserAuthentication($this->client);
-
-        // GET request to the API endpoint
-        $this->client->request('GET', '/api/gallery/stats');
-
-        // decoding the content of the JsonResponse
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-
-        // check response
-        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-        $this->assertSame(200, $responseData['code']);
-        $this->assertEquals('success', $responseData['status']);
-        $this->assertIsArray($responseData['stats']);
-    }
-
-    /**
-     * Test for retrieving gallery statistics without user authentication.
-     */
-    public function testGetGalleryStatsNonAuth(): void
-    {
-        // GET request to the API endpoint
-        $this->client->request('GET', '/api/gallery/stats');
+        $this->client->request('GET', '/api/media/content');
 
         // decoding the content of the JsonResponse
         $responseData = json_decode($this->client->getResponse()->getContent(), true);

@@ -29,14 +29,14 @@ class StorageManager
     }
 
     /**
-     * Get media entity repository.
+     * Retrieves a media entity from the repository based on the provided search criteria.
      *
-     * @param string $token
-     * @return object|null
+     * @param array<mixed> $search An associative array representing the search criteria.
+     * @return object|null The found media entity or null if not found.
      */
-    public function getMediaEntityRepository(string $token): ?object
+    public function getMediaEntityRepository(array $search): ?object
     {
-        return $this->entityManager->getRepository(Media::class)->findOneBy(['token' => $token]);
+        return $this->entityManager->getRepository(Media::class)->findOneBy($search);
     }
 
     /**
@@ -54,7 +54,7 @@ class StorageManager
         $token = ByteString::fromRandom(32)->toString();
 
         // check if token not exist
-        if ($this->getMediaEntityRepository($token) != null) {
+        if ($this->getMediaEntityRepository(['token' => $token]) != null) {
             $this->storeMediaEntity($data);
         }
 
@@ -128,5 +128,58 @@ class StorageManager
         }
 
         return $galleryNamesArray;
+    }
+
+    /**
+     * Checks if media with the given token and owner ID exists.
+     *
+     * @param int $ownerId The ID of the owner of the media.
+     * @param string $mediaToken The token of the media to check.
+     * @return bool True if the media exists for the given owner, false otherwise.
+     */
+    public function isMediaExist(int $ownerId, string $mediaToken): bool
+    {
+        if ($this->getMediaEntityRepository(['token' => $mediaToken, 'owner_id' => $ownerId]) != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Retrieves the media type associated with the provided media token.
+     *
+     * @param string $mediaToken The token associated with the media.
+     *
+     * @return string|null The media type if found, otherwise null.
+     */
+    public function getMediaType(string $mediaToken): ?string
+    {
+        return $this->getMediaEntityRepository(['token' => $mediaToken])->getType();
+    }
+
+    /**
+     * Retrieves the content of the media associated with the provided user ID and token.
+     *
+     * @param int $userId The ID of the user associated with the media.
+     * @param string $token The token associated with the media.
+     *
+     * @return string|null The content of the media if found, otherwise null.
+     */
+    public function getMediaContent(int $userId, string $token): ?string
+    {
+        $mediaPathPathern = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/*/' . $token . '.*';
+
+        // get files by mediaPath pathern
+        $files = glob($mediaPathPathern);
+
+        // check if file found
+        if ($files !== false && count($files) > 0) {
+            // select file
+            $firstFile = $files[0];
+            return file_get_contents($firstFile);
+        }
+
+        return null;
     }
 }

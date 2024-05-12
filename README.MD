@@ -78,9 +78,12 @@ I am currently working on a complete recode of the application.
 ### Phase 7
 - [X] Dashboard stats
 - [X] Dark scroll bar
+- [X] Get media content endpoint
+- [ ] Get thumbnail by media token
 - [ ] Display galleries in the dashboard
-- [ ] Gallery browser (video files priority)
+- [ ] Gallery browser (photo & image section (image priority))
 - [ ] Sorting (by: name, upload_time, edit_time, random)
+- [ ] Media move (one or multiple to gallery or new gallery)
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player

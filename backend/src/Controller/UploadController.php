@@ -56,7 +56,7 @@ class UploadController extends AbstractController
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'Get upload policy config')]
     #[Route('/api/upload/config/policy', methods: ['GET'], name: 'api_file_upload_policy')]
-    public function uploadConfigPolicy(): JsonResponse
+    public function getUploadConfigPolicy(): JsonResponse
     {
         return $this->json([
             'status' => 'success',

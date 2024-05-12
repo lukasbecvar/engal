@@ -34,6 +34,22 @@ class MediaFixtures extends Fixture
             }
         }
 
+        // create static testing token entity
+        $token = '853bc196bb6bdf5f72c33e1eeeb8a8e2';
+
+        $media = new Media();
+        $media->setName('test');
+        $media->setGalleryName('gegreggr');
+        $media->setType('image/png');
+        $media->setOwnerId(1);
+        $media->setToken($token);
+        $media->setUploadTime(date('d.m.Y H:i:s'));
+        $media->setLastEditTime('non-edited');
+
+        // copy testing image
+        copy(__DIR__ . '/assets/test.png', __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/photos/' . $token . '.png');
+        $manager->persist($media);
+
         // generate 6 images
         for ($i = 1; $i <= 5; $i++) {
             // generate media token

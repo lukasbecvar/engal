@@ -18,11 +18,6 @@ class UserFixtures extends Fixture
 {
     private UserPasswordHasherInterface $passwordHasher;
 
-    /**
-     * Constructor.
-     *
-     * @param UserPasswordHasherInterface $passwordHasher The password hasher interface.
-     */
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;

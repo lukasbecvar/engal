@@ -23,7 +23,7 @@ class IndexController extends AbstractController
      * @return JsonResponse Returns a JSON response with status, code, and backend version.
      */
     #[Tag(name: "Index")]
-    #[Route(['/', '/api'], name: 'index', methods: ['GET'])]
+    #[Route(['/', '/api'], methods: ['GET'], name: 'index')]
     #[Response(response: 200, description: 'The backend app version and status.')]
     public function index(): JsonResponse
     {

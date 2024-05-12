@@ -5,8 +5,8 @@ namespace App\Controller;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use App\Manager\StorageManager;
-use App\Repository\MediaRepository;
 use OpenApi\Attributes\Response;
+use App\Repository\MediaRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,8 +39,8 @@ class GalleryController extends AbstractController
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'Gallery list by user')]
     #[Response(response: 500, description: 'Gallery list get error')]
-    #[Route('/api/gallery/list', name: 'gallery_list', methods: ['GET'])]
-    public function indexGalleryList(Security $security): JsonResponse
+    #[Route('/api/gallery/list', methods: ['GET'], name: 'gallery_list')]
+    public function getGalleryList(Security $security): JsonResponse
     {
         // get logged user ID
         $userId = $this->userManager->getUserData($security)->getId();
@@ -65,7 +65,7 @@ class GalleryController extends AbstractController
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'Get media and gallery count by logged user')]
     #[Route('/api/gallery/stats', name: 'gallery_stats', methods: ['GET'])]
-    public function indexGalleryStats(Security $security, MediaRepository $mediaRepository): JsonResponse
+    public function getGalleryStats(Security $security, MediaRepository $mediaRepository): JsonResponse
     {
         // get logged user ID
         $userId = $this->userManager->getUserData($security)->getId();

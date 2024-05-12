@@ -11,6 +11,7 @@ frontend/coverage
 backend/.env.prod
 backend/config/jwt
 backend/composer.lock
+backend/templates
 backend/vendor
 backend/var
 backend/public/bundles

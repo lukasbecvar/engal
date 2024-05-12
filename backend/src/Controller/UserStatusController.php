@@ -40,7 +40,7 @@ class UserStatusController extends AbstractController
     #[Response(response: 200, description: 'The user data json')]
     #[Response(response: 401, description: 'The JWT token Invalid message')]
     #[Route('/api/user/status', methods: ['GET'], name: 'api_user_status')]
-    public function userStatus(MediaRepository $mediaRepository, UserManager $userManager, Security $security): JsonResponse
+    public function getUserStatus(MediaRepository $mediaRepository, UserManager $userManager, Security $security): JsonResponse
     {
         // get user data
         $userData = $userManager->getUserData($security);

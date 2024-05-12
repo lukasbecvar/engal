@@ -51,8 +51,8 @@ class UserStatusControllerTest extends CustomCase
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertSame(200, $responseData['code']);
         $this->assertEquals('success', $responseData['status']);
-        $this->assertEquals('test', $responseData['username']);
-        $this->assertEquals(['ROLE_USER'], $responseData['roles']);
+        $this->assertEquals('test', $responseData['user_status']['username']);
+        $this->assertEquals(['ROLE_USER'], $responseData['user_status']['roles']);
     }
 
     /**

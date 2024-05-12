@@ -46,11 +46,11 @@ class UploadControllerTest extends CustomCase
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertSame(200, $responseData['code']);
         $this->assertEquals('success', $responseData['status']);
-        $this->assertSame($responseData['FILE_UPLOAD_STATUS'], $_ENV['FILE_UPLOAD_STATUS']);
-        $this->assertSame($responseData['MAX_FILES_COUNT'], $_ENV['MAX_FILES_COUNT']);
-        $this->assertSame($responseData['MAX_FILES_SIZE'], $_ENV['MAX_FILES_SIZE']);
-        $this->assertSame($responseData['MAX_GALLERY_NAME_LENGTH'], $_ENV['MAX_GALLERY_NAME_LENGTH']);
-        $this->assertSame($responseData['ALLOWED_FILE_EXTENSIONS'], json_decode($_ENV['ALLOWED_FILE_EXTENSIONS'], true));
+        $this->assertSame($responseData['policy']['FILE_UPLOAD_STATUS'], $_ENV['FILE_UPLOAD_STATUS']);
+        $this->assertSame($responseData['policy']['MAX_FILES_COUNT'], $_ENV['MAX_FILES_COUNT']);
+        $this->assertSame($responseData['policy']['MAX_FILES_SIZE'], $_ENV['MAX_FILES_SIZE']);
+        $this->assertSame($responseData['policy']['MAX_GALLERY_NAME_LENGTH'], $_ENV['MAX_GALLERY_NAME_LENGTH']);
+        $this->assertSame($responseData['policy']['ALLOWED_FILE_EXTENSIONS'], json_decode($_ENV['ALLOWED_FILE_EXTENSIONS'], true));
     }
 
     /**

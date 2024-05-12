@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 export default function AuthFooterComponent() {
     return(
         <div className="auth-footer">
-            <p>reset api access point <Link to="/reset/api">here</Link></p>
+            <p className="form-link">reset api access point <Link to="/reset/api" className="color-blue">here</Link></p>
         </div>
     )    
 }

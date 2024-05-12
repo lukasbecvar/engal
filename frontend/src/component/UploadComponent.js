@@ -67,7 +67,7 @@ export default function UploadComponent() {
                         'Authorization': `Bearer ${loginToken}`
                     },
                 })
-                setUploadPolicy(response.data)
+                setUploadPolicy(response.data.policy)
             } catch (error) {
                 if (DEV_MODE) {
                     console.log('error to get upload policy: ' + error)

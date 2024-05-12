@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
-use App\Manager\ErrorManager;
-use OpenApi\Attributes\Response;
+use App\Manager\StorageManager;
 use App\Repository\MediaRepository;
+use OpenApi\Attributes\Response;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,48 +22,62 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class GalleryController extends AbstractController
 {
     private UserManager $userManager;
-    private ErrorManager $errorManager;
+    private StorageManager $storageManager;
 
-    public function __construct(UserManager $userManager, ErrorManager $errorManager)
+    public function __construct(UserManager $userManager, StorageManager $storageManager)
     {
         $this->userManager = $userManager;
-        $this->errorManager = $errorManager;
+        $this->storageManager = $storageManager;
     }
 
     /**
      * Retrieves the gallery list for the logged-in user.
      *
      * @param Security $security The security component for user authentication
-     * @param MediaRepository $mediaRepository The repository for managing media entities
      * @return JsonResponse The JSON response containing the gallery list
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'Gallery list by user')]
     #[Response(response: 500, description: 'Gallery list get error')]
     #[Route('/api/gallery/list', name: 'gallery_list', methods: ['GET'])]
-    public function index(Security $security, MediaRepository $mediaRepository): JsonResponse
+    public function indexGalleryList(Security $security): JsonResponse
     {
-        $galleryNamesArray = [];
+        // get logged user ID
+        $userId = $this->userManager->getUserData($security)->getId();
 
-        try {
-            // get logged user ID
-            $userId = $this->userManager->getUserData($security)->getId();
-
-            // get gallery names
-            $galleryNames = $mediaRepository->findDistinctGalleryNamesByUserId($userId);
-
-            // build gallery list array
-            foreach ($galleryNames as $name) {
-                $galleryNamesArray[] = $name['gallery_name'];
-            }
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('error to get gallery list: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        // get gallery list array
+        $galleryNamesArray = $this->storageManager->getGalleryListByUserId($userId);
 
         return $this->json([
             'status' => 'success',
             'code' => JsonResponse::HTTP_OK,
             'gallery_names' => $galleryNamesArray
+        ], JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Controller method to retrieve statistics about media and galleries for the logged-in user.
+     *
+     * @param Security $security The security service for handling user authentication.
+     *
+     * @return JsonResponse The JSON response containing the statistics data.
+     */
+    #[Tag(name: "Resources")]
+    #[Response(response: 200, description: 'Get media and gallery count by logged user')]
+    #[Route('/api/gallery/stats', name: 'gallery_stats', methods: ['GET'])]
+    public function indexGalleryStats(Security $security, MediaRepository $mediaRepository): JsonResponse
+    {
+        // get logged user ID
+        $userId = $this->userManager->getUserData($security)->getId();
+
+        return $this->json([
+            'status' => 'success',
+            'code' => JsonResponse::HTTP_OK,
+            'stats' => [
+                'images_count' => $mediaRepository->countMediaByType($userId),
+                'videos_count' => $mediaRepository->countMediaByType($userId, 'video'),
+                'galleries_count' => count($mediaRepository->findDistinctGalleryNamesByUserId($userId))
+            ]
         ], JsonResponse::HTTP_OK);
     }
 }

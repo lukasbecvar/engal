@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Media;
+use App\Repository\MediaRepository;
 use Symfony\Component\String\ByteString;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,12 +18,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class StorageManager
 {
     private ErrorManager $errorManager;
+    private MediaRepository $mediaRepository;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(ErrorManager $errorManager, EntityManagerInterface $entityManager)
+    public function __construct(ErrorManager $errorManager, MediaRepository $mediaRepository, EntityManagerInterface $entityManager)
     {
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
+        $this->mediaRepository = $mediaRepository;
     }
 
     /**
@@ -103,5 +106,27 @@ class StorageManager
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to store media file: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Retrieves the list of gallery names associated with a specific user ID.
+     *
+     * @param int $userId The ID of the user whose gallery names are to be retrieved.
+     *
+     * @return array<string> The array containing the gallery names.
+     */
+    public function getGalleryListByUserId(int $userId): array
+    {
+        $galleryNamesArray = [];
+
+        // get gallery names
+        $galleryNames = $this->mediaRepository->findDistinctGalleryNamesByUserId($userId);
+
+        // build gallery list array
+        foreach ($galleryNames as $name) {
+            $galleryNamesArray[] = $name['gallery_name'];
+        }
+
+        return $galleryNamesArray;
     }
 }

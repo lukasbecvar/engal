@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
+// import fontawesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage, faVideo, faFolder } from '@fortawesome/free-solid-svg-icons';
+
 // engal components
 import LoadingComponent from '../LoadingComponent'
 import ErrorMessageComponent from '../error/ErrorMessageComponent'
@@ -19,6 +23,7 @@ export default function UserNavigationComponent() {
     // status state
     const [userData, setUserData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [stats, setStats] = useState(null)
     
     // fetch dashboard/user data
     useEffect(() => {
@@ -34,16 +39,17 @@ export default function UserNavigationComponent() {
                             'Authorization': 'Bearer ' + localStorage.getItem('login-token')
                         },
                     })
-        
+
                     // get response data
                     const data = await response.json()
                         
                     // check if user tokne is valid
                     if (data.status == 'success') {
                         setUserData({
-                            username: data.username,
-                            roles: data.roles,
+                            username: data.user_status.username,
+                            roles: data.user_status.roles,
                         })
+                        setStats(data.stats)
                     } else {
                         return <ErrorMessageComponent message={data.message}/>                   
                     }
@@ -58,7 +64,7 @@ export default function UserNavigationComponent() {
         }
         fetchUserData()
     }, [apiUrl, loginToken])
-    
+
     // show loading
     if (loading) {
         return <LoadingComponent/>
@@ -68,23 +74,30 @@ export default function UserNavigationComponent() {
     const textColor = userData.roles.includes('ROLE_ADMIN') ? 'red' : 'green'
 
     return (
-        <div className="user-navbar">
-            {/* main home link */}
-            <span>
-                <span>➜</span>
-                <Link to="/" className="sub-navigation-link">home</Link>
-            </span>
-
-            {/* upload navigation */}
-            {location.pathname == "/upload" ? 
+        <div>
+            <div className="user-navbar">
+                {/* main home link */}
                 <span>
                     <span>➜</span>
-                    <Link to="/upload" className="sub-navigation-link">upload</Link> 
+                    <Link to="/" className="sub-navigation-link">home</Link>
                 </span>
-            : null}
 
-            <div className="user-data">
-                <p className={`color-${textColor}`}>{userData.username}</p>
+                {/* upload navigation */}
+                {location.pathname == "/upload" ? 
+                    <span>
+                        <span>➜</span>
+                        <Link to="/upload" className="sub-navigation-link">upload</Link> 
+                    </span>
+                : null}
+
+                <div className="user-data">
+                    <p className={`color-${textColor}`}>{userData.username}</p>
+                </div>
+            </div>
+            <div className="user-navbar count-bar">
+                <snap className="counter-element"><FontAwesomeIcon icon={faImage}/> {stats.images_count}</snap>
+                <snap className="counter-element"><FontAwesomeIcon icon={faVideo}/> {stats.videos_count}</snap>
+                <snap className="counter-element"><FontAwesomeIcon icon={faFolder}/> {stats.galleries_count}</snap>
             </div>
         </div>
     )

@@ -61,11 +61,13 @@ class UploadController extends AbstractController
         return $this->json([
             'status' => 'success',
             'code' => JsonResponse::HTTP_OK,
-            'FILE_UPLOAD_STATUS' => $_ENV['FILE_UPLOAD_STATUS'],
-            'MAX_FILES_COUNT' => $_ENV['MAX_FILES_COUNT'],
-            'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE'],
-            'MAX_GALLERY_NAME_LENGTH' => $_ENV['MAX_GALLERY_NAME_LENGTH'],
-            'ALLOWED_FILE_EXTENSIONS' => json_decode($_ENV['ALLOWED_FILE_EXTENSIONS'], true)
+            'policy' => [
+                'FILE_UPLOAD_STATUS' => $_ENV['FILE_UPLOAD_STATUS'],
+                'MAX_FILES_COUNT' => $_ENV['MAX_FILES_COUNT'],
+                'MAX_FILES_SIZE' => $_ENV['MAX_FILES_SIZE'],
+                'MAX_GALLERY_NAME_LENGTH' => $_ENV['MAX_GALLERY_NAME_LENGTH'],
+                'ALLOWED_FILE_EXTENSIONS' => json_decode($_ENV['ALLOWED_FILE_EXTENSIONS'], true)
+            ]
         ], JsonResponse::HTTP_OK);
     }
 

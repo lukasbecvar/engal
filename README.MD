@@ -76,7 +76,7 @@ I am currently working on a complete recode of the application.
 - [X] Setup APCU
 - [X] Setup PHP_codesniffer
 ### Phase 7
-- [ ] Dashboard stats
+- [X] Dashboard stats
 - [ ] Display galleries in the dashboard
 - [ ] Gallery browser (video files priority)
 - [ ] Sorting (by: name, upload_time, edit_time, random)

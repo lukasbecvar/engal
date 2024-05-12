@@ -31,4 +31,30 @@ class MediaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Counts the number of media records based on owner ID and type.
+     *
+     * @param int         $ownerId The ID of the owner.
+     * @param string|null $type    (Optional) The type of media. If null, counts all media containing 'image' in type.
+     *
+     * @return int The number of media records.
+     */
+    public function countMediaByType(int $ownerId, string $type = null): int
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->andWhere('m.owner_id = :owner_id')
+            ->setParameter('owner_id', $ownerId);
+
+        // select where parameter
+        if ($type == null) {
+            $qb->andWhere($qb->expr()->like('m.type', ':type'))->setParameter('type', '%' . $type . '%');
+        } else {
+            // select image types
+            $qb->andWhere($qb->expr()->notLike('m.type', ':type'))->setParameter('type', '%image%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

@@ -56,7 +56,7 @@ I am currently working on a complete recode of the application.
 - [X] Backend cache token blacklist (filesystem cache)
 ### Phase 6
 - [X] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
-- [ ] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
+- [X] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
     - [X] Upload form component
     - [X] Accept only media formats
     - [X] Upload status

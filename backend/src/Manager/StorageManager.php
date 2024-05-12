@@ -56,8 +56,11 @@ class StorageManager
         }
 
         try {
+            // get media name
+            $name = pathinfo($data['name'], PATHINFO_FILENAME);
+
             // set entity data
-            $media->setName($data['name']);
+            $media->setName($name);
             $media->setGalleryName($data['gallery_name']);
             $media->setType($data['type']);
             $media->setOwnerId(intval($data['owner_id']));

@@ -16,6 +16,7 @@ import { getApiStatus, isApiAvailable } from './util/ApiUtils'
 
 // import app styles
 import './assets/css/main.css'
+import './assets/css/scrollbar.css'
 
 /**
  * Component with default app init

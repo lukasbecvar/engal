@@ -77,6 +77,7 @@ I am currently working on a complete recode of the application.
 - [X] Setup PHP_codesniffer
 ### Phase 7
 - [X] Dashboard stats
+- [X] Dark scroll bar
 - [ ] Display galleries in the dashboard
 - [ ] Gallery browser (video files priority)
 - [ ] Sorting (by: name, upload_time, edit_time, random)

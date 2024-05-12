@@ -192,6 +192,7 @@ body {
     padding: 10px;
     overflow: auto;
     font-size: 18px;
+    position: relative;
 }
 
 .main-nav .nav-header {
@@ -264,6 +265,8 @@ body {
 /* main dashboard style */
 .app-component {
     margin-top: 3px;
+    height: calc(100vh - 86px);
+    margin-bottom: 5px;
 }
 
 /* media upload component style */
@@ -271,7 +274,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
 }
 
 .upload-component .upload-form-container {
@@ -431,13 +433,29 @@ body {
     .upload-title {
         font-size: 18px;
     }
-    .upload-form-container {
-        width: 95%;
+    .upload-component .upload-form-container {
+        width: 98%;
     }
     .file-input {
         font-size: 16px;
     }
     .gallery-select, .new-gallery-input {
         font-size: 13px;
+    }
+    .upload-component .upload-title {
+        font-size: 18px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .upload-component .progress-bar {
+        margin-bottom: 4px;
+    }
+    .upload-component .gallery-select {
+        margin-top: -6px;
+        margin-bottom: 6px;
+    }
+    .upload-component .new-gallery-input {
+        margin-top: -6px;
+        margin-bottom: 6px;
     }
 }

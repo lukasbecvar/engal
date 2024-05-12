@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserStatusController extends AbstractController
 {
     private UserManager $userManager;
-    
+
     public function __construct(UserManager $userManager)
     {
         $this->userManager = $userManager;

@@ -12,9 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class UserStatusController
- * 
+ *
  * Controller handling user information.
- * 
+ *
  * @package App\Controller\User
  */
 class UserStatusController extends AbstractController
@@ -35,17 +35,17 @@ class UserStatusController extends AbstractController
     public function userStatus(UserManager $userManager, Security $security): JsonResponse
     {
         // get user data
-        $user_data = $userManager->getUserData($security);
+        $userData = $userManager->getUserData($security);
 
         // return user data
         return $this->json([
             'status' => 'success',
             'code' => JsonResponse::HTTP_OK,
-            'username' => $user_data->getUsername(),
-            'roles' => $user_data->getRoles(),
-            'register_time' => $user_data->getRegisterTime(),
-            'last_login_time' => $user_data->getLastLoginTime(),
-            'ip_address' => $user_data->getIpAddress()
+            'username' => $userData->getUsername(),
+            'roles' => $userData->getRoles(),
+            'register_time' => $userData->getRegisterTime(),
+            'last_login_time' => $userData->getLastLoginTime(),
+            'ip_address' => $userData->getIpAddress()
         ], JsonResponse::HTTP_OK);
     }
 }

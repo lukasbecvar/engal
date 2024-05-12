@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * Class SecurityCheckMiddleware
  *
  * This middleware checks if the connection is secure.
- * 
+ *
  * @package App\Service\Middleware
  */
 class SecurityCheckMiddleware

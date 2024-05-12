@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class LoginTest
- * 
+ *
  * This class contains unit tests for the login functionality.
- * 
+ *
  * @package App\Tests\Auth
  */
 class LoginTest extends WebTestCase
@@ -39,19 +39,24 @@ class LoginTest extends WebTestCase
     public function testLoginValid(): void
     {
         // make request
-        $this->client->request('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request(
+            'POST',
+            '/api/login',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
             '{"username": "test", "password": "test"}'
         );
 
         // get response data
-        $response_content = $this->client->getResponse()->getContent();
-        $response_data = json_decode($response_content, true);
+        $responseContent = $this->client->getResponse()->getContent();
+        $responseData = json_decode($responseContent, true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-        $this->assertNotEmpty($response_content);
-        $this->assertArrayHasKey('token', $response_data);
-        $this->assertNotEmpty($response_data['token']);
+        $this->assertNotEmpty($responseContent);
+        $this->assertArrayHasKey('token', $responseData);
+        $this->assertNotEmpty($responseData['token']);
     }
 
     /**
@@ -65,17 +70,22 @@ class LoginTest extends WebTestCase
     public function testLoginInvalid(): void
     {
         // make request
-        $this->client->request('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'],
+        $this->client->request(
+            'POST',
+            '/api/login',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
             '{"username": "invalid_ěěěščě", "password": "invalid_ěěěščě"}'
         );
 
         // get response data
-        $response_content = $this->client->getResponse()->getContent();
-        $response_data = json_decode($response_content, true);
+        $responseContent = $this->client->getResponse()->getContent();
+        $responseData = json_decode($responseContent, true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
-        $this->assertSame(401, $response_data['code']);
-        $this->assertSame('Invalid credentials.', $response_data['message']);
+        $this->assertSame(401, $responseData['code']);
+        $this->assertSame('Invalid credentials.', $responseData['message']);
     }
 }

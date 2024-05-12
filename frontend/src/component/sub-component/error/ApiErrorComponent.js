@@ -3,7 +3,7 @@
  */
 export default function ApiErrorComponent() {
     // storage data
-    let api_url = localStorage.getItem('api-url')
+    let apiUrl = localStorage.getItem('api-url')
 
     // app reload
     function reload() {
@@ -21,7 +21,7 @@ export default function ApiErrorComponent() {
         <div className="error-container">
             <p className="error-message">API connection error</p>
             <p className="error-server-info">
-                Your API server ({api_url}) is unreachable <br/>
+                Your API server ({apiUrl}) is unreachable <br/>
                 Please wait and try again later, or you can set up a different API server
             </p>
 

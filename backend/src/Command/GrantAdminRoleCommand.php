@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class GrantAdminRoleCommand
- * 
+ *
  * Command to grant admin role to a user.
  *
  * @package App\Command
@@ -41,7 +41,7 @@ class GrantAdminRoleCommand extends Command
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
-     * 
+     *
      * @return int The status code
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -55,28 +55,29 @@ class GrantAdminRoleCommand extends Command
         if ($username == null) {
             $io->error('You must add the admin username argument!');
             return Command::FAILURE;
-        } 
+        }
 
         // check if username is used
         if ($this->userManager->getUserRepo($username) == null) {
-            $io->error('Error username: '.$username.' is not registred!');
+            $io->error('Error username: ' . $username . ' is not registred!');
             return Command::FAILURE;
-        } 
+        }
 
         try {
             // check if user is admin
             if ($this->userManager->isUserAdmin($username)) {
-                $io->error('User: '.$username.' is already admin');
+                $io->error('User: ' . $username . ' is already admin');
                 return Command::FAILURE;
             } else {
                 // grant role to user
                 $this->userManager->addAdminRoleToUser($username);
 
-                $io->success('admin role granted to: '.$username);
+                // return success message
+                $io->success('admin role granted to: ' . $username);
                 return Command::SUCCESS;
             }
         } catch (\Exception $e) {
-            $io->success('error to grant admin: '.$e->getMessage());
+            $io->success('error to grant admin: ' . $e->getMessage());
             return Command::FAILURE;
         }
     }

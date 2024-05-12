@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class AppErrorException
- * 
+ *
  * Custom exception class for application errors.
  *
  * @package App\Exception

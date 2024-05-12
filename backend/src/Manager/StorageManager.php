@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class StorageManager
- * 
+ *
  * StorageManager class for manipulate with media storage filesystem & database
- * 
+ *
  * @package App\Manager
  */
 class StorageManager
@@ -27,7 +27,7 @@ class StorageManager
 
     /**
      * Get media entity repository.
-     * 
+     *
      * @param string $token
      * @return object|null
      */
@@ -38,7 +38,7 @@ class StorageManager
 
     /**
      * Store media entity.
-     * 
+     *
      * @param array<string> $data
      * @return string|null
      */
@@ -71,34 +71,34 @@ class StorageManager
 
             return $token;
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to store entity data: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to store entity data: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             return null;
         }
     }
 
     /**
      * Store media file.
-     * 
+     *
      * @param string $token
      * @param object $file
-     * @param int $user_id
-     * @param string $file_type
+     * @param int $userId
+     * @param string $fileType
      */
-    public function storeMediaFile(string $token, object $file, int $user_id, string $file_type = 'photos'): void
+    public function storeMediaFile(string $token, object $file, int $userId, string $fileType = 'videos'): void
     {
         // get uploaded file extension
-        $file_extension = $file->getClientOriginalExtension();
+        $fileExtension = $file->getClientOriginalExtension();
 
         try {
             // check file type
-            if (str_contains($file->getMimeType(), 'video')) {
-                $file_type = 'videos';
-            } 
+            if (str_contains($file->getClientMimeType(), 'image')) {
+                $fileType = 'photos';
+            }
 
             // move file to final storage directory
-            $file->move(__DIR__.'/../../storage/'.$_ENV['APP_ENV'].'/'.$user_id.'/'.$file_type, $token.'.'.$file_extension);
+            $file->move(__DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/' . $fileType, $token . '.' . $fileExtension);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to store media file: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to store media file: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

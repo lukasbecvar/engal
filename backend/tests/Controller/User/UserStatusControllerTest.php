@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class UserStatusControllerTest
- * 
+ *
  * Unit test case for the UserStatusController class.
- * 
+ *
  * @package App\Tests\Controller\User
  */
 class UserStatusControllerTest extends CustomCase
@@ -45,14 +45,14 @@ class UserStatusControllerTest extends CustomCase
         $this->client->request('GET', '/api/user/status');
 
         // decoding the content of the JsonResponse
-        $response_data = json_decode($this->client->getResponse()->getContent(), true);
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-        $this->assertSame(200, $response_data['code']);
-        $this->assertEquals('success', $response_data['status']);
-        $this->assertEquals('test', $response_data['username']);
-        $this->assertEquals(['ROLE_USER'], $response_data['roles']);
+        $this->assertSame(200, $responseData['code']);
+        $this->assertEquals('success', $responseData['status']);
+        $this->assertEquals('test', $responseData['username']);
+        $this->assertEquals(['ROLE_USER'], $responseData['roles']);
     }
 
     /**
@@ -64,11 +64,11 @@ class UserStatusControllerTest extends CustomCase
         $this->client->request('GET', '/api/user/status');
 
         // decoding the content of the JsonResponse
-        $response_data = json_decode($this->client->getResponse()->getContent(), true);
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
-        $this->assertSame(401, $response_data['code']);
-        $this->assertEquals('JWT Token not found', $response_data['message']);
+        $this->assertSame(401, $responseData['code']);
+        $this->assertEquals('JWT Token not found', $responseData['message']);
     }
 }

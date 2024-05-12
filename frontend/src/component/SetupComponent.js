@@ -27,14 +27,14 @@ export default function SetupComponent() {
         // check if API is available
         if (await isApiAvailable(apiUrl)) {
             // get api response
-            let api_response = await getApiStatus(apiUrl)
+            let apiResponse = await getApiStatus(apiUrl)
 
             // check response
-            if (api_response.status == 'success') {
+            if (apiResponse.status == 'success') {
                 localStorage.setItem('api-url', apiUrl)
                 window.location.reload()
             } else {
-                setError(api_response.message)
+                setError(apiResponse.message)
             }
         } else {
             setError('API connection error')

@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class RegisterUserCommand
- * 
+ *
  * Command to register a new user.
  *
  * @package App\Command
@@ -42,7 +42,7 @@ class RegisterUserCommand extends Command
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
-     * 
+     *
      * @return int The status code
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,13 +57,13 @@ class RegisterUserCommand extends Command
             $io->error('You must add the new username argument!');
             return Command::FAILURE;
         }
-    
+
         // check if username is used
         if ($this->userManager->getUserRepo($username) != null) {
-            $io->error('Error username: '.$username.' is already used!');
+            $io->error('Error username: ' . $username . ' is already used!');
             return Command::FAILURE;
         }
-        
+
         try {
             // generate user password
             $password = ByteString::fromRandom(32)->toString();
@@ -71,10 +71,11 @@ class RegisterUserCommand extends Command
             // register user
             $this->userManager->registerUser($username, $password);
 
-            $io->success('New user registred username: '.$username.' with password: '.$password);
+            // return success message
+            $io->success('New user registred username: ' . $username . ' with password: ' . $password);
             return Command::SUCCESS;
         } catch (\Exception $e) {
-            $io->success('error to register user: '.$e->getMessage());
+            $io->success('error to register user: ' . $e->getMessage());
             return Command::FAILURE;
         }
     }

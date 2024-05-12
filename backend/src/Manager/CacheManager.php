@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * Class CacheManager
  *
  * Manages caching operations using a cache item pool.
- * 
+ *
  * @package App\Manager
  */
 class CacheManager
@@ -35,9 +35,9 @@ class CacheManager
         try {
             return $this->cacheItemPoolInterface->getItem($key)->isHit();
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to get cache value: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to get cache value: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             return false;
-        } 
+        }
     }
 
     /**
@@ -52,9 +52,9 @@ class CacheManager
         try {
             return $this->cacheItemPoolInterface->getItem($key);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to get cache value: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to get cache value: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             return null;
-        } 
+        }
     }
 
     /**
@@ -77,7 +77,7 @@ class CacheManager
             // save value
             $this->cacheItemPoolInterface->save($cache_item);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to store cache value: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to store cache value: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -93,7 +93,7 @@ class CacheManager
         try {
             $this->cacheItemPoolInterface->deleteItem($key);
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to delete cache value: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to delete cache value: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

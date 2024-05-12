@@ -8,9 +8,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 
 /**
  * Class MediaFixtures
- * 
+ *
  * Fixture class for generating sample media data.
- * 
+ *
  * @package App\DataFixtures
  */
 class MediaFixtures extends Fixture
@@ -25,12 +25,12 @@ class MediaFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // prepere test storage path
-        $base_path = __DIR__.'/../../storage/'.$_ENV['APP_ENV'].'/1';
-        $file_types = ['photos', 'videos'];
-        foreach ($file_types as $file_type) {
-            $storage_path = $base_path.'/'.$file_type;
-            if (!file_exists($storage_path)) {
-                mkdir($storage_path, recursive: true);
+        $basePath = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1';
+        $fileTypes = ['photos', 'videos'];
+        foreach ($fileTypes as $fileType) {
+            $storagePath = $basePath . '/' . $fileType;
+            if (!file_exists($storagePath)) {
+                mkdir($storagePath, recursive: true);
             }
         }
 
@@ -40,7 +40,7 @@ class MediaFixtures extends Fixture
             $token = bin2hex(random_bytes(16));
 
             $media = new Media();
-            $media->setName('test'.$i.'.jpg');
+            $media->setName('test' . $i . '.jpg');
             $media->setGalleryName('gegreggr');
             $media->setType('image/jpg');
             $media->setOwnerId(1);
@@ -49,7 +49,7 @@ class MediaFixtures extends Fixture
             $media->setLastEditTime('non-edited');
 
             // copy testing image
-            copy(__DIR__.'/assets/test.png', __DIR__.'/../../storage/'.$_ENV['APP_ENV'].'/1/photos/'.$token.'.png');
+            copy(__DIR__ . '/assets/test.png', __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/photos/' . $token . '.png');
 
             $manager->persist($media);
         }
@@ -60,7 +60,7 @@ class MediaFixtures extends Fixture
             $token = bin2hex(random_bytes(16));
 
             $media = new Media();
-            $media->setName('test'.$i.'.mp4');
+            $media->setName('test' . $i . '.mp4');
             $media->setGalleryName('gegreggr');
             $media->setType('video/mp4');
             $media->setOwnerId(1);
@@ -69,7 +69,7 @@ class MediaFixtures extends Fixture
             $media->setLastEditTime('non-edited');
 
             // copy testing video
-            copy(__DIR__.'/assets/test.mp4', __DIR__.'/../../storage/'.$_ENV['APP_ENV'].'/1/videos/'.$token.'.mp4');
+            copy(__DIR__ . '/assets/test.mp4', __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/videos/' . $token . '.mp4');
 
             $manager->persist($media);
         }

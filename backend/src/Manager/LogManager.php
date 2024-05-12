@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class LogManager
- * 
+ *
  * The LogManager class handles logging of messages.
- * 
+ *
  * @package App\Manager
  */
 class LogManager
@@ -23,7 +23,7 @@ class LogManager
     public function __construct(ErrorManager $errorManager, VisitorInfoUtil $visitorInfoUtil, EntityManagerInterface $entityManager)
     {
         $this->errorManager = $errorManager;
-        $this->entityManager = $entityManager;        
+        $this->entityManager = $entityManager;
         $this->visitorInfoUtil = $visitorInfoUtil;
     }
 
@@ -50,7 +50,7 @@ class LogManager
             $this->entityManager->persist($log);
             $this->entityManager->flush();
         } catch (\Exception $e) {
-            $this->errorManager->handleError('log-error: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('log-error: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -7,9 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class VisitorInfoUtilTest
- * 
+ *
  * @covers \App\Util\VisitorInfoUtil
- * 
+ *
  * @package App\Tests\Util
  */
 class VisitorInfoUtilTest extends TestCase

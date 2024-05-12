@@ -13,7 +13,7 @@ fi
 if [ ! -d 'config/jwt/' ]
 then
     yellow_echo "[Install]: generating new jwt keypair"
-    php bin/console lexik:jwt:generate-keypair
+    php ./bin/console lexik:jwt:generate-keypair
 fi
 
 # run storage create

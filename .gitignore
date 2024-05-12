@@ -16,3 +16,4 @@ backend/var
 backend/public/bundles
 backend/config/secrets/prod/prod.decrypt.private.php
 backend/storage/*
+backend/.phpcs-cache

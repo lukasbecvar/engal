@@ -11,21 +11,21 @@ import { DEV_MODE } from '../../config'
  */
 export default function LogoutComponent() {
     // storage data
-    let api_url = localStorage.getItem('api-url')
-    let login_token = localStorage.getItem('login-token')
+    let apiUrl = localStorage.getItem('api-url')
+    let loginToken = localStorage.getItem('login-token')
 
     // status states
     const [error, setError] = useState(null)
 
     // check if user loggedin
-    if (login_token != null) {
+    if (loginToken != null) {
         try {
             // make logout request
-            fetch(api_url + '/api/logout', {
+            fetch(apiUrl + '/api/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + login_token
+                    'Authorization': 'Bearer ' + loginToken
                 }
             })
     

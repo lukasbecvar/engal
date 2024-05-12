@@ -10,9 +10,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Class EscapeRequestDataMiddlewareTest
- * 
+ *
  * Unit test class for the EscapeRequestDataMiddleware.
- * 
+ *
  * @package App\Tests\Middleware
  */
 class EscapeRequestDataMiddlewareTest extends TestCase
@@ -30,17 +30,16 @@ class EscapeRequestDataMiddlewareTest extends TestCase
         // define the behavior of the escapeString method of the mock object
         $securityUtil->expects($this->any())
             ->method('escapeString')
-            ->willReturnCallback(function($value) {
+            ->willReturnCallback(function ($value) {
                 return htmlspecialchars($value, ENT_QUOTES | ENT_HTML5);
-            }
-        );
+            });
 
         // create an instance of EscapeRequestDataMiddleware with the mock SecurityUtil
         $middleware = new EscapeRequestDataMiddleware($securityUtil);
 
         // create a mock object for RequestEvent
         $requestEvent = $this->createMock(RequestEvent::class);
-        
+
         // create a test instance of Request with a test URL and GET parameter containing dangerous HTML tags
         $request = Request::create('/test', 'GET', ['idk' => '<script>alert("Hello!");</script>']);
 

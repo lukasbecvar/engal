@@ -72,8 +72,9 @@ I am currently working on a complete recode of the application.
 - [X] All response codes get from response const
 - [X] Media fixtures
 ### Phase 6.5
-- [ ] Setup OPCache
-- [ ] Setup PHP_codesniffer
+- [X] Setup OPCache
+- [X] Setup APCU
+- [X] Setup PHP_codesniffer
 ### Phase 7
 - [ ] Dashboard stats
 - [ ] Display galleries in the dashboard

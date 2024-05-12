@@ -19,15 +19,15 @@ class MediaRepository extends ServiceEntityRepository
     /**
      * Finds distinct gallery names for a given user ID.
      *
-     * @param int $user_id The ID of the user
+     * @param int $userId The ID of the user
      * @return array<array<string>> The array of distinct gallery names
      */
-    public function findDistinctGalleryNamesByUserId(int $user_id): array
+    public function findDistinctGalleryNamesByUserId(int $userId): array
     {
         return $this->createQueryBuilder('m')
             ->select('DISTINCT m.gallery_name')
             ->where('m.owner_id = :user_id')
-            ->setParameter('user_id', $user_id)
+            ->setParameter('user_id', $userId)
             ->getQuery()
             ->getResult();
     }

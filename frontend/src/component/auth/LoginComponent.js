@@ -12,7 +12,7 @@ import { DEV_MODE } from '../../config'
  */
 export default function LoginComponent() {
     // get api url form local storage
-    let api_url = localStorage.getItem('api-url')
+    let apiUrl = localStorage.getItem('api-url')
     
     // input states
     const [username, setUsername] = useState('')
@@ -36,7 +36,7 @@ export default function LoginComponent() {
 
             try {
                 // build login POST request
-                const response = await fetch(api_url + '/api/login', {
+                const response = await fetch(apiUrl + '/api/login', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

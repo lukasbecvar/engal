@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class IndexControllerTest
- * 
+ *
  * Test main app index/status controller response
- * 
+ *
  * @package App\Tests\Controller
  */
 class IndexControllerTest extends WebTestCase
@@ -26,30 +26,30 @@ class IndexControllerTest extends WebTestCase
         $client->request('GET', '/');
 
         // decode output data
-        $response_data = json_decode($client->getResponse()->getContent(), true);
+        $responseData = json_decode($client->getResponse()->getContent(), true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertResponseHeaderSame('content-type', 'application/json');
-        $this->assertSame(200, $response_data['code']);
+        $this->assertSame(200, $responseData['code']);
 
         // check status response
-        $this->assertArrayHasKey('status', $response_data);
-        $this->assertEquals('success', $response_data['status']);
+        $this->assertArrayHasKey('status', $responseData);
+        $this->assertEquals('success', $responseData['status']);
 
         // check response code
-        $this->assertArrayHasKey('code', $response_data);
+        $this->assertArrayHasKey('code', $responseData);
 
         // check backend_version
-        $this->assertArrayHasKey('backend_version', $response_data);
-        $this->assertArrayHasKey('backend_version', $response_data);
-        $this->assertIsString($response_data['security_policy']['REGISTER_ENABLED']);
-        $this->assertIsInt($response_data['security_policy']['MIN_USERNAME_LENGTH']);
-        $this->assertIsInt($response_data['security_policy']['MAX_USERNAME_LENGTH']);
-        $this->assertIsInt($response_data['security_policy']['MIN_PASSWORD_LENGTH']);
-        $this->assertIsInt($response_data['security_policy']['MAX_PASSWORD_LENGTH']);
+        $this->assertArrayHasKey('backend_version', $responseData);
+        $this->assertArrayHasKey('backend_version', $responseData);
+        $this->assertIsString($responseData['security_policy']['REGISTER_ENABLED']);
+        $this->assertIsInt($responseData['security_policy']['MIN_USERNAME_LENGTH']);
+        $this->assertIsInt($responseData['security_policy']['MAX_USERNAME_LENGTH']);
+        $this->assertIsInt($responseData['security_policy']['MIN_PASSWORD_LENGTH']);
+        $this->assertIsInt($responseData['security_policy']['MAX_PASSWORD_LENGTH']);
 
         // check message
-        $this->assertSame('Engal API is loaded success', $response_data['message']);
+        $this->assertSame('Engal API is loaded success', $responseData['message']);
     }
 }

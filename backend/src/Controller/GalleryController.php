@@ -14,9 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class GalleryController
- * 
+ *
  * GalleryController: get gallery data info
- * 
+ *
  * @package App\Controller
  */
 class GalleryController extends AbstractController
@@ -43,27 +43,27 @@ class GalleryController extends AbstractController
     #[Route('/api/gallery/list', name: 'gallery_list', methods: ['GET'])]
     public function index(Security $security, MediaRepository $mediaRepository): JsonResponse
     {
-        $gallery_names_array = [];
+        $galleryNamesArray = [];
 
         try {
             // get logged user ID
-            $user_id = $this->userManager->getUserData($security)->getId();
+            $userId = $this->userManager->getUserData($security)->getId();
 
             // get gallery names
-            $gallery_names = $mediaRepository->findDistinctGalleryNamesByUserId($user_id);
+            $galleryNames = $mediaRepository->findDistinctGalleryNamesByUserId($userId);
 
             // build gallery list array
-            foreach ($gallery_names as $name) {
-                $gallery_names_array[] = $name['gallery_name'];
+            foreach ($galleryNames as $name) {
+                $galleryNamesArray[] = $name['gallery_name'];
             }
         } catch (\Exception $e) {
-            $this->errorManager->handleError('error to get gallery list: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $this->errorManager->handleError('error to get gallery list: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json([
             'status' => 'success',
             'code' => JsonResponse::HTTP_OK,
-            'gallery_names' => $gallery_names_array
+            'gallery_names' => $galleryNamesArray
         ], JsonResponse::HTTP_OK);
     }
 }

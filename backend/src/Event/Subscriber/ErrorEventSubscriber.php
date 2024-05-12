@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Class ErrorEventSubscriber
  *
  * Event subscriber for handling error events.
- * 
+ *
  * @package App\EventSubscriber
  */
 class ErrorEventSubscriber implements EventSubscriberInterface
@@ -43,10 +43,10 @@ class ErrorEventSubscriber implements EventSubscriberInterface
     public function onErrorEvent(ErrorEvent $event): void
     {
         // get error values
-        $error_name = $event->getErrorName();
-        $error_message = $event->getErrorMessage();
+        $errorName = $event->getErrorName();
+        $errorMessage = $event->getErrorMessage();
 
         // log error
-        $this->logManager->log($error_name, $error_message);
+        $this->logManager->log($errorName, $errorMessage);
     }
 }

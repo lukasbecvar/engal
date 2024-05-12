@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * Class ErrorEvent
  *
  * Represents an error event.
- * 
+ *
  * @package App\Event
  */
 class ErrorEvent extends Event
@@ -21,30 +21,30 @@ class ErrorEvent extends Event
     /**
      * @var int|null The error code.
      */
-    protected ?int $error_code;
+    protected ?int $errorCode;
 
     /**
      * @var string|null The error name.
      */
-    protected ?string $error_name;
+    protected ?string $errorName;
 
     /**
      * @var string|null The error message.
      */
-    protected ?string $error_message;
+    protected ?string $errorMessage;
 
     /**
      * ErrorEvent constructor.
      *
-     * @param int         $error_code    The error code.
-     * @param string|null $error_name    The error name.
-     * @param string|null $error_message The error message.
+     * @param int         $errorCode    The error code.
+     * @param string|null $errorName    The error name.
+     * @param string|null $errorMessage The error message.
      */
-    public function __construct(int $error_code, ?string $error_name, ?string $error_message)
+    public function __construct(int $errorCode, ?string $errorName, ?string $errorMessage)
     {
-        $this->error_code = $error_code;
-        $this->error_name = $error_name;
-        $this->error_message = $error_message;
+        $this->errorCode = $errorCode;
+        $this->errorName = $errorName;
+        $this->errorMessage = $errorMessage;
     }
 
     /**
@@ -54,7 +54,7 @@ class ErrorEvent extends Event
      */
     public function getErrorCode(): ?int
     {
-        return $this->error_code;
+        return $this->errorCode;
     }
 
     /**
@@ -64,7 +64,7 @@ class ErrorEvent extends Event
      */
     public function getErrorName(): ?string
     {
-        return $this->error_name;
+        return $this->errorName;
     }
 
     /**
@@ -74,6 +74,6 @@ class ErrorEvent extends Event
      */
     public function getErrorMessage(): ?string
     {
-        return $this->error_message;
+        return $this->errorMessage;
     }
 }

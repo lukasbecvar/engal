@@ -9,9 +9,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class ErrorManager
- * 
+ *
  * ErrorManager handles error messages and their dispatching.
- * 
+ *
  * @package App\Manager
  */
 class ErrorManager
@@ -57,28 +57,28 @@ class ErrorManager
     /**
      * Checks if an error message can be dispatched as an event.
      *
-     * @param string $error_message The error message to check.
+     * @param string $errorMessage The error message to check.
      * @return bool True if the error can be dispatched as an event, false otherwise.
      */
-    public function canBeEventDispatched(string $error_message): bool
+    public function canBeEventDispatched(string $errorMessage): bool
     {
         // list of error patterns that should block event dispatch
-        $blocked_error_patterns = [
-            'log-error:', 
+        $blockedErrorPatterns = [
+            'log-error:',
             'database connection error:',
             'Unknown database',
             'Base table or view not found'
         ];
-        
+
         // loop through each blocked error pattern
-        foreach ($blocked_error_patterns as $pattern) {
+        foreach ($blockedErrorPatterns as $pattern) {
             // check if the current pattern exists in the error message
-            if (strpos($error_message, $pattern) !== false) {
+            if (strpos($errorMessage, $pattern) !== false) {
                 // if a blocked pattern is found, return false
                 return false;
             }
         }
-        
+
         // if no blocked patterns are found, return true
         return true;
     }

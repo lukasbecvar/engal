@@ -15,33 +15,33 @@ import { DEV_MODE } from '../config'
 */
 export default function UploadComponent() {
     // get storage data
-    let api_url = localStorage.getItem('api-url')
-    let login_token = localStorage.getItem('login-token')
+    let apiUrl = localStorage.getItem('api-url')
+    let loginToken = localStorage.getItem('login-token')
 
     // upload file list
     const [files, setFiles] = useState([])
 
     // upload state
     const [loading, setLoading] = useState(true)
-    const [api_error, setApiError] = useState(null)
+    const [apiError, setApiError] = useState(null)
     const [error, setError] = useState(null)
     const [status, setStatus] = useState(null)
     const [progress, setProgress] = useState(0)
-    const [upload_policy, setUploadPolicy] = useState([null])
+    const [uploadPolicy, setUploadPolicy] = useState([null])
 
     // gallery select data
-    const [gallery_names, setGalleryNames] = useState([])
-    const [selected_gallery, setSelectedGallery] = useState('')
-    const [gallery_name_input_visible, setGalleryNameInputVisible] = useState(false)
-    const [new_gallery_name, setNewGalleryName] = useState('')
+    const [galleryNames, setGalleryNames] = useState([])
+    const [selectedGallery, setSelectedGallery] = useState('')
+    const [galleryNameInputVisible, setGalleryNameInputVisible] = useState(false)
+    const [newGalleryName, setNewGalleryName] = useState('')
 
     // fetch user gallery list
     useEffect(() => {
         async function fetchGalleryNames() {
             try {
-                const response = await axios.get(api_url + '/api/gallery/list', {
+                const response = await axios.get(apiUrl + '/api/gallery/list', {
                     headers: {
-                        'Authorization': `Bearer ${login_token}`
+                        'Authorization': `Bearer ${loginToken}`
                     },
                 })
                 setGalleryNames(response.data.gallery_names)
@@ -55,16 +55,16 @@ export default function UploadComponent() {
             }
         }
         fetchGalleryNames()
-    }, [api_url, login_token])
+    }, [apiUrl, loginToken])
 
     // get backend upload policy config
     useEffect(() => {
         async function getPolicy() {
             setLoading(true)
             try {
-                const response = await axios.get(api_url + '/api/upload/config/policy', {
+                const response = await axios.get(apiUrl + '/api/upload/config/policy', {
                     headers: {
-                        'Authorization': `Bearer ${login_token}`
+                        'Authorization': `Bearer ${loginToken}`
                     },
                 })
                 setUploadPolicy(response.data)
@@ -78,10 +78,10 @@ export default function UploadComponent() {
             }
         }
         getPolicy()
-    }, [api_url, login_token])
+    }, [apiUrl, loginToken])
 
     // calculate max files size
-    const MAX_FILE_LIST_SIZE_BYTES = upload_policy.MAX_FILES_SIZE * 1024 * 1024 * 1024
+    const MAX_FILE_LIST_SIZE_BYTES = uploadPolicy.MAX_FILES_SIZE * 1024 * 1024 * 1024
 
     // handle gallery name change
     const handleNameChange = (event) => {
@@ -96,24 +96,24 @@ export default function UploadComponent() {
 
     // handle change in files list
     const handleFileChange = (e) => {
-        const file_list = e.target.files
+        const fileList = e.target.files
     
         // file extension check
-        for (let i = 0; i < file_list.length; i++) {
-            const file_extension = file_list[i].name.split('.').pop().toLowerCase()
-            if (!upload_policy.ALLOWED_FILE_EXTENSIONS.includes(file_extension)) {
-                setError(`File ${file_list[i].name} has an invalid extension.`)
+        for (let i = 0; i < fileList.length; i++) {
+            const file_extension = fileList[i].name.split('.').pop().toLowerCase()
+            if (!uploadPolicy.ALLOWED_FILE_EXTENSIONS.includes(file_extension)) {
+                setError(`File ${fileList[i].name} has an invalid extension.`)
                 return
             }
         }
     
         // file count check
-        if (files.length + file_list.length > upload_policy.MAX_FILES_COUNT) {
-            setError(`Maximum number of allowable file uploads (${upload_policy.MAX_FILES_COUNT}) has been exceeded.`)
+        if (files.length + fileList.length > uploadPolicy.MAX_FILES_COUNT) {
+            setError(`Maximum number of allowable file uploads (${uploadPolicy.MAX_FILES_COUNT}) has been exceeded.`)
             return
         }
     
-        setFiles([...files, ...file_list])
+        setFiles([...files, ...fileList])
     }
     
     // handle remove file from list
@@ -125,8 +125,8 @@ export default function UploadComponent() {
     // drag & drop handlers
     const handleFileDrop = (e) => {
         e.preventDefault()
-        const file_list = e.dataTransfer.files
-        handleFileChange({ target: { files: file_list } })
+        const fileList = e.dataTransfer.files
+        handleFileChange({ target: { files: fileList } })
     }
     const handleDragOver = (e) => {
         e.preventDefault()
@@ -145,7 +145,7 @@ export default function UploadComponent() {
         }
 
         // check if gallery name seted
-        if ((new_gallery_name == '' && selected_gallery == '') || (selected_gallery == 'new name' && new_gallery_name == '')) {
+        if ((newGalleryName == '' && selectedGallery == '') || (selectedGallery == 'new name' && newGalleryName == '')) {
             setError('Please select gallery name')
             return
         }
@@ -155,7 +155,7 @@ export default function UploadComponent() {
     
         // check file list size
         if (totalSizeBytes > MAX_FILE_LIST_SIZE_BYTES) {
-            setError(`Maximum file list size (${upload_policy.MAX_FILES_SIZE} Gb) has been exceeded.`)
+            setError(`Maximum file list size (${uploadPolicy.MAX_FILES_SIZE} Gb) has been exceeded.`)
             return
         }
     
@@ -164,23 +164,23 @@ export default function UploadComponent() {
         files.forEach((file) => formData.append('files[]', file))
 
         // append gallery name to request
-        if (new_gallery_name != '') {
-            formData.append('gallery_name', new_gallery_name)
+        if (newGalleryName != '') {
+            formData.append('gallery_name', newGalleryName)
         } else {
-            formData.append('gallery_name', selected_gallery)
+            formData.append('gallery_name', selectedGallery)
         }
     
         // main upload process
         try {
-            const response = await axios.post(api_url + '/api/upload', formData, {
+            const response = await axios.post(apiUrl + '/api/upload', formData, {
                 headers: {
-                    'Authorization': `Bearer ${login_token}`
+                    'Authorization': `Bearer ${loginToken}`
                 },
-                onUploadProgress: (progress_event) => {
-                    const percent_completed = Math.round((progress_event.loaded * 100) / progress_event.total)
-                    setStatus('Uploading files ' + percent_completed + '%')
-                    setProgress(percent_completed)
-                    if (percent_completed == 100) {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                    setStatus('Uploading files ' + percentCompleted + '%')
+                    setProgress(percentCompleted)
+                    if (percentCompleted == 100) {
                         setStatus('File processing...')
                     }
                 },
@@ -202,8 +202,8 @@ export default function UploadComponent() {
     }
 
     // show error message component
-    if (api_error != null) {
-        return <ErrorMessageComponent message={api_error}/>
+    if (apiError != null) {
+        return <ErrorMessageComponent message={apiError}/>
     }
 
     return (
@@ -249,10 +249,10 @@ export default function UploadComponent() {
                     </div>
             
                     {/* gallery select */}
-                    {gallery_name_input_visible == false &&
-                        <select className="gallery-select" onChange={handleNameChange} value={selected_gallery}>
+                    {galleryNameInputVisible == false &&
+                        <select className="gallery-select" onChange={handleNameChange} value={selectedGallery}>
                             <option value="">Select Gallery</option>
-                            {gallery_names.map((name, index) => (
+                            {galleryNames.map((name, index) => (
                                 <option key={index} value={name}>{name}</option>
                             ))}
                             <option value="new name">New Name</option>
@@ -260,14 +260,14 @@ export default function UploadComponent() {
                     }
             
                     {/* new gallery name input */}
-                    {gallery_name_input_visible && (
+                    {galleryNameInputVisible && (
                         <input 
                             className="new-gallery-input" 
                             type="text" 
-                            value={new_gallery_name} 
+                            value={newGalleryName} 
                             onChange={(e) => setNewGalleryName(e.target.value)} 
                             placeholder="Enter new gallery name" 
-                            maxLength={upload_policy.MAX_GALLERY_NAME_LENGTH}
+                            maxLength={uploadPolicy.MAX_GALLERY_NAME_LENGTH}
                         />
                     )}
             

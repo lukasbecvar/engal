@@ -16,9 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class RegisterController
- * 
+ *
  * Controller handling user registration.
- * 
+ *
  * @package App\Controller\Auth
  */
 class RegisterController extends AbstractController
@@ -29,7 +29,7 @@ class RegisterController extends AbstractController
      * @param Request $request The request object.
      * @param UserManager $userManager The user manager service.
      * @param VisitorInfoUtil $visitorInfoUtil The visitor information utility.
-     * 
+     *
      * @return JsonResponse The JSON response.
      */
     #[Tag(name: "Auth")]
@@ -56,21 +56,21 @@ class RegisterController extends AbstractController
         $password = $request->get('password');
 
         // get user ip
-        $ip_address = $visitorInfoUtil->getIP();
-            
+        $ipAddress = $visitorInfoUtil->getIP();
+
         // check required data
         if ($username == null || $password == null) {
-            $error_message = null;
+            $errorMessage = null;
             if ($username == null) {
-                $error_message = 'input username is required';
+                $errorMessage = 'input username is required';
             }
             if ($password == null) {
-                $error_message = 'input password is required';
+                $errorMessage = 'input password is required';
             }
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_BAD_REQUEST,
-                'message' => $error_message
+                'message' => $errorMessage
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -79,14 +79,14 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_BAD_REQUEST,
-                'message' => 'username must be at least '.$_ENV['MIN_USERNAME_LENGTH'].' characters long'
+                'message' => 'username must be at least ' . $_ENV['MIN_USERNAME_LENGTH'] . ' characters long'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
         if (strlen($username) > $_ENV['MAX_USERNAME_LENGTH']) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_BAD_REQUEST,
-                'message' => 'username must be maximal '.$_ENV['MAX_USERNAME_LENGTH'].' characters long'
+                'message' => 'username must be maximal ' . $_ENV['MAX_USERNAME_LENGTH'] . ' characters long'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -95,14 +95,14 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_BAD_REQUEST,
-                'message' => 'password must be at least '.$_ENV['MIN_PASSWORD_LENGTH'].' characters long'
+                'message' => 'password must be at least ' . $_ENV['MIN_PASSWORD_LENGTH'] . ' characters long'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
         if (strlen($password) > $_ENV['MAX_PASSWORD_LENGTH']) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_BAD_REQUEST,
-                'message' => 'password must be maximal '.$_ENV['MAX_PASSWORD_LENGTH'].' characters long'
+                'message' => 'password must be maximal ' . $_ENV['MAX_PASSWORD_LENGTH'] . ' characters long'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -111,19 +111,19 @@ class RegisterController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_CONFLICT,
-                'message' => 'user: '.$username.' is already exist'
+                'message' => 'user: ' . $username . ' is already exist'
             ], JsonResponse::HTTP_CONFLICT);
         }
 
         // check if IP is registred
         if ($_ENV['ONE_USER_PER_IP'] == 'true') {
-            if ($userManager->getUserRepoByIP($ip_address) != null) {
+            if ($userManager->getUserRepoByIP($ipAddress) != null) {
                 return $this->json([
                     'status' => 'error',
                     'code' => JsonResponse::HTTP_CONFLICT,
                     'message' => 'Your ip address is already registred in the system'
                 ], JsonResponse::HTTP_CONFLICT);
-            }    
+            }
         }
 
         // final user register
@@ -132,7 +132,7 @@ class RegisterController extends AbstractController
             $userManager->registerUser($username, $password);
 
             // log registration
-            $logManager->log('authenticator', 'new user register: '.$username);
+            $logManager->log('authenticator', 'new user register: ' . $username);
 
             // return success message
             return $this->json([

@@ -9,9 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 /**
  * Class RegisterUserCommandTest
- * 
+ *
  * Unit test for the RegisterUserCommand.
- * 
+ *
  * @package App\Tests\Command
  */
 class RegisterUserCommandTest extends KernelTestCase
@@ -47,6 +47,6 @@ class RegisterUserCommandTest extends KernelTestCase
         $output = $commandTester->getDisplay();
 
         // check output
-        $this->assertStringContainsString('New user registred username: '.$username, $output);
+        $this->assertStringContainsString('New user registred username: ' . $username, $output);
     }
 }

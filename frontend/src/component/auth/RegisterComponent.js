@@ -13,18 +13,18 @@ import { DEV_MODE } from "../../config"
  */
 export default function RegisterComponent() {
     // storage data
-    let api_url = localStorage.getItem('api-url')
+    let apiUrl = localStorage.getItem('api-url')
 
     // input states
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [re_password, setRePassword] = useState('')
+    const [rePassword, setRePassword] = useState('')
 
     // status states
     const [loading, setLoading] = useState(true)
-    const [security_policy, setSecurityPolicy] = useState([true])
-    const [register_status, setRegisterStatus] = useState(false)
-    const [api_error, setApiError] = useState(null)
+    const [securityPolicy, setSecurityPolicy] = useState([true])
+    const [registerStatus, setRegisterStatus] = useState(false)
+    const [apiError, setApiError] = useState(null)
     const [status, setStatus] = useState(null)
     const [error, setError] = useState(null)
 
@@ -37,19 +37,19 @@ export default function RegisterComponent() {
         // validate username
         if (username.length < 1) {
             setError('username input is empty')
-        } else if (username.length < security_policy.MIN_USERNAME_LENGTH) {
-            setError('username must be at least ' + security_policy.MIN_USERNAME_LENGTH +' characters long')
-        } else if (username.length > security_policy.MAX_USERNAME_LENGTH) {
-            setError('username must be maximal ' + security_policy.MAX_USERNAME_LENGTH +' characters long')
+        } else if (username.length < securityPolicy.MIN_USERNAME_LENGTH) {
+            setError('username must be at least ' + securityPolicy.MIN_USERNAME_LENGTH +' characters long')
+        } else if (username.length > securityPolicy.MAX_USERNAME_LENGTH) {
+            setError('username must be maximal ' + securityPolicy.MAX_USERNAME_LENGTH +' characters long')
 
         // validate password
         } else if (password.length < 1) {
             setError('password input is empty')
-        } else if (password.length < security_policy.MIN_PASSWORD_LENGTH) {
-            setError('password must be at least ' + security_policy.MIN_PASSWORD_LENGTH +' characters long')
-        } else if (password.length > security_policy.MAX_PASSWORD_LENGTH) {
-            setError('password must be maximal ' + security_policy.MAX_PASSWORD_LENGTH +' characters long')
-        } else if (password !== re_password) {
+        } else if (password.length < securityPolicy.MIN_PASSWORD_LENGTH) {
+            setError('password must be at least ' + securityPolicy.MIN_PASSWORD_LENGTH +' characters long')
+        } else if (password.length > securityPolicy.MAX_PASSWORD_LENGTH) {
+            setError('password must be maximal ' + securityPolicy.MAX_PASSWORD_LENGTH +' characters long')
+        } else if (password !== rePassword) {
             setError('passwords not matched')
 
         // register (if input is valid)
@@ -65,10 +65,10 @@ export default function RegisterComponent() {
                 // build request data
                 formData.append('username', username)
                 formData.append('password', password)
-                formData.append('re-password', re_password)
+                formData.append('re-password', rePassword)
 
                 // fetch response
-                const response = await fetch(api_url + '/api/register', {
+                const response = await fetch(apiUrl + '/api/register', {
                     method: 'POST',
                     body: formData,
                 })
@@ -83,7 +83,7 @@ export default function RegisterComponent() {
 
                     try {
                         // login POST request (auto-login)
-                        const response = await fetch(api_url + '/api/login', {
+                        const response = await fetch(apiUrl + '/api/login', {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
@@ -128,7 +128,7 @@ export default function RegisterComponent() {
         const fetchData = async () => {
             try {
                 // build request
-                const response = await fetch(api_url, { method: 'GET' })
+                const response = await fetch(apiUrl, { method: 'GET' })
     
                 // get response data
                 const data = await response.json()
@@ -154,7 +154,7 @@ export default function RegisterComponent() {
         }
 
         fetchData()
-    }, [api_url, security_policy])
+    }, [apiUrl, securityPolicy])
 
     // show loading
     if (loading) {
@@ -162,12 +162,12 @@ export default function RegisterComponent() {
     }
 
     // check api error
-    if (api_error != null) {
-        return <ErrorMessageComponent message={api_error}/>
+    if (apiError != null) {
+        return <ErrorMessageComponent message={apiError}/>
     }
 
     // check if register is enabled
-    if (register_status == 'false') {
+    if (registerStatus == 'false') {
         return <ErrorMessageComponent message="New registrations is currently disabled"/>
     }
 
@@ -188,7 +188,7 @@ export default function RegisterComponent() {
                         type="text"
                         value={username}
                         placeholder="Username"
-                        maxLength={security_policy.MAX_USERNAME_LENGTH}
+                        maxLength={securityPolicy.MAX_USERNAME_LENGTH}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
@@ -198,7 +198,7 @@ export default function RegisterComponent() {
                         type="password"
                         value={password}
                         placeholder="Password"
-                        maxLength={security_policy.MAX_PASSWORD_LENGTH}
+                        maxLength={securityPolicy.MAX_PASSWORD_LENGTH}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
@@ -206,9 +206,9 @@ export default function RegisterComponent() {
                     <label>Password again</label>
                     <input
                         type="password"
-                        value={re_password}
+                        value={rePassword}
                         placeholder="Password again"
-                        maxLength={security_policy.MAX_PASSWORD_LENGTH}
+                        maxLength={securityPolicy.MAX_PASSWORD_LENGTH}
                         onChange={(e) => setRePassword(e.target.value)}
                     />
                 </div>

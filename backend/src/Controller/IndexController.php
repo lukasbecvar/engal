@@ -10,9 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class IndexController
- * 
+ *
  * Main app index Controller for check api status
- * 
+ *
  * @package App\Controller
  */
 class IndexController extends AbstractController

@@ -17,6 +17,7 @@ services:
         volumes:
             - ./_docker/configs/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
             - ./_docker/services/mysql_database:/var/lib/mysql
+            - ./_docker/services/log:/var/log
         ports:
             - "3306:3306"
         networks:
@@ -36,6 +37,7 @@ services:
         volumes:
             - ./_docker/configs/apache-api.conf:/etc/apache2/sites-available/000-default.conf
             - ./_docker/configs/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./_docker/services/log:/var/log
             - ./:/var/www
         ports:
             - "1337:80"

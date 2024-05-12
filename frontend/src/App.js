@@ -22,24 +22,24 @@ import './assets/css/main.css'
  */
 export default function App() {
     // storage data
-    let api_url = localStorage.getItem('api-url')
-    let login_token = localStorage.getItem('login-token')
+    let apiUrl = localStorage.getItem('api-url')
+    let loginToken = localStorage.getItem('login-token')
 
     // status states
-    const [is_api_available, setApiAvailable] = useState(false)
-    const [app_version, setAppVersion] = useState(null)
-    const [api_error, setApiError] = useState(null)
+    const [isApiAvailableValue, setApiAvailable] = useState(false)
+    const [appVersion, setAppVersion] = useState(null)
+    const [apiError, setApiError] = useState(null)
     const [loading, setLoading] = useState(true)
 
     // check if api url seted
-    if (api_url == null) {
+    if (apiUrl == null) {
         // render api setup component
         return <SetupComponent/>
     }
 
     // check if api available
     useEffect(() => {
-        isApiAvailable(api_url)
+        isApiAvailable(apiUrl)
             .then((available) => {
                 setApiAvailable(available)
             })
@@ -50,20 +50,20 @@ export default function App() {
                 setApiAvailable(false)
                 setLoading(false)
             })
-    }, [api_url])
+    }, [apiUrl])
     
     // check if response is error
     useEffect(() => {
-        getApiStatus(api_url)
-            .then((response_data) => {
-                if (response_data.status !== 'success') {
-                    if (response_data.message == 'Engal API is in maintenance mode') {
+        getApiStatus(apiUrl)
+            .then((responseData) => {
+                if (responseData.status !== 'success') {
+                    if (responseData.message == 'Engal API is in maintenance mode') {
                         setApiError('Engal API is in maintenance mode')
                     } else {
-                        setApiError(response_data.message)
+                        setApiError(responseData.message)
                     }
                 } else {
-                    setAppVersion(response_data.backend_version)
+                    setAppVersion(responseData.backend_version)
                 }
             })
             .catch((error) => {
@@ -72,20 +72,20 @@ export default function App() {
                 }
             })
             .finally(() => {
-                if (login_token == null) {
+                if (loginToken == null) {
                     setLoading(false)
                 }
             })
-    }, [api_url])
+    }, [apiUrl])
 
     // check user status
     useEffect(() => {
         const fetchData = async () => {
             // check if user loggedin
-            if (login_token != null) {
+            if (loginToken != null) {
                 try {
                     // build request
-                    const response = await fetch(api_url + '/api/user/status', {
+                    const response = await fetch(apiUrl + '/api/user/status', {
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',
@@ -115,7 +115,7 @@ export default function App() {
             }
         }
         fetchData()
-    }, [api_url, login_token])
+    }, [apiUrl, loginToken])
     
     // show loading component
     if (loading) {
@@ -128,17 +128,17 @@ export default function App() {
     }
 
     // handle error api connection error
-    if (!is_api_available) {
+    if (!isApiAvailableValue) {
         return <ApiErrorComponent/>
     }
 
     // handle api response error
-    if (api_error != null) {
-        return <ErrorMessageComponent message={api_error}/>
+    if (apiError != null) {
+        return <ErrorMessageComponent message={apiError}/>
     }
 
     // handle app version error
-    if (app_version != APP_VERSION) {
+    if (appVersion != APP_VERSION) {
         return <ErrorMessageComponent message={"Your app version is not valid matchend with server, required version: " + app_version}/>
     }
 

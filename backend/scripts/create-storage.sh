@@ -10,4 +10,5 @@ then
 fi
 
 # set storage dir permissions
-chmod -R 777 ./storage
+sudo chmod -R 777 ./storage
+sudo chmod -R 777 ./var

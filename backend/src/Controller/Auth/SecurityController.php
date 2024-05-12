@@ -26,7 +26,8 @@ class SecurityController extends AbstractController
     private ErrorManager $errorManager;
     private AuthTokenManager $authTokenManager;
 
-    public function __construct(LogManager $logManager, ErrorManager $errorManager, AuthTokenManager $authTokenManager) {
+    public function __construct(LogManager $logManager, ErrorManager $errorManager, AuthTokenManager $authTokenManager)
+    {
         $this->logManager = $logManager;
         $this->errorManager = $errorManager;
         $this->authTokenManager = $authTokenManager;
@@ -56,7 +57,7 @@ class SecurityController extends AbstractController
 
         try {
             // log logout
-            $this->logManager->log('authenticator', 'User '.$user->getUserIdentifier().' logged out');
+            $this->logManager->log('authenticator', 'User ' . $user->getUserIdentifier() . ' logged out');
 
             // blacklist old token
             $this->authTokenManager->blacklistToken($token);
@@ -68,7 +69,7 @@ class SecurityController extends AbstractController
                 'message' => 'Logout successful'
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
-            return $this->errorManager->handleError('logout error: '.$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorManager->handleError('logout error: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

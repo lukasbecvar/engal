@@ -4,9 +4,9 @@ namespace App\Util;
 
 /**
  * Class SiteUtil
- * 
+ *
  * SiteUtil provides basic site-related methods.
- * 
+ *
  * @package App\Util
  */
 class SiteUtil
@@ -36,7 +36,7 @@ class SiteUtil
      *
      * @return bool Whether the connection is secure.
      */
-    public function isSsl(): bool 
+    public function isSsl(): bool
     {
         // check if HTTPS header is set and its value is either 1 or 'on'
         return isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 1 || strtolower($_SERVER['HTTPS']) === 'on');

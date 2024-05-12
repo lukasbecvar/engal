@@ -7,16 +7,16 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class SecurityUtilTest
- * 
+ *
  * Test class for SecurityUtil.
- * 
+ *
  * @package App\Tests\Util
  */
 class SecurityUtilTest extends TestCase
 {
     /**
      * Test method escapeString().
-     * 
+     *
      * Tests whether the escapeString() method correctly escapes special characters
      * in a string to prevent HTML injection.
      */

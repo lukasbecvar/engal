@@ -9,9 +9,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserFixtures
- * 
+ *
  * Fixture class for creating a default user.
- * 
+ *
  * @package App\DataFixtures
  */
 class UserFixtures extends Fixture

@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
  * Class LoginEventSubscriber
  *
  * Subscriber to handle events related to user login authentication success.
- * 
+ *
  * @package App\EventSubscriber
  */
 class LoginEventSubscriber implements EventSubscriberInterface
@@ -48,19 +48,18 @@ class LoginEventSubscriber implements EventSubscriberInterface
     public function onSecurityAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        $path_info = $request->getPathInfo();
-    
+        $pathInfo = $request->getPathInfo();
+
         // check if request is login
-        if ($path_info == '/api/login') {
-    
+        if ($pathInfo == '/api/login') {
             // get username
             $identifier = $event->getAuthenticationToken()->getUser()->getUserIdentifier();
-    
+
             // update user data
             $this->userManager->updateUserDataOnLogin($identifier);
-    
+
             // log user auth
-            $this->logManager->log('authenticator', 'user: '.$identifier.' loggedin');
+            $this->logManager->log('authenticator', 'user: ' . $identifier . ' loggedin');
         }
     }
 }

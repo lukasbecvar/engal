@@ -10,23 +10,24 @@ import ErrorMessageComponent from '../error/ErrorMessageComponent'
  */
 export default function UserNavigationComponent() {
     // storage data
-    let api_url = localStorage.getItem('api-url')
-    let login_token = localStorage.getItem('login-token')
+    let apiUrl = localStorage.getItem('api-url')
+    let loginToken = localStorage.getItem('login-token')
 
-    const location = useLocation();
+    // get user app location
+    const location = useLocation()
 
     // status state
-    const [user_data, setUserData] = useState([])
+    const [userData, setUserData] = useState([])
     const [loading, setLoading] = useState(true)
     
     // fetch dashboard/user data
     useEffect(() => {
         const fetchUserData = async () => {
             // check if user loggedin
-            if (login_token != null) {
+            if (loginToken != null) {
                 try {
                     // build request
-                    const response = await fetch(api_url + '/api/user/status', {
+                    const response = await fetch(apiUrl + '/api/user/status', {
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',
@@ -56,7 +57,7 @@ export default function UserNavigationComponent() {
             }
         }
         fetchUserData()
-    }, [api_url, login_token])
+    }, [apiUrl, loginToken])
     
     // show loading
     if (loading) {
@@ -64,7 +65,7 @@ export default function UserNavigationComponent() {
     }
 
     // get role color
-    const text_color = user_data.roles.includes('ROLE_ADMIN') ? 'red' : 'green'
+    const textColor = userData.roles.includes('ROLE_ADMIN') ? 'red' : 'green'
 
     return (
         <div className="user-navbar">
@@ -75,7 +76,7 @@ export default function UserNavigationComponent() {
             </span>
 
             {/* upload navigation */}
-            {location.pathname == '/upload' ? 
+            {location.pathname == "/upload" ? 
                 <span>
                     <span>➜</span>
                     <Link to="/upload" className="sub-navigation-link">upload</Link> 
@@ -83,7 +84,7 @@ export default function UserNavigationComponent() {
             : null}
 
             <div className="user-data">
-                <p className={`color-${text_color}`}>{user_data.username}</p>
+                <p className={`color-${textColor}`}>{userData.username}</p>
             </div>
         </div>
     )

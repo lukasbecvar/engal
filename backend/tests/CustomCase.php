@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Class CustomCase
- * 
+ *
  * @package App\Tests
  */
 class CustomCase extends WebTestCase
@@ -60,10 +60,10 @@ class CustomCase extends WebTestCase
     {
         // Generate a temporary file path
         $tempFilePath = tempnam(sys_get_temp_dir(), 'test_file');
-        
+
         // Create an empty temporary file
         file_put_contents($tempFilePath, '');
-        
+
         // Return an UploadedFile instance representing the fake file
         return new UploadedFile($tempFilePath, $filename, $mimeType, null, true);
     }

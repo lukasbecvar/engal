@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  * Class MaintenanceMiddleware
  *
  * This middleware is used to check if the application is in maintenance mode.
- * 
+ *
  * @package App\Service\Middleware
  */
 class MaintenanceMiddleware
@@ -37,7 +37,7 @@ class MaintenanceMiddleware
 
             // create JSON response
             $response = new JsonResponse($arr);
-            
+
             // set response
             $event->setResponse($response);
         }

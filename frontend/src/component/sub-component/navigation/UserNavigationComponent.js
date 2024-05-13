@@ -77,27 +77,32 @@ export default function UserNavigationComponent() {
         <div>
             <div className="user-navbar">
                 {/* main home link */}
-                <span>
-                    <span>➜</span>
-                    <Link to="/" className="sub-navigation-link">home</Link>
+                <span className="breadcrumb">
+                    <span>
+                        <span className="slash">/</span>
+                        <Link to="/" className="sub-navigation-link">home</Link>
+                    </span>
+
+                    {/* upload navigation */}
+                    {location.pathname == "/upload" ? 
+                        <span>
+                            <span className="slash">/</span>
+                            <Link to="/upload" className="sub-navigation-link">upload</Link> 
+                        </span>
+                    : null}
                 </span>
 
-                {/* upload navigation */}
-                {location.pathname == "/upload" ? 
-                    <span>
-                        <span>➜</span>
-                        <Link to="/upload" className="sub-navigation-link">upload</Link> 
-                    </span>
-                : null}
-
                 <div className="user-data">
-                    <p className={`color-${textColor}`}>{userData.username}</p>
+                    <div className="username">
+                        <p className={`color-${textColor}`}>{userData.username}</p>
+                    </div>
+                    <span className="spacer">|</span>
+                    <div className="count-bar">
+                        <snap className="counter-element"><FontAwesomeIcon icon={faImage}/> {stats.images_count}</snap>
+                        <snap className="counter-element"><FontAwesomeIcon icon={faVideo}/> {stats.videos_count}</snap>
+                        <snap className="counter-element"><FontAwesomeIcon icon={faFolder}/> {stats.galleries_count}</snap>
+                    </div>
                 </div>
-            </div>
-            <div className="user-navbar count-bar">
-                <snap className="counter-element"><FontAwesomeIcon icon={faImage}/> {stats.images_count}</snap>
-                <snap className="counter-element"><FontAwesomeIcon icon={faVideo}/> {stats.videos_count}</snap>
-                <snap className="counter-element"><FontAwesomeIcon icon={faFolder}/> {stats.galleries_count}</snap>
             </div>
         </div>
     )

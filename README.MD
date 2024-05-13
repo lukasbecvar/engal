@@ -81,7 +81,7 @@ I am currently working on a complete recode of the application.
 - [X] Get media content endpoint
 - [X] Get first gallery token by gallery id
 - [X] Get minified thumbnail api endpoint
-- [ ] Move media counter to sub navbar
+- [X] Move media counter to sub navbar
 - [ ] Display galleries in the dashboard 
 - [ ] Gallery browser (photo & video (image priority))
 - [ ] Browse all galleries

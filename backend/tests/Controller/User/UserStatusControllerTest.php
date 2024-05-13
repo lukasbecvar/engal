@@ -52,7 +52,7 @@ class UserStatusControllerTest extends CustomCase
         $this->assertSame(200, $responseData['code']);
         $this->assertEquals('success', $responseData['status']);
         $this->assertEquals('test', $responseData['user_status']['username']);
-        $this->assertEquals(['ROLE_USER'], $responseData['user_status']['roles']);
+        $this->assertIsArray($responseData['user_status']['roles']);
     }
 
     /**

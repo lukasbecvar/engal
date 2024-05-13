@@ -69,6 +69,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+      # install PHP GD
+      - name: Install PHP GD
+        run: |
+          sudo apt-get install -y php-gd
+
       # run PHPUnit tests
       - name: Run PHPUnit tests
         run: php bin/phpunit

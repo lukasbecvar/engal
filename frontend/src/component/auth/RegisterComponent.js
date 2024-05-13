@@ -214,7 +214,7 @@ export default function RegisterComponent() {
                     />
                 </div>
                 <button type="submit">Register</button>
-                <p className="form-link">You have account? <Link to="/login" className="color-blue">Login here</Link></p>
+                <p className="form-link m-t-5 mb-min-5">You have account? <Link to="/login" className="color-blue">Login here</Link></p>
             </form>
             <AuthFooterComponent/>
         </div>

@@ -111,7 +111,7 @@ export default function LoginComponent() {
                     />
                 </div>
                 <button type="submit">Login</button>
-                <p className="form-link">Don't have an account? <Link to="/register" className="color-blue">Register here</Link></p>
+                <p className="form-link m-t-5 mb-min-5">Don't have an account? <Link to="/register" className="color-blue">Register here</Link></p>
             </form>
             <AuthFooterComponent/>
         </div>

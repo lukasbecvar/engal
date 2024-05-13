@@ -32,6 +32,10 @@ body {
     text-align: center;
 }
 
+.m-t-5 {
+    margin-top: 5px !important;
+}
+
 .m-r-5 {
     margin-right: 5px;
 }
@@ -138,7 +142,7 @@ body {
 
 .auth-footer {
     position: absolute;
-    bottom: 0;
+    bottom: 0vh;
     background-color: #222;
     border-top: 2px solid #444;
     border-bottom: 2px solid #444;
@@ -291,6 +295,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 20%;
 }
 
 .upload-component .upload-form-container {
@@ -477,6 +482,27 @@ body {
     }
     .user-navbar .breadcrumb {
         font-size: 10px;
+    }
+    .auth-form {
+        padding: 10px;
+    }
+    .auth-form h2 {
+        font-size: 16px;
+        margin-top: -5px;
+        margin-bottom: -1px;
+    }
+    .auth-form label {
+        font-size: 14px;
+        margin-bottom: 1px;
+    }
+    .auth-form button {
+        padding: 5px;
+    }
+    .form-link {
+        font-size: 13px;
+    }
+    .mb-min-5 {
+        margin-bottom: -5px !important;
     }
 }
 

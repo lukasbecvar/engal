@@ -98,9 +98,9 @@ export default function UserNavigationComponent() {
                     </div>
                     <span className="spacer">|</span>
                     <div className="count-bar">
-                        <snap className="counter-element"><FontAwesomeIcon icon={faImage}/> {stats.images_count}</snap>
-                        <snap className="counter-element"><FontAwesomeIcon icon={faVideo}/> {stats.videos_count}</snap>
-                        <snap className="counter-element"><FontAwesomeIcon icon={faFolder}/> {stats.galleries_count}</snap>
+                        <span className="counter-element"><FontAwesomeIcon icon={faImage}/> {stats.images_count}</span>
+                        <span className="counter-element"><FontAwesomeIcon icon={faVideo}/> {stats.videos_count}</span>
+                        <span className="counter-element"><FontAwesomeIcon icon={faFolder}/> {stats.galleries_count}</span>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 // engal components
+import GalleryListComponent from "./GalleryListComponent"
 import MainNavigationComponent from "./sub-component/navigation/MainNavigationComponent"
 import UserNavigationComponent from "./sub-component/navigation/UserNavigationComponent"
 
@@ -11,7 +12,7 @@ export default function DashboardComponent() {
             <MainNavigationComponent/>            
             <UserNavigationComponent/>
             <div className="app-component">
-                <p>! dashboard component !</p>
+                <GalleryListComponent/>
             </div>
         </div>
     )

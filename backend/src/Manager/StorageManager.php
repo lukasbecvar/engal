@@ -4,8 +4,10 @@ namespace App\Manager;
 
 use App\Entity\Media;
 use App\Repository\MediaRepository;
+use Intervention\Image\ImageManager;
 use Symfony\Component\String\ByteString;
 use Doctrine\ORM\EntityManagerInterface;
+use Intervention\Image\Drivers\Gd\Driver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -165,27 +167,109 @@ class StorageManager
     }
 
     /**
-     * Retrieves the content of the media associated with the provided user ID and token.
+     * Retrieves the path of the media file associated with the given user ID and token.
      *
-     * @param int $userId The ID of the user associated with the media.
-     * @param string $token The token associated with the media.
+     * @param int $userId The ID of the user.
+     * @param string $token The token associated with the media file.
      *
-     * @return string|null The content of the media if found, otherwise null.
+     * @return string|null The path of the media file, or null if not found.
      */
-    public function getMediaContent(int $userId, string $token): ?string
+    public function getMediaFile(int $userId, string $token)
     {
+        // build media file path pathern
         $mediaPathPathern = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/*/' . $token . '.*';
 
-        // get files by mediaPath pathern
+        // get files in pathern
         $files = glob($mediaPathPathern);
 
-        // check if file found
+        // check if media file found
         if ($files !== false && count($files) > 0) {
-            // select file
-            $firstFile = $files[0];
-            return file_get_contents($firstFile);
+            return $files[0];
+        } else {
+            $this->errorManager->handleError('error to found media file: ' . $userId . ':' . $token, 404);
         }
 
         return null;
+    }
+
+    /**
+     * Retrieves the content of the media file associated with the given user ID and token.
+     *
+     * @param int $userId The ID of the user.
+     * @param string $token The token associated with the media file.
+     *
+     * @return string|null The content of the media file, or null if not found.
+     */
+    public function getMediaContent(int $userId, string $token): ?string
+    {
+        // get media file
+        $file = $this->getMediaFile($userId, $token);
+
+        // return file content
+        return file_get_contents($file);
+    }
+
+    /**
+     * Retrieves the thumbnail of a media resource based on the provided parameters.
+     *
+     * @param int $userId The ID of the user.
+     * @param string $token The token associated with the media resource.
+     * @param int $width The width of the thumbnail.
+     * @param int $height The height of the thumbnail.
+     *
+     * @return object The encoded image object representing the thumbnail.
+     */
+    public function getMediaThumbnail(int $userId, string $token, int $width, int $height): object
+    {
+        // init Intervention manager
+        $manager = new ImageManager(new Driver());
+
+        // get media type
+        $mediaType = $this->getMediaType($token);
+
+        // select media to resize
+        if (str_contains($mediaType, 'image')) {
+            $mediaFile = $this->getMediaFile($userId, $token);
+        } else {
+            $mediaFile = $this->getVideoThumbnail($userId, $token);
+        }
+
+        // read media file
+        $image = $manager->read($mediaFile);
+
+        // resize thumbnail
+        $image->resize($width, $height);
+
+        // return encoded image object
+        return $image->encode();
+    }
+
+    /**
+     * Generates a thumbnail for a video media file associated with the given user ID and token.
+     *
+     * @param int $userId The ID of the user.
+     * @param string $token The token associated with the video media file.
+     *
+     * @return string|null The content of the generated thumbnail, or null if not found.
+     */
+    public function getVideoThumbnail(int $userId, string $token): ?string
+    {
+        // get video file
+        $mediaFile = $this->getMediaFile($userId, $token);
+
+        // build video thumnail file path
+        $thumbnailFilename = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/videos/thumbnail_' . $token . '.jpg';
+
+        // create file path
+        if (!file_exists($thumbnailFilename)) {
+            // get video duration
+            $duration = shell_exec("ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $mediaFile");
+            $duration = floatval($duration);
+
+            // generate thumbnail (middle time)
+            exec('ffmpeg -ss ' . ($duration / 2.1) . ' -i ' . $mediaFile . ' -vframes 1 ' . $thumbnailFilename);
+        }
+
+        return file_get_contents($thumbnailFilename);
     }
 }

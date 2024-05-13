@@ -80,8 +80,8 @@ I am currently working on a complete recode of the application.
 - [X] Dark scroll bar
 - [X] Get media content endpoint
 - [X] Get first gallery token by gallery id
+- [X] Get minified thumbnail api endpoint
 - [ ] Move media counter to sub navbar
-- [ ] Get minified thumbnail api endpoint
 - [ ] Display galleries in the dashboard 
 - [ ] Gallery browser (photo & video (image priority))
 - [ ] Browse all galleries

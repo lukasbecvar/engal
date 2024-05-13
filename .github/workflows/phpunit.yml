@@ -63,6 +63,12 @@ jobs:
         run: php bin/console doctrine:fixtures:load --no-interaction --env=test
         working-directory: ./backend
 
+      # install ffmpeg
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       # run PHPUnit tests
       - name: Run PHPUnit tests
         run: php bin/phpunit

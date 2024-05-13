@@ -60,7 +60,7 @@ jobs:
 
       # load testing data
       - name: Load fixtures
-        run: php bin/console doctrine:fixtures:load --no-interaction --env=test
+        run: php bin/console doctrine:fixtures:load --no-interaction --purge-with-truncate --env=test
         working-directory: ./backend
 
       # install ffmpeg

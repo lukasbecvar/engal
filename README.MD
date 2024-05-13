@@ -80,31 +80,39 @@ I am currently working on a complete recode of the application.
 - [X] Dark scroll bar
 - [X] Get media content endpoint
 - [X] Get first gallery token by gallery id
-- [ ] Display galleries in the dashboard
-- [ ] Gallery browser (photo & image section (image priority))
-- [ ] Sorting (by: name, upload_time, edit_time, random)
-- [ ] Media move (one or multiple to gallery or new gallery)
+- [ ] Move media counter to sub navbar
+- [ ] Get minified thumbnail api endpoint
+- [ ] Display galleries in the dashboard 
+- [ ] Gallery browser (photo & video (image priority))
+- [ ] Browse all galleries
+- [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
-### Phase 8.5
-- [ ] Encryption system
-## Phase 8.6
-- [ ] Data wipe command (drop all users, logs, storage data)
 ### Phase 9
+- [ ] Data wipe command (drop all users, logs, storage data)
+- [ ] Backup command (extract all media to tar.gz archive)
+- [ ] Encryption system
+### Phase 10
+- [ ] Port frontend to electron
+- [ ] Port frontend to react-native
+### Phase 11
+- [ ] Deploy system
+- [ ] Basic documents in markdown
+
+## TODOS: version 5
+- [ ] Gallery info (show gallery data: count, owner, time data)
+- [ ] Gallery share (configurate in gallery info), (use owner_id in databse [json/array])
+- [ ] Media info (get media data, name, gallery_name, size, type, time data)
+- [ ] Media delete function
+- [ ] Media move (move to gallery), single or multiple
+- [ ] Media edit (name, replace file with reupload)
 - [ ] Account settings (change password, username, account delete)
 - [ ] Admin system
     - [ ] Dashboard
     - [ ] Log viewer
     - [ ] User management
     - [ ] Ban system
-### Phase 10
-- [ ] Backup command (extract all media to tar.gz archive)
-### Phase 11
-- [ ] Port frontend to electron
-- [ ] Port frontend to react-native
-### Phase 12
-- [ ] Deploy system
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

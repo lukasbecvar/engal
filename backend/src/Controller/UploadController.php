@@ -49,11 +49,9 @@ class UploadController extends AbstractController
     /**
      * Get upload policy config
      *
-     * @Route("/config/policy", methods={"GET"}, name="api_file_upload_policy")
-     *
      * @return JsonResponse
      */
-    #[Tag(name: "Resources")]
+    #[Tag(name: "Upload")]
     #[Response(response: 200, description: 'Get upload policy config')]
     #[Route('/api/upload/config/policy', methods: ['GET'], name: 'api_file_upload_policy')]
     public function getUploadConfigPolicy(): JsonResponse
@@ -78,7 +76,7 @@ class UploadController extends AbstractController
      * @param Security $security
      * @return JsonResponse
      */
-    #[Tag(name: "Resources")]
+    #[Tag(name: "Upload")]
     #[RequestBody(
         content: [
             new MediaType(

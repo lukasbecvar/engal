@@ -76,4 +76,43 @@ class MediaRepository extends ServiceEntityRepository
 
         return $result['token'] ?? null;
     }
+
+    /**
+     * Checks if a gallery exists for a given owner ID and gallery name.
+     *
+     * @param int    $ownerId     The ID of the owner.
+     * @param string $galleryName The name of the gallery.
+     * @return bool True if the gallery exists, false otherwise.
+     */
+    public function isGalleryExists(int $ownerId, string $galleryName): bool
+    {
+        $result = $this->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->andWhere('m.owner_id = :owner_id')
+            ->andWhere('m.gallery_name = :gallery_name')
+            ->setParameter('owner_id', $ownerId)
+            ->setParameter('gallery_name', $galleryName)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result > 0;
+    }
+
+    /**
+     * Finds all media associated with a given gallery name and owner ID.
+     *
+     * @param int    $ownerId     The ID of the owner.
+     * @param string $galleryName The name of the gallery.
+     * @return array<mixed> The array of media entities.
+     */
+    public function findAllByGalleryName(int $ownerId, string $galleryName): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.gallery_name = :gallery_name')
+            ->setParameter('gallery_name', $galleryName)
+            ->andWhere('m.owner_id = :owner_id')
+            ->setParameter('owner_id', $ownerId)
+            ->getQuery()
+            ->getResult();
+    }
 }

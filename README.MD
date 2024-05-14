@@ -83,7 +83,7 @@ I am currently working on a complete recode of the application.
 - [X] Get minified thumbnail api endpoint
 - [X] Move media counter to sub navbar
 - [X] Display galleries in the dashboard 
-- [ ] Get media list by gallery name
+- [X] Get media list by gallery name
 - [ ] Gallery browser (photo & video (image priority))
 - [ ] Browse all galleries
 - [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)

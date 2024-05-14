@@ -57,7 +57,7 @@ class MediaFixtures extends Fixture
 
             $media = new Media();
             $media->setName('test' . $i . '.jpg');
-            $media->setGalleryName('gegreggr');
+            $media->setGalleryName('testing gallery');
             $media->setType('image/jpg');
             $media->setOwnerId(1);
             $media->setToken($token);

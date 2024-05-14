@@ -24,7 +24,8 @@ RUN apt-get update \
     && apt-get install -y \
         libpng-dev \
         libjpeg-dev \
-    && docker-php-ext-configure gd --with-jpeg \
+        libwebp-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) gd
 
 # enable apache rewrite module

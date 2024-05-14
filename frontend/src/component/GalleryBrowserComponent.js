@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// engal components
-import BreadcrumbComponent from "./navigation/BreadcrumbComponent";
-import NavigationComponent from "./navigation/NavigationComponent";
-
-// engal utils
-import { DEV_MODE } from "../config";
-
 export default function GalleryBrowserComponent() {
     // get local storage data
     const apiUrl = localStorage.getItem('api-url');
@@ -15,6 +8,10 @@ export default function GalleryBrowserComponent() {
     // main data store states
     const [thumbnails, setThumbnails] = useState([]);
     const [galleryName, setGalleryName] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [selectedPage, setSelectedPage] = useState(1);
+    const itemsPerPage = 50; // Number of items per page
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,8 +28,21 @@ export default function GalleryBrowserComponent() {
                 // decode gallery data
                 const data = await response.json();
 
-                // get images thumbnails
-                const thumbnailsPromises = data.gallery_data.map(async (item) => {
+                // set gallery name
+                setGalleryName(galleryName);
+
+                // calculate total pages
+                const totalItems = data.gallery_data.length;
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                setTotalPages(totalPages);
+
+                // slice the data to get images for the current page
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const currentThumbnails = data.gallery_data.slice(startIndex, endIndex);
+
+                // get thumbnails for current images
+                const thumbnailsPromises = currentThumbnails.map(async (item) => {
                     const thumbnailResponse = await fetch(`${apiUrl}/api/media/thumbnail?width=200&height=200&token=${item.token}`, {
                         headers: {
                             'Authorization': `Bearer ${loginToken}`
@@ -48,21 +58,34 @@ export default function GalleryBrowserComponent() {
 
                 const thumbnailsData = await Promise.all(thumbnailsPromises);
                 setThumbnails(thumbnailsData);
-                setGalleryName(galleryName);
             } catch (error) {
-                if (DEV_MODE) {
-                    console.error('Error fetching thumbnails: ' + error);
-                }
+                console.error('Error fetching thumbnails: ' + error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [currentPage]); // Re-run effect when currentPage changes
+
+    useEffect(() => {
+        // Scroll to top on currentPage change
+        window.scrollTo(0, 0);
+    }, [currentPage]);
+
+    const nextPage = () => {
+        setCurrentPage(prevPage => prevPage + 1);
+    };
+
+    const prevPage = () => {
+        setCurrentPage(prevPage => prevPage - 1);
+    };
+
+    const goToPage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        setSelectedPage(pageNumber);
+    };
 
     return (
         <div>
-            <NavigationComponent/>            
-            <BreadcrumbComponent/>
             <div className="app-component">
                 <p>gallery: {galleryName}</p>
                 <div>
@@ -72,6 +95,22 @@ export default function GalleryBrowserComponent() {
                             <p>{thumbnailData.name}</p>
                         </div>
                     ))}
+                </div>
+                <div>
+                    {currentPage > 1 && (
+                        <button onClick={prevPage}>Previous</button>
+                    )}
+                    {thumbnails.length === itemsPerPage && (
+                        <button onClick={nextPage}>Next</button>
+                    )}
+                </div>
+                <div>
+                    <p>Page {selectedPage} of {totalPages}</p>
+                    <select onChange={(e) => goToPage(parseInt(e.target.value))} value={selectedPage}>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <option key={index + 1} value={index + 1}>{index + 1}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
         </div>

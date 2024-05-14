@@ -87,6 +87,7 @@ I am currently working on a complete recode of the application.
 - [ ] Gallery browser (photo & video (image priority))
     - [ ] Limit browser content (infinite scroll)
     - [ ] CSS style browser
+- [ ] Symfony errors to json response
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player

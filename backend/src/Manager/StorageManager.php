@@ -96,7 +96,7 @@ class StorageManager
     {
         // get uploaded file extension
         $fileExtension = $file->getClientOriginalExtension();
-
+        
         try {
             // check file type
             if (str_contains($file->getClientMimeType(), 'image')) {

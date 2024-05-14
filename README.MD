@@ -110,6 +110,15 @@ I am currently working on a complete recode of the application.
 - [ ] Media delete function
 - [ ] Media move (move to gallery), single or multiple
 - [ ] Media edit (name, replace file with reupload)
+- [ ] Implement account profile images
+    - [ ] separated profile images storage
+    - [ ] Default image static asset
+- [ ] Edit navigation 
+    - [ ] Change username for profile image
+- [ ] Mini user panel (under profile photo click)
+    - [ ] Role info
+    - [ ] Account settings link
+    - [ ] Logout link
 - [ ] Account settings (change password, username, account delete)
 - [ ] Admin system
     - [ ] Dashboard

@@ -83,6 +83,14 @@ export default function UserNavigationComponent() {
                         <Link to="/" className="sub-navigation-link">home</Link>
                     </span>
 
+                    {/* gallery browser navigation */}
+                    {location.pathname == "/gallery" ? 
+                        <span>
+                            <span className="slash">/</span>
+                            <Link to="/gallery" className="sub-navigation-link">gallery</Link> 
+                        </span>
+                    : null}
+
                     {/* upload navigation */}
                     {location.pathname == "/upload" ? 
                         <span>

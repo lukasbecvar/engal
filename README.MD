@@ -86,11 +86,13 @@ I am currently working on a complete recode of the application.
 - [X] Get media list by gallery name
 - [ ] Gallery browser (photo & video (image priority))
 - [ ] Browse all galleries
-- [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
 ### Phase 9
+- [ ] Recode video thumbnail system (cache thumbnail outside storage directory)
+- [ ] Limit browser content (infinite scroll)
+- [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 - [ ] Data wipe command (drop all users, logs, storage data)
 - [ ] Backup command (extract all media to tar.gz archive)
 - [ ] Encryption system

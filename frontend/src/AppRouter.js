@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import UploadComponent from './component/UploadComponent'
 import LogoutComponent from './component/auth/LogoutComponent'
 import DashboardComponent from './component/DashboardComponent'
+import GalleryBrowserComponent from './component/GalleryBrowserComponent'
 import NotFoundComponent from './component/sub-component/error/NotFoundComponent'
 
 /**
@@ -21,6 +22,9 @@ export default function AppRouter() {
                 
                 {/* default components */}
                 <Route exact path="/" element={<DashboardComponent/>}/>
+
+                {/* gallery browser */}
+                <Route exact path="/gallery" element={<GalleryBrowserComponent/>}/>
                 <Route path="*" element={<NotFoundComponent/>}/>
             </Routes>
         </Router>

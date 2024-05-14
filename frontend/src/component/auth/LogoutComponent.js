@@ -34,7 +34,7 @@ export default function LogoutComponent() {
             window.location.href = '/'
         } catch (error) {
             if (DEV_MODE) {
-                console.error('ERROR: ' + error)
+                console.error('Error in logout request: ' + error)
             }
             setError("API connection error")
         }

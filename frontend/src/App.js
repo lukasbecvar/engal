@@ -46,7 +46,7 @@ export default function App() {
             })
             .catch((error) => {
                 if (DEV_MODE) {
-                    console.log('ERROR: ' + error)
+                    console.log('Error api init request: ' + error)
                 }
                 setApiAvailable(false)
                 setLoading(false)
@@ -69,7 +69,7 @@ export default function App() {
             })
             .catch((error) => {
                 if (DEV_MODE) {
-                    console.log('ERROR: ' + error)
+                    console.log('Error api init request: ' + error)
                 }
             })
             .finally(() => {
@@ -104,7 +104,7 @@ export default function App() {
                     }
                 } catch (error) {
                     if (DEV_MODE) {
-                        console.log('ERROR: ' + error)
+                        console.log('Error to fetch user status: ' + error)
                     }
 
                     // remove invalid token

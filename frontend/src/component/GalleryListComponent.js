@@ -1,11 +1,12 @@
+import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 // engal components
+import LoadingComponent from './sub-component/LoadingComponent'
 import ErrorMessageComponent from './sub-component/error/ErrorMessageComponent'
 
 // engal utils
 import { DEV_MODE } from '../config'
-import LoadingComponent from './sub-component/LoadingComponent'
 
 export default function GalleryListComponent() {
     // get storage data
@@ -14,12 +15,14 @@ export default function GalleryListComponent() {
 
     // status state
     const [loading, setLoading] = useState(true)
+    const [galleryImages, setGalleryImages] = useState([])
 
     // default gallery list
-    const [gallery_list, setGalleryList] = useState(null)
+    const [galleryList, setGalleryList] = useState(null)
     
+    // fetch gallery list
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchGalleryList = async () => {
             // check if user loggedin
             if (loginToken != null) {
                 try {
@@ -43,15 +46,67 @@ export default function GalleryListComponent() {
                     }
                 } catch (error) {
                     if (DEV_MODE) {
-                        console.log('error: ' + error)
+                        console.log('Error to fetch gallery list: ' + error)
                     }
                 } finally {
                     setLoading(false)
                 }
             }
         }
-        fetchUserData()
+        fetchGalleryList()
     }, [apiUrl, loginToken])
+
+    // fetch gallery thumbnail
+    useEffect(() => {
+        if (galleryList !== null) {
+            const fetchGalleryImages = async () => {
+                if (loginToken != null) {
+                    const images = await Promise.all(
+
+                        // fetch images for all galleries
+                        galleryList.map(async (gallery) => {
+                            const imageUrl = await fetchThumbnail(gallery.first_token)
+                            return { gallery, imageUrl }
+                        })
+                    )
+                    setGalleryImages(images)
+                    setLoading(false)
+                }
+            }
+            fetchGalleryImages()
+        }
+    }, [galleryList, loginToken])
+    
+    // fetch thumbnail resource
+    const fetchThumbnail = async (token) => {
+        // thumbnail resolution
+        const width = 500
+        const height = 500
+
+        // build api urů
+        const baseUrl = apiUrl + '/api/media/thumbnail'
+        const url = `${baseUrl}?width=${width}&height=${height}&token=${token}`
+
+        // build app header
+        const headers = {
+            'Authorization': `Bearer ${loginToken}`
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            })
+
+            const blob = await response.blob()
+            return URL.createObjectURL(blob)
+        } catch (error) {
+            if (DEV_MODE) {
+                console.error('Error to fetch gallery thumbnail: ' + error)
+            }
+            return null
+        }
+    }
 
     // show loading
     if (loading) {
@@ -59,10 +114,21 @@ export default function GalleryListComponent() {
     }
 
     return (
-        <div>
-            {gallery_list.map((gallery, index) => (
-                <option key={index} value={gallery.name}>{gallery.name} {gallery.first_token}</option>
-            ))}
+        <div className="gallery-container">
+            {galleryList !== null && galleryList.length === 0 ? (
+                <div>No galleries found.</div>
+            ) : (
+                galleryImages.map(({ gallery, imageUrl }, index) => (
+                    <Link to={"/gallery?name=" + gallery.name} key={gallery.name}>
+                        <div key={index} className="gallery-item">
+                            <img src={imageUrl} alt={gallery.name}/>
+                            <div className="gallery-overlay">
+                                <span className="gallery-name">{gallery.name}</span>
+                            </div>
+                        </div>
+                    </Link>
+                ))
+            )}
         </div>
-    );
+    )
 }

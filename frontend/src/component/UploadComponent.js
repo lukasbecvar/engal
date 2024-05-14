@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react' 
 
 // engal component
@@ -17,6 +18,8 @@ export default function UploadComponent() {
     // get storage data
     let apiUrl = localStorage.getItem('api-url')
     let loginToken = localStorage.getItem('login-token')
+
+    const navigate = useNavigate();
 
     // upload file list
     const [files, setFiles] = useState([])
@@ -70,7 +73,7 @@ export default function UploadComponent() {
                 setUploadPolicy(response.data.policy)
             } catch (error) {
                 if (DEV_MODE) {
-                    console.log('error to get upload policy: ' + error)
+                    console.log('Error to get upload policy: ' + error)
                 }
                 setApiError('Error to get upload policy')
             } finally {
@@ -187,6 +190,7 @@ export default function UploadComponent() {
             })
             if (response.data.message == 'files uploaded successfully') {
                 setStatus('File upload completed!')
+                navigate("/");
             }
         } catch (error) {
             if (DEV_MODE) {

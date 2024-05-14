@@ -9,7 +9,7 @@ export default function ResetApiUrlComponent() {
         localStorage.removeItem('api-url')
     } catch(error) {
         if (DEV_MODE) {
-            console.log('ERROR: ' + error)
+            console.log('Error to remove api url: ' + error)
         }
     } finally {
         window.location.href = '/';

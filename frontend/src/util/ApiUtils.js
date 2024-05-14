@@ -30,7 +30,7 @@ export async function getApiStatus(url) {
         
         if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
             if (DEV_MODE) {
-                console.log("api connection error: Unknown error")
+                console.log("API connection error: Unknown error")
             }
             return {
                 status: 'error',
@@ -56,7 +56,7 @@ export async function getApiStatus(url) {
         }
     } catch (error) {
         if (DEV_MODE) {
-            console.log("api connection error: Unknown error")
+            console.log("API connection error: Unknown error")
         }
         return {
             status: 'error',

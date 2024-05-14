@@ -55,7 +55,7 @@ export default function UserNavigationComponent() {
                     }
                 } catch (error) {
                     if (DEV_MODE) {
-                        console.log('error: ' + error)
+                        console.log('Error to fetch user data: ' + error)
                     }
                 } finally {
                     setLoading(false)

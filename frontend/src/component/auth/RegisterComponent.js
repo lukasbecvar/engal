@@ -105,7 +105,7 @@ export default function RegisterComponent() {
                         }
                     } catch (error) {
                         if (DEV_MODE) {
-                            console.error('ERROR: ' + error)
+                            console.error('Error in register request: ' + error)
                         }
                         setError('API connection error')
                     }
@@ -114,7 +114,7 @@ export default function RegisterComponent() {
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('ERROR: ' + error)
+                    console.error('Error in register request: ' + error)
                 }
                 setApiError('API connection error')
             }
@@ -146,7 +146,7 @@ export default function RegisterComponent() {
                 })
             } catch (error) {
                 if (DEV_MODE) {
-                    console.error('ERROR: ' + error)
+                    console.error('Error with get security policy: ' + error)
                 }
                 setApiError('Error with API connection')
             } finally {

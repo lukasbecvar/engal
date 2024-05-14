@@ -103,15 +103,15 @@ class MediaController extends AbstractController
     #[Route(['/api/media/thumbnail'], methods: ['GET'], name: 'api_media_thumbnail')]
     public function getThumbnail(Security $security, Request $request): ContentResponse
     {
-       // get logged user ID
+        // get logged user ID
         $userId = $this->userManager->getUserData($security)->getId();
 
-       // get data from token
+        // get data from token
         $token = $request->get('token');
         $width = $request->get('width');
         $height = $request->get('height');
 
-       // check if token set
+        // check if token set
         if (!isset($token)) {
             return $this->json([
                'status' => 'error',
@@ -120,7 +120,7 @@ class MediaController extends AbstractController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-       // check if media exist
+        // check if media exist
         if (!$this->storageManager->isMediaExist($userId, $token)) {
             return $this->json([
                'status' => 'error',
@@ -128,8 +128,9 @@ class MediaController extends AbstractController
                'message' => 'media token: ' . $token . ' not found'
             ], JsonResponse::HTTP_NOT_FOUND);
         }
+
         // get content
-        $content = $this->storageManager->getMediaThumbnail(1, $token, $width, $height);
+        $content = $this->storageManager->getMediaThumbnail($userId, $token, $width, $height);
 
         // create a streamed response with image thumbnail content
         return new StreamedResponse(function () use ($content) {

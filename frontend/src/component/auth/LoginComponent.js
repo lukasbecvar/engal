@@ -60,13 +60,13 @@ export default function LoginComponent() {
                     }
                 } catch (error) {
                     if (DEV_MODE) {
-                        console.log('ERROR: ' + error)
+                        console.log('Error in login request: ' + error)
                     }
                     setError('API connection error')
                 }
             } catch (error) {
                 if (DEV_MODE) {
-                    console.log('ERROR: ' + error)
+                    console.log('Error in login request: ' + error)
                 }
                 setError('API connection error')
             }

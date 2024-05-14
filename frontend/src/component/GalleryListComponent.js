@@ -16,14 +16,15 @@ export default function GalleryListComponent() {
     // status state
     const [loading, setLoading] = useState(true)
     const [galleryImages, setGalleryImages] = useState([])
+    const [allImagesLoaded, setAllImagesLoaded] = useState(false)
 
     // default gallery list
     const [galleryList, setGalleryList] = useState(null)
-    
+
     // fetch gallery list
     useEffect(() => {
         const fetchGalleryList = async () => {
-            // check if user loggedin
+            // check if user logged in
             if (loginToken != null) {
                 try {
                     // build request
@@ -37,12 +38,12 @@ export default function GalleryListComponent() {
 
                     // get response data
                     const data = await response.json()
-                        
-                    // check if user tokne is valid
-                    if (data.status == 'success') {
+
+                    // check if user token is valid
+                    if (data.status === 'success') {
                         setGalleryList(data.gallery_list)
                     } else {
-                        return <ErrorMessageComponent message={data.message}/>                   
+                        return <ErrorMessageComponent message={data.message}/>
                     }
                 } catch (error) {
                     if (DEV_MODE) {
@@ -62,7 +63,6 @@ export default function GalleryListComponent() {
             const fetchGalleryImages = async () => {
                 if (loginToken != null) {
                     const images = await Promise.all(
-
                         // fetch images for all galleries
                         galleryList.map(async (gallery) => {
                             const imageUrl = await fetchThumbnail(gallery.first_token)
@@ -70,20 +70,20 @@ export default function GalleryListComponent() {
                         })
                     )
                     setGalleryImages(images)
-                    setLoading(false)
+                    setAllImagesLoaded(true)
                 }
             }
             fetchGalleryImages()
         }
     }, [galleryList, loginToken])
-    
+
     // fetch thumbnail resource
     const fetchThumbnail = async (token) => {
         // thumbnail resolution
         const width = 500
         const height = 500
 
-        // build api urů
+        // build api url
         const baseUrl = apiUrl + '/api/media/thumbnail'
         const url = `${baseUrl}?width=${width}&height=${height}&token=${token}`
 
@@ -109,7 +109,7 @@ export default function GalleryListComponent() {
     }
 
     // show loading
-    if (loading) {
+    if (loading || !allImagesLoaded) {
         return <LoadingComponent/>
     }
 

@@ -85,31 +85,34 @@ I am currently working on a complete recode of the application.
 - [X] Display galleries in the dashboard 
 - [X] Get media list by gallery name
 - [ ] Gallery browser (photo & video (image priority))
-- [ ] Browse all galleries
+    - [ ] Limit browser content (infinite scroll)
+    - [ ] CSS style browser
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
 ### Phase 9
-- [ ] Recode video thumbnail system (cache thumbnail outside storage directory)
-- [ ] Limit browser content (infinite scroll)
-- [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
-- [ ] Data wipe command (drop all users, logs, storage data)
-- [ ] Backup command (extract all media to tar.gz archive)
+- [ ] Recode video/image thumbnail system (cache thumbnail outside storage directory)
 - [ ] Encryption system
 ### Phase 10
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 ### Phase 11
 - [ ] Deploy system
-- [ ] Basic documents in markdown
+- [ ] Basic documentation in markdown
 
 ## TODOS: version 5
+- [ ] Browse all galleries
+- [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 - [ ] Gallery info (show gallery data: count, owner, time data)
 - [ ] Gallery share (configurate in gallery info), (use owner_id in databse [json/array])
 - [ ] Media info (get media data, name, gallery_name, size, type, time data)
 - [ ] Media delete function
-- [ ] Media move (move to gallery), single or multiple
 - [ ] Media edit (name, replace file with reupload)
+- [ ] Media move (move to gallery), single or multiple
+
+## TODOS: version 6
+- [ ] Data wipe command (drop all users, logs, storage data)
+- [ ] Backup command (extract all media to tar.gz archive)
 - [ ] Implement account profile images
     - [ ] separated profile images storage
     - [ ] Default image static asset

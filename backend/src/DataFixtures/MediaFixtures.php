@@ -39,7 +39,7 @@ class MediaFixtures extends Fixture
 
         $media = new Media();
         $media->setName('test');
-        $media->setGalleryName('gegreggr');
+        $media->setGalleryName('testing gallery');
         $media->setType('image/png');
         $media->setOwnerId(1);
         $media->setToken($token);
@@ -77,7 +77,7 @@ class MediaFixtures extends Fixture
 
             $media = new Media();
             $media->setName('test' . $i . '.mp4');
-            $media->setGalleryName('gegreggr');
+            $media->setGalleryName('testing gallery');
             $media->setType('video/mp4');
             $media->setOwnerId(1);
             $media->setToken($token);

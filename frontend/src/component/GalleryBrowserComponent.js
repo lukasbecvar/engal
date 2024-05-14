@@ -5,16 +5,19 @@ export default function GalleryBrowserComponent() {
     const apiUrl = localStorage.getItem('api-url');
     const loginToken = localStorage.getItem('login-token');
 
+    const [galleryData, setGalleryData] = useState([]);
+    const [loading, setLoading] = useState(false); // State for indicating loading
+
     // main data store states
     const [thumbnails, setThumbnails] = useState([]);
     const [galleryName, setGalleryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [selectedPage, setSelectedPage] = useState(1);
-    const itemsPerPage = 50; // Number of items per page
+    const itemsPerPage = 10; // Number of items per page
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true); // Set loading to true when fetching data
+
             try {
                 const galleryName = new URLSearchParams(window.location.search).get('name');
 
@@ -31,14 +34,11 @@ export default function GalleryBrowserComponent() {
                 // set gallery name
                 setGalleryName(galleryName);
 
-                // calculate total pages
-                const totalItems = data.gallery_data.length;
-                const totalPages = Math.ceil(totalItems / itemsPerPage);
-                setTotalPages(totalPages);
+                setGalleryData(data.gallery_data)
 
                 // slice the data to get images for the current page
-                const startIndex = (currentPage - 1) * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
+                const startIndex = 0; // Always start from the beginning
+                const endIndex = currentPage * itemsPerPage;
                 const currentThumbnails = data.gallery_data.slice(startIndex, endIndex);
 
                 // get thumbnails for current images
@@ -60,30 +60,18 @@ export default function GalleryBrowserComponent() {
                 setThumbnails(thumbnailsData);
             } catch (error) {
                 console.error('Error fetching thumbnails: ' + error);
+            } finally {
+                setLoading(false); // Set loading to false when data fetching is done
             }
         };
 
         fetchData();
     }, [currentPage]); // Re-run effect when currentPage changes
 
-    useEffect(() => {
-        // Scroll to top on currentPage change
-        window.scrollTo(0, 0);
-    }, [currentPage]);
-
     const nextPage = () => {
         setCurrentPage(prevPage => prevPage + 1);
     };
-
-    const prevPage = () => {
-        setCurrentPage(prevPage => prevPage - 1);
-    };
-
-    const goToPage = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        setSelectedPage(pageNumber);
-    };
-
+    
     return (
         <div>
             <div className="app-component">
@@ -95,22 +83,14 @@ export default function GalleryBrowserComponent() {
                             <p>{thumbnailData.name}</p>
                         </div>
                     ))}
-                </div>
-                <div>
-                    {currentPage > 1 && (
-                        <button onClick={prevPage}>Previous</button>
+
+                    {loading && <p>Načítání...</p>}
+
+                    {!loading && galleryData.length !== thumbnails.length && (
+                        <div>
+                            <button onClick={nextPage}>Next</button>
+                        </div>
                     )}
-                    {thumbnails.length === itemsPerPage && (
-                        <button onClick={nextPage}>Next</button>
-                    )}
-                </div>
-                <div>
-                    <p>Page {selectedPage} of {totalPages}</p>
-                    <select onChange={(e) => goToPage(parseInt(e.target.value))} value={selectedPage}>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <option key={index + 1} value={index + 1}>{index + 1}</option>
-                        ))}
-                    </select>
                 </div>
             </div>
         </div>

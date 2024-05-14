@@ -85,7 +85,6 @@ I am currently working on a complete recode of the application.
 - [X] Display galleries in the dashboard 
 - [X] Get media list by gallery name
 - [ ] Gallery browser (photo & video (image priority))
-    - [ ] Limit browser content (infinite scroll)
     - [ ] CSS style browser
 - [ ] Symfony errors to json response
 ### Phase 8

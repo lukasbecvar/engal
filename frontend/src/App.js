@@ -7,9 +7,9 @@ import { APP_VERSION, DEV_MODE } from './config'
 import AppRouter from './AppRouter'
 import SetupComponent from './component/SetupComponent'
 import AuthComponent from './component/auth/AuthComponent'
+import ApiErrorComponent from './component/error/ApiErrorComponent'
 import LoadingComponent from './component/sub-component/LoadingComponent'
-import ApiErrorComponent from './component/sub-component/error/ApiErrorComponent'
-import ErrorMessageComponent from './component/sub-component/error/ErrorMessageComponent'
+import ErrorMessageComponent from './component/error/ErrorMessageComponent'
 
 // import engal utils
 import { getApiStatus, isApiAvailable } from './util/ApiUtils'

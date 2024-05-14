@@ -1,5 +1,5 @@
 // engal utils
-import { DEV_MODE } from "../../config"
+import { DEV_MODE } from "../../config";
 
 /*
  * Reset api access point url component

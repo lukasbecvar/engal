@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 // engal components
 import LoginComponent from './LoginComponent'
 import RegisterComponent from './RegisterComponent'
-import NotFoundComponent from '../sub-component/error/NotFoundComponent'
+import NotFoundComponent from '../error/NotFoundComponent'
 import ResetApiUrlComponent from '../sub-component/ResetApiUrlComponent'
 
 /**

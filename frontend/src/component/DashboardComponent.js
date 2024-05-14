@@ -1,7 +1,7 @@
 // engal components
 import GalleryListComponent from "./GalleryListComponent"
-import MainNavigationComponent from "./sub-component/navigation/MainNavigationComponent"
-import UserNavigationComponent from "./sub-component/navigation/UserNavigationComponent"
+import BreadcrumbComponent from "./navigation/BreadcrumbComponent"
+import NavigationComponent from "./navigation/NavigationComponent"
 
 /**
  * Component main app (user) dashboard
@@ -9,8 +9,8 @@ import UserNavigationComponent from "./sub-component/navigation/UserNavigationCo
 export default function DashboardComponent() {
     return (
         <div>
-            <MainNavigationComponent/>            
-            <UserNavigationComponent/>
+            <NavigationComponent/>            
+            <BreadcrumbComponent/>
             <div className="app-component">
                 <GalleryListComponent/>
             </div>

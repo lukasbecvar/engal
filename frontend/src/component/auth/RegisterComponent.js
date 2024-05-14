@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 
 // engal components
 import LoadingComponent from "../sub-component/LoadingComponent"
+import ErrorMessageComponent from "../error/ErrorMessageComponent"
 import AuthFooterComponent from '../sub-component/AuthFooterComponent'
-import ErrorMessageComponent from "../sub-component/error/ErrorMessageComponent"
 
 // engal utils
 import { DEV_MODE } from "../../config"

@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 
 // engal component
 import LoadingComponent from './sub-component/LoadingComponent'
-import ErrorMessageComponent from './sub-component/error/ErrorMessageComponent'
-import UserNavigationComponent from './sub-component/navigation/UserNavigationComponent'
-import MainNavigationComponent from './sub-component/navigation/MainNavigationComponent'
+import ErrorMessageComponent from './error/ErrorMessageComponent'
+import BreadcrumbComponent from './navigation/BreadcrumbComponent'
+import NavigationComponent from './navigation/NavigationComponent'
 
 // engal utils
 import { DEV_MODE } from '../config'
@@ -212,8 +212,8 @@ export default function UploadComponent() {
 
     return (
         <div>
-            <MainNavigationComponent/>            
-            <UserNavigationComponent/>
+            <NavigationComponent/>            
+            <BreadcrumbComponent/>
             <div className="app-component upload-component">
                 
                 <div className="upload-form-container">

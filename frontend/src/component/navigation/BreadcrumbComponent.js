@@ -6,13 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faVideo, faFolder } from '@fortawesome/free-solid-svg-icons';
 
 // engal components
-import LoadingComponent from '../LoadingComponent'
-import ErrorMessageComponent from '../error/ErrorMessageComponent'
+import LoadingComponent from '../sub-component/LoadingComponent';
+import ErrorMessageComponent from '../error/ErrorMessageComponent';
 
 /**
  * User panel navigation
  */
-export default function UserNavigationComponent() {
+export default function BreadcrumbComponent() {
+    // get url query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+
     // storage data
     let apiUrl = localStorage.getItem('api-url')
     let loginToken = localStorage.getItem('login-token')
@@ -87,7 +90,7 @@ export default function UserNavigationComponent() {
                     {location.pathname == "/gallery" ? 
                         <span>
                             <span className="slash">/</span>
-                            <Link to="/gallery" className="sub-navigation-link">gallery</Link> 
+                            <Link to={"/gallery?name=" + urlParams.get('name')} className="sub-navigation-link">{urlParams.get('name')}</Link> 
                         </span>
                     : null}
 

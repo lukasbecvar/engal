@@ -1,6 +1,6 @@
 // engal components
-import MainNavigationComponent from "./sub-component/navigation/MainNavigationComponent"
-import UserNavigationComponent from "./sub-component/navigation/UserNavigationComponent"
+import BreadcrumbComponent from "./navigation/BreadcrumbComponent"
+import NavigationComponent from "./navigation/NavigationComponent"
 
 /**
  * Gallery content browser component
@@ -11,8 +11,8 @@ export default function GalleryBrowserComponent() {
 
     return (
         <div>
-            <MainNavigationComponent/>            
-            <UserNavigationComponent/>
+            <NavigationComponent/>            
+            <BreadcrumbComponent/>
             <div className="app-component">
                 <p>gallery: {urlParams.get('name')}</p>
             </div>

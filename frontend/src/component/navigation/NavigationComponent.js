@@ -7,7 +7,7 @@ import { faSignOutAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
 /**
  * Main dashboard navigation
  */
-export default function MainNavigationComponent() {
+export default function NavigationComponent() {
     return (
         <div className="main-nav">
             <div>

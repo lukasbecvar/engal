@@ -58,7 +58,7 @@ export default function GalleryBrowserComponent() {
                     let endpoint = 'content'
 
                     // check if media type is video (get video thumbnail)
-                    if (item.type && item.type.includes('video')) {
+                    if (item.type && !item.type.includes('image')) {
                         endpoint = 'thumbnail';
                     }
 

@@ -121,10 +121,10 @@ class MediaRepository extends ServiceEntityRepository
 
         // split result types
         foreach ($result as $media) {
-            if (strpos($media->getType(), 'video') !== false) {
-                $videos[] = $media;
-            } else {
+            if (str_contains($media->getType(), 'image')) {
                 $images[] = $media;
+            } else {
+                $videos[] = $media;
             }
         }
 

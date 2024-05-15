@@ -342,4 +342,51 @@ class StorageManager
 
         return null;
     }
+
+    /**
+     * Preloads thumbnails for all media files in the system.
+     *
+     * Retrieves all media files from the repository and iterates through each one.
+     * For each media file, it retrieves the associated media data and checks if it's an image or a video.
+     * If it's a video, it fetches the thumbnail. Then, it checks if a thumbnail already exists for the media file.
+     * If not, it stores the thumbnail.
+     *
+     * @param string $referer The referer indicating where the command originated from.
+     *                        If 'console_command', progress messages are printed to console outputs.
+     *
+     * @throws \Exception If an error occurs during the thumbnail preloading process.
+     *
+     * @return void
+     */
+    public function preloadAllThumbnails(string $referer = null): void
+    {
+        $mediaList = $this->mediaRepository->findAllMedia();
+
+        try {
+            foreach ($mediaList as $media) {
+                // get media data
+                $userId = $media['owner_id'];
+                $token = $media['token'];
+
+                // get media file
+                $mediaFile = $this->getMediaFile($userId, $token);
+
+                if (!str_contains($media['type'], 'image')) {
+                    $mediaFile = $this->getVideoThumbnail($userId, $token);
+                }
+
+                // check if thumbnail is already exist
+                if ($this->getMediaExistThumbnail($userId, $token) == null) {
+                    $this->storeThumbnail($mediaFile, $userId, $token);
+                }
+
+                // check command referer (print progress to console outputs)
+                if ($referer == 'console_command') {
+                    dump('Thumbnail: (' . $media['id'] . '/' . count($mediaList) . ') -> ' . $token . ' preload completed!');
+                }
+            }
+        } catch (\Exception $e) {
+            $this->errorManager->handleError('error to preload thumbnails: ' . $e->getMessage(), 500);
+        }
+    }
 }

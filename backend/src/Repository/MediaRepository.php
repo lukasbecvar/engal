@@ -17,6 +17,19 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retrieves all media files from the repository.
+     *
+     * This method fetches all media files from the database and returns an array of media data,
+     * including the media ID, owner ID, type, and token.
+     *
+     * @return array<array<int|string>> The array containing media data, each element representing a media file.
+     */
+    public function findAllMedia(): array
+    {
+        return $this->createQueryBuilder('m')->select('m.id, m.owner_id, m.type, m.token')->getQuery()->getResult();
+    }
+
+    /**
      * Finds distinct gallery names for a given user ID.
      *
      * @param int $userId The ID of the user

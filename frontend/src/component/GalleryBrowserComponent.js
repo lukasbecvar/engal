@@ -70,6 +70,8 @@ export default function GalleryBrowserComponent() {
                         name: item.name,
                         type: item.type
                     }
+
+                    return () => URL.revokeObjectURL(imageUrl);
                 })
 
                 // set image data to images list

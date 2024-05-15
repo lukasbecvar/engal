@@ -528,7 +528,7 @@ body {
 .browser-component img {
     object-fit: cover;
     max-width: 300px;
-    max-height: 300px;
+    max-height: 250px;
 }
 
 .browser-component .next-load-button {

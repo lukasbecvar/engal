@@ -54,16 +54,8 @@ export default function GalleryBrowserComponent() {
                 // get images for current page
                 const imagesPromises = currentimages.map(async (item) => {
 
-                    // default content endopint
-                    let endpoint = 'content'
-
-                    // check if media type is video (get video thumbnail)
-                    if (item.type && !item.type.includes('image')) {
-                        endpoint = 'thumbnail';
-                    }
-
                     // get media data
-                    const imageResponse = await fetch(`${apiUrl}/api/media/${endpoint}?width=300&height=200&token=${item.token}`, {
+                    const imageResponse = await fetch(`${apiUrl}/api/media/thumbnail?width=400&height=400&token=${item.token}`, {
                         headers: {
                             'Authorization': `Bearer ${loginToken}`
                         }

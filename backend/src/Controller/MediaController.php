@@ -97,8 +97,6 @@ class MediaController extends AbstractController
     #[Response(response: 200, description: 'The success photo thumbnail resource type jpg')]
     #[Response(response: 400, description: 'The token, width or height parameters not found in requets')]
     #[Response(response: 404, description: 'The media not found error')]
-    #[Parameter(name: 'width', in: 'query', schema: new Schema(type: 'string'), description: 'Media width', required: true)]
-    #[Parameter(name: 'height', in: 'query', schema: new Schema(type: 'string'), description: 'Media height', required: true)]
     #[Parameter(name: 'token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
     #[Route(['/api/media/thumbnail'], methods: ['GET'], name: 'api_media_thumbnail')]
     public function getThumbnail(Security $security, Request $request): ContentResponse
@@ -108,15 +106,13 @@ class MediaController extends AbstractController
 
         // get data from token
         $token = $request->get('token');
-        $width = $request->get('width');
-        $height = $request->get('height');
 
         // check if token set
         if (!isset($token)) {
             return $this->json([
                'status' => 'error',
                'code' => JsonResponse::HTTP_BAD_REQUEST,
-               'message' => 'token, width and height parameters is required'
+               'message' => 'token parameter is required'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -130,7 +126,7 @@ class MediaController extends AbstractController
         }
 
         // get content
-        $content = $this->storageManager->getMediaThumbnail($userId, $token, $width, $height);
+        $content = $this->storageManager->getMediaThumbnail($userId, $token);
 
         // create a streamed response with image thumbnail content
         return new StreamedResponse(function () use ($content) {

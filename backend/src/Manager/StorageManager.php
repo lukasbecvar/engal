@@ -210,19 +210,22 @@ class StorageManager
     }
 
     /**
-     * Retrieves the thumbnail of a media resource based on the provided parameters.
+     * Retrieves the thumbnail of a media resource.
      *
      * @param int $userId The ID of the user.
      * @param string $token The token associated with the media resource.
-     * @param int $width The width of the thumbnail.
-     * @param int $height The height of the thumbnail.
      *
-     * @return object The encoded image object representing the thumbnail.
+     * @return mixed The encoded image object representing the thumbnail.
      */
-    public function getMediaThumbnail(int $userId, string $token, int $width, int $height): object
+    public function getMediaThumbnail(int $userId, string $token): mixed
     {
-        // init Intervention manager
-        $manager = new ImageManager(new Driver());
+        // get thumbnail cache if exist
+        $existedThumbnail = $this->getMediaExistThumbnail($userId, $token);
+
+        // return thumbnail if is already exist
+        if ($existedThumbnail != null) {
+            return $existedThumbnail;
+        }
 
         // get media type
         $mediaType = $this->getMediaType($token);
@@ -234,14 +237,7 @@ class StorageManager
             $mediaFile = $this->getVideoThumbnail($userId, $token);
         }
 
-        // read media file
-        $image = $manager->read($mediaFile);
-
-        // resize thumbnail
-        $image->resize($width, $height);
-
-        // return encoded image object
-        return $image->encode();
+        return $this->storeThumbnail($mediaFile, $userId, $token);
     }
 
     /**
@@ -258,7 +254,7 @@ class StorageManager
         $mediaFile = $this->getMediaFile($userId, $token);
 
         // build video thumnail file path
-        $thumbnailFilename = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/videos/thumbnail_' . $token . '.jpg';
+        $thumbnailFilename = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/thumbnails/' . $token . '.jpg';
 
         // create file path
         if (!file_exists($thumbnailFilename)) {
@@ -271,5 +267,79 @@ class StorageManager
         }
 
         return file_get_contents($thumbnailFilename);
+    }
+
+    /**
+     * Store a thumbnail of the given media file and return the encoded thumbnail image.
+     *
+     * @param string $mediaFile The path to the original media file.
+     * @param int $userId The user ID associated with the media.
+     * @param string $token The unique token identifier for the thumbnail.
+     * @return mixed The encoded thumbnail image object, or null if the thumbnail couldn't be created.
+     */
+    public function storeThumbnail(string $mediaFile, int $userId, string $token): mixed
+    {
+        // init Intervention manager
+        $manager = new ImageManager(new Driver());
+
+        // read media file
+        $image = $manager->read($mediaFile);
+
+        // get actual image property
+        $width = $image->width();
+        $height = $image->height();
+
+        // check if image can by resized
+        if ($width < 700 && $height < 1300) {
+            return $this->getMediaContent($userId, $token);
+        }
+
+        // thumbnail directory path
+        $thumbnailDirectory = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/thumbnails/';
+
+        // create thumbnail directory
+        if (!file_exists($thumbnailDirectory)) {
+            mkdir($thumbnailDirectory, 0777, true);
+        }
+
+        // calculate new resolution
+        $newWidth = $width * 0.2;
+        $newHeight = $height * 0.2;
+
+        // resize media file
+        $image->resize((int) $newWidth, (int) $newHeight);
+
+        // encode thumbnail image
+        $image = $image->encode();
+
+        // build thumbnail image pathern
+        $thumbnailPathern = $thumbnailDirectory . $token . '.jpg';
+
+        // save image thumbnail to storage cache
+        file_put_contents($thumbnailPathern, $image);
+
+        // return encoded image object
+        return $image;
+    }
+
+    /**
+     * Retrieve an existing media thumbnail image.
+     *
+     * @param int $userId The user ID associated with the media.
+     * @param string $token The unique token identifier for the thumbnail.
+     * @return string|null The content of the thumbnail image file, or null if the thumbnail doesn't exist.
+     */
+    public function getMediaExistThumbnail(int $userId, string $token): ?string
+    {
+        // thumbnail directory path
+        $thumbnailFilePathern = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/thumbnails/' . $token . '.jpg';
+
+        // check if thumbnail found
+        if (file_exists($thumbnailFilePathern)) {
+            // return thumbnal file
+            return file_get_contents($thumbnailFilePathern);
+        }
+
+        return null;
     }
 }

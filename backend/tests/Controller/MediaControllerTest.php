@@ -110,7 +110,7 @@ class MediaControllerTest extends CustomCase
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
         $this->assertSame(400, $responseData['code']);
-        $this->assertEquals('token, width and height parameters is required', $responseData['message']);
+        $this->assertEquals('token parameter is required', $responseData['message']);
     }
 
     /**

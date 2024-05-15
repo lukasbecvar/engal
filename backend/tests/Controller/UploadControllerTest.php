@@ -158,7 +158,7 @@ class UploadControllerTest extends CustomCase
         // prepare files for upload
         $files = [
             $this->createFakeUploadedFile('test1.png', 'image/png'),
-            $this->createFakeUploadedFile('test2.jpg', 'image/jpeg')
+            $this->createFakeUploadedFile('test2.jpg', 'image/jpg')
         ];
 
         // make request to the endpoint

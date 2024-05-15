@@ -87,11 +87,13 @@ I am currently working on a complete recode of the application.
 - [X] Gallery browser (photo & video (image priority))
     - [X] CSS style browser
 - [ ] Symfony errors to json response
+- [ ] Docker env setup php-fpm
+- [ ] Compress thumbnail images
+- [ ] Recode video/image thumbnail system (cache thumbnail outside storage directory)
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
 ### Phase 9
-- [ ] Recode video/image thumbnail system (cache thumbnail outside storage directory)
 - [ ] Encryption system
 ### Phase 10
 - [ ] Port frontend to electron

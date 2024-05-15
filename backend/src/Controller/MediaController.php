@@ -150,10 +150,10 @@ class MediaController extends AbstractController
     #[Route(['/api/media/preload/thumbnails'], methods: ['GET'], name: 'api_media_preload_thumbnails')]
     public function preloadThumbnails(): JsonResponse
     {
-        try {    
+        try {
             // execute preload command
             exec('cd .. && php bin/console app:thumbnails:preload > /dev/null 2>&1 &');
-    
+
             return $this->json([
                 'status' => 'success',
                 'code' => JsonResponse::HTTP_OK,

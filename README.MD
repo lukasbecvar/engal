@@ -84,8 +84,8 @@ I am currently working on a complete recode of the application.
 - [X] Move media counter to sub navbar
 - [X] Display galleries in the dashboard 
 - [X] Get media list by gallery name
-- [ ] Gallery browser (photo & video (image priority))
-    - [ ] CSS style browser
+- [X] Gallery browser (photo & video (image priority))
+    - [X] CSS style browser
 - [ ] Symfony errors to json response
 ### Phase 8
 - [ ] Image browser

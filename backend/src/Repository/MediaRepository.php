@@ -107,12 +107,31 @@ class MediaRepository extends ServiceEntityRepository
      */
     public function findAllByGalleryName(int $ownerId, string $galleryName): array
     {
-        return $this->createQueryBuilder('m')
+        $qb = $this->createQueryBuilder('m')
             ->andWhere('m.gallery_name = :gallery_name')
             ->setParameter('gallery_name', $galleryName)
             ->andWhere('m.owner_id = :owner_id')
-            ->setParameter('owner_id', $ownerId)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('owner_id', $ownerId);
+
+        $result = $qb->getQuery()->getResult();
+
+        // defalut media places
+        $images = [];
+        $videos = [];
+
+        // split result types
+        foreach ($result as $media) {
+            if (strpos($media->getType(), 'video') !== false) {
+                $videos[] = $media;
+            } else {
+                $images[] = $media;
+            }
+        }
+
+        // merge results
+        $mergedResult = array_merge($images, $videos);
+
+        // return final content list
+        return $mergedResult;
     }
 }

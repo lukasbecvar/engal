@@ -473,12 +473,10 @@ body {
 .gallery-container .gallery-item img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    min-height: 298px;
-    max-height: 298px;
-    max-width: 298px;
-    max-height: 298px;
-    background-color: rgb(170, 170, 170);
+    object-fit: cover;
+    width: 298px;
+    height: 298px;
+    background-color: rgb(26, 26, 26);
 }
 
 .gallery-container .gallery-item .gallery-overlay {
@@ -528,11 +526,9 @@ body {
 }
 
 .browser-component img {
-    object-fit: contain;
-    min-height: 298px;
-    max-height: 298px;
-    max-width: 298px;
-    max-height: 298px;
+    object-fit: cover;
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .browser-component .next-load-button {

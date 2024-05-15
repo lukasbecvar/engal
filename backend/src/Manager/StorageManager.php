@@ -303,8 +303,8 @@ class StorageManager
         }
 
         // calculate new resolution
-        $newWidth = $width * 0.2;
-        $newHeight = $height * 0.2;
+        $newWidth = $width * 0.3;
+        $newHeight = $height * 0.3;
 
         // resize media file
         $image->resize((int) $newWidth, (int) $newHeight);

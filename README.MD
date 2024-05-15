@@ -87,8 +87,7 @@ I am currently working on a complete recode of the application.
 - [X] Gallery browser (photo & video (image priority))
     - [X] CSS style browser
 - [X] Recode video/image thumbnail system (cache thumbnail outside storage directory)
-- [ ] Symfony errors to json response
-- [ ] Docker env setup php-fpm
+- [X] Symfony errors to json response
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player

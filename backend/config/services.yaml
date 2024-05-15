@@ -14,6 +14,11 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # internal exception error event
+    App\Event\Subscriber\ExceptionEventSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
     # error event subscriber
     App\Event\Subscriber\ErrorEventSubscriber:
         tags:

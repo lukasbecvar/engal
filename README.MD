@@ -90,17 +90,20 @@ I am currently working on a complete recode of the application.
 - [X] Symfony errors to json response
 - [X] Thumbnails preload
 - [X] Gallery browser pagination (max 200 images)
+- [X] Thumbnail reload (use symfony messenger for async process)
+- [X] Symfony messneger run in backend container
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
 ### Phase 9
-- [ ] Encryption system
-### Phase 10
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
-### Phase 11
+### Phase 10
 - [ ] Deploy system
 - [ ] Basic documentation in markdown
+
+## TODOS: version 4.5
+- [ ] Encryption system
 
 ## TODOS: version 5
 - [ ] Browse all galleries

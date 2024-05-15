@@ -1,0 +1,8 @@
+framework:
+    messenger:
+        transports:
+            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+
+        # messages list
+        routing:
+            'App\Message\PreloadThumbnailsMessage': async

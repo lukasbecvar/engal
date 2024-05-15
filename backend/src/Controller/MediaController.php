@@ -8,10 +8,12 @@ use OpenApi\Attributes\Schema;
 use App\Manager\StorageManager;
 use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Parameter;
+use App\Message\PreloadThumbnailsMessage;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Response as ContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -140,7 +142,7 @@ class MediaController extends AbstractController
      * Preload app thumbnails.
      *
      * This method is responsible for preloading thumbnails for the application.
-     * It checks if the process is already running before starting a new one.
+     * * @param MessageBusInterface $messageBus The symfony messenger async dispatcher.
      *
      * @return JsonResponse The JSON response indicating the status of the operation.
      */
@@ -148,12 +150,14 @@ class MediaController extends AbstractController
     #[Response(response: 200, description: 'Preload command run success')]
     #[Response(response: 500, description: 'Preload command run error')]
     #[Route(['/api/media/preload/thumbnails'], methods: ['GET'], name: 'api_media_preload_thumbnails')]
-    public function preloadThumbnails(): JsonResponse
+    public function preloadThumbnails(MessageBusInterface $messageBus): JsonResponse
     {
         try {
-            // execute preload command
-            exec('cd .. && php bin/console app:thumbnails:preload > /dev/null 2>&1 &');
+            // dispatch async process
+            $message = new PreloadThumbnailsMessage('your_thumbnail_path');
+            $messageBus->dispatch($message);
 
+            // return status
             return $this->json([
                 'status' => 'success',
                 'code' => JsonResponse::HTTP_OK,

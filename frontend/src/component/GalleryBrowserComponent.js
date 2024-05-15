@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+
 // engal components
 import LoadingComponent from "./sub-component/LoadingComponent"
 import NavigationComponent from "./navigation/NavigationComponent"
@@ -17,19 +20,17 @@ export default function GalleryBrowserComponent() {
     const itemsPerPage = ELEMENTS_PER_PAGE
 
     // main gallery data
-    const [galleryData, setGalleryData] = useState([])
     const [images, setImages] = useState([])
 
     // status states
     const [loading, setLoading] = useState(true)
-    const [loadingMore, setloadingMoreMore] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
 
     // main data fetch
     useEffect(() => {
         const fetchData = async () => {
-            // enable loading info
-            setloadingMoreMore(true)
+            setLoading(true)
 
             try {
                 // get gallery name from query parameter
@@ -45,44 +46,18 @@ export default function GalleryBrowserComponent() {
                 // decode gallery data
                 const data = await response.json()
 
-                // slice the data to get images for the current page
-                const startIndex = 0
-                const endIndex = currentPage * itemsPerPage
-                const currentimages = data.gallery_data.slice(startIndex, endIndex)
+                // calculate total pages
+                const totalImages = data.gallery_data.length
+                const totalPages = Math.ceil(totalImages / itemsPerPage)
+                setTotalPages(totalPages)
 
-                // set gallery data
-                setGalleryData(data.gallery_data)
-
-                // get images for current page
-                const imagesPromises = currentimages.map(async (item) => {
-
-                    // get media data
-                    const imageResponse = await fetch(`${apiUrl}/api/media/thumbnail?token=${item.token}`, {
-                        headers: {
-                            'Authorization': `Bearer ${loginToken}`
-                        }
-                    })
-                    const blob = await imageResponse.blob()
-
-                    // build image data array
-                    return { 
-                        imageUrl: URL.createObjectURL(blob), 
-                        name: item.name,
-                        type: item.type
-                    }
-
-                    return () => URL.revokeObjectURL(imageUrl);
-                })
-
-                // set image data to images list
-                const imagesData = await Promise.all(imagesPromises)
-                setImages(imagesData)
+                // load images for current page
+                loadImagesForPage(currentPage, data.gallery_data)
             } catch (error) {
                 if (DEV_MODE) {
                     console.error('Error fetching images: ' + error)
                 }
             } finally {
-                setloadingMoreMore(false)
                 setLoading(false)
             }
         }
@@ -90,30 +65,54 @@ export default function GalleryBrowserComponent() {
         fetchData()
     }, [currentPage])
 
-    // scroll end detect (infinite scroll)
-    useEffect(() => {
-        const handleScroll = () => {
-            if (
-                window.innerHeight + document.documentElement.scrollTop >= document.documentElement.scrollHeight - 100
-                && !loadingMore 
-                && galleryData.length !== images.length
-            ) {
-                nextPage()
+    // load images for specific page
+    const loadImagesForPage = async (page, data) => {
+        const startIndex = (page - 1) * itemsPerPage
+        const endIndex = page * itemsPerPage
+        const currentPageData = data.slice(startIndex, endIndex)
+
+        const imagesPromises = currentPageData.map(async (item) => {
+            // get media data
+            const imageResponse = await fetch(`${apiUrl}/api/media/thumbnail?token=${item.token}`, {
+                headers: {
+                    'Authorization': `Bearer ${loginToken}`
+                }
+            })
+            const blob = await imageResponse.blob()
+
+            // build image data array
+            return { 
+                imageUrl: URL.createObjectURL(blob), 
+                name: item.name,
+                type: item.type
             }
-        }
+        })
 
-        window.addEventListener('scroll', handleScroll)
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [loadingMore])
-
-    // next page click detect
-    const nextPage = () => {
-        setCurrentPage(prevPage => prevPage + 1)
+        // set image data to images list
+        const imagesData = await Promise.all(imagesPromises)
+        setImages(imagesData)
     }
-    
+
+    // handle page change
+    const onPageChange = (page) => {
+        setCurrentPage(page)
+    }
+
+    // handle next page
+    const onNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
+
+    // handle previous page
+    const onPrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+
+    // show loading
     if (loading) {
         return <LoadingComponent/>
     }
@@ -129,16 +128,24 @@ export default function GalleryBrowserComponent() {
                         <img src={mediaData.imageUrl} alt={`Media ${index}`}/>
                     </div>
                 ))}
-
-                {loadingMore && (
-                    <div className="loading-m-component">Loading...</div>
-                )}
-
-                {!loadingMore && galleryData.length !== images.length && (
-                    <div className="next-load-button">
-                        <button onClick={nextPage}>Load next</button>
-                    </div>
-                )}
+    
+                <div className="pagination">
+                    <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
+                        <FontAwesomeIcon icon={faArrowLeft} />
+                    </button>
+                    <div className="show-pages">
+                    {[...Array(totalPages).keys()].map((page) => (
+                        (page >= currentPage - 1 && page <= currentPage + 1) && (
+                            <button key={page+1} onClick={() => onPageChange(page+1)} className={currentPage === page+1 ? 'active' : ''}>
+                                {page + 1}
+                            </button>
+                        )
+                    ))}
+                </div>
+                    <button className="arrow-button" onClick={onNextPage} disabled={currentPage === totalPages}>
+                        <FontAwesomeIcon icon={faArrowRight} />
+                    </button>
+                </div>
             </div>
         </div>
     )

@@ -502,11 +502,12 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+    margin-top: 10px;
 }
 
 .browser-component .media-container {
     position: relative;
-    margin: 10px;
+    margin: 3px;
     border: 0.1px solid rgb(170, 170, 170);
 }
 
@@ -531,34 +532,63 @@ body {
     max-height: 250px;
 }
 
-.browser-component .next-load-button {
-    width: 100%;
+.browser-component .pagination {
     text-align: center;
-    margin-bottom: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    bottom: 0;
 }
 
-.browser-component .next-load-button button {
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    padding: 3px;
-    background-color: transparent;
+.browser-component .pagination button {
+    background-color: #222222;
     border: 1px solid white;
-}
-
-.browser-component .next-load-button button:hover {
-    color: rgb(255, 63, 63);
-    border: 1px solid rgb(255, 63, 63);
+    color: white;
+    padding: 5px 15px;
+    margin: 0 5px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.browser-component .loading-m-component {
-    width: 100%;
-    text-align: center;
+.browser-component .pagination button:hover {
+    color: rgb(255, 63, 63);
+    border: 0.1px solid rgb(255, 63, 63);
+}
+
+.browser-component .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.browser-component .active {
+    background-color: #333333;
+}
+
+.browser-component .pagination-buttons {
+    display: inline-block;
+}
+
+.browser-component .show-pages {
+    display: inline-block;
+}
+
+.browser-component .show-pages button {
+    background-color: transparent;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 2px;
     font-size: 20px;
     font-weight: bold;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.browser-component .show-pages button:hover {
+    color: rgb(255, 63, 63);
+}
+
+.browser-component .show-pages .active {
+    background-color: #333333;
 }
 
 /* mobile devices style */
@@ -624,7 +654,7 @@ body {
 }
 
 /* disable user data sub navbar for small display  */
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 400px) {
     .user-navbar .user-data {
         display: none;
     }

@@ -135,4 +135,36 @@ class MediaController extends AbstractController
             'Content-Type' => 'image/jpg',
         ]);
     }
+
+    /**
+     * Preload app thumbnails.
+     *
+     * This method is responsible for preloading thumbnails for the application.
+     * It checks if the process is already running before starting a new one.
+     *
+     * @return JsonResponse The JSON response indicating the status of the operation.
+     */
+    #[Tag(name: "Resources")]
+    #[Response(response: 200, description: 'Preload command run success')]
+    #[Response(response: 500, description: 'Preload command run error')]
+    #[Route(['/api/media/preload/thumbnails'], methods: ['GET'], name: 'api_media_preload_thumbnails')]
+    public function preloadThumbnails(): JsonResponse
+    {
+        try {    
+            // execute preload command
+            exec('cd .. && php bin/console app:thumbnails:preload > /dev/null 2>&1 &');
+    
+            return $this->json([
+                'status' => 'success',
+                'code' => JsonResponse::HTTP_OK,
+                'message' => 'thumbnails preload process started successfully'
+            ], JsonResponse::HTTP_OK);
+        } catch (\Exception) {
+            return $this->json([
+                'status' => 'error',
+                'code' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'thumbnails preload process could not be started'
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

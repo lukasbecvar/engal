@@ -6,8 +6,18 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
+/**
+ * Class GrantAdminRoleCommandTest
+ *
+ * Unit test for the GrantAdminRoleCommandTest.
+ *
+ * @package App\Tests\Command
+ */
 class GrantAdminRoleCommandTest extends KernelTestCase
 {
+    /**
+     * Test the execution of the "app:grant-admin" command.
+     */
     public function testExecuteAdminRoleCommand(): void
     {
         // boot the Symfony kernel

@@ -381,7 +381,7 @@ class StorageManager
                 }
 
                 // check command referer (print progress to console outputs)
-                if ($referer == 'console_command') {
+                if ($referer == 'console_command' && ($_ENV['APP_ENV'] != 'test')) {
                     dump('Thumbnail: (' . $media['id'] . '/' . count($mediaList) . ') -> ' . $token . ' preload completed!');
                 }
             }

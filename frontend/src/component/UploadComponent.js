@@ -190,6 +190,21 @@ export default function UploadComponent() {
             })
             if (response.data.message == 'files uploaded successfully') {
                 setStatus('File upload completed!')
+
+                try {
+                    fetch(apiUrl + '/api/media/preload/thumbnails', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': '*/*',
+                            'Authorization': 'Bearer ' + localStorage.getItem('login-token')
+                        },
+                    })
+                } catch (error) {
+                    if (DEV_MODE) {
+                        console.log('Error to preload thumbnails: ' + error)
+                    }
+                }
+            
                 navigate("/");
             }
         } catch (error) {

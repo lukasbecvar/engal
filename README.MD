@@ -88,7 +88,7 @@ I am currently working on a complete recode of the application.
     - [X] CSS style browser
 - [X] Recode video/image thumbnail system (cache thumbnail outside storage directory)
 - [X] Symfony errors to json response
-- [ ] Thumbnails preload
+- [X] Thumbnails preload
 - [ ] Gallery browser pagination (max 200 images)
 ### Phase 8
 - [ ] Image browser

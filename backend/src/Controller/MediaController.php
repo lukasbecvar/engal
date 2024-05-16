@@ -169,11 +169,14 @@ class MediaController extends AbstractController
     #[Response(response: 200, description: 'Preload command run success')]
     #[Response(response: 500, description: 'Preload command run error')]
     #[Route(['/api/media/preload/thumbnails'], methods: ['GET'], name: 'api_media_preload_thumbnails')]
-    public function preloadThumbnails(MessageBusInterface $messageBus): JsonResponse
+    public function preloadThumbnails(Security $security, MessageBusInterface $messageBus): JsonResponse
     {
+        // get logged user ID
+        $userId = $this->userManager->getUserData($security)->getId();
+
         try {
             // dispatch async process
-            $message = new PreloadThumbnailsMessage('your_thumbnail_path');
+            $message = new PreloadThumbnailsMessage($userId);
             $messageBus->dispatch($message);
 
             // return status

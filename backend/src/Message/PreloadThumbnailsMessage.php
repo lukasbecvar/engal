@@ -11,20 +11,20 @@ namespace App\Message;
  */
 class PreloadThumbnailsMessage
 {
-    private string $path;
+    private int $ownerId;
 
-    public function __construct(string $path)
+    public function __construct(int $ownerId)
     {
-        $this->path = $path;
+        $this->ownerId = $ownerId;
     }
 
     /**
-     * Gets the path associated with the message.
+     * Gets the owner id associated with the message.
      *
-     * @return string The path to preload thumbnails for.
+     * @return int The owner id for preload.
      */
-    public function getPath(): string
+    public function getOwnerId(): string
     {
-        return $this->path;
+        return $this->ownerId;
     }
 }

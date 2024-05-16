@@ -64,34 +64,6 @@ class GalleryController extends AbstractController
     }
 
     /**
-     * Controller method to retrieve statistics about media and galleries for the logged-in user.
-     *
-     * Return storage status by user ID from provided JWT auth token.
-     *
-     * @param Security $security The security service for handling user authentication.
-     *
-     * @return JsonResponse The JSON response containing the statistics data.
-     */
-    #[Tag(name: "Resources")]
-    #[Response(response: 200, description: 'Get media and gallery count by logged user')]
-    #[Route('/api/gallery/stats', methods: ['GET'], name: 'gallery_stats')]
-    public function getGalleryStats(Security $security): JsonResponse
-    {
-        // get logged user ID
-        $userId = $this->userManager->getUserData($security)->getId();
-
-        return $this->json([
-            'status' => 'success',
-            'code' => JsonResponse::HTTP_OK,
-            'stats' => [
-                'images_count' => $this->mediaRepository->countMediaByType($userId),
-                'videos_count' => $this->mediaRepository->countMediaByType($userId, 'video'),
-                'galleries_count' => count($this->mediaRepository->findDistinctGalleryNamesByUserId($userId))
-            ]
-        ], JsonResponse::HTTP_OK);
-    }
-
-    /**
      * Retrieves a list of content by gallery name.
      *
      * Return gallery data from gallery_name in request parameter but only if logged user have permission to view data

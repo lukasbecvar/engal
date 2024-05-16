@@ -34,7 +34,7 @@ class PreloadThumbnailsMessageHandler
      */
     public function __invoke(PreloadThumbnailsMessage $message)
     {
-        // Preload all thumbnails using the storage manager
-        $this->storageManager->preloadAllThumbnails();
+        // peload all thumbnails using the storage manager
+        $this->storageManager->preloadAllThumbnails(null, $message->getOwnerId());
     }
 }

@@ -73,48 +73,6 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test for retrieving gallery statistics with user authentication.
-     *
-     * @return void
-     */
-    public function testGetGalleryStats(): void
-    {
-        // simulate user authentication
-        $this->simulateUserAuthentication($this->client);
-
-        // GET request to the API endpoint
-        $this->client->request('GET', '/api/gallery/stats');
-
-        // decoding the content of the JsonResponse
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-
-        // check response
-        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-        $this->assertSame(200, $responseData['code']);
-        $this->assertEquals('success', $responseData['status']);
-        $this->assertIsArray($responseData['stats']);
-    }
-
-    /**
-     * Test for retrieving gallery statistics without user authentication.
-     *
-     * @return void
-     */
-    public function testGetGalleryStatsNonAuth(): void
-    {
-        // GET request to the API endpoint
-        $this->client->request('GET', '/api/gallery/stats');
-
-        // decoding the content of the JsonResponse
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-
-        // check response
-        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
-        $this->assertSame(401, $responseData['code']);
-        $this->assertEquals('JWT Token not found', $responseData['message']);
-    }
-
-    /**
      * Test for retrieving gallery data with empty name.
      *
      * @return void

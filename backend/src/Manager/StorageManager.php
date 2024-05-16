@@ -328,9 +328,13 @@ class StorageManager
             mkdir($thumbnailDirectory, 0777, true);
         }
 
-        // calculate new resolution
-        $newWidth = $width * 0.3;
-        $newHeight = $height * 0.3;
+        if ($width > 2000 && $height > 3000) {
+            $newWidth = $width / 3.4;
+            $newHeight = $height / 3.4;
+        } else {
+            $newWidth = $width / 2.1;
+            $newHeight = $height / 2.1;
+        }
 
         // resize media file
         $image->resize((int) $newWidth, (int) $newHeight);
@@ -379,15 +383,20 @@ class StorageManager
      * If not, it stores the thumbnail.
      *
      * @param string $referer The referer indicating where the command originated from.
-     *                        If 'console_command', progress messages are printed to console outputs.
+     * @param int $userId The the user if for preload process.
      *
      * @throws \Exception If an error occurs during the thumbnail preloading process.
      *
      * @return void
      */
-    public function preloadAllThumbnails(string $referer = null): void
+    public function preloadAllThumbnails(string $referer = null, int $userId = null): void
     {
-        $mediaList = $this->mediaRepository->findAllMedia();
+        // select media list
+        if ($userId == null) {
+            $mediaList = $this->mediaRepository->findAllMedia();
+        } else {
+            $mediaList = $this->mediaRepository->findAllMediaByOwnerId($userId);
+        }
 
         try {
             foreach ($mediaList as $media) {

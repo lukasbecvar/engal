@@ -92,6 +92,11 @@ I am currently working on a complete recode of the application.
 - [X] Gallery browser pagination (max 200 images)
 - [X] Thumbnail reload (use symfony messenger for async process)
 - [X] Symfony messneger run in backend container
+- [ ] Video content time switch
+- [ ] Store thumbnails outside data storage
+- [ ] Regenerate all thumbnails function (preload command)
+- [ ] Check storage & database integrity
+- [ ] Backend refactor
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player

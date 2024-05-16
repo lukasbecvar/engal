@@ -44,7 +44,7 @@ services:
         networks:
             - dev
         command: |
-            bash -c "while :; do php bin/console messenger:consume async -vv; sleep 5; done & apache2-foreground"
+            bash -c "while :; do php bin/console messenger:consume async -vv; sleep 10; done & apache2-foreground"
 
     # frontend container
     frontend:

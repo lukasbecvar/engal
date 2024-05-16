@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as ContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -37,12 +39,16 @@ class MediaController extends AbstractController
     }
 
     /**
-     * Retrieves the content of the media associated with the provided user ID and token.
+     * Retrieve the content associated with the provided token.
      *
-     * @param Request $request The request instance.
-     * @param Security $security The security instance.
+     * This method fetches the content file corresponding to the given token, checks its validity,
+     * and returns a streamed response with the file content if the token is valid.
+     * If the token is missing or the associated media is not found, it returns a JSON response
+     * with an appropriate error message and status code.
      *
-     * @return ContentResponse The response containing the media content.
+     * @param Request $request The current request object.
+     * @param Security $security The security service for accessing user data.
+     * @return mixed A streamed response with the content file, or a JSON response with an error message.
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'The success photo content resource')]
@@ -50,7 +56,7 @@ class MediaController extends AbstractController
     #[Response(response: 404, description: 'The media not found error')]
     #[Parameter(name: 'token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
     #[Route('/api/media/content', methods: ['GET'], name: 'api_media_content')]
-    public function getContent(Request $request, Security $security): ContentResponse
+    public function getContent(Request $request, Security $security): mixed
     {
         // get logged user ID
         $userId = $this->userManager->getUserData($security)->getId();
@@ -77,14 +83,25 @@ class MediaController extends AbstractController
         }
 
         // get content
-        $content = $this->storageManager->getMediaContent($userId, $token);
+        $content = $this->storageManager->getMediaFile($userId, $token);
 
-        // create a streamed response with image content
-        return new StreamedResponse(function () use ($content) {
-            echo $content;
-        }, ContentResponse::HTTP_OK, [
-            'Content-Type' => $this->storageManager->getMediaType($token),
-        ]);
+        // assuming $content is the file path
+        $response = new BinaryFileResponse($content);
+
+        // set headers
+        $response->headers->set('Content-Type', $this->storageManager->getMediaType($token));
+        $response->headers->set('Content-Disposition', 'inline');
+        $response->headers->set('Cache-Control', 'public, max-age=3600');
+        $response->headers->set('Accept-Ranges', 'bytes');
+        $response->headers->set('Content-Length', '-1');
+
+        // add additional headers for caching
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            basename($content)
+        );
+
+        return $response;
     }
 
     /**

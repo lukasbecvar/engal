@@ -38,7 +38,10 @@ class GalleryController extends AbstractController
     /**
      * Retrieves the gallery list for the logged-in user.
      *
+     * Return gallery list from database by user ID from provided JWT auth token.
+     *
      * @param Security $security The security component for user authentication
+     *
      * @return JsonResponse The JSON response containing the gallery list
      */
     #[Tag(name: "Resources")]
@@ -62,6 +65,8 @@ class GalleryController extends AbstractController
 
     /**
      * Controller method to retrieve statistics about media and galleries for the logged-in user.
+     *
+     * Return storage status by user ID from provided JWT auth token.
      *
      * @param Security $security The security service for handling user authentication.
      *
@@ -88,6 +93,8 @@ class GalleryController extends AbstractController
 
     /**
      * Retrieves a list of content by gallery name.
+     *
+     * Return gallery data from gallery_name in request parameter but only if logged user have permission to view data
      *
      * @param Security $security The security context.
      * @param Request $request The request object.

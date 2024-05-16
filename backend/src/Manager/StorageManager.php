@@ -34,6 +34,7 @@ class StorageManager
      * Retrieves a media entity from the repository based on the provided search criteria.
      *
      * @param array<mixed> $search An associative array representing the search criteria.
+     *
      * @return object|null The found media entity or null if not found.
      */
     public function getMediaEntityRepository(array $search): ?object
@@ -45,6 +46,7 @@ class StorageManager
      * Store media entity.
      *
      * @param array<string> $data
+     *
      * @return string|null
      */
     public function storeMediaEntity(array $data): ?string
@@ -91,6 +93,8 @@ class StorageManager
      * @param object $file
      * @param int $userId
      * @param string $fileType
+     *
+     * @return void
      */
     public function storeMediaFile(string $token, object $file, int $userId, string $fileType = 'videos'): void
     {
@@ -131,7 +135,7 @@ class StorageManager
 
             $galleryNamesArray[] = [
                 'name' => $name,
-                'first_token' => $this->mediaRepository->findFirstTokenByGalleryName($name)
+                'first_token' => $this->mediaRepository->findFirstTokenByGalleryName($userId, $name)
             ];
         }
 
@@ -150,7 +154,7 @@ class StorageManager
     public function isMediaExist(int $ownerId, string $mediaToken, bool $canCrash = true): bool
     {
         // check if entity exist in database
-        if ($this->getMediaEntityRepository(['token' => $mediaToken, 'owner_id' => $ownerId]) != null) {
+        if ($this->getMediaEntityRepository(['token' => $mediaToken]) != null) {
             // check if media file exist
             if ($this->getMediaFile($ownerId, $mediaToken, $canCrash) != null) {
                 return true;
@@ -296,6 +300,7 @@ class StorageManager
      * @param string $mediaFile The path to the original media file.
      * @param int $userId The user ID associated with the media.
      * @param string $token The unique token identifier for the thumbnail.
+     *
      * @return mixed The encoded thumbnail image object, or null if the thumbnail couldn't be created.
      */
     public function storeThumbnail(string $mediaFile, int $userId, string $token): mixed
@@ -348,6 +353,7 @@ class StorageManager
      *
      * @param int $userId The user ID associated with the media.
      * @param string $token The unique token identifier for the thumbnail.
+     *
      * @return string|null The content of the thumbnail image file, or null if the thumbnail doesn't exist.
      */
     public function getMediaExistThumbnail(int $userId, string $token): ?string

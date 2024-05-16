@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Manager\LogManager;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use App\Manager\ErrorManager;
@@ -29,17 +30,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class UploadController extends AbstractController
 {
+    private LogManager $logManager;
     private UserManager $userManager;
     private ErrorManager $errorManager;
     private StorageManager $storageManager;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
+        LogManager $logManager,
         UserManager $userManager,
         ErrorManager $errorManager,
         StorageManager $storageManager,
         EntityManagerInterface $entityManager
     ) {
+        $this->logManager = $logManager;
         $this->userManager = $userManager;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
@@ -48,6 +52,8 @@ class UploadController extends AbstractController
 
     /**
      * Get upload policy config
+     *
+     * Return upload policy config from env config
      *
      * @return JsonResponse
      */
@@ -72,8 +78,11 @@ class UploadController extends AbstractController
     /**
      * File upload endpoint
      *
-     * @param Request $request
-     * @param Security $security
+     * Upload files function for upload singe or multiple media(image/video) to gallery
+     *
+     * @param Request $request The current request object.
+     * @param Security $security The security component for user authentication
+     *
      * @return JsonResponse
      */
     #[Tag(name: "Upload")]
@@ -174,10 +183,13 @@ class UploadController extends AbstractController
         // store files data
         $this->entityManager->beginTransaction(); // start upload transaction
 
+        // get uploader user data
+        $userData = $this->userManager->getUserData($security);
+
         try {
             foreach ($uploadedFiles as $file) {
                 // get owner ID
-                $ownerId = $this->userManager->getUserData($security)->getID();
+                $ownerId = $userData->getID();
 
                 // store media entity data
                 $token = $this->storageManager->storeMediaEntity([
@@ -197,6 +209,9 @@ class UploadController extends AbstractController
             $this->entityManager->rollback();
             $this->errorManager->handleError('error to upload media: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+
+        // log action
+        $this->logManager->log('uploader', 'user: ' . $userData->getUsername() . ' uploaded new content to gallery: ' . $galleryName);
 
         // return success message
         return $this->json([

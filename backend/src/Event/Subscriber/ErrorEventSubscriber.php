@@ -38,6 +38,7 @@ class ErrorEventSubscriber implements EventSubscriberInterface
      * Method called when an error event is dispatched.
      *
      * @param ErrorEvent $event The object representing the error event.
+     *
      * @return void
      */
     public function onErrorEvent(ErrorEvent $event): void

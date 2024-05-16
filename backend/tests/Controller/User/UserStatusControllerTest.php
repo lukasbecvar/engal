@@ -17,10 +17,12 @@ class UserStatusControllerTest extends CustomCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
      */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
      */
     protected function setUp(): void
     {
@@ -57,6 +59,8 @@ class UserStatusControllerTest extends CustomCase
 
     /**
      * Test retrieving user status when the user is not authenticated.
+     *
+     * @return void
      */
     public function testGetUserStatusNonAuth(): void
     {

@@ -36,6 +36,17 @@ jobs:
           php-version: 8.3
           extensions: mbstring, intl, pdo_mysql, pdo, mysqli, zip
 
+      # install ffmpeg
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      # install PHP GD
+      - name: Install PHP GD
+        run: |
+          sudo apt-get install -y php-gd
+
       # install dependencies
       - name: Install dependencies
         run: |
@@ -62,17 +73,6 @@ jobs:
       - name: Load fixtures
         run: php bin/console doctrine:fixtures:load --no-interaction --purge-with-truncate --env=test
         working-directory: ./backend
-
-      # install ffmpeg
-      - name: Install ffmpeg
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-
-      # install PHP GD
-      - name: Install PHP GD
-        run: |
-          sudo apt-get install -y php-gd
 
       # run PHPUnit tests
       - name: Run PHPUnit tests

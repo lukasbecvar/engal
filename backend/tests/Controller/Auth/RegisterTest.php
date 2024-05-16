@@ -16,10 +16,12 @@ class RegisterTest extends WebTestCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
      */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
      */
     protected function setUp(): void
     {
@@ -29,6 +31,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test registration with an empty password.
+     *
+     * @return void
      */
     public function testRegisterEmptyPassword(): void
     {
@@ -48,6 +52,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test registration with a username shorter than the minimum length.
+     *
+     * @return void
      */
     public function testRegisterUsernameShort(): void
     {
@@ -68,6 +74,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test registration with a username longer than the maximu length.
+     *
+     * @return void
      */
     public function testRegisterUsernameLong(): void
     {
@@ -88,6 +96,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test registration with a password shorter than the minimum length.
+     *
+     * @return void
      */
     public function testRegisterPasswordShort(): void
     {
@@ -108,6 +118,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test registration with a password longer than the maximum length.
+     *
+     * @return void
      */
     public function testRegisterPasswordLong(): void
     {
@@ -128,6 +140,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test registration with a username that already exists.
+     *
+     * @return void
      */
     public function testRegisterUsernameAlreadyExist(): void
     {
@@ -148,6 +162,8 @@ class RegisterTest extends WebTestCase
 
     /**
      * Test successful user registration.
+     *
+     * @return void
      */
     public function testRegisterSuccess(): void
     {

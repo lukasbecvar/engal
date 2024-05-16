@@ -27,10 +27,12 @@ nelmio_api_doc:
 
         # static docs
         paths:
-            # JWT Security endpoint
+            # JWT login endpoint
             /api/login:
                 post:
-                    summary: User Login.
+                    tags: ['Auth']
+                    summary: User login action.
+                    description: User login JWT provider return JWT token
                     requestBody:
                         required: true
                         content:
@@ -45,22 +47,9 @@ nelmio_api_doc:
                                             type: string
                                             default: test
                     responses:
-                        '200':
-                            description: Successful login
-                            content:
-                                application/json:
-                                    schema:
-                                        type: object
-                                        properties:
-                                            token:
-                                                type: string
-                        '401':
+                        200: 
+                            description: Successful login (return token)
+                        401: 
                             description: Invalid credentials
-                            content:
-                                application/json:
-                                    schema:
-                                        type: object
-                                        properties:
-                                            message:
-                                                type: string
-                    tags: ['Auth']
+                        400: 
+                            description: Bad request body data

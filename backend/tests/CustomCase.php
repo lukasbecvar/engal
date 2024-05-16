@@ -18,6 +18,8 @@ class CustomCase extends WebTestCase
      *
      * @param object $client The Symfony test client.
      * @throws \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     *
+     * @return void
      */
     public function simulateUserAuthentication(object $client): void
     {
@@ -54,6 +56,7 @@ class CustomCase extends WebTestCase
      *
      * @param string $filename The name of the fake file.
      * @param string $mimeType The MIME type of the fake file.
+     *
      * @return UploadedFile A fake UploadedFile instance representing the fake file.
      */
     public function createFakeUploadedFile(string $filename, string $mimeType): UploadedFile

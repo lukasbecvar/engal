@@ -17,10 +17,12 @@ class LoginTest extends WebTestCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
      */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
      */
     protected function setUp(): void
     {
@@ -35,6 +37,8 @@ class LoginTest extends WebTestCase
      * It sends a POST request to the login endpoint with valid username and password.
      * Then, it asserts that the response status code is HTTP_OK (200),
      * the response content is not empty, and it contains a 'token' key in the response data.
+     *
+     * @return void
      */
     public function testLoginValid(): void
     {
@@ -66,6 +70,8 @@ class LoginTest extends WebTestCase
      * It sends a POST request to the login endpoint with invalid username and password.
      * Then, it asserts that the response status code is HTTP_UNAUTHORIZED (401)
      * and the response contains the expected error message 'Invalid credentials.'
+     *
+     * @return void
      */
     public function testLoginInvalid(): void
     {

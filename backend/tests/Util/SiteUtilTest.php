@@ -16,6 +16,11 @@ class SiteUtilTest extends TestCase
 {
     private SiteUtil $siteUtil;
 
+    /**
+     * Set up before each test.
+     *
+     * @return void
+    */
     protected function setUp(): void
     {
         $this->siteUtil = new SiteUtil();
@@ -24,6 +29,8 @@ class SiteUtilTest extends TestCase
 
     /**
      * @covers \App\Util\SiteUtil::isMaintenance
+     *
+     * @return void
      */
     public function testIsMaintenance(): void
     {
@@ -39,6 +46,8 @@ class SiteUtilTest extends TestCase
 
     /**
      * @covers \App\Util\SiteUtil::isSsl
+     *
+     * @return void
      */
     public function testIsSsl(): void
     {

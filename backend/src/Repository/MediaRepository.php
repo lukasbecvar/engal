@@ -74,15 +74,19 @@ class MediaRepository extends ServiceEntityRepository
     /**
      * Finds the first token by gallery name.
      *
+     * @param int $ownerId The account id of gallery owner.
      * @param string $galleryName The name of the gallery.
+     *
      * @return string|null The token or null if not found.
      */
-    public function findFirstTokenByGalleryName(string $galleryName): ?string
+    public function findFirstTokenByGalleryName(int $ownerId, string $galleryName): ?string
     {
         $result = $this->createQueryBuilder('m')
             ->select('m.token')
             ->andWhere('m.gallery_name = :gallery_name')
+            ->andWhere('m.owner_id = :owner_id')
             ->setParameter('gallery_name', $galleryName)
+            ->setParameter('owner_id', $ownerId)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

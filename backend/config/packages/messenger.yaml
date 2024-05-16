@@ -1,5 +1,6 @@
 framework:
     messenger:
+        # transports process settings get from config
         transports:
             async: '%env(MESSENGER_TRANSPORT_DSN)%'
 

@@ -1,7 +1,10 @@
 security:
     # password hasher
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: 'argon2i'
+            memory_cost: 4096
+            cost: 10
 
     # user entity providers
     providers:

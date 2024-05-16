@@ -79,21 +79,13 @@ export default function GalleryListComponent() {
 
     // fetch thumbnail resource
     const fetchThumbnail = async (token) => {
-        // thumbnail resolution
-        const width = 500
-        const height = 500
-
-        // build api url
-        const baseUrl = apiUrl + '/api/media/thumbnail'
-        const url = `${baseUrl}?width=${width}&height=${height}&token=${token}`
-
         // build app header
         const headers = {
             'Authorization': `Bearer ${loginToken}`
         }
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(apiUrl + '/api/media/content?token=' + token, {
                 method: 'GET',
                 headers: headers
             })

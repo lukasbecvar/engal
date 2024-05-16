@@ -19,6 +19,8 @@ class IndexControllerTest extends WebTestCase
      *
      * This test verifies that the index action returns a successful JSON response
      * with the expected structure and data.
+     *
+     * @return void
      */
     public function testInitIndex(): void
     {

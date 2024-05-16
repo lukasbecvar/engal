@@ -140,7 +140,7 @@ export default function App() {
 
     // handle app version error
     if (appVersion != APP_VERSION) {
-        return <ErrorMessageComponent message={"Your app version is not valid matchend with server, required version: " + app_version}/>
+        return <ErrorMessageComponent message={"Your app version is not valid matchend with server, required version: " + appVersion}/>
     }
 
     // check if user is loggedin

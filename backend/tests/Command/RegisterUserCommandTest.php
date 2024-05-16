@@ -20,6 +20,8 @@ class RegisterUserCommandTest extends KernelTestCase
      * Test the execute method of the RegisterUserCommand class.
      *
      * This test verifies that the command successfully registers a new user.
+     *
+     * @return void
      */
     public function testExecuteRegisterUserCommand(): void
     {

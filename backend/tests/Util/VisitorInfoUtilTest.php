@@ -16,6 +16,11 @@ class VisitorInfoUtilTest extends TestCase
 {
     private VisitorInfoUtil $visitorInfoUtil;
 
+    /**
+     * Set up before each test.
+     *
+     * @return void
+    */
     protected function setUp(): void
     {
         $this->visitorInfoUtil = new VisitorInfoUtil();
@@ -24,6 +29,8 @@ class VisitorInfoUtilTest extends TestCase
 
     /**
      * @covers \App\Util\VisitorInfoUtil::getIP
+     *
+     * @return void
      */
     public function testGetIp(): void
     {

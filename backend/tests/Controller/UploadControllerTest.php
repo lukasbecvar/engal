@@ -17,10 +17,12 @@ class UploadControllerTest extends CustomCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
     */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
     */
     protected function setUp(): void
     {
@@ -30,6 +32,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test retrieving upload policy configuration.
+     *
+     * @return void
      */
     public function testGetUploadPolicy(): void
     {
@@ -55,6 +59,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test retrieving upload policy configuration without authentication.
+     *
+     * @return void
      */
     public function testGetUploadPolicyNonAuth(): void
     {
@@ -72,6 +78,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test file upload with an empty gallery name.
+     *
+     * @return void
      */
     public function testFileUploadEmptyGalleryName(): void
     {
@@ -97,6 +105,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test file upload with a long gallery name.
+     *
+     * @return void
      */
     public function testFileUploadLongGalleryName(): void
     {
@@ -123,6 +133,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test file upload with empty files.
+     *
+     * @return void
      */
     public function testFileUploadEmptyFiles(): void
     {
@@ -149,6 +161,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test successful file upload.
+     *
+     * @return void
      */
     public function testFileUploadSuccess(): void
     {
@@ -182,6 +196,8 @@ class UploadControllerTest extends CustomCase
 
     /**
      * Test file upload without authentication.
+     *
+     * @return void
      */
     public function testUploadNonAuth(): void
     {

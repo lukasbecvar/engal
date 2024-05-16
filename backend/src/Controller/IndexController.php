@@ -20,6 +20,8 @@ class IndexController extends AbstractController
     /**
      * Index init action to return a JSON response.
      *
+     * Return backend status with basic app config
+     *
      * @return JsonResponse Returns a JSON response with status, code, and backend version.
      */
     #[Tag(name: "Index")]

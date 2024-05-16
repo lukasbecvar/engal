@@ -1,7 +1,7 @@
 framework:
     router:
         #default_uri: http://localhost
-        
+
 when@prod:
     framework:
         router:

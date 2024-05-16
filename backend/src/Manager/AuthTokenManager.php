@@ -48,6 +48,8 @@ class AuthTokenManager
      * @param string $token The token to blacklist
      *
      * @throws \Exception If there is an error while blacklisting the token
+     *
+     * @return void
      */
     public function blacklistToken(string $token): void
     {
@@ -66,6 +68,8 @@ class AuthTokenManager
      * @param string $token The token to unblacklist
      *
      * @throws \Exception If there is an error while unblacklisting the token
+     *
+     * @return void
      */
     public function unblacklistToken(string $token): void
     {

@@ -32,6 +32,7 @@ class LogManager
      *
      * @param string $name The name of the log entry.
      * @param string $message The content of the log entry.
+     *
      * @return void
      */
     public function log(string $name, string $message): void

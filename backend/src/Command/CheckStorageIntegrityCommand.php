@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Manager\LogManager;
 use App\Manager\StorageManager;
 use App\Repository\MediaRepository;
 use Symfony\Component\Console\Command\Command;
@@ -20,18 +21,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:check:storage:integrity', description: 'Check database & storage integrity')]
 class CheckStorageIntegrityCommand extends Command
 {
+    private LogManager $logManager;
     private StorageManager $storageManager;
     private MediaRepository $mediaRepository;
 
-    public function __construct(StorageManager $storageManager, MediaRepository $mediaRepository)
+    public function __construct(LogManager $logManager, StorageManager $storageManager, MediaRepository $mediaRepository)
     {
+        $this->logManager = $logManager;
         $this->storageManager = $storageManager;
         $this->mediaRepository = $mediaRepository;
         parent::__construct();
     }
 
     /**
-     * Executes the command check if storage matching databas.
+     * Executes the command check if storage matching database.
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
@@ -78,10 +81,17 @@ class CheckStorageIntegrityCommand extends Command
 
             // check if error in process
             if ($error) {
+                // log success check
+                $this->logManager->log('integrity-check', 'integrity check exited with error status');
+
                 $io->error('Integrity error found');
                 return Command::FAILURE;
             }
 
+            // log success check
+            $this->logManager->log('integrity-check', 'integrity check finished with success status');
+
+            // return success output
             $io->success('Integrity check success');
             return Command::SUCCESS;
         } catch (\Exception $e) {

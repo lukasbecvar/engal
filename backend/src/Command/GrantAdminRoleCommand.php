@@ -29,7 +29,7 @@ class GrantAdminRoleCommand extends Command
     }
 
     /**
-     * Configures the command.
+     * Configures the command arguments.
      */
     protected function configure(): void
     {

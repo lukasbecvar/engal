@@ -40,6 +40,7 @@ class SecurityController extends AbstractController
      *
      * @param Request $request The HTTP request.
      * @param Security $security The security bundle security.
+     *
      * @return JsonResponse The JSON response.
      */
     #[Tag(name: "Auth")]

@@ -19,6 +19,8 @@ class SecurityUtilTest extends TestCase
      *
      * Tests whether the escapeString() method correctly escapes special characters
      * in a string to prevent HTML injection.
+     *
+     * @return void
      */
     public function testEscapeString(): void
     {

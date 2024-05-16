@@ -44,6 +44,8 @@ class LoginEventSubscriber implements EventSubscriberInterface
      * Handles the authentication success event.
      *
      * @param AuthenticationSuccessEvent $event The authentication success event.
+     *
+     * @return void
      */
     public function onSecurityAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {

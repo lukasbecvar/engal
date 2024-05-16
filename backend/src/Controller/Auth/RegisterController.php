@@ -2,7 +2,6 @@
 
 namespace App\Controller\Auth;
 
-use App\Manager\LogManager;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use App\Util\VisitorInfoUtil;
@@ -23,12 +22,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class RegisterController extends AbstractController
 {
+    private UserManager $userManager;
+    private VisitorInfoUtil $visitorInfoUtil;
+
+    public function __construct(UserManager $userManager, VisitorInfoUtil $visitorInfoUtil)
+    {
+        $this->userManager = $userManager;
+        $this->visitorInfoUtil = $visitorInfoUtil;
+    }
+
     /**
      * Registers a new user.
      *
+     * Register new user with provided username and password in request parameters
+     *
      * @param Request $request The request object.
-     * @param UserManager $userManager The user manager service.
-     * @param VisitorInfoUtil $visitorInfoUtil The visitor information utility.
      *
      * @return JsonResponse The JSON response.
      */
@@ -40,7 +48,7 @@ class RegisterController extends AbstractController
     #[Response(response: 409, description: 'Username is already exist error')]
     #[Parameter(name: 'username', in: 'query', schema: new Schema(type: 'string'), description: 'New username', required: true)]
     #[Parameter(name: 'password', in: 'query', schema: new Schema(type: 'string'), description: 'New password', required: true)]
-    public function register(Request $request, UserManager $userManager, LogManager $logManager, VisitorInfoUtil $visitorInfoUtil): JsonResponse
+    public function register(Request $request): JsonResponse
     {
         // check if register is enabled
         if ($_ENV['REGISTER_ENABLED'] != 'true') {
@@ -56,7 +64,7 @@ class RegisterController extends AbstractController
         $password = $request->get('password');
 
         // get user ip
-        $ipAddress = $visitorInfoUtil->getIP();
+        $ipAddress = $this->visitorInfoUtil->getIP();
 
         // check required data
         if ($username == null || $password == null) {
@@ -107,7 +115,7 @@ class RegisterController extends AbstractController
         }
 
         // check if user is exist
-        if ($userManager->getUserRepo($username) != null) {
+        if ($this->userManager->getUserRepo($username) != null) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_CONFLICT,
@@ -117,7 +125,7 @@ class RegisterController extends AbstractController
 
         // check if IP is registred
         if ($_ENV['ONE_USER_PER_IP'] == 'true') {
-            if ($userManager->getUserRepoByIP($ipAddress) != null) {
+            if ($this->userManager->getUserRepoByIP($ipAddress) != null) {
                 return $this->json([
                     'status' => 'error',
                     'code' => JsonResponse::HTTP_CONFLICT,
@@ -126,13 +134,9 @@ class RegisterController extends AbstractController
             }
         }
 
-        // final user register
         try {
             // execute register
-            $userManager->registerUser($username, $password);
-
-            // log registration
-            $logManager->log('authenticator', 'new user register: ' . $username);
+            $this->userManager->registerUser($username, $password);
 
             // return success message
             return $this->json([

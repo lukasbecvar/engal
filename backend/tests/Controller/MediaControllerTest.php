@@ -10,10 +10,12 @@ class MediaControllerTest extends CustomCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
     */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
     */
     protected function setUp(): void
     {
@@ -23,6 +25,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for retrieving media content when the token parameter is empty.
+     *
+     * @return void
      */
     public function testGetMediaContentEmptyToken(): void
     {
@@ -42,6 +46,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for retrieving media content with a wrong token parameter.
+     *
+     * @return void
      */
     public function testGetMediaContentWrongToken(): void
     {
@@ -63,6 +69,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for successfully retrieving media content with a valid token parameter.
+     *
+     * @return void
      */
     public function testGetMediaContentSuccess(): void
     {
@@ -79,6 +87,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for retrieving media content without authentication.
+     *
+     * @return void
      */
     public function testGetMediaContentNonAuth(): void
     {
@@ -96,6 +106,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for retrieving media thumbnail when the token parameter is empty.
+     *
+     * @return void
      */
     public function testGetMediaThumbnailEmptyToken(): void
     {
@@ -115,6 +127,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for retrieving media thumbnail with a wrong token parameter.
+     *
+     * @return void
      */
     public function testGetMediaThumbnailWrongToken(): void
     {
@@ -138,6 +152,8 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for successfully retrieving media thumbnail with valid parameters.
+     *
+     * @return void
      */
     public function testGetMediaThumbnaiSuccess(): void
     {
@@ -156,11 +172,32 @@ class MediaControllerTest extends CustomCase
 
     /**
      * Test case for retrieving media thumbnail without authentication.
+     *
+     * @return void
      */
     public function testGetMediaThumbnaiNonAuth(): void
     {
         // GET request to the API endpoint
         $this->client->request('GET', '/api/media/thumbnail');
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
+        $this->assertSame(401, $responseData['code']);
+        $this->assertEquals('JWT Token not found', $responseData['message']);
+    }
+
+    /**
+     * Test for retrieving media thumbnails preload without authentication.
+     *
+     * @return void
+     */
+    public function testGetMediaThumbnailsPreloadNonAuth(): void
+    {
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/preload/thumbnails');
 
         // decoding the content of the JsonResponse
         $responseData = json_decode($this->client->getResponse()->getContent(), true);

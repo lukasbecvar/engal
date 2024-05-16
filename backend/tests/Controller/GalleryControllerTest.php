@@ -17,10 +17,12 @@ class GalleryControllerTest extends CustomCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
     */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
     */
     protected function setUp(): void
     {
@@ -30,6 +32,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test retrieving the list of galleries with authentication.
+     *
+     * @return void
      */
     public function testGetGalleryList(): void
     {
@@ -51,6 +55,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test retrieving the list of galleries without authentication.
+     *
+     * @return void
      */
     public function testGetGalleryListNonAuth(): void
     {
@@ -68,6 +74,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test for retrieving gallery statistics with user authentication.
+     *
+     * @return void
      */
     public function testGetGalleryStats(): void
     {
@@ -89,6 +97,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test for retrieving gallery statistics without user authentication.
+     *
+     * @return void
      */
     public function testGetGalleryStatsNonAuth(): void
     {
@@ -106,6 +116,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test for retrieving gallery data with empty name.
+     *
+     * @return void
      */
     public function testGetGalleryDataEmptyName(): void
     {
@@ -126,6 +138,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test for retrieving gallery data with non-existing gallery name.
+     *
+     * @return void
      */
     public function testGetGalleryDataNotFound(): void
     {
@@ -148,6 +162,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test for retrieving gallery data with existing gallery name.
+     *
+     * @return void
      */
     public function testGetGalleryDataSuccess(): void
     {
@@ -170,6 +186,8 @@ class GalleryControllerTest extends CustomCase
 
     /**
      * Test for retrieving gallery data without authentication.
+     *
+     * @return void
      */
     public function testGetGalleryDataNonAuth(): void
     {

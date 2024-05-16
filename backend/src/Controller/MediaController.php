@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Manager\LogManager;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use OpenApi\Attributes\Schema;
@@ -48,6 +49,7 @@ class MediaController extends AbstractController
      *
      * @param Request $request The current request object.
      * @param Security $security The security service for accessing user data.
+     *
      * @return mixed A streamed response with the content file, or a JSON response with an error message.
      */
     #[Tag(name: "Resources")]
@@ -96,16 +98,15 @@ class MediaController extends AbstractController
         $response->headers->set('Content-Length', '-1');
 
         // add additional headers for caching
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            basename($content)
-        );
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, basename($content));
 
         return $response;
     }
 
     /**
      * Retrieves the thumbnail of a media resource based on provided parameters.
+     *
+     * Return minified media thumbnail for render in gallery browser
      *
      * @param Security $security The security service for handling user authentication.
      * @param Request $request The HTTP request object containing query parameters.
@@ -158,8 +159,9 @@ class MediaController extends AbstractController
     /**
      * Preload app thumbnails.
      *
-     * This method is responsible for preloading thumbnails for the application.
-     * * @param MessageBusInterface $messageBus The symfony messenger async dispatcher.
+     * Push thumbnails preload message to doctrine queue for async process
+     *
+     * @param MessageBusInterface $messageBus The symfony messenger async dispatcher.
      *
      * @return JsonResponse The JSON response indicating the status of the operation.
      */

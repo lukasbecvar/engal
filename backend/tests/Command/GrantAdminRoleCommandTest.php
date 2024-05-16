@@ -17,6 +17,8 @@ class GrantAdminRoleCommandTest extends KernelTestCase
 {
     /**
      * Test the execution of the "app:grant-admin" command.
+     *
+     * @return void
      */
     public function testExecuteAdminRoleCommand(): void
     {

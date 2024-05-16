@@ -17,10 +17,12 @@ class LogoutTest extends WebTestCase
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
      */
-    private $client;
+    private object $client;
 
     /**
      * Set up before each test.
+     *
+     * @return void
      */
     protected function setUp(): void
     {
@@ -33,6 +35,8 @@ class LogoutTest extends WebTestCase
      *
      * This test authenticates a testing user and obtains a JWT token.
      * It then sends a logout request with the obtained token and asserts that the logout is successful.
+     *
+     * @return void
      */
     public function testLogoutWithValidToken(): void
     {
@@ -76,6 +80,8 @@ class LogoutTest extends WebTestCase
      * Test logout with invalid JWT token.
      *
      * This test sends a logout request with an invalid JWT token and asserts that the logout fails due to the invalid token.
+     *
+     * @return void
      */
     public function testLogoutWithInvalidToken(): void
     {

@@ -45,6 +45,7 @@ class PreloadThumbnailsCommand extends Command
             // run preload process
             $this->storageManager->preloadAllThumbnails('console_command');
 
+            // return success output
             $io->success('Thumbnails preload success');
             return Command::SUCCESS;
         } catch (\Exception $e) {

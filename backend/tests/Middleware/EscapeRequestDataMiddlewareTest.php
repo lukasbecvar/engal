@@ -21,6 +21,8 @@ class EscapeRequestDataMiddlewareTest extends TestCase
      * Test whether the middleware correctly escapes request data.
      *
      * This test verifies that the middleware properly escapes data in the request.
+     *
+     * @return void
      */
     public function testRequestDataEscape(): void
     {

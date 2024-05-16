@@ -34,6 +34,7 @@ class UserStatusController extends AbstractController
      *
      * @param UserManager $userManager The user manager service.
      * @param Security $security The security service.
+     *
      * @return JsonResponse The JSON response containing user status data.
      */
     #[Tag(name: "User")]

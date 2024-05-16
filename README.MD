@@ -94,7 +94,7 @@ I am currently working on a complete recode of the application.
 - [X] Symfony messneger run in backend container
 - [X] Video content time switch
 - [X] Check storage & database integrity
-- [ ] Backend refactor
+- [X] Backend refactor
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player

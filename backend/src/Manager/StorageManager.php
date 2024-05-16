@@ -254,19 +254,24 @@ class StorageManager
         $mediaFile = $this->getMediaFile($userId, $token);
 
         // build video thumnail file path
-        $thumbnailFilename = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/thumbnails/' . $token . '.jpg';
+        $thumbnailDirectory = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/thumbnails/';
+
+        // create thumbnail directory
+        if (!file_exists($thumbnailDirectory)) {
+            mkdir($thumbnailDirectory, 0777, true);
+        }
 
         // create file path
-        if (!file_exists($thumbnailFilename)) {
+        if (!file_exists($thumbnailDirectory . $token . '.jpg')) {
             // get video duration
             $duration = shell_exec("ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $mediaFile");
             $duration = floatval($duration);
 
             // generate thumbnail (middle time)
-            exec('ffmpeg -ss ' . ($duration / 2.1) . ' -i ' . $mediaFile . ' -vframes 1 ' . $thumbnailFilename);
+            exec('ffmpeg -ss ' . ($duration / 2.1) . ' -i ' . $mediaFile . ' -vframes 1 ' . $thumbnailDirectory . $token . '.jpg');
         }
 
-        return file_get_contents($thumbnailFilename);
+        return file_get_contents($thumbnailDirectory . $token . '.jpg');
     }
 
     /**

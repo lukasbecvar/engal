@@ -93,7 +93,6 @@ I am currently working on a complete recode of the application.
 - [X] Thumbnail reload (use symfony messenger for async process)
 - [X] Symfony messneger run in backend container
 - [X] Video content time switch
-- [ ] Store thumbnails outside data storage
 - [ ] Regenerate all thumbnails function (preload command)
 - [ ] Check storage & database integrity
 - [ ] Backend refactor

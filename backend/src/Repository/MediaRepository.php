@@ -16,6 +16,13 @@ class MediaRepository extends ServiceEntityRepository
         parent::__construct($registry, Media::class);
     }
 
+    /**
+     * Find all media items by owner ID.
+     *
+     * @param int $ownerId The ID of the owner whose media items to retrieve.
+     *
+     * @return array<array<int|string>> An array containing all media items belonging to the specified owner.
+     */
     public function findAllMediaByOwnerId(int $ownerId): array
     {
         return $this->createQueryBuilder('m')

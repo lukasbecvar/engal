@@ -23,7 +23,7 @@ class PreloadThumbnailsMessage
      *
      * @return int The owner id for preload.
      */
-    public function getOwnerId(): string
+    public function getOwnerId(): int
     {
         return $this->ownerId;
     }

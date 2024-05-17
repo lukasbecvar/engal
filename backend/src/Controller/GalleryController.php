@@ -106,7 +106,7 @@ class GalleryController extends AbstractController
         }
 
         // get gallery content
-        $gallery_content = $this->mediaRepository->findAllByGalleryName($userId, $galleryName);
+        $gallery_content = $this->mediaRepository->findAllByProperty($userId, $galleryName);
 
         return $this->json([
             'status' => 'success',

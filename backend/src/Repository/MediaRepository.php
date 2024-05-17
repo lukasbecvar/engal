@@ -33,6 +33,17 @@ class MediaRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllMediaByGalleryName(int $ownerId, string $galleryName): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.id, m.owner_id, m.type, m.token')
+            ->where('m.owner_id = :owner_id AND m.gallery_name = :gallery_name')
+            ->setParameter('owner_id', $ownerId)
+            ->setParameter('gallery_name', $galleryName)
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * Retrieves all media files from the repository.
      *
@@ -96,7 +107,7 @@ class MediaRepository extends ServiceEntityRepository
      *
      * @return string|null The token or null if not found.
      */
-    public function findFirstTokenByGalleryName(int $ownerId, string $galleryName): ?string
+    public function findFirstTokenByProperty(int $ownerId, string $galleryName): ?string
     {
         $result = $this->createQueryBuilder('m')
             ->select('m.token')
@@ -139,7 +150,7 @@ class MediaRepository extends ServiceEntityRepository
      * @param string $galleryName The name of the gallery.
      * @return array<mixed> The array of media entities.
      */
-    public function findAllByGalleryName(int $ownerId, string $galleryName): array
+    public function findAllByProperty(int $ownerId, string $galleryName): array
     {
         $qb = $this->createQueryBuilder('m')
             ->andWhere('m.gallery_name = :gallery_name')

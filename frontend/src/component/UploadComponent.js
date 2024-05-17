@@ -166,13 +166,17 @@ export default function UploadComponent() {
         const formData = new FormData()
         files.forEach((file) => formData.append('files[]', file))
 
-        // append gallery name to request
+        // get final gallery name
+        let final_gallery_name
         if (newGalleryName != '') {
-            formData.append('gallery_name', newGalleryName)
+            final_gallery_name = newGalleryName
         } else {
-            formData.append('gallery_name', selectedGallery)
+            final_gallery_name = selectedGallery
         }
     
+        // append gallery name to request
+        formData.append('gallery_name', final_gallery_name)
+
         // main upload process
         try {
             const response = await axios.post(apiUrl + '/api/upload', formData, {
@@ -184,15 +188,14 @@ export default function UploadComponent() {
                     setStatus('Uploading files ' + percentCompleted + '%')
                     setProgress(percentCompleted)
                     if (percentCompleted == 100) {
-                        setStatus('File processing...')
+                        setStatus('Data processing...')
                     }
                 },
             })
             if (response.data.message == 'files uploaded successfully') {
-                setStatus('File upload completed!')
 
                 try {
-                    fetch(apiUrl + '/api/media/preload/thumbnails', {
+                    fetch(apiUrl + '/api/media/preload/thumbnails?gallery_name=' + final_gallery_name, {
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',
@@ -204,7 +207,8 @@ export default function UploadComponent() {
                         console.log('Error to preload thumbnails: ' + error)
                     }
                 }
-            
+
+                setStatus('File upload completed!')
                 navigate("/");
             }
         } catch (error) {

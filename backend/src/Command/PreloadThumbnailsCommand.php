@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Manager\StorageManager;
+use App\Manager\ThumbnailManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,11 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:thumbnails:preload', description: 'Preload all media thumbnails files')]
 class PreloadThumbnailsCommand extends Command
 {
-    private StorageManager $storageManager;
+    private ThumbnailManager $thumbnailManager;
 
-    public function __construct(StorageManager $storageManager)
+    public function __construct(ThumbnailManager $thumbnailManager)
     {
-        $this->storageManager = $storageManager;
+        $this->thumbnailManager = $thumbnailManager;
         parent::__construct();
     }
 
@@ -43,7 +43,7 @@ class PreloadThumbnailsCommand extends Command
             $io->success('Thumbnails preload processing...');
 
             // run preload process
-            $this->storageManager->preloadAllThumbnails('console_command');
+            $this->thumbnailManager->preloadAllThumbnails('console_command');
 
             // return success output
             $io->success('Thumbnails preload success');

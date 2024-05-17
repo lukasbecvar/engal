@@ -2,7 +2,7 @@
 
 namespace App\Message\Handler;
 
-use App\Manager\StorageManager;
+use App\Manager\ThumbnailManager;
 use App\Message\PreloadThumbnailsMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -17,11 +17,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class PreloadThumbnailsMessageHandler
 {
-    private StorageManager $storageManager;
+    private ThumbnailManager $thumbnailManager;
 
-    public function __construct(StorageManager $storageManager)
+    public function __construct(ThumbnailManager $thumbnailManager)
     {
-        $this->storageManager = $storageManager;
+        $this->thumbnailManager = $thumbnailManager;
     }
 
     /**
@@ -35,6 +35,6 @@ class PreloadThumbnailsMessageHandler
     public function __invoke(PreloadThumbnailsMessage $message)
     {
         // peload all thumbnails using the storage manager
-        $this->storageManager->preloadAllThumbnails(null, $message->getOwnerId());
+        $this->thumbnailManager->preloadAllThumbnails(null, $message->getOwnerId(), $message->getGalleryName());
     }
 }

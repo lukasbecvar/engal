@@ -12,10 +12,11 @@ namespace App\Util;
 class SecurityUtil
 {
     /**
-     * Escape special characters in a string to prevent HTML injection.
+     * Escapes a string to prevent XSS attacks.
      *
-     * @param string $string The input string to escape.
-     * @return string|null The escaped string or null on error.
+     * @param string $string The string to escape.
+     *
+     * @return string|null The escaped string.
      */
     public function escapeString(string $string): ?string
     {

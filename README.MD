@@ -98,6 +98,7 @@ I am currently working on a complete recode of the application.
 ### Phase 8
 - [ ] Image browser
 - [ ] Video player
+- [ ] Refactor
 ### Phase 9
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native

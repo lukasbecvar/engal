@@ -195,7 +195,7 @@ export default function UploadComponent() {
             if (response.data.message == 'files uploaded successfully') {
 
                 try {
-                    fetch(apiUrl + '/api/media/preload/thumbnails?gallery_name=' + final_gallery_name, {
+                    fetch(apiUrl + '/api/thumbnail/preload?gallery_name=' + final_gallery_name, {
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',

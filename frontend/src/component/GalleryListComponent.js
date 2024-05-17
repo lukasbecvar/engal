@@ -85,7 +85,7 @@ export default function GalleryListComponent() {
         }
 
         try {
-            const response = await fetch(apiUrl + '/api/media/thumbnail?token=' + token, {
+            const response = await fetch(apiUrl + '/api/thumbnail?token=' + token, {
                 method: 'GET',
                 headers: headers
             })

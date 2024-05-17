@@ -76,7 +76,7 @@ export default function GalleryBrowserComponent() {
 
         const imagesPromises = currentPageData.map(async (item) => {
             // get media data
-            const imageResponse = await fetch(`${apiUrl}/api/media/thumbnail?token=${item.token}`, {
+            const imageResponse = await fetch(`${apiUrl}/api/thumbnail?token=${item.token}`, {
                 headers: {
                     'Authorization': `Bearer ${loginToken}`
                 }

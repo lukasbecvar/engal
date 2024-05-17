@@ -32,9 +32,9 @@ class SiteUtil
     }
 
     /**
-     * Check if the connection is secure (SSL).
+     * Check if the current request is secure (SSL).
      *
-     * @return bool Whether the connection is secure.
+     * @return bool Whether the current request is secure.
      */
     public function isSsl(): bool
     {

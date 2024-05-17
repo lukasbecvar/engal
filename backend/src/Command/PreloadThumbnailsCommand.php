@@ -38,7 +38,6 @@ class PreloadThumbnailsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
         try {
             $io->success('Thumbnails preload processing...');
 

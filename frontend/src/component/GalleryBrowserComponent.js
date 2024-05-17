@@ -1,5 +1,20 @@
 import React, { useState, useEffect } from "react"
 
+// import light gallery
+import LightGallery from 'lightgallery/react';
+import 'lightgallery/css/lightgallery.css';
+
+// light gallery styles
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-autoplay.css';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-fullscreen.css';
+ 
+// import light gallery plugins
+import lgZoom from 'lightgallery/plugins/zoom';
+import lgAutoplay from 'lightgallery/plugins/autoplay';
+import lgFullscreen from 'lightgallery/plugins/fullscreen';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
@@ -136,13 +151,23 @@ export default function GalleryBrowserComponent() {
             <NavigationComponent/>            
             <BreadcrumbComponent/>
             <div className="browser-component">
-                {images.map((mediaData, index) => (
-                    <div key={index} className="media-container">
-                        <div className="media-overlay">{mediaData.name}</div>
-                        <img src={mediaData.imageUrl} alt={`Media ${index}`}/>
-                    </div>
-                ))}
     
+                <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
+                    {images.map((mediaData, index) => (
+                        <a key={index} href={mediaData.imageUrl} >
+                            <div key={index} className="media-container">
+
+                                <div className="media-overlay">{mediaData.name}</div>
+                                <img src={mediaData.imageUrl} />
+                            </div>
+                        </a>
+        
+                    ))}
+                </LightGallery>
+
+
+
+
                 <div className="pagination">
                     <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
                         <FontAwesomeIcon icon={faArrowLeft} />

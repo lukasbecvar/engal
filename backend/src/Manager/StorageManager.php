@@ -191,20 +191,26 @@ class StorageManager
      */
     public function getMediaFile(int $userId, string $token, bool $canCrash = true): ?string
     {
-        // build media file path pathern
-        $mediaPathPathern = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/*/' . $token . '.*';
+        // Directories to search files in
+        $directories = ['photos', 'videos'];
 
-        // get files in pathern
-        $files = glob($mediaPathPathern);
+        // Iterate over each directory and search for files
+        foreach ($directories as $directory) {
+            // Path to the directory
+            $mediaPathPattern = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/' . $directory . '/' . $token . '.*';
 
-        // check if media file found
-        if ($files !== false && count($files) > 0) {
-            return $files[0];
-        } else {
-            // check if process can crash before complete
-            if ($canCrash) {
-                $this->errorManager->handleError('error to found media file: ' . $userId . ':' . $token, 404);
+            // Find files matching the pattern
+            $files = glob($mediaPathPattern);
+
+            // If at least one file is found, return the first one found
+            if ($files !== false && count($files) > 0) {
+                return $files[0];
             }
+        }
+
+        // If no file is found and crashing is allowed, handle error
+        if ($canCrash) {
+            $this->errorManager->handleError('error to found media file: ' . $userId . ':' . $token, 404);
         }
 
         return null;

@@ -10,6 +10,7 @@ import BreadcrumbComponent from "./navigation/BreadcrumbComponent"
 
 // engal utils
 import { DEV_MODE, ELEMENTS_PER_PAGE } from "../config"
+import ErrorMessageComponent from "./error/ErrorMessageComponent"
 
 export default function GalleryBrowserComponent() {
     // get local storage data
@@ -23,6 +24,7 @@ export default function GalleryBrowserComponent() {
     const [images, setImages] = useState([])
 
     // status states
+    const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
@@ -45,6 +47,10 @@ export default function GalleryBrowserComponent() {
 
                 // decode gallery data
                 const data = await response.json()
+
+                if (data.code == 404) {
+                    setError(data.message)
+                }
 
                 // calculate total pages
                 const totalImages = data.gallery_data.length
@@ -118,6 +124,11 @@ export default function GalleryBrowserComponent() {
     // show loading
     if (loading) {
         return <LoadingComponent/>
+    }
+
+    // show error
+    if (error) {
+        return <ErrorMessageComponent message={error}/>
     }
 
     return (

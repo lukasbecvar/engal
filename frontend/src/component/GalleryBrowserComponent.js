@@ -58,10 +58,10 @@ export default function GalleryBrowserComponent() {
                     console.error('Error fetching images: ' + error)
                 }
             } finally {
-                // disable loading (timeout 2s)
+                // disable loading (timeout 3)
                 setTimeout(() => {
                     setLoading(false)
-                }, 2000);
+                }, ELEMENTS_PER_PAGE * 35);
             }
         }
 

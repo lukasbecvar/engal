@@ -41,13 +41,13 @@ class RegisterController extends AbstractController
      * @return JsonResponse The JSON response.
      */
     #[Tag(name: "Auth")]
-    #[Route('/api/register', methods:['POST'], name: 'api_security_register')]
     #[Response(response: 200, description: 'The success user register message')]
     #[Response(response: 400, description: 'Invalid request data message')]
     #[Response(response: 403, description: 'New register is disabled by server admin')]
     #[Response(response: 409, description: 'Username is already exist error')]
     #[Parameter(name: 'username', in: 'query', schema: new Schema(type: 'string'), description: 'New username', required: true)]
     #[Parameter(name: 'password', in: 'query', schema: new Schema(type: 'string'), description: 'New password', required: true)]
+    #[Route('/api/register', methods:['POST'], name: 'api_security_register')]
     public function register(Request $request): JsonResponse
     {
         // check if register is enabled

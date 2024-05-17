@@ -33,6 +33,14 @@ class MediaRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Finds all media items by gallery name for a given owner.
+     *
+     * @param int    $ownerId     The ID of the owner.
+     * @param string $galleryName The name of the gallery.
+     *
+     * @return array<array<int|string>> An array containing the found media items.
+     */
     public function findAllMediaByGalleryName(int $ownerId, string $galleryName): array
     {
         return $this->createQueryBuilder('m')

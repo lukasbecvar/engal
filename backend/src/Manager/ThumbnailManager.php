@@ -13,7 +13,7 @@ use Intervention\Image\Drivers\Gd\Driver;
  *
  * @package App\Manager
  */
-class ThumbnailManager  
+class ThumbnailManager
 {
     private ErrorManager $errorManager;
     private StorageManager $storageManager;

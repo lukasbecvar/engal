@@ -4,11 +4,11 @@ framework:
         transports:
             async: 
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                #retry_strategy:
-                #    max_retries: 3
-                #    delay: 1000
-                #    multiplier: 2
-                #    max_delay: 0
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 0
 
         # messages list
         routing:

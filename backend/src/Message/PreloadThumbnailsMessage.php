@@ -33,7 +33,7 @@ class PreloadThumbnailsMessage
     /**
      * Gets the gallery name to preload.
      *
-     * @return int The owner id for preload.
+     * @return string The gallery name for preload.
      */
     public function getGalleryName(): ?string
     {

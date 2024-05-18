@@ -15,6 +15,7 @@ import NavigationComponent from "./navigation/NavigationComponent";
 import BreadcrumbComponent from "./navigation/BreadcrumbComponent";
 import ErrorMessageComponent from "./error/ErrorMessageComponent";
 import { DEV_MODE, ELEMENTS_PER_PAGE } from "../config";
+import { Link } from "react-router-dom";
 
 export default function GalleryBrowserComponent() {
     const apiUrl = localStorage.getItem('api-url');
@@ -72,22 +73,28 @@ export default function GalleryBrowserComponent() {
             }
             const thumbnailBlob = await thumbnailResponse.blob();
             const thumbnailUrl = URL.createObjectURL(thumbnailBlob);
-
+    
+            // If the media is a video, return only the thumbnail
+            if (item.type.includes('video')) {
+                return { 
+                    thumbnailUrl, 
+                    name: item.name,
+                    type: item.type
+                };
+            }
+    
             const contentResponse = await fetch(`${apiUrl}/api/media/content?token=${item.token}`, {
                 headers: {
                     'Authorization': `Bearer ${loginToken}`
                 }
             });
-
-
-            console.log(contentResponse);
-
+    
             if (!contentResponse.ok) {
                 return null;
             }
             const contentBlob = await contentResponse.blob();
             const contentUrl = URL.createObjectURL(contentBlob);
-
+    
             return { 
                 thumbnailUrl, 
                 contentUrl, 
@@ -151,15 +158,27 @@ export default function GalleryBrowserComponent() {
 
                 <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
                     {images.map((mediaData, index) => (
-                        <a key={index} href={mediaData.contentUrl} >
-                            <div key={index} className="media-container">
-                                <div className="media-overlay">{mediaData.name}</div>
-                                <img src={mediaData.thumbnailUrl} />
-                            </div>
-                        </a>
+                        mediaData.type.includes('image') ? (
+                            <a key={index} href={mediaData.contentUrl} data-lg-size="1920-1080" data-lg-type={mediaData.type}>
+                                <div className="media-container">
+                                    <div className="media-overlay">{mediaData.name}</div>
+                                    <img src={mediaData.thumbnailUrl} />
+                                </div>
+                            </a>
+                        ) : null // Add null as an alternative case
                     ))}
                 </LightGallery>
 
+                <div>
+                    {images.map((mediaData, index) => (
+                        !mediaData.type.includes('image') ? (
+                            <Link key={index} to={"/video?" + mediaData.name}>
+                                <img src={mediaData.thumbnailUrl}></img>
+                                <p>{mediaData.name}</p>
+                            </Link>
+                        ) : null // Add null as an alternative case
+                    ))}
+                </div>
 
             </div>
         </div>

@@ -2,7 +2,7 @@
 export const DEV_MODE = true
 
 // limit elements per page
-export const ELEMENTS_PER_PAGE = 10 // max 100 recommended
+export const ELEMENTS_PER_PAGE = 100 // max 100 recommended
 
 // current app version
 export const APP_VERSION = '4.0'

@@ -51,7 +51,7 @@ export default function GalleryBrowserComponent() {
             } finally {
                 setTimeout(() => {
                     setLoading(false);
-                }, ELEMENTS_PER_PAGE * 35);
+                }, ELEMENTS_PER_PAGE * 150);
             }
         };
         fetchData();
@@ -78,6 +78,10 @@ export default function GalleryBrowserComponent() {
                     'Authorization': `Bearer ${loginToken}`
                 }
             });
+
+
+            console.log(contentResponse);
+
             if (!contentResponse.ok) {
                 return null;
             }
@@ -126,18 +130,7 @@ export default function GalleryBrowserComponent() {
             <BreadcrumbComponent/>
             <div className="browser-component">
     
-                <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
-                    {images.map((mediaData, index) => (
-                        <a key={index} href={mediaData.contentUrl} >
-                            <div key={index} className="media-container">
-                                <div className="media-overlay">{mediaData.name}</div>
-                                <img src={mediaData.thumbnailUrl} />
-                            </div>
-                        </a>
-                    ))}
-                </LightGallery>
-
-                <div className="pagination">
+            <div className="pagination">
                     <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </button>
@@ -154,6 +147,20 @@ export default function GalleryBrowserComponent() {
                         <FontAwesomeIcon icon={faArrowRight} />
                     </button>
                 </div>
+
+
+                <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
+                    {images.map((mediaData, index) => (
+                        <a key={index} href={mediaData.contentUrl} >
+                            <div key={index} className="media-container">
+                                <div className="media-overlay">{mediaData.name}</div>
+                                <img src={mediaData.thumbnailUrl} />
+                            </div>
+                        </a>
+                    ))}
+                </LightGallery>
+
+
             </div>
         </div>
     );

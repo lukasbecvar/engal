@@ -23,6 +23,9 @@ class Media
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $length = null;
+
     #[ORM\Column]
     private ?int $owner_id = null;
 
@@ -72,6 +75,18 @@ class Media
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getLenght(): ?string
+    {
+        return $this->length;
+    }
+
+    public function setLenght(string $length): static
+    {
+        $this->length = $length;
 
         return $this;
     }

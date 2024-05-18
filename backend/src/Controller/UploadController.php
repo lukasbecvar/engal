@@ -14,6 +14,7 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\RequestBody;
 use Doctrine\ORM\EntityManagerInterface;
+use getID3;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -186,16 +187,27 @@ class UploadController extends AbstractController
         // get uploader user data
         $userData = $this->userManager->getUserData($security);
 
+        $getID3 = new getID3();
+
         try {
             foreach ($uploadedFiles as $file) {
                 // get owner ID
                 $ownerId = $userData->getID();
+
+                // get video length
+                $videoLength = '00:00';
+
+                if ($file instanceof UploadedFile && $file->getMimeType() === 'video/mp4') {
+                    $fileInfo = $getID3->analyze($file->getPathname());
+                    $videoLength = $fileInfo['playtime_string'];
+                }
 
                 // store media entity data
                 $token = $this->storageManager->storeMediaEntity([
                     'name' => $file->getClientOriginalName(),
                     'gallery_name' => $galleryName,
                     'type' => $file->getMimeType(),
+                    'length' => $videoLength,
                     'owner_id' => $ownerId,
                     'upload_time' => date('d.m.Y H:i:s'),
                 ]);

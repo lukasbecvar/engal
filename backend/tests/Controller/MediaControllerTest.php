@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\CustomCase;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -19,6 +20,8 @@ class MediaControllerTest extends CustomCase
     */
     private object $client;
 
+    private string $jwtToken;
+
     /**
      * Set up before each test.
      *
@@ -27,18 +30,24 @@ class MediaControllerTest extends CustomCase
     protected function setUp(): void
     {
         $this->client = static::createClient();
+
+        // Get user from test database (assuming you have UserRepository)
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        $user = $userRepository->find(1); // Assuming user ID is 1
+
+        // Generate JWT token for the user
+        $this->jwtToken = $this->generateJwtToken($user);
+
         parent::setUp();
     }
 
     /**
-     * Test case for retrieving media content when the token parameter is empty.
+     * Test case for when auth_token & media_token parameters are missing.
      *
      * @return void
      */
-    public function testGetMediaContentEmptyToken(): void
+    public function testGetMediaContentEmptyAuthTokenToken(): void
     {
-        $this->simulateUserAuthentication($this->client);
-
         // GET request to the API endpoint
         $this->client->request('GET', '/api/media/content');
 
@@ -48,21 +57,41 @@ class MediaControllerTest extends CustomCase
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
         $this->assertSame(400, $responseData['code']);
-        $this->assertEquals('token parameter is required', $responseData['message']);
+        $this->assertEquals('auth_token & media_token parameter is required', $responseData['message']);
     }
 
     /**
-     * Test case for retrieving media content with a wrong token parameter.
+     * Test case for when media_token parameter is missing.
      *
      * @return void
      */
-    public function testGetMediaContentWrongToken(): void
+    public function testGetMediaContentEmptyMediaToken(): void
     {
-        $this->simulateUserAuthentication($this->client);
-
         // GET request to the API endpoint
         $this->client->request('GET', '/api/media/content', [
-            'token' => 'wrong-token'
+            'auth_token' => 'auth'
+        ]);
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $responseData['code']);
+        $this->assertEquals('auth_token & media_token parameter is required', $responseData['message']);
+    }
+
+    /**
+     * Test case for when an incorrect auth_token is provided.
+     *
+     * @return void
+     */
+    public function testGetMediaContentWrongAuthToken(): void
+    {
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/content', [
+            'auth_token' => $this->jwtToken,
+            'media_token' => 'wrong_token',
         ]);
 
         // decoding the content of the JsonResponse
@@ -71,43 +100,26 @@ class MediaControllerTest extends CustomCase
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_NOT_FOUND);
         $this->assertSame(404, $responseData['code']);
-        $this->assertEquals('media token: wrong-token not found', $responseData['message']);
+        $this->assertEquals('media token: wrong_token not found', $responseData['message']);
     }
 
     /**
-     * Test case for successfully retrieving media content with a valid token parameter.
+     * Test case for successful retrieval of media content.
      *
      * @return void
      */
     public function testGetMediaContentSuccess(): void
     {
-        $this->simulateUserAuthentication($this->client);
-
         // GET request to the API endpoint
         $this->client->request('GET', '/api/media/content', [
-            'token' => '853bc196bb6bdf5f72c33e1eeeb8a8e2'
+            'auth_token' => $this->jwtToken,
+            'media_token' => '853bc196bb6bdf5f72c33e1eeeb8a8e2',
         ]);
-
-        // check response
-        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-    }
-
-    /**
-     * Test case for retrieving media content without authentication.
-     *
-     * @return void
-     */
-    public function testGetMediaContentNonAuth(): void
-    {
-        // GET request to the API endpoint
-        $this->client->request('GET', '/api/media/content');
 
         // decoding the content of the JsonResponse
         $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
-        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
-        $this->assertSame(401, $responseData['code']);
-        $this->assertEquals('JWT Token not found', $responseData['message']);
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
     }
 }

@@ -15,6 +15,12 @@ security:
 
     # app firewalls
     firewalls:
+
+        content:
+            pattern: ^/api/media/content
+            stateless: true
+
+
         login:
             pattern: ^/api/login
             stateless: true
@@ -34,6 +40,8 @@ security:
 
     # app access manager 
     access_control:
+        - { path: ^/api/media/content,      roles: PUBLIC_ACCESS }
+
         - { path: ^/api/register,      roles: PUBLIC_ACCESS }
         - { path: ^/api/login,         roles: PUBLIC_ACCESS }
         - { path: ^/api/doc,           roles: PUBLIC_ACCESS }

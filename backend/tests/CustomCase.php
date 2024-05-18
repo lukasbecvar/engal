@@ -4,6 +4,8 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -69,5 +71,19 @@ class CustomCase extends WebTestCase
 
         // Return an UploadedFile instance representing the fake file
         return new UploadedFile($tempFilePath, $filename, $mimeType, null, true);
+    }
+
+    /**
+     * Generates a JWT token for the given user.
+     *
+     * @param UserInterface $user The user for whom the token is generated.
+     * @return string The generated JWT token.
+     */
+    public function generateJwtToken(UserInterface $user): string
+    {
+        // Get JWT token manager
+        $jwtManager = self::getContainer()->get(JWTTokenManagerInterface::class);
+        // Generate JWT token
+        return $jwtManager->create($user);
     }
 }

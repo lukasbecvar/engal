@@ -6,6 +6,7 @@ import LogoutComponent from './component/auth/LogoutComponent'
 import DashboardComponent from './component/DashboardComponent'
 import NotFoundComponent from './component/error/NotFoundComponent'
 import GalleryBrowserComponent from './component/GalleryBrowserComponent'
+import VideoPlayerComponent from './component/VideoPlayerComponent'
 
 /**
  * Component defining the routing structure of the application.
@@ -25,6 +26,10 @@ export default function AppRouter() {
 
                 {/* gallery browser */}
                 <Route exact path="/gallery" element={<GalleryBrowserComponent/>}/>
+
+                {/* video player */}
+                <Route exact path="/video" element={<VideoPlayerComponent/>}/>
+
                 <Route path="*" element={<NotFoundComponent/>}/>
             </Routes>
         </Router>

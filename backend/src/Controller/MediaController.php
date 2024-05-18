@@ -8,7 +8,7 @@ use OpenApi\Attributes\Schema;
 use App\Manager\StorageManager;
 use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Parameter;
-use Symfony\Bundle\SecurityBundle\Security;
+use App\Manager\AuthTokenManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,15 +25,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class MediaController extends AbstractController
 {
-    private UserManager $userManager;
-    private StorageManager $storageManager;
-
-    public function __construct(UserManager $userManager, StorageManager $storageManager)
-    {
-        $this->userManager = $userManager;
-        $this->storageManager = $storageManager;
-    }
-
     /**
      * Retrieve the content associated with the provided token.
      *
@@ -43,7 +34,6 @@ class MediaController extends AbstractController
      * with an appropriate error message and status code.
      *
      * @param Request $request The current request object.
-     * @param Security $security The security service for accessing user data.
      *
      * @return mixed A streamed response with the content file, or a JSON response with an error message.
      */
@@ -51,42 +41,56 @@ class MediaController extends AbstractController
     #[Response(response: 200, description: 'The success photo content resource')]
     #[Response(response: 400, description: 'The token parameter not found in requets')]
     #[Response(response: 404, description: 'The media not found error')]
-    #[Parameter(name: 'token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
+    #[Parameter(name: 'media_token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
+    #[Parameter(name: 'auth_token', in: 'query', schema: new Schema(type: 'string'), description: 'User auth token', required: true)]
     #[Route('/api/media/content', methods: ['GET'], name: 'api_media_content')]
-    public function getContent(Request $request, Security $security): mixed
+    public function getContent(Request $request, StorageManager $storageManager, AuthTokenManager $authTokenManager, UserManager $userManager): mixed
     {
-        // get logged user ID
-        $userId = $this->userManager->getUserData($security)->getId();
+        // get auth token from request
+        $authToken = $request->get('auth_token');
 
-        // get token from request
-        $token = $request->get('token');
+        // get media token from request
+        $mediaToken = $request->get('media_token');
 
         // check if token set
-        if (!isset($token)) {
+        if (!isset($mediaToken) || !isset($authToken)) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_BAD_REQUEST,
-                'message' => 'token parameter is required'
+                'message' => 'auth_token & media_token parameter is required'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
+        // check if token is valid
+        if (!$authTokenManager->isTokenValid($authToken)) {
+            return $this->json([
+                'status' => 'error',
+                'code' => JsonResponse::HTTP_UNAUTHORIZED,
+                'message' => 'invalid JWT token'
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        // get user id form auth token
+        $username = $authTokenManager->decodeToken($authToken)['username'];
+        $userId = $userManager->getUserRepo($username)->getId();
+
         // check if media exist
-        if (!$this->storageManager->isMediaExist($userId, $token)) {
+        if (!$storageManager->isMediaExist($userId, $mediaToken)) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_NOT_FOUND,
-                'message' => 'media token: ' . $token . ' not found'
+                'message' => 'media token: ' . $mediaToken . ' not found'
             ], JsonResponse::HTTP_NOT_FOUND);
         }
 
         // get content
-        $content = $this->storageManager->getMediaFile($userId, $token);
+        $content = $storageManager->getMediaFile($userId, $mediaToken);
 
         // assuming $content is the file path
         $response = new BinaryFileResponse($content);
 
         // set headers
-        $response->headers->set('Content-Type', $this->storageManager->getMediaType($token));
+        $response->headers->set('Content-Type', $storageManager->getMediaType($mediaToken));
         $response->headers->set('Content-Disposition', 'inline');
         $response->headers->set('Cache-Control', 'public, max-age=3600');
         $response->headers->set('Accept-Ranges', 'bytes');

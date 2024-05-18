@@ -74,31 +74,14 @@ export default function GalleryBrowserComponent() {
             const thumbnailBlob = await thumbnailResponse.blob();
             const thumbnailUrl = URL.createObjectURL(thumbnailBlob);
     
+            console.log(item)
+
             // If the media is a video, return only the thumbnail
-            if (item.type.includes('video')) {
-                return { 
-                    thumbnailUrl, 
-                    name: item.name,
-                    type: item.type
-                };
-            }
-    
-            const contentResponse = await fetch(`${apiUrl}/api/media/content?token=${item.token}`, {
-                headers: {
-                    'Authorization': `Bearer ${loginToken}`
-                }
-            });
-    
-            if (!contentResponse.ok) {
-                return null;
-            }
-            const contentBlob = await contentResponse.blob();
-            const contentUrl = URL.createObjectURL(contentBlob);
-    
             return { 
                 thumbnailUrl, 
-                contentUrl, 
+                token: item.token,
                 name: item.name,
+                ownerId: item.ownerId,
                 type: item.type
             };
         });
@@ -159,7 +142,7 @@ export default function GalleryBrowserComponent() {
                 <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
                     {images.map((mediaData, index) => (
                         mediaData.type.includes('image') ? (
-                            <a key={index} href={mediaData.contentUrl} data-lg-size="1920-1080" data-lg-type={mediaData.type}>
+                            <a key={index} href={apiUrl + "/api/media/content?auth_token=" + loginToken +"&media_token=" + mediaData.token} data-lg-type={mediaData.type}>
                                 <div className="media-container">
                                     <div className="media-overlay">{mediaData.name}</div>
                                     <img src={mediaData.thumbnailUrl} />
@@ -172,7 +155,7 @@ export default function GalleryBrowserComponent() {
                 <div>
                     {images.map((mediaData, index) => (
                         !mediaData.type.includes('image') ? (
-                            <Link key={index} to={"/video?" + mediaData.name}>
+                            <Link key={index} to={"/video?media_token=" + mediaData.token + "&type=" + mediaData.type}>
                                 <img src={mediaData.thumbnailUrl}></img>
                                 <p>{mediaData.name}</p>
                             </Link>

@@ -96,8 +96,9 @@ I am currently working on a complete recode of the application.
 - [X] Check storage & database integrity
 - [X] Backend refactor
 ### Phase 8
-- [ ] Image browser
+- [X] Image browser
 - [ ] Video player
+- [ ] Time in video overlay
 - [ ] Refactor
 ### Phase 9
 - [ ] Port frontend to electron

@@ -79,12 +79,12 @@ class Media
         return $this;
     }
 
-    public function getLenght(): ?string
+    public function getLength(): ?string
     {
         return $this->length;
     }
 
-    public function setLenght(string $length): static
+    public function setLength(string $length): static
     {
         $this->length = $length;
 

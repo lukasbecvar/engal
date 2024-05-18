@@ -74,7 +74,7 @@ export default function GalleryBrowserComponent() {
             const thumbnailBlob = await thumbnailResponse.blob();
             const thumbnailUrl = URL.createObjectURL(thumbnailBlob);
     
-            console.log(item)
+            console.log(item.length)
 
             // If the media is a video, return only the thumbnail
             return { 
@@ -82,7 +82,8 @@ export default function GalleryBrowserComponent() {
                 token: item.token,
                 name: item.name,
                 ownerId: item.ownerId,
-                type: item.type
+                type: item.type,
+                length: item.length
             };
         });
         const imagesData = await Promise.all(imagesPromises);
@@ -157,7 +158,7 @@ export default function GalleryBrowserComponent() {
                         !mediaData.type.includes('image') ? (
                             <Link key={index} to={"/video?media_token=" + mediaData.token + "&type=" + mediaData.type}>
                                 <img src={mediaData.thumbnailUrl}></img>
-                                <p>{mediaData.name}</p>
+                                <p>{mediaData.name}, {mediaData.length}</p>
                             </Link>
                         ) : null // Add null as an alternative case
                     ))}

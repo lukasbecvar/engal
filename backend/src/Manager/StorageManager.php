@@ -68,7 +68,7 @@ class StorageManager
             $media->setName($name);
             $media->setGalleryName($data['gallery_name']);
             $media->setType($data['type']);
-            $media->setLenght($data['length']);
+            $media->setLength($data['length']);
             $media->setOwnerId(intval($data['owner_id']));
             $media->setToken($token);
             $media->setUploadTime($data['upload_time']);

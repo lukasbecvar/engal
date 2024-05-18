@@ -41,7 +41,7 @@ class MediaFixtures extends Fixture
         $media->setName('test');
         $media->setGalleryName('testing gallery');
         $media->setType('image/png');
-        $media->setLenght('01:00');
+        $media->setLength('01:00');
         $media->setOwnerId(1);
         $media->setToken($token);
         $media->setUploadTime(date('d.m.Y H:i:s'));
@@ -60,7 +60,7 @@ class MediaFixtures extends Fixture
             $media->setName('test' . $i . '.jpg');
             $media->setGalleryName('testing gallery');
             $media->setType('image/jpg');
-            $media->setLenght('01:00');
+            $media->setLength('01:00');
             $media->setOwnerId(1);
             $media->setToken($token);
             $media->setUploadTime(date('d.m.Y H:i:s'));
@@ -81,7 +81,7 @@ class MediaFixtures extends Fixture
             $media->setName('test' . $i . '.mp4');
             $media->setGalleryName('testing gallery');
             $media->setType('video/mp4');
-            $media->setLenght('01:00');
+            $media->setLength('01:00');
             $media->setOwnerId(1);
             $media->setToken($token);
             $media->setUploadTime(date('d.m.Y H:i:s'));

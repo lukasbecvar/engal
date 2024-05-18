@@ -97,8 +97,9 @@ I am currently working on a complete recode of the application.
 - [X] Backend refactor
 ### Phase 8
 - [X] Image browser
-- [ ] Video player
-- [ ] Time in video overlay
+- [X] Video player
+- [X] Time in video overlay
+- [ ] Redesign
 - [ ] Refactor
 ### Phase 9
 - [ ] Port frontend to electron
@@ -115,7 +116,7 @@ I am currently working on a complete recode of the application.
 - [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 - [ ] Gallery info (show gallery data: count, owner, time data)
 - [ ] Gallery share (configurate in gallery info), (use owner_id in databse [json/array])
-- [ ] Media info (get media data, name, gallery_name, size, type, time data)
+- [ ] Media info (get media data, name, gallery_name, size, type, time data, use getID3 lib)
 - [ ] Media delete function
 - [ ] Media edit (name, replace file with reupload)
 - [ ] Media move (move to gallery), single or multiple

@@ -496,19 +496,31 @@ body {
 }
 
 /* main gallery browser component style */
+/* main gallery browser component style */
 .browser-component {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
     position: relative;
     margin-top: 10px;
+    justify-content: center; /* Center horizontally */
+}
+
+.browser-component .lg-react-element {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
+    width: 100%;
 }
 
 .browser-component .media-container {
     position: relative;
     margin: 3px;
     border: 0.1px solid rgb(170, 170, 170);
+    max-width: 300px;
+    max-height: 300px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 .browser-component .media-overlay {
@@ -528,8 +540,8 @@ body {
 
 .browser-component img {
     object-fit: cover;
-    max-width: 300px;
-    max-height: 250px;
+    width: 100%; /* Ensure the image fits within the container */
+    height: 250px; /* Set a fixed height for the images */
 }
 
 .browser-component .pagination {
@@ -590,6 +602,8 @@ body {
 .browser-component .show-pages .active {
     background-color: #333333;
 }
+
+
 
 /* mobile devices style */
 @media screen and (max-width: 800px) {

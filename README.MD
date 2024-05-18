@@ -5,110 +5,14 @@ Self-hosted encrypted media cloud storage.
 
 ## Recode (Version 4.0) - in progress
 I am currently working on a complete recode of the application.
-### Phase 1
-- [X] Setup React (frontend)
-- [X] Setup Symfony (backend)
-- [X] Setup (tests github actions)
-- [X] Setup docker env
-### Phase 2
-- [X] Index/status controller
-- [X] Error manager
-- [X] Log manager
-- [X] Setup NelmioApiDocBundle 
-- [X] Security middleware (XSS escape, SSL check)
-- [X] Database online check middleware
-- [X] Maintenance mode middleware
-- [X] SSL Only mode middleware
-### Phase 3
-- [X] User system (JWT auth)
-- [X] Auth actions log
-- [X] Token invalidation
-- [X] Blacklisted token check middleware
-- [X] Last login & register time in user entity
-- [X] Command for create user
-- [X] Command for granting admin permissions to a user
-- [X] User status api endpoint
-- [X] Register api endpoint
-### Phase 4
-- [X] Frontend base
-    - [X] Set Api url
-    - [X] Check backend availability
-    - [X] Check backend status
-    - [X] Check app version
-- [X] Login component
-    - [X] Check login status
-    - [X] Login refactor
-- [X] Register component
-- [X] Autologin after register
-- [X] Logout function
-- [X] User dashboard
-    - [X] Nav bar (user panel with logout button)
-- [X] API connecton error with url config reset
-- [X] Error component reload
-- [X] Frontend app devmode (console.log errors)
-- [X] Preventive refactor
-### Phase 5
-- [X] Design base components
-- [X] Sub navbar
-- [X] Frontend refactor
-### Phase 5,5
-- [X] Fix expirated login token error
-- [X] Backend cache token blacklist (filesystem cache)
-### Phase 6
-- [X] Media entity (name, gallery_name, type(format), owner_id, path, upload_time, edit_time)
-- [X] Media upload (images & videos), (name, gallery_name[required], input_files[multiple uploads])
-    - [X] Upload form component
-    - [X] Accept only media formats
-    - [X] Upload status
-    - [X] Upload limits policy config
-    - [X] Insert data to Media entity
-    - [X] Upload file filter (users, type)
-    - [X] Upload gallery name value
-    - [X] Recode upload controller & create storage manager
-    - [X] Upload & gallery list api doc
-    - [X] Upload & gallery unit test
-    - [X] Recode frontend upload component
-    - [X] Design upload form
-- [X] All response codes get from response const
-- [X] Media fixtures
-### Phase 6.5
-- [X] Setup OPCache
-- [X] Setup APCU
-- [X] Setup PHP_codesniffer
-### Phase 7
-- [X] Dashboard stats
-- [X] Dark scroll bar
-- [X] Get media content endpoint
-- [X] Get first gallery token by gallery id
-- [X] Get minified thumbnail api endpoint
-- [X] Move media counter to sub navbar
-- [X] Display galleries in the dashboard 
-- [X] Get media list by gallery name
-- [X] Gallery browser (photo & video (image priority))
-    - [X] CSS style browser
-- [X] Recode video/image thumbnail system (cache thumbnail outside storage directory)
-- [X] Symfony errors to json response
-- [X] Thumbnails preload
-- [X] Gallery browser pagination (max 200 images)
-- [X] Thumbnail reload (use symfony messenger for async process)
-- [X] Symfony messneger run in backend container
-- [X] Video content time switch
-- [X] Check storage & database integrity
-- [X] Backend refactor
-### Phase 8
-- [X] Image browser
-- [X] Video player
-- [X] Time in video overlay
+- [ ] Encryption system
 - [ ] Refactor
-### Phase 9
-- [ ] Port frontend to electron
-- [ ] Port frontend to react-native
-### Phase 10
-- [ ] Deploy system
-- [ ] Basic documentation in markdown
 
 ## TODOS: version 4.5
-- [ ] Encryption system
+- [ ] Port frontend to electron
+- [ ] Port frontend to react-native
+- [ ] Deploy system
+- [ ] Basic documentation in markdown
 
 ## TODOS: version 5
 - [ ] Browse all galleries
@@ -119,6 +23,7 @@ I am currently working on a complete recode of the application.
 - [ ] Media delete function
 - [ ] Media edit (name, replace file with reupload)
 - [ ] Media move (move to gallery), single or multiple
+- [ ] Favorite gallery
 
 ## TODOS: version 6
 - [ ] Data wipe command (drop all users, logs, storage data)

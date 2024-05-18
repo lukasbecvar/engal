@@ -121,23 +121,7 @@ export default function GalleryBrowserComponent() {
             <BreadcrumbComponent/>
             <div className="browser-component">
     
-            <div className="pagination">
-                    <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </button>
-                    <div className="show-pages">
-                        {[...Array(totalPages).keys()].map((page) => (
-                            (page >= currentPage - 1 && page <= currentPage + 1) && (
-                                <button key={page+1} onClick={() => onPageChange(page+1)} className={currentPage === page+1 ? 'active' : ''}>
-                                    {page + 1}
-                                </button>
-                            )
-                        ))}
-                    </div>
-                    <button className="arrow-button" onClick={onNextPage} disabled={currentPage === totalPages}>
-                        <FontAwesomeIcon icon={faArrowRight} />
-                    </button>
-                </div>
+
 
 
                 <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
@@ -153,16 +137,42 @@ export default function GalleryBrowserComponent() {
                     ))}
                 </LightGallery>
 
-                <div>
-                    {images.map((mediaData, index) => (
-                        !mediaData.type.includes('image') ? (
-                            <Link key={index} to={"/video?media_token=" + mediaData.token + "&type=" + mediaData.type}>
+
+                <div className="videos-title"></div>
+
+
+                {images.map((mediaData, index) => (
+                    !mediaData.type.includes('image') ? (
+                        <Link key={index} to={"/video?media_token=" + mediaData.token + "&type=" + mediaData.type}>
+                            <div className="media-container">
+                                <div className="media-overlay">{mediaData.name} ({mediaData.length})</div>
                                 <img src={mediaData.thumbnailUrl}></img>
-                                <p>{mediaData.name}, {mediaData.length}</p>
-                            </Link>
-                        ) : null // Add null as an alternative case
-                    ))}
-                </div>
+                            </div>
+                        </Link>
+                    ) : null // Add null as an alternative case
+                ))}
+
+
+
+                <div className="pagination">
+    <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
+        <FontAwesomeIcon icon={faArrowLeft} />
+    </button>
+    <div className="show-pages">
+        {[...Array(totalPages).keys()].map((page) => (
+            ((currentPage === totalPages && page >= Math.max(0, currentPage - 2)) || (page >= Math.max(0, currentPage - 1) && page <= Math.min(totalPages - 1, currentPage + 1))) && (
+                <button key={page + 1} onClick={() => onPageChange(page + 1)} className={currentPage === page + 1 ? 'active' : ''}>
+                    {page + 1}
+                </button>
+            )
+        ))}
+    </div>
+    <button className="arrow-button" onClick={onNextPage} disabled={currentPage === totalPages}>
+        <FontAwesomeIcon icon={faArrowRight} />
+    </button>
+</div>
+
+
 
             </div>
         </div>

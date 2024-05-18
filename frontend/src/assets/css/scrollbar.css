@@ -5,18 +5,18 @@
 } 
 
 ::-webkit-scrollbar-track {
-	background: rgb(37, 37, 37);
+	background: #000c1b;
 }
  
 ::-webkit-scrollbar-thumb {
-	background: #40444b;
+	background: #03254e;
 	-webkit-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 	min-height: 80px;
 } 
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #5c646b;
+	background: #04489b;
 }
 
 /* mobile devices style */

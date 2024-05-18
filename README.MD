@@ -99,7 +99,6 @@ I am currently working on a complete recode of the application.
 - [X] Image browser
 - [X] Video player
 - [X] Time in video overlay
-- [ ] Redesign
 - [ ] Refactor
 ### Phase 9
 - [ ] Port frontend to electron

@@ -2,90 +2,69 @@
 
 namespace App\Controller;
 
-use App\Util\SecurityUtil;
+use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes\Response;
+use App\Repository\MediaRepository;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class UserStatusController
- * @package App\Controller
+ *
+ * Controller handling user information.
+ *
+ * @package App\Controller\User
  */
 class UserStatusController extends AbstractController
 {
-    /**
-     * @var UserManager $userManager The user manager.
-     */
     private UserManager $userManager;
 
-    /**
-     * @var SecurityUtil $securityUtil The security utility.
-     */
-    private SecurityUtil $securityUtil;
-
-    /**
-     * UserStatusController constructor.
-     * @param UserManager $userManager The user manager.
-     * @param SecurityUtil $securityUtil The security utility.
-     */
-    public function __construct(UserManager $userManager, SecurityUtil $securityUtil)
+    public function __construct(UserManager $userManager)
     {
         $this->userManager = $userManager;
-        $this->securityUtil = $securityUtil;
     }
 
     /**
-     * Handles the user status endpoint to check the status of a user based on their token.
+     * Retrieves user status data.
      *
-     * @param Request $request The HTTP request.
-     * @return Response The JSON response.
+     * This endpoint retrieves user status data and returns it in JSON format.
+     *
+     * @param UserManager $userManager The user manager service.
+     * @param Security $security The security service.
+     *
+     * @return JsonResponse The JSON response containing user status data.
      */
-    #[Route('/user/status', methods:['POST'], name: 'get_user_status')]
-    public function userStatus(Request $request): Response
+    #[Tag(name: "User")]
+    #[Response(response: 200, description: 'The user data json')]
+    #[Response(response: 401, description: 'The JWT token Invalid message')]
+    #[Route('/api/user/status', methods: ['GET'], name: 'api_user_status')]
+    public function getUserStatus(MediaRepository $mediaRepository, UserManager $userManager, Security $security): JsonResponse
     {
-        // get user token
-        $token = $request->request->get('token');
-        
-        // check if request is post
-        if (!$request->isMethod('POST')) {
-            return $this->json([
-                'status' => 'error',
-                'code' => 400,
-                'message' => 'post request required'
-            ]);
-        }
-        
-        // check if token seted
-        if ($token == null) {
-            return $this->json([
-                'status' => 'error',
-                'code' => 400,
-                'message' => 'required post data: token'
-            ]);
-        }
+        // get user data
+        $userData = $userManager->getUserData($security);
 
-        // escape user token
-        $token = $this->securityUtil->escapeString($token);
+        // get logged user ID
+        $userId = $this->userManager->getUserData($security)->getId();
 
-        // check if user found in database
-        if ($this->userManager->getUserRepository(['token' => $token]) != null) {
-                
-            // return success message
-            return $this->json([
-                'status' => 'success',
-                'code' => 200, 
-                'username' => $this->userManager->getUsername($token),
-                'role' => $this->userManager->getUserRole($token),
-                'profile_pic' => $this->userManager->getProfilePic($token)
-            ]);
-        } else {
-            return $this->json([
-                'status' => 'error',
-                'code' => 403,
-                'message' => 'invalid token value'
-            ]);
-        }
+        // return user data
+        return $this->json([
+            'status' => 'success',
+            'code' => JsonResponse::HTTP_OK,
+            'user_status' => [
+                'username' => $userData->getUsername(),
+                'roles' => $userData->getRoles(),
+                'register_time' => $userData->getRegisterTime(),
+                'last_login_time' => $userData->getLastLoginTime(),
+                'ip_address' => $userData->getIpAddress()
+            ],
+            'stats' => [
+                'images_count' => $mediaRepository->countMediaByType($userId),
+                'videos_count' => $mediaRepository->countMediaByType($userId, 'video'),
+                'galleries_count' => count($mediaRepository->findDistinctGalleryNamesByUserId($userId))
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 }

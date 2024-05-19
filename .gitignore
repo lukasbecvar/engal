@@ -1,32 +1,20 @@
-###> backend <###
-/backend/.env.local
-/backend/.env.local.php
-/backend/.env.*.local
-/backend/config/secrets/prod/prod.decrypt.private.php
-/backend/public/bundles/
-/backend/var/
-/backend/phpunit.xml
-/backend/.phpunit.result.cache
-/backend/.phpunit.result.cache
-phpstan.neon
-/backend/vendor/
-/backend/composer.lock
-/backend/.env.prod
-/backend/storage/
+# common
+_docker/services
 
-###> frontend <###
-/frontend/node_modules
-/frontend/package-lock.json
-/frontend/.pnp
-/frontend/.pnp.js
-/frontend/coverage
-/frontend/build
-/frontend/.DS_Store
-/frontend/.env.local
-/frontend/.env.development.local
-/frontend/.env.test.local
-/frontend/.env.production.local
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
+# frontend
+frontend/node_modules
+frontend/package-lock.json
+frontend/build
+frontend/coverage
 
+# backend
+backend/.env.prod
+backend/config/jwt
+backend/composer.lock
+backend/templates
+backend/vendor
+backend/var
+backend/public/bundles
+backend/config/secrets/prod/prod.decrypt.private.php
+backend/storage/*
+backend/.phpcs-cache

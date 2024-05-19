@@ -6,19 +6,21 @@
     colors="true"
     verbose="true"
     cacheResult="false"
+    printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinterForPhpUnit9"
 >
     <php>
-        <server name="APP_ENV" value="dev" force="true"/>
+        <!-- Environment Variables -->     
+        <server name="APP_ENV" value="test" force="true"/>
         <server name="SYMFONY_DEBUG" value="0"/>
         <server name="SHELL_VERBOSITY" value="-1"/>
         <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
 
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>   
         <env name="KERNEL_CLASS" value="App\Kernel"/>
         <env name="SYMFONY_DEBUG" value="0"/>
 
         <env name="REMOTE_ADDR" value="127.0.0.1"/>
-        <env name="HTTP_CLIENT_IP" value="127.0.0.1"/>
         <env name="HTTP_HOST" value="127.0.0.1"/>
         <env name="HTTP_USER_AGENT" value="test"/>
     </php>
@@ -26,6 +28,7 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory suffix=".php">./tests</directory>
+            <exclude>./tests/CustomCase.php</exclude>
         </testsuite>
     </testsuites>
 

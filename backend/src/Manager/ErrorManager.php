@@ -3,54 +3,83 @@
 namespace App\Manager;
 
 use App\Util\SiteUtil;
+use App\Event\ErrorEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class ErrorManager
+ *
+ * ErrorManager handles error messages and their dispatching.
+ *
  * @package App\Manager
  */
 class ErrorManager
 {
-    /**
-     * @var SiteUtil $siteUtil The site utility.
-     */
     private SiteUtil $siteUtil;
+    private EventDispatcherInterface $eventDispatcherInterface;
 
-    /**
-     * ErrorManager constructor.
-     * @param SiteUtil $siteUtil The site utility.
-     */
-    public function __construct(SiteUtil $siteUtil)
+    public function __construct(SiteUtil $siteUtil, EventDispatcherInterface $eventDispatcherInterface)
     {
         $this->siteUtil = $siteUtil;
+        $this->eventDispatcherInterface = $eventDispatcherInterface;
     }
 
     /**
-     * Handles and logs errors, sending a JSON response with the error details.
+     * Handles errors by generating a JSON response and potentially dispatching an error event.
      *
-     * @param string $msg The error message.
-     * @param int $code The HTTP status code.
-     * @param string $status The status of the error (default is 'error').
-     * @return void
+     * @param string $message The error message.
+     * @param int $code The error code.
+     * @param bool $msg_protect The error message protect (hide errors in prod env).
+     * @return JsonResponse
      */
-    public function handleError(string $msg, int $code, string $status = 'error'): void
+    public function handleError(string $message, int $code, bool $msg_protect = true): JsonResponse
     {
-        // check if error messages is enabled
-        if (!$this->siteUtil->isDevMode()) {
-            // replace error message (for protect exceptions)
-            $msg = 'unexpected server-side error, please try again later and report the error to your provider';
-        } 
+        // dispatch error event
+        if ($this->canBeEventDispatched($message) && !$this->siteUtil->isMaintenance()) {
+            $this->eventDispatcherInterface->dispatch(new ErrorEvent($code, 'internal-error', $message), ErrorEvent::NAME);
+        }
 
-        // build error message
-        $data = [
-            'status' => $status,
+        // protect error message in production env
+        if ($_ENV['APP_ENV'] == 'prod' && $msg_protect == true) {
+            $code = 500;
+            $message = 'Unexpected server error';
+        }
+
+        // return error response
+        return die(json_encode([
+            'status' => 'error',
             'code' => $code,
-            'message' => $msg
+            'message' => $message
+        ]));
+    }
+
+    /**
+     * Checks if an error message can be dispatched as an event.
+     *
+     * @param string $errorMessage The error message to check.
+     * @return bool True if the error can be dispatched as an event, false otherwise.
+     */
+    public function canBeEventDispatched(string $errorMessage): bool
+    {
+        // list of error patterns that should block event dispatch
+        $blockedErrorPatterns = [
+            'log-error:',
+            'database connection error:',
+            'Unknown database',
+            'Base table or view not found'
         ];
 
-        // send api headers
-        $this->siteUtil->sendAPIHeaders();
+        // loop through each blocked error pattern
+        foreach ($blockedErrorPatterns as $pattern) {
+            // check if the current pattern exists in the error message
+            if (strpos($errorMessage, $pattern) !== false) {
+                // if a blocked pattern is found, return false
+                return false;
+            }
+        }
 
-        // JSON response
-        die(json_encode($data));
-    }  
+        // if no blocked patterns are found, return true
+        return true;
+    }
 }

@@ -3,406 +3,198 @@
 namespace App\Manager;
 
 use App\Entity\User;
-use App\Util\SecurityUtil;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\String\ByteString;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserManager
+ *
+ * Manages user-related operations such as updating user data on login.
+ *
  * @package App\Manager
  */
 class UserManager
 {
-    /**
-     * @var LogManager $logManager The log manager.
-     */
     private LogManager $logManager;
-
-    /**
-     * @var ErrorManager $errorManager The error manager.
-     */
     private ErrorManager $errorManager;
-
-    /**
-     * @var SecurityUtil $securityUtil The security utility.
-     */
-    private SecurityUtil $securityUtil;
-
-    /**
-     * @var VisitorInfoUtil $visitorInfoUtil The visitor info utility.
-     */
     private VisitorInfoUtil $visitorInfoUtil;
-
-    /**
-     * @var EntityManagerInterface $entityManager The entity manager.
-     */
     private EntityManagerInterface $entityManager;
-    
-    /**
-     * UserManager constructor.
-     * @param LogManager $logManager The log manager.
-     * @param ErrorManager $errorManager The error manager.
-     * @param SecurityUtil $securityUtil The security utility.
-     * @param VisitorInfoUtil $visitorInfoUtil The visitor info utility.
-     * @param EntityManagerInterface $entityManager The entity manager.
-     */
+    private UserPasswordHasherInterface $passwordHasherInterface;
+
     public function __construct(
         LogManager $logManager,
         ErrorManager $errorManager,
-        SecurityUtil $securityUtil, 
         VisitorInfoUtil $visitorInfoUtil,
-        EntityManagerInterface $entityManager    
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasherInterface
     ) {
         $this->logManager = $logManager;
         $this->errorManager = $errorManager;
-        $this->securityUtil = $securityUtil;
         $this->entityManager = $entityManager;
         $this->visitorInfoUtil = $visitorInfoUtil;
+        $this->passwordHasherInterface = $passwordHasherInterface;
     }
 
     /**
-     * Insert a new user into the database.
+     * Gets the user repository for the given username.
      *
-     * This method creates a new user entity, sets its data, and inserts it into the database.
+     * @param string $username The username to retrieve the repository for
      *
-     * @param string $username The username of the new user.
-     * @param string $password The password of the new user.
+     * @return object|null The user repository if found, otherwise null
+     */
+    public function getUserRepo(string $username): ?object
+    {
+        // get user repo
+        return $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+    }
+
+    /**
+     * Retrieves a user entity by their IP address.
+     *
+     * @param string $ipAddress The IP address of the user.
+     * @return object|null The user entity if found, or null if not found.
+     */
+    public function getUserRepoByIP(string $ipAddress): ?object
+    {
+        // get user repo
+        return $this->entityManager->getRepository(User::class)->findOneBy(['ip_address' => $ipAddress]);
+    }
+
+    /**
+     * Updates user data on login.
+     *
+     * Finds the user by username and updates the last login time and IP address.
+     *
+     * @param string $identifier The username or identifier of the user
      *
      * @return void
      *
-     * @throws \Exception If an error occurs during the process of inserting the user entity into the database.
+     * @throws \Exception If there is an error while updating user data
      */
-    public function insertNewUser(string $username, string $password): void
+    public function updateUserDataOnLogin(string $identifier): void
     {
-        // generate password hash
-        $password_hash = $this->securityUtil->genBcryptHash($password, 10);
+        // get user repo
+        $user = $this->getUserRepo($identifier);
 
-        // generate user token
-        $token = ByteString::fromRandom(32)->toString();
-
-        // get current time
-        $time = date('d.m.Y H:i:s');
-                
-        // default base64 image
-        $image_base64 = '
-            /9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw4RDQ0OEA0QDhANDQ0NDw4NDhsNDg0OFREWFxcTFRUYI
-            CggGBolGxMTITEhJSkrLi4uFx8zODMsNygtLisBCgoKDQ0NDg0NDisZFRkrKysrKysrKysrKysrKysrKys
-            rKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOYA2wMBIgACEQEDEQH/xAAaAAEAAwEBA
-            QAAAAAAAAAAAAAAAQQFAwIH/8QAMhABAQABAQYEBAQGAwAAAAAAAAECEQMEEiFRkSIxQWEFcYGhQnKxwSM
-            yUoLh8DNi0f/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACE
-            QMRAD8A+qAKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIebt
-            Mf6p3B7HObXH+qd49ygkQkAAAAAAAAAAAAAAAAAAAEWgjLKSa26SKe232/hn1v/jhvG3uV9vSfu5A9Z7TK
-            +eVv1eNEiiNHrHKzytnyqAFnZb5lPPxT7r2y2kyxlmul6shY3Ta2Zaa8ulvJBpCEgAAAAAAAAAAAAAAAAK
-            2/bSTCzXnfT10WMrpLb6c/oyNpncsrlfX7QHkBQAAAAdN2kueOt05uYDZSr7nteLDn5zlVhAAAAAAAAAAA
-            AAAAABX37LTC+9mP+9mau/EbywnvapAAKAAAAAALPw/LxWdcf0aLL3O/wATH31n2aiAAAAAAAAAAAAAAAD
-            jvW14cdZ53lAVfiF8WP5f3VXrabS5XW3V5UAAAAAAAAdN3v8AEw/NGqxpdLrPTmv7nvFytmXPSayoLYAAA
-            AAAAAAAAAACp8Qnhntl+y28bXCZY2X1BkD1tMLjdLNHlQAAAAAAAAWdwnjvtjVaRpbnseHHn53z9vZB3SA
-            AAAAAAAAAAAACEgK2/wD/AB/3Ys5o7/PB/dGcAAoAAAAAAtfD74svy/u0FD4dj4sr6Sad19BCQAAAAAAAA
-            AAAAAABz281wyn/AFrJbNjHzx0tnS6AgBQAAAAAkBf+Hzw29clpz3fDhwxl8/V1QAAAAAAAAAAAAAAAAFL
-            f9l5ZSeXnp0XUWAxha2+52S2XWTW6XlZFVQAAAAWNy2VuUvpOf1eNhsLneknnWls8JjJJ5T7+6D0kAAAAA
-            AAAAAAAAAQCRFrxdrjPxTuDoOGW94T8Wvyjllv2Ppjb9gd95vgy+TKd9tvWWUs0klcFAAAAF74deWU95+i
-            4ydhtrjrppz6rOO/T1x7VBdFeb5h1s+ce8dvhfxQHUeZlOsv1egAAAAAAAAAU983jTwzz9b09gdNvvWOPL
-            +a9J6fNT2m9Z3109pycQC29UaJFAAAAAAAAAAAAB0w2+c8sr8rzjmAvbHfZeWU0955f4W5WMsbrvHDdL/L
-            fsg0hCQAAAAc9vtOHG325fNk2+t875rvxDK+HGS9byU+G9L2BAnhvS9jhvS9lECeG9L2OG9L2BAnhvS9jh
-            vS9gQJ4b0vY4b0vYECeG9L2OG9L2BAnhvS9jhvS9gQJ4b0vY4b0vYECeG9L2OG9L2BAnhvS9jhvS9gQJ4b
-            0vY4b0vYF/cNrrjcb54/otMzdLcc5yvPleXVpoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/9k=
-        ';
-
-        // get user ip
-        $ip_address = $this->visitorInfoUtil->getIP();
-
-        // init user object
-        $user = new User();
-
-        // set user data
-        $user->setUsername($username);
-        $user->setPassword($password_hash);
-        $user->setToken($token);
-        $user->setRole('User');
-        $user->setRegisterTime($time);
-        $user->setLastLoginTime($time);
-        $user->setProfileImage($image_base64);
-        $user->setIpAddress($ip_address);
-
-        // try to insert user entity to database
-        try {
-            $this->entityManager->persist($user);
-            $this->entityManager->flush(); 
-
-            // log action
-            $this->logManager->log('authenticator', 'new user registration, user: '.$username);
-
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('error to flush user entity: '.$e->getMessage(), 500);
-        }
-    }
-
-    /**
-     * Checks if a user can log in with the given credentials.
-     *
-     * @param string $username The username.
-     * @param string $password The user's password.
-     * @return bool True if the user can log in, false otherwise.
-     */
-    public function canLogin(string $username, string $password): bool
-    {
-        // get user repository 
-        $repository = $this->getUserRepository(['username' => $username]);
-
-        // check if user exist
-        if ($repository == null) {
-
-            // log action
-            $this->logManager->log('authenticator', 'user: '.$username.' trying to login: username not registred, '.$username.':'.$password);
-
-            return false;
-        } else {
-            // get user password hash
-            $password_hash = $repository->getPassword();
-
-            // check if password is valid
-            if ($this->securityUtil->hashValidate($password, $password_hash)) {
-                
-                // get user token
-                $token = $this->getUserToken($username);
-
-                // update user data
-                $this->updateUserData($token);
-                
-                // log action
-                $this->logManager->log('authenticator', 'user: '.$username.' login successful');
-
-                return true;
-            } else { 
-                // invalid password
-
-                // log action
-                $this->logManager->log('authenticator', 'user: '.$username.' trying to login: wrong password, '.$username.':'.$password);
-
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Update user data based on the provided user token.
-     *
-     * This method retrieves the user entity from the repository using the provided token,
-     * updates the last login time and user IP address, and then flushes the changes to the database.
-     *
-     * @param string $token The user token used to identify and update the user data.
-     *
-     * @return void
-     *
-     * @throws \Exception If an error occurs during the process of updating user data in the database.
-     */
-    public function updateUserData(string $token): void 
-    {
-        // get date & time
-        $date = date('d.m.Y H:i:s');
-
-        // get current visitor ip address
-        $ip_address = $this->visitorInfoUtil->getIP();
-
-        // get user data
-        $user = $this->getUserRepository(['token' => $token]);
-
-        // check if user repo found
+        // check if user is found
         if ($user != null) {
-
-            // update last login time
-            $user->setLastLoginTime($date);
-
-            // update user ip
-            $user->setIpAddress($ip_address);
-
-            // update user data
             try {
+                // set new data
+                $user->setLastLoginTime(date('d.m.Y H:i:s'));
+                $user->setIpAddress($this->visitorInfoUtil->getIP());
+
+                // flush user data
                 $this->entityManager->flush();
             } catch (\Exception $e) {
-                $this->errorManager->handleError('update user data error: '.$e->getMessage(), 500);
+                $this->errorManager->handleError('error to update user data with login: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }     
-    }
-
-    /**
-     * Get a user entity from the repository based on the provided criteria.
-     *
-     * This method retrieves a user entity from the repository using the specified criteria.
-     * If a user entity is found, it is returned; otherwise, null is returned.
-     *
-     * @param array $array An associative array representing the criteria for finding the user entity.
-     *
-     * @return object|null The found user entity or null if no user entity is found.
-     *
-     * @throws \Exception If an error occurs during the process of finding the user entity in the repository.
-     */
-    public function getUserRepository(array $array): ?object 
-    {
-        $result = null;
-        $userRepository = $this->entityManager->getRepository(User::class);
-
-        // try to find user in database
-        try {
-            $result = $userRepository->findOneBy($array);
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('find user entity error: '.$e->getMessage(), 500);
-        }
-
-        // return result
-        if ($result !== null) {
-            return $result;
-        } else {
-            return null;
         }
     }
 
     /**
-     * Logs a user out and records the action.
+     * Registers a new user.
      *
-     * @param string $token The user token.
-     */
-    public function logLogout($token): void
-    {
-        // get username
-        $username = $this->getUserRepository(['token' => $token])->getUsername();
-
-        // log action
-        $this->logManager->log('authenticator', 'user: '.$username.' logout successful');
-    }
-
-    /**
-     * Gets the user token for a given username.
-     *
-     * @param string $username The username.
-     * @return string|null The user token or null if not found.
-     */
-    public function getUserToken(string $username): ?string
-    {
-        return $this->getUserRepository(['username' => $username])->getToken();
-    }
-
-    /**
-     * Gets the username for a given user token.
-     *
-     * @param string $token The user token.
-     * @return string|null The username or null if not found.
-     */
-    public function getUsername(string $token): ?string
-    {
-        return $this->getUserRepository(['token' => $token])->getUsername();
-    }
-
-    /**
-     * Gets the profile picture for a given user token.
-     *
-     * @param string $token The user token.
-     * @return string|null The profile pic or null if not found.
-     */
-    public function getProfilePic(string $token) {
-        return $this->getUserRepository(['token' => $token])->getProfileImage();
-    }
-
-    /**
-     * Gets the user role for a given user token.
-     *
-     * @param string $token The user token.
-     * @return string|null The role or null if not found.
-     */
-    public function getUserRole(string $token) {
-        return $this->getUserRepository(['token' => $token])->getRole();
-    }
-
-    /**
-     * Update the profile picture of a user based on the provided user token.
-     *
-     * This method retrieves the user entity from the repository using the provided token,
-     * updates the user's profile image with the new base64 image, and then flushes the changes to the database.
-     * Additionally, it logs the action in the log manager.
-     *
-     * @param string $token The user token used to identify the user for whom to update the profile picture.
-     * @param string $base_image The new base64-encoded profile image.
+     * @param string $username The username of the new user
+     * @param string $password The password of the new user
      *
      * @return void
      *
-     * @throws \Exception If an error occurs during the process of updating the profile image in the database.
+     * @throws \Exception If there is an error while registering the user
      */
-    public function updateProfilePic(string $token, string $base_image): void
+    public function registerUser(string $username, string $password): void
     {
-        // get user repository
-        $user = $this->getUserRepository(['token' => $token]);
+        // check if user exist
+        if ($this->getUserRepo($username) == null) {
+            try {
+                // init user entity
+                $user = new User();
 
-        // update profile image
-        try {
-            $user->setProfileImage($base_image);
-            $this->entityManager->flush();
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('error to update profile image: '.$e->getMessage(), 500);
+                // hash password
+                $password = $this->passwordHasherInterface->hashPassword($user, $password);
+
+                // set user property
+                $user->setUsername($username);
+                $user->setPassword($password);
+                $user->setRoles(['ROLE_USER']);
+                $user->setRegisterTime(date('d.m.Y H:i:s'));
+                $user->setLastLoginTime('non-logged');
+                $user->setIpAddress('non-logged');
+
+                // flush user to database
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+
+                // log action
+                $this->logManager->log('authenticator', 'new registration user: ' . $username);
+            } catch (\Exception $e) {
+                $this->errorManager->handleError('error to register new user: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
         }
-
-        $this->logManager->log('account-settings', $user->getUsername().' change self profile picture');
     }
 
     /**
-     * Update the username of a user based on the provided user token.
+     * Checks if the specified user has the admin role.
      *
-     * This method retrieves the user entity from the repository using the provided token,
-     * updates the user's username with the new username, and then flushes the changes to the database.
-     * Additionally, it logs the action in the log manager.
+     * @param string $username The username of the user to check
      *
-     * @param string $token The user token used to identify the user for whom to update the username.
-     * @param string $new_username The new username to be set for the user.
-     *
-     * @return void
-     *
-     * @throws \Exception If an error occurs during the process of updating the username in the database.
+     * @return bool True if the user has the admin role, otherwise false
      */
-    public function updateUsername(string $token, string $new_username): void
+    public function isUserAdmin(string $username): bool
     {
-        // get user repository
-        $user = $this->getUserRepository(['token' => $token]);
+        $user = $this->getUserRepo($username);
 
-        $old_username = $user->getUsername();
-
-        // update profile image
-        try {
-            $user->setUsername($new_username);
-            $this->entityManager->flush();
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('error to update username: '.$e->getMessage(), 500);
+        if ($user !== null) {
+            $roles = $user->getRoles();
+            return in_array('ROLE_ADMIN', $roles);
         }
 
-        $this->logManager->log('account-settings', $old_username.' change self username to: '.$new_username);
+        return false;
     }
 
     /**
-     * Update the password of a user based on the provided user token.
+     * Adds the admin role to a user.
      *
-     * This method retrieves the user entity from the repository using the provided token,
-     * updates the user's password with the new password, and then flushes the changes to the database.
-     * Additionally, it logs the action in the log manager.
-     *
-     * @param string $token The user token used to identify the user for whom to update the password.
-     * @param string $password The new password to be set for the user.
+     * @param string $username The username of the user to add the admin role to
      *
      * @return void
      *
-     * @throws \Exception If an error occurs during the process of updating the password in the database.
+     * @throws \Exception If there is an error while adding the admin role
      */
-    public function updatePassword(string $token, string $password): void
+    public function addAdminRoleToUser(string $username): void
     {
-        // get user repository
-        $user = $this->getUserRepository(['token' => $token]);
+        // check if user exist
+        if ($this->getUserRepo($username) != null) {
+            try {
+                // get user repo
+                $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
 
-        // update profile image
-        try {
-            $user->setPassword($password);
-            $this->entityManager->flush();
-        } catch (\Exception $e) {
-            $this->errorManager->handleError('error to update password: '.$e->getMessage(), 500);
+                // update role
+                $user->setRoles(['ROLE_ADMIN']);
+
+                // flush updated user data
+                $this->entityManager->flush();
+
+                // log action
+                $this->logManager->log('role-granted', 'role admin granted to user: ' . $username);
+            } catch (\Exception $e) {
+                $this->errorManager->handleError('error to grant admin permissions: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
         }
+    }
 
-        $this->logManager->log('account-settings', $user->getUsername().' change self password');
+    /**
+     * Retrieves user data based on the provided security context.
+     *
+     * This method retrieves user data using the provided security context.
+     *
+     * @param Security $security The security service providing the context for the user.
+     * @return object The user data object.
+     */
+    public function getUserData(Security $security): object
+    {
+        return $this->getUserRepo($security->getUser()->getUserIdentifier());
     }
 }

@@ -1,0 +1,68 @@
+# This Docker Compose configuration defines local development services (this is only dev env).
+version: '3'
+
+# docker network config
+networks:
+    dev:
+        driver: bridge
+
+services:
+    # database container
+    mysql:
+        image: mysql:latest
+        container_name: engal_mysql
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        mem_limit: 1g
+        volumes:
+            - ./_docker/configs/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+            - ./_docker/services/mysql_database:/var/lib/mysql
+            - ./_docker/services/log:/var/log
+        ports:
+            - "3306:3306"
+        networks:
+            - dev
+
+    # api server container
+    backend:
+        build:
+            context: .
+            dockerfile: ./_docker/Dockerfile
+        container_name: engal_backend
+        restart: always
+        mem_limit: 2g
+        depends_on:
+            - mysql
+        environment:
+            - DATABASE_HOST=mysql
+        volumes:
+            - ./_docker/configs/apache-api.conf:/etc/apache2/sites-available/000-default.conf
+            - ./_docker/configs/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./_docker/services/log:/var/log
+            - ./backend/:/var/www
+        ports:
+            - "1337:80"
+        networks:
+            - dev
+        command: |
+            bash -c "while :; do php bin/console messenger:consume async -vv; sleep 10; done & apache2-foreground"
+
+    # frontend container
+    frontend:
+        image: node:latest
+        container_name: engal_frontend
+        restart: always
+        mem_limit: 1g
+        volumes:
+            - ./frontend:/app
+        ports:
+            - "80:3000"
+            - "3000:3000" # fix for dev websocket re-map
+        networks:
+            - dev 
+        depends_on:
+            - mysql
+            - backend
+        working_dir: /app 
+        command: npm start

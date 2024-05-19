@@ -3,43 +3,43 @@
 namespace App\Middleware;
 
 use App\Util\SiteUtil;
-use App\Manager\ErrorManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Class MaintenanceMiddleware
- * @package App\Middleware
+ *
+ * This middleware is used to check if the application is in maintenance mode.
+ *
+ * @package App\Service\Middleware
  */
 class MaintenanceMiddleware
 {
-    /**
-     * @var SiteUtil $siteUtil The site utility.
-     */
     private SiteUtil $siteUtil;
 
-    /**
-     * @var ErrorManager $errorManager The error manager.
-     */
-    private ErrorManager $errorManager;
-
-    /**
-     * MaintenanceMiddleware constructor.
-     * @param SiteUtil $siteUtil The site utility.
-     * @param ErrorManager $errorManager The error manager.
-     */
-    public function __construct(SiteUtil $siteUtil, ErrorManager $errorManager)
+    public function __construct(SiteUtil $siteUtil)
     {
         $this->siteUtil = $siteUtil;
-        $this->errorManager = $errorManager;
     }
 
     /**
-     * Checks if the API is in maintenance mode. If maintenance mode is enabled, an error is handled.
+     * Check if the application is in maintenance mode.
      */
-    public function onKernelRequest(): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         // check if MAINTENANCE_MODE enabled
         if ($this->siteUtil->isMaintenance()) {
-            $this->errorManager->handleError('engal api is under maintenance mode, please try again later', 503, 'maintenance');
+            $arr = [
+                "status" => "error",
+                "code" => 520,
+                "message" => "Engal API is in maintenance mode"
+            ];
+
+            // create JSON response
+            $response = new JsonResponse($arr);
+
+            // set response
+            $event->setResponse($response);
         }
     }
 }

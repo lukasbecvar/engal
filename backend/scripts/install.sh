@@ -1,7 +1,20 @@
 #!/bin/bash
 
-# install all application requirements
-composer install
+yellow_echo () { echo "\033[33m\033[1m$1\033[0m"; }
 
-# delete templates/ after installation (not used twig folder)
-rm -rf templates/
+# install composer
+if [ ! -d './vendor/' ]
+then
+    yellow_echo "[Install]: installing composer vendor (backend)"
+    composer install
+fi
+
+# generate jwk key
+if [ ! -d 'config/jwt/' ]
+then
+    yellow_echo "[Install]: generating new jwt keypair"
+    php ./bin/console lexik:jwt:generate-keypair
+fi
+
+# run storage create
+sh ./scripts/create-storage.sh

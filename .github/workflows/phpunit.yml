@@ -1,0 +1,80 @@
+name: PHP PHPUnit Tests
+
+# specify when the workflow should be triggered
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+# define the jobs to be executed in the workflow
+jobs:
+  phpunit:
+    name: Run PHPUnit
+    runs-on: ubuntu-latest
+
+    # define services required for the job
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    # define the steps to be executed as part of the job
+    steps:
+      # checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # setup PHP environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, intl, pdo_mysql, pdo, mysqli, zip
+
+      # install ffmpeg
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      # install PHP GD
+      - name: Install PHP GD
+        run: |
+          sudo apt-get install -y php-gd
+
+      # install dependencies
+      - name: Install dependencies
+        run: |
+          composer install
+          php bin/console lexik:jwt:generate-keypair
+        working-directory: ./backend
+
+      # create database
+      - name: Create database
+        run: |
+          php bin/console doctrine:database:create --env=test
+        working-directory: ./backend
+
+      # migrate database
+      - name: Migrate database
+        run: |
+          rm -rf migrations
+          mkdir migrations
+          php bin/console make:migration --no-interaction --env=test
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test
+        working-directory: ./backend
+
+      # load testing data
+      - name: Load fixtures
+        run: php bin/console doctrine:fixtures:load --no-interaction --purge-with-truncate --env=test
+        working-directory: ./backend
+
+      # run PHPUnit tests
+      - name: Run PHPUnit tests
+        run: php bin/phpunit
+        working-directory: ./backend

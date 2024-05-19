@@ -2,30 +2,35 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Table(name: 'users')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180)]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
     private ?string $password = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $token = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $role = null;
 
     #[ORM\Column(length: 255)]
     private ?string $register_time = null;
@@ -35,9 +40,6 @@ class User
 
     #[ORM\Column(length: 255)]
     private ?string $ip_address = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $profile_image = null;
 
     public function getId(): ?int
     {
@@ -56,7 +58,44 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -68,75 +107,42 @@ class User
         return $this;
     }
 
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function setToken(string $token): static
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): static
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getRegisterTime(): ?string
+    public function getRegisterTime(): string
     {
         return $this->register_time;
     }
 
-    public function setRegisterTime(string $register_time): static
+    public function setRegisterTime(string $register_time): void
     {
         $this->register_time = $register_time;
-
-        return $this;
     }
 
-    public function getLastLoginTime(): ?string
+    public function getLastLoginTime(): string
     {
         return $this->last_login_time;
     }
 
-    public function setLastLoginTime(string $last_login_time): static
+    public function setLastLoginTime(string $last_login_time): void
     {
         $this->last_login_time = $last_login_time;
-
-        return $this;
     }
 
-    public function getIpAddress(): ?string
+    public function getIpAddress(): string
     {
         return $this->ip_address;
     }
 
-    public function setIpAddress(string $ip_address): static
+    public function setIpAddress(string $ip_address): void
     {
         $this->ip_address = $ip_address;
-
-        return $this;
-    }
-    
-    public function getProfileImage(): ?string
-    {
-        return $this->profile_image;
     }
 
-    public function setProfileImage(string $profile_image): static
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
     {
-        $this->profile_image = $profile_image;
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

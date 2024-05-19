@@ -4,47 +4,35 @@ namespace App\Util;
 
 /**
  * Class VisitorInfoUtil
+ *
+ * VisitorInfoUtil provides methods to get information about visitors.
+ *
  * @package App\Util
  */
 class VisitorInfoUtil
 {
     /**
-     * Gets the visitor's IP address.
+     * Retrieves the IP address of the visitor.
      *
-     * @return string|null The visitor's IP address, or null if not available.
+     * @return string|null The IP address of the visitor, or null if it cannot be determined.
      */
-    public function getIP(): ?string 
+    public function getIP(): ?string
     {
-        // check client ip
+        if (!isset($_SERVER['REMOTE_ADDR'])) {
+            return '127.0.0.1';
+        }
+
+        // check client IP
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $address = $_SERVER['HTTP_CLIENT_IP'];
-
-        // check forwarded ip (get ip from cloudflare visitors) 
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        
-        // basic address get
-        } else {
-            $address = $_SERVER['REMOTE_ADDR'];
+            return $_SERVER['HTTP_CLIENT_IP'];
         }
-        return $address;
-    }
 
-    /**
-     * Gets the visitor's browser agent.
-     *
-     * @return string|null The visitor's browser agent, or 'Unknown' if not available.
-     */
-    public function getBrowser(): ?string 
-    {
-        // get user agent
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-
-        // check if user agent found
-        if ($user_agent != null) {
-            return $user_agent;
-        } else {
-            return 'Unknown';
+        // check forwarded IP (get IP from cloudflare visitors)
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
+
+        // default addr get
+        return $_SERVER['REMOTE_ADDR'];
     }
 }

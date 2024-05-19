@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LogRepository;
 
@@ -17,17 +18,14 @@ class Log
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $value = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $browser = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $message = null;
 
     #[ORM\Column(length: 255)]
     private ?string $time = null;
-    
+
     #[ORM\Column(length: 255)]
-    private ?string $user_ip = null;
+    private ?string $ip_address = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
@@ -49,26 +47,14 @@ class Log
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getMessage(): ?string
     {
-        return $this->value;
+        return $this->message;
     }
 
-    public function setValue(string $value): static
+    public function setMessage(string $message): static
     {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    public function getBrowser(): ?string
-    {
-        return $this->browser;
-    }
-
-    public function setBrowser(string $browser): static
-    {
-        $this->browser = $browser;
+        $this->message = $message;
 
         return $this;
     }
@@ -85,14 +71,14 @@ class Log
         return $this;
     }
 
-    public function getUserIp(): ?string
+    public function getIpAddress(): ?string
     {
-        return $this->user_ip;
+        return $this->ip_address;
     }
 
-    public function setUserIp(string $user_ip): static
+    public function setIpAddress(string $ip_address): static
     {
-        $this->user_ip = $user_ip;
+        $this->ip_address = $ip_address;
 
         return $this;
     }

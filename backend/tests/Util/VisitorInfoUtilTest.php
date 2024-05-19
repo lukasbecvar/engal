@@ -7,37 +7,40 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class VisitorInfoUtilTest
+ *
+ * @covers \App\Util\VisitorInfoUtil
+ *
  * @package App\Tests\Util
  */
 class VisitorInfoUtilTest extends TestCase
 {
-    /**
-     * @var VisitorInfoUtil
-     */
-    private $visitorInfoUtil;
+    private VisitorInfoUtil $visitorInfoUtil;
 
     /**
-     * Set up the test environment.
-     */
+     * Set up before each test.
+     *
+     * @return void
+    */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->visitorInfoUtil = new VisitorInfoUtil();
+        parent::setUp();
     }
 
     /**
-     * Test the getIP method to ensure proper retrieval of the visitor's IP address.
+     * @covers \App\Util\VisitorInfoUtil::getIP
+     *
+     * @return void
      */
-    public function testGetIP(): void
+    public function testGetIp(): void
     {
-        $this->assertEquals('127.0.0.1', $this->visitorInfoUtil->getIP());
-    }
+        // set testing ip
+        $_SERVER['HTTP_CLIENT_IP'] = '192.168.0.1';
 
-    /**
-     * Test the getBrowser method to ensure proper retrieval of the visitor's browser agent.
-     */
-    public function testGetBrowser(): void
-    {
-        $this->assertEquals('test', $this->visitorInfoUtil->getBrowser());
+        // get ip
+        $result = $this->visitorInfoUtil->getIP();
+
+        // check value
+        $this->assertEquals('192.168.0.1', $result);
     }
 }

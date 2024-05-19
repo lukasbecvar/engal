@@ -2,6 +2,7 @@
 Self-hosted media cloud storage.
 
 ## TODOS: version 4.5
+- [ ] Implement video player library
 - [ ] Dynamic gallery loading timeout calculator
 - [ ] Split frontend into multiple components
 - [ ] Storage encryption

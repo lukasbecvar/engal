@@ -1,22 +1,13 @@
 # Engal
-Self-hosted encrypted media cloud storage.
+Self-hosted media cloud storage.
 
 [Stable version](https://github.com/lordbecvold/engal/tree/main)
 
 ## Recode (Version 4.0) - in progress
-I am currently working on a complete recode of the application.
-- [X] Media content api response StreamedResponse
-- [X] Video player name and sub navigation
-- [ ] Encryption system
 - [ ] Refactor
-
-## TODOS: version 4.5
-- [ ] Port frontend to electron
-- [ ] Port frontend to react-native
-- [ ] Deploy system
 - [ ] Basic documentation in markdown
 
-## TODOS: version 5
+## TODOS: version 5.0
 - [ ] Browse all galleries
 - [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 - [ ] Gallery info (show gallery data: count, owner, time data)
@@ -27,7 +18,7 @@ I am currently working on a complete recode of the application.
 - [ ] Media move (move to gallery), single or multiple
 - [ ] Favorite gallery
 
-## TODOS: version 6
+## TODOS: version 6.0
 - [ ] Data wipe command (drop all users, logs, storage data)
 - [ ] Backup command (extract all media to tar.gz archive)
 - [ ] Implement account profile images
@@ -45,6 +36,11 @@ I am currently working on a complete recode of the application.
     - [ ] Log viewer
     - [ ] User management
     - [ ] Ban system
+
+## TODOS: version 7.0
+- [ ] Port frontend to electron
+- [ ] Port frontend to react-native
+- [ ] Deploy system
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

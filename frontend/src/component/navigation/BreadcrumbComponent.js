@@ -94,6 +94,14 @@ export default function BreadcrumbComponent() {
                         </span>
                     : null}
 
+                    {/* video payler navigation */}
+                    {location.pathname == "/video" ? 
+                        <span>
+                            <span className="slash">/</span>
+                            <span className="sub-navigation-link">video</span> 
+                        </span>
+                    : null}
+
                     {/* upload navigation */}
                     {location.pathname == "/upload" ? 
                         <span>

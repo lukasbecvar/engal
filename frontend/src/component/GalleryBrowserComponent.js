@@ -143,7 +143,7 @@ export default function GalleryBrowserComponent() {
 
                 {images.map((mediaData, index) => (
                     !mediaData.type.includes('image') ? (
-                        <Link key={index} to={"/video?media_token=" + mediaData.token + "&type=" + mediaData.type}>
+                        <Link key={index} to={"/video?media_token=" + mediaData.token}>
                             <div className="media-container">
                                 <div className="media-overlay">{mediaData.name} ({mediaData.length})</div>
                                 <img src={mediaData.thumbnailUrl}></img>

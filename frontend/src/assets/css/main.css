@@ -314,6 +314,7 @@ body::before {
     margin-left: 3px;
     padding: 0.1px;
     margin: 1px;
+    cursor: pointer;
 }
 
 .user-navbar .sub-navigation-link:hover {
@@ -661,13 +662,13 @@ body::before {
 }
 
 /* video player style */
-.video-player {
+.video-player-component .video-player {
     width: 100%; 
     height: calc(100vh - 100px);
     position: relative;
 }
 
-.video-info-line {
+.video-player-component .video-info-line {
     width: 100%; 
     background-color: #000913;
     border-top: 1px solid #03254e;
@@ -676,6 +677,10 @@ body::before {
     padding: 8px;
     font-size: 18px;
     font-weight: bold;
+}
+
+.video-player-component .media-length-info {
+    float: right;
 }
 
 /* mobile devices style */

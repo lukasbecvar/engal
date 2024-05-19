@@ -9,12 +9,14 @@ use App\Manager\StorageManager;
 use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Parameter;
 use App\Manager\AuthTokenManager;
+use App\Repository\MediaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * Class MediaController
@@ -104,5 +106,72 @@ class MediaController extends AbstractController
         $response->headers->set('Content-Length', (string) filesize($filePath));
 
         return $response;
+    }
+
+    /**
+     * Retrieve the media information associated with the provided token.
+     *
+     * This method fetches the media information corresponding to the given token and returns a JSON response with the media details.
+     * If the token is missing or the associated media is not found, it returns a JSON response with an appropriate error message and status code.
+     *
+     * @param MediaRepository $mediaRepository The repository to access media data.
+     * @param Request $request The current request object.
+     * @param UserManager $userManager The manager to handle user data.
+     * @param Security $security The security component to get the logged-in user.
+     *
+     * @return JsonResponse A JSON response with the media information or an error message.
+     */
+    #[Tag(name: "Resources")]
+    #[Response(response: 200, description: 'The success media info response')]
+    #[Response(response: 400, description: 'The media_token parameter not found in request')]
+    #[Response(response: 404, description: 'The media not found error')]
+    #[Parameter(name: 'media_token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
+    #[Route('/api/media/info', methods: ['GET'], name: 'api_media_info')]
+    public function getMediaInfo(MediaRepository $mediaRepository, Request $request, UserManager $userManager, Security $security): JsonResponse
+    {
+        // get logged user ID
+        $userId = $userManager->getUserData($security)->getId();
+
+        $mediaToken = $request->get('media_token');
+
+        // check if media token is set
+        if (!isset($mediaToken)) {
+            return $this->json([
+                'status' => 'error',
+                'code' => JsonResponse::HTTP_BAD_REQUEST,
+                'message' => 'media_token parameter is required'
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // get media info
+        $media = $mediaRepository->findOneBy(['token' => $mediaToken, 'owner_id' => $userId]);
+
+        // check if media exist
+        if ($media == null) {
+            return $this->json([
+                'status' => 'error',
+                'code' => JsonResponse::HTTP_NOT_FOUND,
+                'message' => 'media token: ' . $mediaToken . ' not found'
+            ], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        // get media info array
+        $mediaInfo = [
+            'id' => $media->getId(),
+            'name' => $media->getName(),
+            'token' => $media->getToken(),
+            'type' => $media->getType(),
+            'length' => $media->GetLength(),
+            'owner_id' => $media->getOwnerId(),
+            'upload_time' => $media->getUploadTime(),
+            'last_edit_time' => $media->getLastEditTime()
+        ];
+
+        // return media info response
+        return $this->json([
+            'status' => 'success',
+            'code' => JsonResponse::HTTP_OK,
+            'media_info' => $mediaInfo
+        ], JsonResponse::HTTP_OK);
     }
 }

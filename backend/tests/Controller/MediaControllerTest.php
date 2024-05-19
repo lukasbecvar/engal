@@ -116,10 +116,73 @@ class MediaControllerTest extends CustomCase
             'media_token' => '853bc196bb6bdf5f72c33e1eeeb8a8e2',
         ]);
 
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+    }
+
+    public function testGetMediaInfoEmptyToken(): void
+    {
+        $this->simulateUserAuthentication($this->client);
+
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/info');
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+        $this->assertSame(400, $responseData['code']);
+        $this->assertEquals('media_token parameter is required', $responseData['message']);
+    }
+
+    public function testGetMediaInfoWrongToken(): void
+    {
+        $this->simulateUserAuthentication($this->client);
+
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/info', [
+            'media_token' => 'wrong_token'
+        ]);
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_NOT_FOUND);
+        $this->assertSame(404, $responseData['code']);
+        $this->assertEquals('media token: wrong_token not found', $responseData['message']);
+    }
+
+    public function testGetMediaInfoSuccess(): void
+    {
+        $this->simulateUserAuthentication($this->client);
+
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/info', [
+            'media_token' => '853bc196bb6bdf5f72c33e1eeeb8a8e2'
+        ]);
+
         // decoding the content of the JsonResponse
         $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+        $this->assertSame(200, $responseData['code']);
+        $this->assertIsArray($responseData['media_info']);
+    }
+
+    public function testGetMediaInfoNonAuth(): void
+    {
+        // GET request to the API endpoint
+        $this->client->request('GET', '/api/media/info');
+
+        // decoding the content of the JsonResponse
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+
+        // check response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
+        $this->assertSame(401, $responseData['code']);
+        $this->assertEquals('JWT Token not found', $responseData['message']);
     }
 }

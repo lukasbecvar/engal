@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 
 // import fontawesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt, faUpload } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Main dashboard navigation

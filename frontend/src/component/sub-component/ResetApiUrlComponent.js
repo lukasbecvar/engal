@@ -12,6 +12,6 @@ export default function ResetApiUrlComponent() {
             console.log('Error to remove api url: ' + error)
         }
     } finally {
-        window.location.href = '/';
+        window.location.href = '/'
     }
 }

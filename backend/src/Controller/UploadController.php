@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use getID3;
 use App\Manager\LogManager;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
@@ -14,7 +15,6 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\RequestBody;
 use Doctrine\ORM\EntityManagerInterface;
-use getID3;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

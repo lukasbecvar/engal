@@ -1,11 +1,10 @@
 # Engal
 Self-hosted media cloud storage.
 
-[Stable version](https://github.com/lordbecvold/engal/tree/main)
-
-## Recode (Version 4.0) - in progress
-- [ ] Refactor
-- [ ] Basic documentation in markdown
+## TODOS: version 4.5
+- [ ] Dynamic gallery loading timeout calculator
+- [ ] Split frontend into multiple components
+- [ ] Storage encryption
 
 ## TODOS: version 5.0
 - [ ] Browse all galleries
@@ -41,6 +40,7 @@ Self-hosted media cloud storage.
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 - [ ] Deploy system
+- [ ] User manual
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

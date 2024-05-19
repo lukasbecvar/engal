@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import NavigationComponent from './navigation/NavigationComponent';
-import BreadcrumbComponent from './navigation/BreadcrumbComponent';
-import ErrorMessageComponent from './error/ErrorMessageComponent';
-import { DEV_MODE } from '../config';
-import LoadingComponent from './sub-component/LoadingComponent';
+import React, { useEffect, useState } from 'react'
+
+// engal components
+import LoadingComponent from './sub-component/LoadingComponent'
+import ErrorMessageComponent from './error/ErrorMessageComponent'
+import BreadcrumbComponent from './navigation/BreadcrumbComponent'
+import NavigationComponent from './navigation/NavigationComponent'
+
+// engal utils
+import { DEV_MODE } from '../config'
 
 export default function VideoPlayerComponent() {
-    const apiUrl = localStorage.getItem('api-url');
-    const loginToken = localStorage.getItem('login-token');
+    // get storage data
+    const apiUrl = localStorage.getItem('api-url')
+    const loginToken = localStorage.getItem('login-token')
 
-    const videoToken = new URLSearchParams(window.location.search).get('media_token');
+    // get video token
+    const videoToken = new URLSearchParams(window.location.search).get('media_token')
 
+    // set states
     const [loading, setLoading] = useState(true)
     const [mediaInfo, setMediaInfo] = useState(null)
 
@@ -50,6 +57,7 @@ export default function VideoPlayerComponent() {
         fetchUserData()
     }, [apiUrl, loginToken])
 
+    // render loading component
     if (loading) {
         return <LoadingComponent/>
     }
@@ -59,6 +67,7 @@ export default function VideoPlayerComponent() {
             <NavigationComponent/>            
             <BreadcrumbComponent/>
             
+            {/* render video player */}
             <div className='video-player'>
                 <video controls style={{ width: '100%', height: '100%' }}>
                     <source src={apiUrl + "/api/media/content?auth_token=" + loginToken + "&media_token=" + videoToken} />
@@ -69,6 +78,6 @@ export default function VideoPlayerComponent() {
                 {mediaInfo.name} <span className="media-length-info">{mediaInfo.length}</span>
             </div>
         </div>
-    );
+    )
 }
  

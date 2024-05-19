@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 // import fontawesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faVideo, faFolder } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImage, faVideo, faFolder } from '@fortawesome/free-solid-svg-icons'
 
 // engal components
-import LoadingComponent from '../sub-component/LoadingComponent';
-import ErrorMessageComponent from '../error/ErrorMessageComponent';
+import LoadingComponent from '../sub-component/LoadingComponent'
+import ErrorMessageComponent from '../error/ErrorMessageComponent'
 
 /**
  * User panel navigation
  */
 export default function BreadcrumbComponent() {
     // get url query parameters
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search)
 
     // storage data
     let apiUrl = localStorage.getItem('api-url')

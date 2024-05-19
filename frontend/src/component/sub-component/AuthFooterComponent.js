@@ -10,8 +10,8 @@ export default function AuthFooterComponent() {
                 <Link to="/reset/api" className="color-blue">Settings</Link>
             </p>
                 
-                <a href='https://becvar.xyz/' target='_blank' className='dev-link color-blue'>Lukáš Bečvář</a>
-
+            {/* Developer website link */}
+            <a href='https://becvar.xyz/' target='_blank' className='dev-link color-blue'>Lukáš Bečvář</a>
         </div>
     )    
 }

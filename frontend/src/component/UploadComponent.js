@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import React, { useEffect, useState } from 'react' 
 
 // engal component
@@ -15,11 +15,12 @@ import { DEV_MODE } from '../config'
  * Media (images/videos) upload form component
 */
 export default function UploadComponent() {
+    // react router navigate
+    const navigate = useNavigate()
+
     // get storage data
     let apiUrl = localStorage.getItem('api-url')
     let loginToken = localStorage.getItem('login-token')
-
-    const navigate = useNavigate();
 
     // upload file list
     const [files, setFiles] = useState([])
@@ -209,7 +210,7 @@ export default function UploadComponent() {
                 }
 
                 setStatus('File upload completed!')
-                navigate("/");
+                navigate("/")
             }
         } catch (error) {
             if (DEV_MODE) {

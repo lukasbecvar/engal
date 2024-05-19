@@ -20,6 +20,9 @@ class MediaControllerTest extends CustomCase
     */
     private object $client;
 
+    /**
+     * @var string testing user token
+    */
     private string $jwtToken;
 
     /**

@@ -5,8 +5,8 @@ import UploadComponent from './component/UploadComponent'
 import LogoutComponent from './component/auth/LogoutComponent'
 import DashboardComponent from './component/DashboardComponent'
 import NotFoundComponent from './component/error/NotFoundComponent'
-import GalleryBrowserComponent from './component/GalleryBrowserComponent'
 import VideoPlayerComponent from './component/VideoPlayerComponent'
+import GalleryBrowserComponent from './component/GalleryBrowserComponent'
 
 /**
  * Component defining the routing structure of the application.

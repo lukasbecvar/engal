@@ -5,6 +5,8 @@ Self-hosted encrypted media cloud storage.
 
 ## Recode (Version 4.0) - in progress
 I am currently working on a complete recode of the application.
+- [X] Media content api response StreamedResponse
+- [ ] Video player name and sub navigation
 - [ ] Encryption system
 - [ ] Refactor
 

@@ -10,10 +10,10 @@ use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Parameter;
 use App\Manager\AuthTokenManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -39,7 +39,7 @@ class MediaController extends AbstractController
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'The success photo content resource')]
-    #[Response(response: 400, description: 'The token parameter not found in requets')]
+    #[Response(response: 400, description: 'The token parameter not found in request')]
     #[Response(response: 404, description: 'The media not found error')]
     #[Parameter(name: 'media_token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
     #[Parameter(name: 'auth_token', in: 'query', schema: new Schema(type: 'string'), description: 'User auth token', required: true)]
@@ -84,20 +84,24 @@ class MediaController extends AbstractController
         }
 
         // get content
-        $content = $storageManager->getMediaFile($userId, $mediaToken);
+        $filePath = $storageManager->getMediaFile($userId, $mediaToken);
 
-        // assuming $content is the file path
-        $response = new BinaryFileResponse($content);
+        // create a StreamedResponse
+        $response = new StreamedResponse(function () use ($filePath) {
+            $handle = fopen($filePath, 'rb');
+            while (!feof($handle)) {
+                echo fread($handle, 1024);
+                flush();
+            }
+            fclose($handle);
+        });
 
         // set headers
         $response->headers->set('Content-Type', $storageManager->getMediaType($mediaToken));
-        $response->headers->set('Content-Disposition', 'inline');
+        $response->headers->set('Content-Disposition', 'inline; filename="' . basename($filePath) . '"');
         $response->headers->set('Cache-Control', 'public, max-age=3600');
         $response->headers->set('Accept-Ranges', 'bytes');
-        $response->headers->set('Content-Length', '-1');
-
-        // add additional headers for caching
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, basename($content));
+        $response->headers->set('Content-Length', (string) filesize($filePath));
 
         return $response;
     }

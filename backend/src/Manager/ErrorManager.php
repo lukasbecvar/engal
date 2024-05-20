@@ -28,9 +28,13 @@ class ErrorManager
     /**
      * Handles errors by generating a JSON response and potentially dispatching an error event.
      *
+     * This function returns void and kills the application process because it needs to be called outside of the main
+     * Symfony process and from void functions, hence this inelegant solution is used.
+     * 
      * @param string $message The error message.
      * @param int $code The error code.
      * @param bool $msg_protect The error message protect (hide errors in prod env).
+     *
      * @return JsonResponse
      */
     public function handleError(string $message, int $code, bool $msg_protect = true): JsonResponse

@@ -2,6 +2,7 @@
 Self-hosted media cloud storage.
 
 ## TODOS: version 4.5
+- [ ] Recode Error manager
 - [ ] Validate inputs with symfony validator
 - [ ] Implement video player library
 - [ ] Dynamic gallery loading timeout calculator

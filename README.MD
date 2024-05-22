@@ -2,12 +2,11 @@
 Self-hosted media cloud storage.
 
 ## TODOS: version 4.5
-- [ ] Recode Error manager
+- [ ] Storage encryption
 - [ ] Validate inputs with symfony validator
 - [ ] Implement video player library
 - [ ] Dynamic gallery loading timeout calculator
 - [ ] Split frontend into multiple components
-- [ ] Storage encryption
 
 ## TODOS: version 5.0
 - [ ] Browse all galleries

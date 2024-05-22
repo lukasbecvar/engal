@@ -325,7 +325,7 @@ body::before {
     font-weight: 900;
 }
 
-/* main dashboard style */
+/* main app component style */
 .app-component {
     margin-top: 3px;
     height: calc(100vh - 86px);

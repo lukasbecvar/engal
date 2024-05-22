@@ -30,6 +30,7 @@ export default function AppRouter() {
                 {/* video player */}
                 <Route exact path="/video" element={<VideoPlayerComponent/>}/>
 
+                {/* not found component */}
                 <Route path="*" element={<NotFoundComponent/>}/>
             </Routes>
         </Router>

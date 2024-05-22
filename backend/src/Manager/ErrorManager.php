@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use App\Util\SiteUtil;
 use App\Event\ErrorEvent;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -35,9 +35,9 @@ class ErrorManager
      * @param int $code The error code.
      * @param bool $msg_protect The error message protect (hide errors in prod env).
      *
-     * @return JsonResponse
+     * @return mixed
      */
-    public function handleError(string $message, int $code, bool $msg_protect = true): JsonResponse
+    public function handleError(string $message, int $code, bool $msg_protect = true): mixed
     {
         // dispatch error event
         if ($this->canBeEventDispatched($message) && !$this->siteUtil->isMaintenance()) {
@@ -50,12 +50,8 @@ class ErrorManager
             $message = 'Unexpected server error';
         }
 
-        // return error response
-        return die(json_encode([
-            'status' => 'error',
-            'code' => $code,
-            'message' => $message
-        ]));
+        // throw HttpException with JSON response
+        throw new HttpException($code, $message, null, [], $code);
     }
 
     /**

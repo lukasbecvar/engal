@@ -2,9 +2,9 @@ import { Link } from "react-router-dom"
 import React, { useState, useEffect } from "react"
 
 // light gallery styles
-import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lg-zoom.css'
 import 'lightgallery/css/lg-autoplay.css'
+import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lg-fullscreen.css'
 
@@ -93,9 +93,6 @@ export default function GalleryBrowserComponent() {
             const thumbnailBlob = await thumbnailResponse.blob()
             const thumbnailUrl = URL.createObjectURL(thumbnailBlob)
     
-            console.log(item.length)
-
-            // if the media is a video, return only the thumbnail
             return { 
                 thumbnailUrl, 
                 token: item.token,

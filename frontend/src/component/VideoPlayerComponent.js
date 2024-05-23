@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 // engal components
 import LoadingComponent from './sub-component/LoadingComponent'
 import ErrorMessageComponent from './error/ErrorMessageComponent'
 import BreadcrumbComponent from './navigation/BreadcrumbComponent'
 import NavigationComponent from './navigation/NavigationComponent'
+
+// plyr video player components
+import Plyr from 'plyr'
+import 'plyr/dist/plyr.css'
 
 // engal utils
 import { DEV_MODE } from '../config'
@@ -20,11 +24,12 @@ export default function VideoPlayerComponent() {
     // set states
     const [loading, setLoading] = useState(true)
     const [mediaInfo, setMediaInfo] = useState(null)
+    const videoRef = useRef(null)
 
     // fetch video details
     useEffect(() => {
         const fetchUserData = async () => {
-            // check if user loggedin
+            // check if user logged in
             if (loginToken != null) {
                 try {
                     // build request
@@ -39,8 +44,8 @@ export default function VideoPlayerComponent() {
                     // get response data
                     const data = await response.json()
                         
-                    // check if user tokne is valid
-                    if (data.status == 'success') {
+                    // check if user token is valid
+                    if (data.status === 'success') {
                         setMediaInfo(data.media_info)
                     } else {
                         return <ErrorMessageComponent message={data.message}/>                   
@@ -55,7 +60,17 @@ export default function VideoPlayerComponent() {
             }
         }
         fetchUserData()
-    }, [apiUrl, loginToken])
+    }, [apiUrl, loginToken, videoToken])
+
+    // initialize Plyr
+    useEffect(() => {
+        if (!loading && videoRef.current) {
+            const player = new Plyr(videoRef.current, {
+                controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+                // add any other Plyr options you need
+            })
+        }
+    }, [loading])
 
     // render loading component
     if (loading) {
@@ -67,10 +82,10 @@ export default function VideoPlayerComponent() {
             <NavigationComponent/>            
             <BreadcrumbComponent/>
             
-            {/* render video player */}
+            {/* render Plyr video player */}
             <div className='video-player'>
-                <video controls style={{ width: '100%', height: '100%' }}>
-                    <source src={apiUrl + "/api/media/content?auth_token=" + loginToken + "&media_token=" + videoToken} />
+                <video ref={videoRef} controls>
+                    <source src={apiUrl + "/api/media/content?auth_token=" + loginToken + "&media_token=" + videoToken} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -80,4 +95,3 @@ export default function VideoPlayerComponent() {
         </div>
     )
 }
- 

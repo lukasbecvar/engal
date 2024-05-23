@@ -3,6 +3,12 @@ Self-hosted media cloud storage.
 
 ## TODOS: version 4.5
 - [ ] Storage encryption
+    - [ ] Upload
+    - [ ] Thumbnail
+    - [ ] Video thumbnail generate fix
+    - [ ] Get content
+    - [ ] Thumbnail decode error default thumbnail
+
 - [ ] Validate inputs with symfony validator
 - [ ] Implement video player library
 - [ ] Dynamic gallery loading timeout calculator

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Util\SecurityUtil;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use OpenApi\Attributes\Schema;
@@ -26,6 +27,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class MediaController extends AbstractController
 {
+    private SecurityUtil $securityUtil;
+
+    public function __construct(SecurityUtil $securityUtil)
+    {
+        $this->securityUtil = $securityUtil;
+    }
+
     /**
      * Retrieve the content associated with the provided token.
      *
@@ -40,7 +48,7 @@ class MediaController extends AbstractController
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'The success photo content resource')]
-    #[Response(response: 400, description: 'The token parameter not found in request')]
+    #[Response(response: 400, description: 'The token parameter not found in requets')]
     #[Response(response: 404, description: 'The media not found error')]
     #[Parameter(name: 'media_token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
     #[Parameter(name: 'auth_token', in: 'query', schema: new Schema(type: 'string'), description: 'User auth token', required: true)]
@@ -71,11 +79,11 @@ class MediaController extends AbstractController
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        // get user id form auth token
+        // get user id from auth token
         $username = $authTokenManager->decodeToken($authToken)['username'];
         $userId = $userManager->getUserRepo($username)->getId();
 
-        // check if media exist
+        // check if media exists
         if (!$storageManager->isMediaExist($userId, $mediaToken)) {
             return $this->json([
                 'status' => 'error',
@@ -84,17 +92,18 @@ class MediaController extends AbstractController
             ], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        // get content
+        // get file path
         $filePath = $storageManager->getMediaFile($userId, $mediaToken);
 
-        // create a StreamedResponse
-        $response = new StreamedResponse(function () use ($filePath) {
-            $handle = fopen($filePath, 'rb');
-            while (!feof($handle)) {
-                echo fread($handle, 1024);
-                flush();
-            }
-            fclose($handle);
+        // Read encrypted file content
+        $encryptedContent = file_get_contents($filePath);
+
+        // Decrypt file content if encrypted
+        $decryptedContent = $this->securityUtil->decryptAES($encryptedContent);
+
+        // create a StreamedResponse with decrypted content
+        $response = new StreamedResponse(function () use ($decryptedContent) {
+            echo $decryptedContent;
         });
 
         // set headers
@@ -102,10 +111,12 @@ class MediaController extends AbstractController
         $response->headers->set('Content-Disposition', 'inline; filename="' . basename($filePath) . '"');
         $response->headers->set('Cache-Control', 'public, max-age=3600');
         $response->headers->set('Accept-Ranges', 'bytes');
-        $response->headers->set('Content-Length', (string) filesize($filePath));
+        $response->headers->set('Content-Length', (string) strlen($decryptedContent));
 
         return $response;
     }
+
+
 
     /**
      * Retrieve the media information associated with the provided token.
@@ -154,10 +165,13 @@ class MediaController extends AbstractController
             ], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        // decrypt name
+        $name = $this->securityUtil->decryptAES($media->getName());
+
         // get media info array
         $mediaInfo = [
             'id' => $media->getId(),
-            'name' => $media->getName(),
+            'name' => $name,
             'token' => $media->getToken(),
             'type' => $media->getType(),
             'length' => $media->GetLength(),

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Media;
+use App\Util\SecurityUtil;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -11,8 +12,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class MediaRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private SecurityUtil $securityUtil;
+
+    public function __construct(SecurityUtil $securityUtil, ManagerRegistry $registry)
     {
+        $this->securityUtil = $securityUtil;
+
         parent::__construct($registry, Media::class);
     }
 
@@ -43,6 +48,9 @@ class MediaRepository extends ServiceEntityRepository
      */
     public function findAllMediaByGalleryName(int $ownerId, string $galleryName): array
     {
+        // encrypt gallery name
+        $galleryName = $this->securityUtil->encryptAES($galleryName);
+
         return $this->createQueryBuilder('m')
             ->select('m.id, m.owner_id, m.type, m.token')
             ->where('m.owner_id = :owner_id AND m.gallery_name = :gallery_name')
@@ -139,6 +147,9 @@ class MediaRepository extends ServiceEntityRepository
      */
     public function isGalleryExists(int $ownerId, string $galleryName): bool
     {
+        // encrypt gallery name
+        $galleryName = $this->securityUtil->encryptAES($galleryName);
+
         $result = $this->createQueryBuilder('m')
             ->select('COUNT(m.id)')
             ->andWhere('m.owner_id = :owner_id')
@@ -160,6 +171,9 @@ class MediaRepository extends ServiceEntityRepository
      */
     public function findAllByProperty(int $ownerId, string $galleryName): array
     {
+        // encrypt gallery name
+        $galleryName = $this->securityUtil->encryptAES($galleryName);
+
         $qb = $this->createQueryBuilder('m')
             ->andWhere('m.gallery_name = :gallery_name')
             ->setParameter('gallery_name', $galleryName)
@@ -174,6 +188,15 @@ class MediaRepository extends ServiceEntityRepository
 
         // split result types
         foreach ($result as $media) {
+            // get encrypted name
+            $name = $media->getName();
+
+            // decrypt name
+            $name = $this->securityUtil->decryptAES($name);
+
+            // set decrypted name
+            $media->setName($name);
+
             if (str_contains($media->getType(), 'image')) {
                 $images[] = $media;
             } else {

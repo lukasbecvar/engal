@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Media;
+use App\Util\SecurityUtil;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -15,6 +16,13 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
  */
 class MediaFixtures extends Fixture
 {
+    private SecurityUtil $securityUtil;
+
+    public function __construct(SecurityUtil $securityUtil)
+    {
+        $this->securityUtil = $securityUtil;
+    }
+
     /**
      * Load method to generate sample media data.
      *
@@ -38,8 +46,8 @@ class MediaFixtures extends Fixture
         $token = '853bc196bb6bdf5f72c33e1eeeb8a8e2';
 
         $media = new Media();
-        $media->setName('test');
-        $media->setGalleryName('testing gallery');
+        $media->setName($this->securityUtil->encryptAES('test'));
+        $media->setGalleryName($this->securityUtil->encryptAES('testing gallery'));
         $media->setType('image/png');
         $media->setLength('01:00');
         $media->setOwnerId(1);
@@ -47,8 +55,12 @@ class MediaFixtures extends Fixture
         $media->setUploadTime(date('d.m.Y H:i:s'));
         $media->setLastEditTime('non-edited');
 
-        // copy testing image
-        copy(__DIR__ . '/assets/test.png', __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/photos/' . $token . '.png');
+        // save testing file
+        $testingImage = file_get_contents(__DIR__ . '/assets/test.png');
+        $testingImage = $this->securityUtil->encryptAES($testingImage);
+        file_put_contents(__DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/photos/' . $token . '.png', $testingImage);
+
+        // save data to database
         $manager->persist($media);
 
         // generate 6 images
@@ -57,8 +69,8 @@ class MediaFixtures extends Fixture
             $token = bin2hex(random_bytes(16));
 
             $media = new Media();
-            $media->setName('test' . $i . '.jpg');
-            $media->setGalleryName('testing gallery');
+            $media->setName($this->securityUtil->encryptAES('test' . $i . '.jpg'));
+            $media->setGalleryName($this->securityUtil->encryptAES('testing gallery'));
             $media->setType('image/jpg');
             $media->setLength('01:00');
             $media->setOwnerId(1);
@@ -66,8 +78,10 @@ class MediaFixtures extends Fixture
             $media->setUploadTime(date('d.m.Y H:i:s'));
             $media->setLastEditTime('non-edited');
 
-            // copy testing image
-            copy(__DIR__ . '/assets/test.png', __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/photos/' . $token . '.png');
+            // save testing file
+            $testingImage = file_get_contents(__DIR__ . '/assets/test.png');
+            $testingImage = $this->securityUtil->encryptAES($testingImage);
+            file_put_contents(__DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/photos/' . $token . '.png', $testingImage);
 
             $manager->persist($media);
         }
@@ -78,8 +92,8 @@ class MediaFixtures extends Fixture
             $token = bin2hex(random_bytes(16));
 
             $media = new Media();
-            $media->setName('test' . $i . '.mp4');
-            $media->setGalleryName('testing gallery');
+            $media->setName($this->securityUtil->encryptAES('test' . $i . '.mp4'));
+            $media->setGalleryName($this->securityUtil->encryptAES('testing gallery'));
             $media->setType('video/mp4');
             $media->setLength('01:00');
             $media->setOwnerId(1);
@@ -87,8 +101,10 @@ class MediaFixtures extends Fixture
             $media->setUploadTime(date('d.m.Y H:i:s'));
             $media->setLastEditTime('non-edited');
 
-            // copy testing video
-            copy(__DIR__ . '/assets/test.mp4', __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/videos/' . $token . '.mp4');
+            // save testing file
+            $testingImage = file_get_contents(__DIR__ . '/assets/test.mp4');
+            $testingImage = $this->securityUtil->encryptAES($testingImage);
+            file_put_contents(__DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/1/videos/' . $token . '.mp4', $testingImage);
 
             $manager->persist($media);
         }

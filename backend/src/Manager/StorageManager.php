@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Media;
+use App\Util\SecurityUtil;
 use App\Repository\MediaRepository;
 use Symfony\Component\String\ByteString;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,12 +18,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class StorageManager
 {
+    private SecurityUtil $securityUtil;
     private ErrorManager $errorManager;
     private MediaRepository $mediaRepository;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(ErrorManager $errorManager, MediaRepository $mediaRepository, EntityManagerInterface $entityManager)
+    public function __construct(SecurityUtil $securityUtil, ErrorManager $errorManager, MediaRepository $mediaRepository, EntityManagerInterface $entityManager)
     {
+        $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
         $this->mediaRepository = $mediaRepository;
@@ -61,12 +64,13 @@ class StorageManager
         }
 
         try {
-            // get media name
-            $name = pathinfo($data['name'], PATHINFO_FILENAME);
+            // get media data
+            $name = $this->securityUtil->encryptAES(pathinfo($data['name'], PATHINFO_FILENAME));
+            $galleryName = $this->securityUtil->encryptAES($data['gallery_name']);
 
             // set entity data
             $media->setName($name);
-            $media->setGalleryName($data['gallery_name']);
+            $media->setGalleryName($galleryName);
             $media->setType($data['type']);
             $media->setLength($data['length']);
             $media->setOwnerId(intval($data['owner_id']));
@@ -86,12 +90,12 @@ class StorageManager
     }
 
     /**
-     * Store media file.
+     * Store and media file.
      *
-     * @param string $token
-     * @param object $file
-     * @param int $userId
-     * @param string $fileType
+     * @param string $token The unique token for the file.
+     * @param object $file The uploaded file object.
+     * @param int $userId The ID of the user uploading the file.
+     * @param string $fileType The type of the file (default: 'videos').
      *
      * @return void
      */
@@ -106,8 +110,28 @@ class StorageManager
                 $fileType = 'photos';
             }
 
-            // move file to final storage directory
-            $file->move(__DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/' . $fileType, $token . '.' . $fileExtension);
+            // create the target directory if it doesn't exist
+            $targetDir = __DIR__ . '/../../storage/' . $_ENV['APP_ENV'] . '/' . $userId . '/' . $fileType;
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+
+            // read file content
+            $fileContent = file_get_contents($file->getPathname());
+            if ($fileContent === false) {
+                $this->errorManager->handleError('failed to read file content', JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            // encrypt the file content
+            $encryptedContent = $this->securityUtil->encryptAES($fileContent);
+
+            // encrypted file path
+            $encryptedFilePath = $targetDir . '/' . $token . '.' . $fileExtension;
+
+            // write encrypted content to the file
+            if (file_put_contents($encryptedFilePath, $encryptedContent) === false) {
+                $this->errorManager->handleError('failed to write encrypted content to file', JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
         } catch (\Exception $e) {
             $this->errorManager->handleError('error to store media file: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -132,8 +156,12 @@ class StorageManager
             // get gallery name
             $name = $name['gallery_name'];
 
+            // decrypt gallery name
+            $nameDec = $this->securityUtil->decryptAES($name);
+
+            // build gallery list array
             $galleryNamesArray[] = [
-                'name' => $name,
+                'name' => $nameDec,
                 'first_token' => $this->mediaRepository->findFirstTokenByProperty($userId, $name)
             ];
         }
@@ -230,8 +258,14 @@ class StorageManager
         // get media file
         $file = $this->getMediaFile($userId, $token);
 
-        // return file content
-        return file_get_contents($file);
+        // get file content
+        $content = file_get_contents($file);
+
+        // decrypt token
+        $content = $this->securityUtil->decryptAES($content);
+
+        // return content
+        return $content;
     }
 
     /**

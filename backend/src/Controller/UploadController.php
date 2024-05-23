@@ -187,6 +187,7 @@ class UploadController extends AbstractController
         // get uploader user data
         $userData = $this->userManager->getUserData($security);
 
+        // init getID lib
         $getID3 = new getID3();
 
         try {
@@ -194,9 +195,10 @@ class UploadController extends AbstractController
                 // get owner ID
                 $ownerId = $userData->getID();
 
-                // get video length
+                // default video length
                 $videoLength = '00:00';
 
+                // get video length
                 if ($file instanceof UploadedFile && $file->getMimeType() === 'video/mp4') {
                     $fileInfo = $getID3->analyze($file->getPathname());
                     $videoLength = $fileInfo['playtime_string'];

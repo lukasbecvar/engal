@@ -78,34 +78,48 @@ export default function GalleryBrowserComponent() {
 
     // load thumbnails list
     const loadImagesForPage = async (page, data) => {
-        const startIndex = (page - 1) * itemsPerPage
-        const endIndex = page * itemsPerPage
-        const currentPageData = data.slice(startIndex, endIndex)
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = page * itemsPerPage;
+        const currentPageData = data.slice(startIndex, endIndex);
         const imagesPromises = currentPageData.map(async (item) => {
-            const thumbnailResponse = await fetch(`${apiUrl}/api/thumbnail?token=${item.token}`, {
-                headers: {
-                    'Authorization': `Bearer ${loginToken}`
-                }
-            })
-            if (!thumbnailResponse.ok) {
-                return null
-            }
-            const thumbnailBlob = await thumbnailResponse.blob()
-            const thumbnailUrl = URL.createObjectURL(thumbnailBlob)
+            try {
+                const thumbnailResponse = await fetch(`${apiUrl}/api/thumbnail?token=${item.token}`, {
+                    headers: {
+                        'Authorization': `Bearer ${loginToken}`
+                    }
+                });
     
-            return { 
-                thumbnailUrl, 
-                token: item.token,
-                name: item.name,
-                ownerId: item.ownerId,
-                type: item.type,
-                length: item.length
+                if (!thumbnailResponse.ok) {
+                    throw new Error('Thumbnail request failed');
+                }
+    
+                const thumbnailBlob = await thumbnailResponse.blob();
+                const thumbnailUrl = URL.createObjectURL(thumbnailBlob);
+        
+                return { 
+                    thumbnailUrl, 
+                    token: item.token,
+                    name: item.name,
+                    ownerId: item.ownerId,
+                    type: item.type,
+                    length: item.length
+                };
+            } catch (error) {
+                return { 
+                    thumbnailUrl: "/default_thumbnail.jpg", // Use default thumbnail URL
+                    token: item.token,
+                    name: item.name,
+                    ownerId: item.ownerId,
+                    type: item.type,
+                    length: item.length
+                };
             }
-        })
-        const imagesData = await Promise.all(imagesPromises)
-        const validImagesData = imagesData.filter(imageData => imageData !== null)
-        setImages(validImagesData)
-    }
+        });
+        
+        const imagesData = await Promise.all(imagesPromises);
+        const validImagesData = imagesData.filter(imageData => imageData !== null);
+        setImages(validImagesData);
+    };
 
     const onPageChange = (page) => {
         setCurrentPage(page)

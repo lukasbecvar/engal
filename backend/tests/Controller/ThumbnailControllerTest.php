@@ -6,13 +6,13 @@ use App\Tests\CustomCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class ThumbnailController
+ * Class ThumbnailControllerTest
  *
  * Unit test case for the ThumbnailController class.
  *
  * @package App\Tests\Controller
  */
-class ThumbnailController extends CustomCase
+class ThumbnailControllerTest extends CustomCase
 {
     /**
      * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.

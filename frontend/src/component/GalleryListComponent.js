@@ -83,20 +83,25 @@ export default function GalleryListComponent() {
         const headers = {
             'Authorization': `Bearer ${loginToken}`
         }
-
+    
         try {
             const response = await fetch(apiUrl + '/api/thumbnail?token=' + token, {
                 method: 'GET',
                 headers: headers
             })
-
+    
+            // return default thumbnail if status is 500
+            if (response.status === 500) {
+                return '/default_thumbnail.jpg';
+            }
+    
             const blob = await response.blob()
             return URL.createObjectURL(blob)
         } catch (error) {
             if (DEV_MODE) {
                 console.error('Error to fetch gallery thumbnail: ' + error)
             }
-            return null
+            return '/default_thumbnail.jpg';
         }
     }
 

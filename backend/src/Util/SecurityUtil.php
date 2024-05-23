@@ -24,55 +24,70 @@ class SecurityUtil
     }
 
     /**
-     * Encrypts the given data using AES-256-CBC algorithm.
+     * Encrypts data using AES encryption.
+     *
+     * Encrypts the provided data using AES-256-CBC encryption algorithm if storage encryption is enabled.
+     * If encryption is not enabled, the data remains unchanged.
      *
      * @param mixed $data The data to be encrypted.
      *
-     * @return mixed The encrypted data, base64 encoded, with the initialization vector prepended.
-     *               Returns the original data if encryption is not enabled.
+     * @return mixed The encrypted data, or the original data if encryption is not enabled.
      */
     public function encryptAES(mixed $data): mixed
     {
         // check if encryption is enabled
-        if ($_ENV['STORAGE_ENCRYPTION'] !== 'true') {
+        if ($_ENV['STORAGE_ENCRYPTION'] != 'true') {
             return $data;
         }
 
-        // generate encryption key
-        $key = hash('sha256', $_ENV['STORAGE_ENCRYPTION_KEY'], true);
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+        // get config values
+        $key = $_ENV['STORAGE_ENCRYPTION_KEY'];
+        $iv = $_ENV['ENCRYPTION_VECTOR'];
 
-        // encrypt data
+        // hash the encryption key
+        $key = hash('sha256', $key, true);
+
+        // encrypt the data
         $cipherText = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
 
         // return encrypted data
-        return base64_encode($iv . $cipherText);
+        return $iv . $cipherText;
     }
 
     /**
-     * Decrypts the given data using AES-256-CBC algorithm.
+     * Decrypts data encrypted using AES encryption.
      *
-     * @param mixed $data The base64 encoded encrypted data with the initialization vector prepended.
+     * Decrypts the provided data encrypted using AES-256-CBC encryption algorithm if storage encryption is enabled.
+     * If encryption is not enabled, the data remains unchanged.
      *
-     * @return mixed The decrypted data. Returns the original data if encryption is not enabled.
+     * @param mixed $data The data to be decrypted.
+     *
+     * @return mixed The decrypted data, or the original data if encryption is not enabled or decryption fails.
      */
     public function decryptAES(mixed $data): mixed
     {
         // check if encryption is enabled
-        if ($_ENV['STORAGE_ENCRYPTION'] !== 'true') {
+        if ($_ENV['STORAGE_ENCRYPTION'] != 'true') {
             return $data;
         }
 
-        // generate encryption key
-        $key = hash('sha256', $_ENV['STORAGE_ENCRYPTION_KEY'], true);
-        $data = base64_decode($data);
+        // get config values
+        $key = $_ENV['STORAGE_ENCRYPTION_KEY'];
+        $iv = $_ENV['ENCRYPTION_VECTOR'];
 
-        // decrypt data
+        // hash the encryption key
+        $key = hash('sha256', $key, true);
+
+        // decrypt the data
         $ivLength = openssl_cipher_iv_length('aes-256-cbc');
-        $iv = substr($data, 0, $ivLength);
+
+        // extract the iv and cipher text
+        $iv = str_pad($iv, $ivLength, "\0");
+
+        // decrypt the data
         $cipherText = substr($data, $ivLength);
 
-        // return decrypted data
+        // decrypt the data
         return openssl_decrypt($cipherText, 'aes-256-cbc', $key, 0, $iv);
     }
 }

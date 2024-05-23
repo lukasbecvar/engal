@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Util\SecurityUtil;
 use App\Repository\MediaRepository;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -15,12 +16,14 @@ use Intervention\Image\Drivers\Gd\Driver;
  */
 class ThumbnailManager
 {
+    private SecurityUtil $securityUtil;
     private ErrorManager $errorManager;
     private StorageManager $storageManager;
     private MediaRepository $mediaRepository;
 
-    public function __construct(ErrorManager $errorManager, StorageManager $storageManager, MediaRepository $mediaRepository)
+    public function __construct(SecurityUtil $securityUtil, ErrorManager $errorManager, StorageManager $storageManager, MediaRepository $mediaRepository)
     {
+        $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
         $this->storageManager = $storageManager;
         $this->mediaRepository = $mediaRepository;
@@ -67,6 +70,10 @@ class ThumbnailManager
      */
     public function getVideoThumbnail(int $userId, string $token): ?string
     {
+        if ($_ENV['STORAGE_ENCRYPTION'] == 'true') {
+            return null;
+        }
+
         // get video file
         $mediaFile = $this->storageManager->getMediaFile($userId, $token);
 
@@ -102,6 +109,10 @@ class ThumbnailManager
      */
     public function storeThumbnail(string $mediaFile, int $userId, string $token): mixed
     {
+        // decrypt media file
+        $mediaFile = file_get_contents($mediaFile);
+        $mediaFile = $this->securityUtil->decryptAES($mediaFile);
+
         // init Intervention manager
         $manager = new ImageManager(new Driver());
 
@@ -142,6 +153,9 @@ class ThumbnailManager
         // build thumbnail image pathern
         $thumbnailPathern = $thumbnailDirectory . $token . '.jpg';
 
+        // encode image
+        $image = $this->securityUtil->encryptAES($image);
+
         // save image thumbnail to storage cache
         file_put_contents($thumbnailPathern, $image);
 
@@ -164,8 +178,14 @@ class ThumbnailManager
 
         // check if thumbnail found
         if (file_exists($thumbnailFilePathern)) {
-            // return thumbnal file
-            return file_get_contents($thumbnailFilePathern);
+            // get thumbnal file
+            $thumbnal = file_get_contents($thumbnailFilePathern);
+
+            // decrypt thumbnail
+            $thumbnal = $this->securityUtil->decryptAES($thumbnal);
+
+            // return thumbnail
+            return $thumbnal;
         }
 
         return null;
@@ -203,6 +223,10 @@ class ThumbnailManager
 
         try {
             foreach ($mediaList as $media) {
+                if (str_contains($media['type'], 'video') && $_ENV['STORAGE_ENCRYPTION'] == 'true') {
+                    continue;
+                }
+
                 // get media data
                 $userId = $media['owner_id'];
                 $token = $media['token'];
@@ -210,13 +234,19 @@ class ThumbnailManager
                 // get media file
                 $mediaFile = $this->storageManager->getMediaFile($userId, $token);
 
+                // check if media is video
                 if (!str_contains($media['type'], 'image')) {
+                    // get video thumbnail
                     $mediaFile = $this->getVideoThumbnail($userId, $token);
                 }
 
                 // check if thumbnail is already exist
                 if ($this->getMediaExistThumbnail($userId, $token) == null) {
-                    $this->storeThumbnail($mediaFile, $userId, $token);
+                    // check if media file is exist
+                    if ($mediaFile != null) {
+                        // store thumbnail
+                        $this->storeThumbnail($mediaFile, $userId, $token);
+                    }
                 }
 
                 // check command referer (print progress to console outputs)

@@ -4,6 +4,7 @@ Self-hosted media cloud storage.
 ## TODOS: version 4.5
 - [ ] Dynamic gallery loading timeout calculator
 - [ ] Split frontend into multiple components
+- [ ] Validate inputs with symfony validator (DTO)
 
 ## TODOS: version 5.0
 - [ ] Browse all galleries

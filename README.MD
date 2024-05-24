@@ -7,6 +7,9 @@ Self-hosted encrypted media cloud storage.
 ## Gallery browser
 ![Gallery browser](.github/images/browser.png)
 
+## TODOS: version 4.6
+- [ ] Implement symfony data validator (DTO)
+
 ## TODOS: version 5.0
 - [ ] All gallery browser
 - [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)

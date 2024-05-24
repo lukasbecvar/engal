@@ -33,6 +33,13 @@ nelmio_api_doc:
                     tags: ['Auth']
                     summary: User login action.
                     description: User login JWT provider return JWT token
+                    responses:
+                        200: 
+                            description: Successful login (return token)
+                        401: 
+                            description: Invalid credentials
+                        400: 
+                            description: Bad request body data
                     requestBody:
                         required: true
                         content:
@@ -46,10 +53,3 @@ nelmio_api_doc:
                                         password:
                                             type: string
                                             default: test
-                    responses:
-                        200: 
-                            description: Successful login (return token)
-                        401: 
-                            description: Invalid credentials
-                        400: 
-                            description: Bad request body data

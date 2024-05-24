@@ -5,4 +5,4 @@ export const DEV_MODE = true
 export const ELEMENTS_PER_PAGE = 20 // max 100 recommended
 
 // current app version
-export const APP_VERSION = '4.0'
+export const APP_VERSION = '4.5'

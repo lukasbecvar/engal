@@ -28,6 +28,7 @@ export async function getApiStatus(url) {
     try {
         const response = await fetch(url)
         
+        // check if the response is OK and the content type is JSON
         if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
             if (DEV_MODE) {
                 console.log("API connection error: Unknown error")
@@ -40,6 +41,7 @@ export async function getApiStatus(url) {
         } else {
             const data = await response.json()
         
+            // check if the response contains the required fields
             if (data.status === "success") {
                 return {
                     status: 'success',

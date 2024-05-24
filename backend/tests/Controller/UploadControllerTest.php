@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\CustomCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -15,9 +16,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UploadControllerTest extends CustomCase
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
-    */
-    private object $client;
+     * Instance for making requests.
+     */
+    private KernelBrowser $client;
 
     /**
      * Set up before each test.

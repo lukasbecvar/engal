@@ -1,13 +1,14 @@
 # Engal
 Self-hosted media cloud storage.
 
-## TODOS: version 4.5
-- [ ] Dynamic gallery loading timeout calculator
-- [ ] Split frontend into multiple components
-- [ ] Validate inputs with symfony validator (DTO)
+## Gallery list
+![Gallery list](.github/images/gallery-list.png)
+
+## Gallery browser
+![Gallery browser](.github/images/browser.png)
 
 ## TODOS: version 5.0
-- [ ] Browse all galleries
+- [ ] All gallery browser
 - [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 - [ ] Gallery info (show gallery data: count, owner, time data)
 - [ ] Gallery share (configurate in gallery info), (use owner_id in databse [json/array])
@@ -15,7 +16,6 @@ Self-hosted media cloud storage.
 - [ ] Media delete function
 - [ ] Media edit (name, replace file with reupload)
 - [ ] Media move (move to gallery), single or multiple
-- [ ] Favorite gallery
 
 ## TODOS: version 6.0
 - [ ] Data wipe command (drop all users, logs, storage data)
@@ -23,7 +23,7 @@ Self-hosted media cloud storage.
 - [ ] Implement account profile images
     - [ ] separated profile images storage
     - [ ] Default image static asset
-- [ ] Edit navigation 
+- [ ] Recode navigation 
     - [ ] Change username for profile image
 - [ ] Mini user panel (under profile photo click)
     - [ ] Role info
@@ -40,7 +40,6 @@ Self-hosted media cloud storage.
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 - [ ] Deploy system
-- [ ] User manual
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

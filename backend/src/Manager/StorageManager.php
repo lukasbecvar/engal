@@ -44,11 +44,11 @@ class StorageManager
     }
 
     /**
-     * Store media entity.
+     * Store media entity to database.
      *
-     * @param array<string> $data
+     * @param array<string> $data The data to store in the media entity.
      *
-     * @return string|null
+     * @return string|null The token of the stored media entity, or null if an error occurred.
      */
     public function storeMediaEntity(array $data): ?string
     {

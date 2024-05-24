@@ -3,6 +3,7 @@
 namespace App\Tests\Auth;
 
 use Symfony\Component\String\ByteString;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -14,9 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class RegisterTest extends WebTestCase
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
+     * Instance for making requests.
      */
-    private object $client;
+    private KernelBrowser $client;
 
     /**
      * Set up before each test.

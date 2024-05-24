@@ -116,8 +116,6 @@ class MediaController extends AbstractController
         return $response;
     }
 
-
-
     /**
      * Retrieve the media information associated with the provided token.
      *

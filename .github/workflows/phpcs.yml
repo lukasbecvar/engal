@@ -17,15 +17,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # setup PHP
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
 
+    # install composer dependencies
     - name: Install dependencies
       run: composer install --no-interaction --no-progress --no-suggest
       working-directory: ./backend
 
+    # test PSR-12 coding standard
     - name: Run PHP CodeSniffer
       run: vendor/bin/phpcs
       working-directory: ./backend

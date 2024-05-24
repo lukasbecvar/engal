@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Tests\CustomCase;
 use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -16,9 +17,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class MediaControllerTest extends CustomCase
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser Instance for making requests.
-    */
-    private object $client;
+     * Instance for making requests.
+     */
+    private KernelBrowser $client;
 
     /**
      * @var string testing user token

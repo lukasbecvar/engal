@@ -193,8 +193,11 @@ export default function UploadComponent() {
                     }
                 },
             })
+
+            // check upload response
             if (response.data.message == 'files uploaded successfully') {
 
+                // preload thumbnails for gallery after upload
                 try {
                     fetch(apiUrl + '/api/thumbnail/preload?gallery_name=' + final_gallery_name, {
                         method: 'GET',
@@ -235,7 +238,6 @@ export default function UploadComponent() {
             <NavigationComponent/>            
             <BreadcrumbComponent/>
             <div className="app-component upload-component">
-                
                 <div className="upload-form-container">
                     <h2 className="upload-title">Media Upload</h2>
             

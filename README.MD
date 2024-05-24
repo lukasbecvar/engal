@@ -7,10 +7,8 @@ Self-hosted encrypted media cloud storage.
 ## Gallery browser
 ![Gallery browser](.github/images/browser.png)
 
-## TODOS: version 4.6
+## TODO
 - [ ] Implement symfony data validator (DTO)
-
-## TODOS: version 5.0
 - [ ] All gallery browser
 - [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
 - [ ] Gallery info (show gallery data: count, owner, time data)
@@ -19,8 +17,6 @@ Self-hosted encrypted media cloud storage.
 - [ ] Media delete function
 - [ ] Media edit (name, replace file with reupload)
 - [ ] Media move (move to gallery), single or multiple
-
-## TODOS: version 6.0
 - [ ] Data wipe command (drop all users, logs, storage data)
 - [ ] Backup command (extract all media to tar.gz archive)
 - [ ] Implement account profile images
@@ -38,8 +34,6 @@ Self-hosted encrypted media cloud storage.
     - [ ] Log viewer
     - [ ] User management
     - [ ] Ban system
-
-## TODOS: version 7.0
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 - [ ] Deploy system

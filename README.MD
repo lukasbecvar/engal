@@ -1,5 +1,5 @@
 # Engal
-Self-hosted media cloud storage.
+Self-hosted encrypted media cloud storage.
 
 ## Gallery list
 ![Gallery list](.github/images/gallery-list.png)

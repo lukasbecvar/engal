@@ -38,6 +38,7 @@ Self-hosted encrypted media cloud storage.
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 - [ ] Deploy system
+- [ ] Doc in github pages
 
 ## License
 The framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

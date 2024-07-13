@@ -9,9 +9,9 @@ Self-hosted encrypted media cloud storage.
 
 ## TODO
 - [ ] Implement symfony data validator (DTO)
-- [ ] Mmiddleware, events and managers unit tests
+- [ ] Middleware, events and managers unit tests
 - [ ] All gallery browser
-- [ ] Sorting (by: default(by database id), name, upload_time, edit_time, random)
+- [ ] Sorting (by: default(database id), name, upload_time, edit_time, random)
 - [ ] Gallery info (show gallery data: count, owner, time data)
 - [ ] Gallery share (configurate in gallery info), (use owner_id in databse [json/array])
 - [ ] Media info (get media data, name, gallery_name, size, type, time data, use getID3 lib)

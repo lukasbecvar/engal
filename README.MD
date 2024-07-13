@@ -38,6 +38,7 @@ Self-hosted encrypted media cloud storage.
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native
 - [ ] Deploy system
+- [ ] Better readme
 - [ ] Doc in github pages
 
 ## License

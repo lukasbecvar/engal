@@ -31,6 +31,8 @@ Self-hosted encrypted media cloud storage.
 ### 5.0
 - [ ] Validate data with symfony validator (DTO)
 - [ ] Middleware, events and managers unit tests
+- [ ] Frontend style recode
+- [ ] Complete app refactor
 ### 5.1
 - [ ] Port frontend to electron
 - [ ] Port frontend to react-native

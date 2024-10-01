@@ -3,7 +3,7 @@ Self-hosted encrypted media cloud storage.
 
 > [!WARNING]
 > ### End of support
-> This project is no longer being maintained or developed, and no further updates or support will be provided.
+> This project will no longer be updated, and no support will be provided.
 
 ## Gallery list
 ![Gallery list](.github/images/gallery-list.png)

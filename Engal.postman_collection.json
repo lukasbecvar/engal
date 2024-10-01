@@ -1,0 +1,950 @@
+{
+	"info": {
+		"_postman_id": "3f01a990-a397-4d4d-ae31-5c89abde065b",
+		"name": "Engal",
+		"description": "Testing engal backend API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38714088"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.token).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Token is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test\",\n    \"password\": \"test\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/api/login",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "Login user and return login token"
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>Status</th>",
+									"        <th>Code</th>",
+									"        <th>Message</th>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>{{response.status}}</td>",
+									"        <td>{{response.code}}</td>",
+									"        <td>{{response.message}}</td>",
+									"    </tr>",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields - status, code, and message\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('status');",
+									"    pm.expect(responseData).to.have.property('code');",
+									"    pm.expect(responseData).to.have.property('message');",
+									"});",
+									"",
+									"pm.test(\"Status is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should be a non-empty string\");",
+									"});",
+									"",
+									"pm.test(\"Code is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.code).to.exist.and.to.be.a('number');",
+									"    pm.expect(responseData.code).to.be.at.least(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// ramdon string generator",
+									"function randomString(length) {",
+									"    let result = '';",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+									"    const charactersLength = characters.length;",
+									"    for (let i = 0; i < length; i++) {",
+									"        result += characters.charAt(Math.floor(Math.random() * charactersLength));",
+									"    }",
+									"    return result;",
+									"}",
+									"",
+									"// set random string variable for generate username & apssword",
+									"pm.variables.set(\"randomString\", randomString(10));",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/api/register?username={{randomString}}&password={{randomString}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"register"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{randomString}}",
+									"description": "New user username"
+								},
+								{
+									"key": "password",
+									"value": "{{randomString}}",
+									"description": "New user password"
+								}
+							]
+						},
+						"description": "Register new user"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3Mjc3NzkwMjgsImV4cCI6MTcyODM4MzgyOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdCJ9.YyhsAEYa8a77R1QeFf-Ifr1NMXt4En86LDF-ki6pcIxglvYWV4dx7NMdxMt3Tjao2283Ic0i5oOStWYqQQiciYQAQBHm_Afw232zNuT2vpy2zTc-1ubeI36ldFLqsIV3xV3gkKlERMArCRaqcIQKQuk7AchPbpi1IP9wtfNzK29pC-Q2Hcad3psE24n-A20CqWSTd-2yHOm_FxTSCDmXjHeFZTEeFdRPQLll-U8M8XkPX1O2jVr9o_5hrc6eWwIYOENn5VX-ATprNtcrYNTMCd7Jr0JU6veUp4xJeDzwL51efDbgqXUuaBpnn2jU1O7FRx0Z4FEUbcdSqCZwq4QgEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/logout",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						},
+						"description": "Invalidate user login token"
+					},
+					"response": []
+				}
+			],
+			"description": "Testing login auth system in engal JWT"
+		},
+		{
+			"name": "Resources",
+			"item": [
+				{
+					"name": "Gallery list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields - status, code, and gallery_list\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('status');",
+									"    pm.expect(responseData).to.have.property('code');",
+									"    pm.expect(responseData).to.have.property('gallery_list');",
+									"});",
+									"",
+									"pm.test(\"Gallery list name and first_token are non-empty strings\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.gallery_list).to.be.an('array');",
+									"    responseData.gallery_list.forEach(function(item) {",
+									"        pm.expect(item.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+									"        pm.expect(item.first_token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First token should not be empty\");",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/gallery/list",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"gallery",
+								"list"
+							]
+						},
+						"description": "Get gallery list"
+					},
+					"response": []
+				},
+				{
+					"name": "Gallery data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.gallery_data).to.be.an('array');",
+									"",
+									"    responseData.gallery_data.forEach(function(item) {",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('name');",
+									"        pm.expect(item).to.have.property('galleryName');",
+									"        pm.expect(item).to.have.property('type');",
+									"        pm.expect(item).to.have.property('length');",
+									"        pm.expect(item).to.have.property('ownerId');",
+									"        pm.expect(item).to.have.property('token');",
+									"        pm.expect(item).to.have.property('uploadTime');",
+									"        pm.expect(item).to.have.property('lastEditTime');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Status and code fields are present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.include.all.keys('status', 'code');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/gallery/data?gallery_name=testing gallery",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"gallery",
+								"data"
+							],
+							"query": [
+								{
+									"key": "gallery_name",
+									"value": "testing gallery",
+									"description": "Testing gallery name"
+								}
+							]
+						},
+						"description": "Get gallery data"
+					},
+					"response": []
+				},
+				{
+					"name": "Media content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Content type is image/png\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"image/png\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/media/content?media_token=853bc196bb6bdf5f72c33e1eeeb8a8e2&auth_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3Mjc3NzkxNTcsImV4cCI6MTcyODM4Mzk1Nywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdCJ9.lwRm_6Zhysnlu3Np0IAOqcB9i0tYieKME4OsLqpQLWdBkPC37z8rCmTQLB9_0Xn2ty9XqtLhTJ3faWIkdXPUI0I1pIEe3KVLddQC6FsBJEsQVq_IwlbSPr7bciuQaa5J4B9wgeDhZcv8V5iDTtaR7Ik78OkaiwpW_SRc6SAhQWgO4p-GEZb7V_j4y4SJRkvZNUTOMvO1ef6NJkyoZhA_ZzV-FAB-RQt6SeSErtFNrQVU8dpl9UTp_E7PICsU0AzeECbNHXMXbBhO3tUSTLvwJj-EzMcVcLRTLm72XINC-icvEYUCMXvDMIL84NLh2njN68GXBwK7p8bBVyacRtcVWQ",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"content"
+							],
+							"query": [
+								{
+									"key": "media_token",
+									"value": "853bc196bb6bdf5f72c33e1eeeb8a8e2",
+									"description": "Testing media token"
+								},
+								{
+									"key": "auth_token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3Mjc3NzkxNTcsImV4cCI6MTcyODM4Mzk1Nywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdCJ9.lwRm_6Zhysnlu3Np0IAOqcB9i0tYieKME4OsLqpQLWdBkPC37z8rCmTQLB9_0Xn2ty9XqtLhTJ3faWIkdXPUI0I1pIEe3KVLddQC6FsBJEsQVq_IwlbSPr7bciuQaa5J4B9wgeDhZcv8V5iDTtaR7Ik78OkaiwpW_SRc6SAhQWgO4p-GEZb7V_j4y4SJRkvZNUTOMvO1ef6NJkyoZhA_ZzV-FAB-RQt6SeSErtFNrQVU8dpl9UTp_E7PICsU0AzeECbNHXMXbBhO3tUSTLvwJj-EzMcVcLRTLm72XINC-icvEYUCMXvDMIL84NLh2njN68GXBwK7p8bBVyacRtcVWQ",
+									"description": "Valid user auth token"
+								}
+							]
+						},
+						"description": "Get media content"
+					},
+					"response": []
+				},
+				{
+					"name": "Media info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Media info object has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.media_info).to.be.an('object');",
+									"    pm.expect(responseData.media_info).to.have.property('id');",
+									"    pm.expect(responseData.media_info).to.have.property('name');",
+									"    pm.expect(responseData.media_info).to.have.property('token');",
+									"    pm.expect(responseData.media_info).to.have.property('type');",
+									"    pm.expect(responseData.media_info).to.have.property('length');",
+									"    pm.expect(responseData.media_info).to.have.property('owner_id');",
+									"    pm.expect(responseData.media_info).to.have.property('upload_time');",
+									"    pm.expect(responseData.media_info).to.have.property('last_edit_time');",
+									"});",
+									"",
+									"pm.test(\"Upload_time and last_edit_time are in a valid date-time format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(new Date(responseData.upload_time)).to.not.be.NaN;",
+									"    pm.expect(new Date(responseData.last_edit_time)).to.not.be.NaN;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/media/info?media_token=853bc196bb6bdf5f72c33e1eeeb8a8e2",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"info"
+							],
+							"query": [
+								{
+									"key": "media_token",
+									"value": "853bc196bb6bdf5f72c33e1eeeb8a8e2"
+								}
+							]
+						},
+						"description": "Get media info"
+					},
+					"response": []
+				},
+				{
+					"name": "Media thumbnail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is image/jpg\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"image/jpg\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/thumbnail?token=853bc196bb6bdf5f72c33e1eeeb8a8e2",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"thumbnail"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "853bc196bb6bdf5f72c33e1eeeb8a8e2",
+									"description": "Testing media token"
+								}
+							]
+						},
+						"description": "Get media thumbnail image"
+					},
+					"response": []
+				},
+				{
+					"name": "Thumbnail preload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields - status, code, and message\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.status).to.exist;",
+									"    pm.expect(responseData.code).to.exist;",
+									"    pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Status is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should not be empty\");",
+									"});",
+									"",
+									"pm.test(\"Code is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.code).to.exist.and.to.be.a('number').and.to.satisfy((code) => code >= 0, \"Code must be a non-negative integer\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/thumbnail/preload?gallery_name=testing gallery",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"thumbnail",
+								"preload"
+							],
+							"query": [
+								{
+									"key": "gallery_name",
+									"value": "testing gallery",
+									"description": "Testing gallery name"
+								}
+							]
+						},
+						"description": "Run async preload thumbnails on backend"
+					},
+					"response": []
+				}
+			],
+			"description": "Test getting engal resources"
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "Upload policy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields - status, code, and policy\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.status).to.exist;",
+									"    pm.expect(responseData.code).to.exist;",
+									"    pm.expect(responseData.policy).to.exist;",
+									"});",
+									"",
+									"pm.test(\"File upload status is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.policy.FILE_UPLOAD_STATUS).to.be.a('string').and.to.have.lengthOf.at.least(1, \"File upload status should not be empty\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/upload/config/policy",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"config",
+								"policy"
+							]
+						},
+						"description": "Get upload policy"
+					},
+					"response": []
+				},
+				{
+					"name": "Media upload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Response has the required fields - status, code, and message\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('status');",
+									"    pm.expect(responseData).to.have.property('code');",
+									"    pm.expect(responseData).to.have.property('message');",
+									"});",
+									"",
+									"pm.test(\"Response Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status is a non-empty string, code is an integer, and message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.status).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Status should be a non-empty string\");",
+									"    pm.expect(responseData.code).to.be.a('number', \"Code should be an integer\");",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should be a non-empty string\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "gallery_name",
+									"value": "testing postman upload",
+									"description": "Testing gallery name",
+									"type": "text"
+								},
+								{
+									"key": "files[]",
+									"description": "Media files to upload",
+									"type": "file",
+									"src": "postman-cloud:///1ef7fe03-a821-4460-942b-4f2c7a773047"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{apiURL}}/api/upload",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						},
+						"description": "Upload media file to specific gallery"
+					},
+					"response": []
+				}
+			],
+			"description": "Test engal media upload"
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData).to.have.property('status');",
+									"  pm.expect(responseData).to.have.property('code');",
+									"  pm.expect(responseData).to.have.property('user_status');",
+									"  pm.expect(responseData).to.have.property('stats');",
+									"});",
+									"",
+									"pm.test(\"Username is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.user_status.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+									"});",
+									"",
+									"pm.test(\"Images_count, videos_count, and galleries_count are non-negative integers\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    ",
+									"    const { images_count, videos_count, galleries_count } = responseData.stats;",
+									"    ",
+									"    [images_count, videos_count, galleries_count].forEach(count => {",
+									"        pm.expect(count).to.be.a('number');",
+									"        pm.expect(count).to.be.at.least(0);",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/api/user/status",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"status"
+							]
+						},
+						"description": "Get user status"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Verify that the response has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.status).to.exist;",
+							"  pm.expect(responseData.code).to.exist;",
+							"  pm.expect(responseData.message).to.exist;",
+							"  pm.expect(responseData.backend_version).to.exist;",
+							"  pm.expect(responseData.security_policy).to.exist;",
+							"});",
+							"",
+							"pm.test(\"Ensure that the security_policy object contains the expected properties\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.security_policy).to.be.an('object');",
+							"    pm.expect(responseData.security_policy).to.have.property('REGISTER_ENABLED');",
+							"    pm.expect(responseData.security_policy).to.have.property('MIN_USERNAME_LENGTH');",
+							"    pm.expect(responseData.security_policy).to.have.property('MAX_USERNAME_LENGTH');",
+							"    pm.expect(responseData.security_policy).to.have.property('MIN_PASSWORD_LENGTH');",
+							"    pm.expect(responseData.security_policy).to.have.property('MAX_PASSWORD_LENGTH');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiURL}}",
+					"host": [
+						"{{apiURL}}"
+					]
+				},
+				"description": "Get api index & status"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3Mjc3NzkxNTcsImV4cCI6MTcyODM4Mzk1Nywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdCJ9.lwRm_6Zhysnlu3Np0IAOqcB9i0tYieKME4OsLqpQLWdBkPC37z8rCmTQLB9_0Xn2ty9XqtLhTJ3faWIkdXPUI0I1pIEe3KVLddQC6FsBJEsQVq_IwlbSPr7bciuQaa5J4B9wgeDhZcv8V5iDTtaR7Ik78OkaiwpW_SRc6SAhQWgO4p-GEZb7V_j4y4SJRkvZNUTOMvO1ef6NJkyoZhA_ZzV-FAB-RQt6SeSErtFNrQVU8dpl9UTp_E7PICsU0AzeECbNHXMXbBhO3tUSTLvwJj-EzMcVcLRTLm72XINC-icvEYUCMXvDMIL84NLh2njN68GXBwK7p8bBVyacRtcVWQ",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

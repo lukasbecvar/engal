@@ -1,6 +1,10 @@
 # Engal
 Self-hosted encrypted media cloud storage.
 
+> [!WARNING]
+> ### End of support
+> This project is no longer being maintained or developed, and no further updates or support will be provided.
+
 ## Gallery list
 ![Gallery list](.github/images/gallery-list.png)
 
@@ -15,9 +19,6 @@ The frontend is a React app that communicates with the REST API configured durin
 
 ## Installation
 The entire installation in the dev environment can be run through the `install.sh` script and launched using Docker Compose.
-
-## End of support
-This project is no longer being maintained or developed, and no further updates or support will be provided.
 
 ## License
 The project is open-sourced software licensed under the [MIT license](https://github.com/lukasbecvar/engal/blob/main/LICENSE).

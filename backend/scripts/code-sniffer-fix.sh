@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # run cs fixer
-php ./vendor/bin/phpcbf
+docker-compose run php ./vendor/bin/phpcbf

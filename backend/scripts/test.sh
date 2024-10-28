@@ -11,13 +11,13 @@ then
     rm -rf ./storage/test
 fi
 
-# load testing data fixtures
-php ./bin/console doctrine:fixtures:load --no-interaction --purge-with-truncate --env=test
+yellow_echo "Starting tests..."
 
-# static code analyze
-yellow_echo 'STATIC-ANALYZE: testing...'
-sh ./scripts/static-analyze.sh
-
-# PHPUnit tests
-yellow_echo 'PHPUnit: testing...'
-php ./bin/phpunit
+# run tests
+docker-compose run php bash -c "
+    php bin/console doctrine:fixtures:load --no-interaction --env=test &&
+    php vendor/bin/phpcbf &&
+    php vendor/bin/phpcs &&
+    php vendor/bin/phpstan analyze &&
+    php bin/phpunit
+"

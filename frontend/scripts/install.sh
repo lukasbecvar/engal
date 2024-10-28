@@ -6,5 +6,5 @@ yellow_echo () { echo "\033[33m\033[1m$1\033[0m"; }
 if [ ! -d './node_modules/' ]
 then
     yellow_echo "[Install]: installing node_modules (frontend)"
-    npm install
+    docker-compose run frontend npm install
 fi

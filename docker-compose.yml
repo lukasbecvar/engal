@@ -1,5 +1,4 @@
-# This Docker Compose configuration defines local development services (this is only dev env).
-version: '3'
+# docker compose configuration defines local development stack
 
 # docker network config
 networks:
@@ -7,6 +6,17 @@ networks:
         driver: bridge
 
 services:
+    # composer service for managing php dependencies
+    composer:
+        image: composer:latest
+        container_name: becvar_site_composer
+        working_dir: /app
+        volumes:
+            - ./backend:/app
+        networks:
+            - dev
+        command: composer install --ignore-platform-reqs
+
     # database container
     mysql:
         image: mysql:latest
@@ -25,11 +35,11 @@ services:
             - dev
 
     # api server container
-    backend:
+    php:
         build:
             context: .
             dockerfile: ./_docker/Dockerfile
-        container_name: engal_backend
+        container_name: engal_backend_api
         restart: always
         mem_limit: 2g
         depends_on:
@@ -63,6 +73,6 @@ services:
             - dev 
         depends_on:
             - mysql
-            - backend
+            - php
         working_dir: /app 
         command: npm start

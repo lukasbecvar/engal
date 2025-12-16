@@ -150,14 +150,11 @@ class StorageManager
                 $this->errorManager->handleError('failed to read file content', JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
 
-            // encrypt the file content
-            $encryptedContent = $fileContent;
-
             // upload to S3/MinIO
             $params = [
                 'Bucket' => $this->bucket,
                 'Key' => $this->buildObjectKey($userId, $fileType, $token, $fileExtension),
-                'Body' => $encryptedContent,
+                'Body' => $fileContent,
                 'ContentType' => $file->getClientMimeType(),
             ];
 
@@ -396,12 +393,10 @@ class StorageManager
     public function storeThumbnailContent(int $userId, string $token, string $content): void
     {
         try {
-            $encrypted = $content;
-
             $params = [
                 'Bucket' => $this->bucket,
                 'Key' => $this->buildObjectKey($userId, 'thumbnails', $token, 'jpg'),
-                'Body' => $encrypted,
+                'Body' => $content,
                 'ContentType' => 'image/jpeg',
             ];
 
@@ -497,12 +492,10 @@ class StorageManager
     public function storeRawContent(int $userId, string $folder, string $token, string $extension, string $mimeType, string $content): void
     {
         try {
-            $encrypted = $content;
-
             $params = [
                 'Bucket' => $this->bucket,
                 'Key' => $this->buildObjectKey($userId, $folder, $token, $extension),
-                'Body' => $encrypted,
+                'Body' => $content,
                 'ContentType' => $mimeType,
             ];
 

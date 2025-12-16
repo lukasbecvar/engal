@@ -39,6 +39,7 @@ export default function LoginComponent() {
                 // build login POST request
                 const response = await fetch(apiUrl + '/api/login', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -52,8 +53,7 @@ export default function LoginComponent() {
             
                     // check if respone is valid
                     if (response.ok) {
-                        // set login-token & reinit app
-                        localStorage.setItem('login-token', data.token)
+                        // token is stored in httpOnly cookie, just reload app
                         window.location.href = '/'
                     } else {
                         setError(data.message)

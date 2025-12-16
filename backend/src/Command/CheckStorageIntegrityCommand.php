@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Manager\LogManager;
 use App\Manager\StorageManager;
 use App\Repository\MediaRepository;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class CheckStorageIntegrityCommand
  *
- * Command check if storage matching database.
+ * Command check if storage matching database
  *
  * @package App\Command
  */
@@ -34,7 +35,7 @@ class CheckStorageIntegrityCommand extends Command
     }
 
     /**
-     * Executes the command check if storage matching database.
+     * Executes the command check if storage matching database
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
@@ -94,7 +95,7 @@ class CheckStorageIntegrityCommand extends Command
             // return success output
             $io->success('Integrity check success');
             return Command::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->error('error to check integrity: ' . $e->getMessage());
             return Command::FAILURE;
         }

@@ -16,11 +16,6 @@ class VisitorInfoUtilTest extends TestCase
 {
     private VisitorInfoUtil $visitorInfoUtil;
 
-    /**
-     * Set up before each test.
-     *
-     * @return void
-    */
     protected function setUp(): void
     {
         $this->visitorInfoUtil = new VisitorInfoUtil();

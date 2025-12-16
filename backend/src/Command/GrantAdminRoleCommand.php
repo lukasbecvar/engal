@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Manager\UserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class GrantAdminRoleCommand
  *
- * Command to grant admin role to a user.
+ * Command to grant admin role to a user
  *
  * @package App\Command
  */
@@ -29,7 +30,7 @@ class GrantAdminRoleCommand extends Command
     }
 
     /**
-     * Configures the command arguments.
+     * Configures the command arguments
      */
     protected function configure(): void
     {
@@ -37,7 +38,7 @@ class GrantAdminRoleCommand extends Command
     }
 
     /**
-     * Executes the command to grant admin role to a user.
+     * Executes the command to grant admin role to a user
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
@@ -76,7 +77,7 @@ class GrantAdminRoleCommand extends Command
                 $io->success('admin role granted to: ' . $username);
                 return Command::SUCCESS;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->success('error to grant admin: ' . $e->getMessage());
             return Command::FAILURE;
         }

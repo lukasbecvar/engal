@@ -71,6 +71,7 @@ export default function RegisterComponent() {
                 // fetch response
                 const response = await fetch(apiUrl + '/api/register', {
                     method: 'POST',
+                    credentials: 'include',
                     body: formData,
                 })
           
@@ -86,6 +87,7 @@ export default function RegisterComponent() {
                         // login POST request (auto-login)
                         const response = await fetch(apiUrl + '/api/login', {
                             method: 'POST',
+                            credentials: 'include',
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -95,10 +97,7 @@ export default function RegisterComponent() {
                   
                         // check if respone is valid
                         if (response.ok) {
-                            const data = await response.json()
-                            
-                            // set login-token & reinit app
-                            localStorage.setItem('login-token', data.token)
+                            // token is stored in httpOnly cookie, just reload app
                             window.location.href = '/'
                         } else {
                             setError('Invalid credentials.')

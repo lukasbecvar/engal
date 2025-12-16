@@ -9,8 +9,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 /**
  * Class PreloadThumbnailsMessageHandler
  *
- * Message handler responsible for handling PreloadThumbnailsMessage.
- * This handler is triggered when a PreloadThumbnailsMessage is dispatched.
+ * Message handler responsible for handling PreloadThumbnailsMessage
+ * This handler is triggered when a PreloadThumbnailsMessage is dispatched
  *
  * @package App\Message\Handler
  */
@@ -25,11 +25,12 @@ class PreloadThumbnailsMessageHandler
     }
 
     /**
-     * Handles the PreloadThumbnailsMessage.
+     * Handles the PreloadThumbnailsMessage
      *
-     * This method is invoked when a PreloadThumbnailsMessage is dispatched.
+     * This method is invoked when a PreloadThumbnailsMessage is dispatched
      *
-     * @param PreloadThumbnailsMessage $message The PreloadThumbnailsMessage to handle.
+     * @param PreloadThumbnailsMessage $message The PreloadThumbnailsMessage to handle
+     *
      * @return void
      */
     public function __invoke(PreloadThumbnailsMessage $message)

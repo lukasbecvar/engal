@@ -16,11 +16,6 @@ class SiteUtilTest extends TestCase
 {
     private SiteUtil $siteUtil;
 
-    /**
-     * Set up before each test.
-     *
-     * @return void
-    */
     protected function setUp(): void
     {
         $this->siteUtil = new SiteUtil();

@@ -16,12 +16,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class GalleryControllerTest extends CustomCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
     */
@@ -32,7 +32,7 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test retrieving the list of galleries with authentication.
+     * Test retrieving the list of galleries with authentication
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test retrieving the list of galleries without authentication.
+     * Test retrieving the list of galleries without authentication
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test for retrieving gallery data with empty name.
+     * Test for retrieving gallery data with empty name
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test for retrieving gallery data with non-existing gallery name.
+     * Test for retrieving gallery data with non-existing gallery name
      *
      * @return void
      */
@@ -120,7 +120,7 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test for retrieving gallery data with existing gallery name.
+     * Test for retrieving gallery data with existing gallery name
      *
      * @return void
      */
@@ -128,6 +128,10 @@ class GalleryControllerTest extends CustomCase
     {
         // simulate user authentication
         $this->simulateUserAuthentication($this->client);
+
+        // ensure gallery exists for authenticated user
+        $user = $this->ensureTestUser();
+        $this->createTestMedia($user);
 
         // GET request to the API endpoint
         $this->client->request('GET', '/api/gallery/data', [
@@ -144,7 +148,7 @@ class GalleryControllerTest extends CustomCase
     }
 
     /**
-     * Test for retrieving gallery data without authentication.
+     * Test for retrieving gallery data without authentication
      *
      * @return void
      */

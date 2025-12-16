@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use Exception;
 use OpenApi\Attributes\Tag;
 use App\Manager\LogManager;
 use App\Manager\ErrorManager;
@@ -9,14 +10,14 @@ use OpenApi\Attributes\Response;
 use App\Manager\AuthTokenManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class SecurityController
  *
- * Controller handling security-related actions such as logout.
+ * Controller handling security-related actions such as logout
  *
  * @package App\Controller\Auth
  */
@@ -34,14 +35,14 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Logout action.
+     * Logout action
      *
-     * Logs out the user and blacklists the old authentication token.
+     * Logs out the user and blacklists the old authentication token
      *
-     * @param Request $request The HTTP request.
-     * @param Security $security The security bundle security.
+     * @param Request $request The HTTP request
+     * @param Security $security The security bundle security
      *
-     * @return JsonResponse The JSON response.
+     * @return JsonResponse The JSON response
      */
     #[Tag(name: "Auth")]
     #[Response(response: 200, description: 'The logout successful message')]
@@ -64,12 +65,18 @@ class SecurityController extends AbstractController
             $this->authTokenManager->blacklistToken($token);
 
             // return response
-            return new JsonResponse([
+            $response = new JsonResponse([
                 'status' => 'success',
                 'code' => JsonResponse::HTTP_OK,
                 'message' => 'Logout successful'
             ], JsonResponse::HTTP_OK);
-        } catch (\Exception $e) {
+
+            // clear auth cookie
+            $secure = ($_ENV['SSL_ONLY'] ?? 'false') === 'true';
+            $response->headers->clearCookie('auth_token', '/', null, $secure, true, 'lax');
+
+            return $response;
+        } catch (Exception $e) {
             return $this->errorManager->handleError('logout error: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

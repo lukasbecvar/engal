@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 /**
  * Class AuthTokenValidateMiddleware
  *
- * Middleware for validating authentication tokens.
+ * Middleware for validating authentication tokens
  *
  * @package App\Middleware
  */
@@ -26,11 +26,13 @@ class AuthTokenValidateMiddleware
     }
 
     /**
-     * Handles the kernel request event.
+     * Handles the kernel request event
      *
      * @param RequestEvent $event The request event
      *
      * @throws \Exception If there is an error while processing the request
+     *
+     * @return void
      */
     public function onKernelRequest(RequestEvent $event): void
     {

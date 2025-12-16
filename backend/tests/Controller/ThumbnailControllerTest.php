@@ -9,30 +9,34 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class ThumbnailControllerTest
  *
- * Unit test case for the ThumbnailController class.
+ * Unit test case for the ThumbnailController class
  *
  * @package App\Tests\Controller
  */
 class ThumbnailControllerTest extends CustomCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
+    private string $mediaToken;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
     */
     protected function setUp(): void
     {
         $this->client = static::createClient();
+
+        $user = $this->ensureTestUser();
+        $this->mediaToken = $this->createTestMedia($user);
         parent::setUp();
     }
 
     /**
-     * Test case for retrieving media thumbnail when the token parameter is empty.
+     * Test case for retrieving media thumbnail when the token parameter is empty
      *
      * @return void
      */
@@ -53,7 +57,7 @@ class ThumbnailControllerTest extends CustomCase
     }
 
     /**
-     * Test case for retrieving media thumbnail with a wrong token parameter.
+     * Test case for retrieving media thumbnail with a wrong token parameter
      *
      * @return void
      */
@@ -78,19 +82,21 @@ class ThumbnailControllerTest extends CustomCase
     }
 
     /**
-     * Test case for successfully retrieving media thumbnail with valid parameters.
+     * Test case for successfully retrieving media thumbnail with valid parameters
      *
      * @return void
      */
     public function testGetMediaThumbnaiSuccess(): void
     {
-        $this->simulateUserAuthentication($this->client);
+        $token = $this->loginAndGetToken($this->client);
 
         // GET request to the API endpoint
         $this->client->request('GET', '/api/thumbnail', [
             'width' => 200,
             'height' => 200,
-            'token' => '853bc196bb6bdf5f72c33e1eeeb8a8e2'
+            'token' => $this->mediaToken
+        ], [], [
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $token
         ]);
 
         // check response
@@ -98,7 +104,7 @@ class ThumbnailControllerTest extends CustomCase
     }
 
     /**
-     * Test case for retrieving media thumbnail without authentication.
+     * Test case for retrieving media thumbnail without authentication
      *
      * @return void
      */
@@ -117,7 +123,7 @@ class ThumbnailControllerTest extends CustomCase
     }
 
     /**
-     * Test for retrieving media thumbnails preload without authentication.
+     * Test for retrieving media thumbnails preload without authentication
      *
      * @return void
      */

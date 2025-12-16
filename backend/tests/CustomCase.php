@@ -2,9 +2,17 @@
 
 namespace App\Tests;
 
+use App\Entity\User;
+use App\Manager\StorageManager;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -19,7 +27,6 @@ class CustomCase extends WebTestCase
      * Simulate user authentication for testing purposes.
      *
      * @param object $client The Symfony test client.
-     * @throws \Symfony\Component\Security\Core\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -27,22 +34,12 @@ class CustomCase extends WebTestCase
     {
         // fetching the Symfony Container
         $container = $client->getContainer();
+        $user = $this->ensureTestUser();
 
-        // creating a fake user entity
-        $fakeUser = new \App\Entity\User();
-        $fakeUser->setUsername('test');
-
-        // encode a password for the user
-        $password = $container->get('security.password_hasher')->hashPassword($fakeUser, 'test');
-        $fakeUser->setPassword($password);
-
-        $fakeUser->setRoles(['ROLE_USER']);
-
-        // create a token for the fake user
         $token = new UsernamePasswordToken(
-            $fakeUser,
+            $user,
             'api',
-            $fakeUser->getRoles()
+            $user->getRoles()
         );
 
         // set the token in the token storage
@@ -61,13 +58,13 @@ class CustomCase extends WebTestCase
      *
      * @return UploadedFile A fake UploadedFile instance representing the fake file.
      */
-    public function createFakeUploadedFile(string $filename, string $mimeType): UploadedFile
+    public function createFakeUploadedFile(string $filename, string $mimeType, string $content = ''): UploadedFile
     {
         // Generate a temporary file path
         $tempFilePath = tempnam(sys_get_temp_dir(), 'test_file');
 
         // Create an empty temporary file
-        file_put_contents($tempFilePath, '');
+        file_put_contents($tempFilePath, $content);
 
         // Return an UploadedFile instance representing the fake file
         return new UploadedFile($tempFilePath, $filename, $mimeType, null, true);
@@ -85,5 +82,105 @@ class CustomCase extends WebTestCase
         $jwtManager = self::getContainer()->get(JWTTokenManagerInterface::class);
         // Generate JWT token
         return $jwtManager->create($user);
+    }
+
+    /**
+     * Ensure a test user exists and return it.
+     */
+    protected function ensureTestUser(): User
+    {
+        /** @var EntityManagerInterface $em */
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        /** @var UserRepository $userRepository */
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        /** @var UserPasswordHasherInterface $passwordHasher */
+        $passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
+
+        $user = $userRepository->findOneBy(['username' => 'test']);
+
+        if ($user === null) {
+            $user = new User();
+            $user->setRegisterTime(date('d.m.Y H:i:s'));
+            $user->setLastLoginTime('not-logged');
+            $user->setIpAddress('unknown');
+        }
+
+        // reset baseline credentials/roles for tests
+        $user->setUsername('test');
+        $user->setRoles(['ROLE_USER']);
+        $user->setPassword($passwordHasher->hashPassword($user, 'test'));
+
+        $em->persist($user);
+        $em->flush();
+
+        return $user;
+    }
+
+    /**
+     * Create a test media (image) for a user and return its token.
+     */
+    protected function createTestMedia(User $user): string
+    {
+        /** @var StorageManager $storageManager */
+        $storageManager = self::getContainer()->get(StorageManager::class);
+
+        // tiny 2x2 png generated via GD to avoid libpng warnings
+        $image = imagecreatetruecolor(2, 2);
+        ob_start();
+        imagepng($image);
+        $pngData = ob_get_clean();
+        $uploaded = $this->createFakeUploadedFile('test.png', 'image/png', $pngData);
+
+        $token = $storageManager->storeMediaEntity([
+            'name' => 'test.png',
+            'gallery_name' => 'testing gallery',
+            'type' => 'image/png',
+            'length' => '00:00',
+            'owner_id' => (string) $user->getId(),
+            'upload_time' => date('d.m.Y H:i:s'),
+        ]);
+
+        if ($token === null) {
+            $this->fail('Failed to create media entity for test');
+        }
+
+        $storageManager->storeMediaFile($token, $uploaded, $user->getId(), 'photos');
+
+        return $token;
+    }
+
+    /**
+     * Login and get auth token
+     *
+     * @param KernelBrowser $client The client for making requests
+     *
+     * @return string The auth token
+     */
+    public function loginAndGetToken(KernelBrowser $client): string
+    {
+        $client->request(
+            'POST',
+            '/api/login',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            '{"username": "test", "password": "test"}'
+        );
+
+        $response = $client->getResponse();
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
+
+        $token = null;
+        foreach ($response->headers->getCookies() as $cookie) {
+            if ($cookie->getName() === 'auth_token') {
+                $token = $cookie->getValue();
+                break;
+            }
+        }
+
+        $this->assertNotNull($token);
+        $client->getCookieJar()->set(new Cookie('auth_token', $token));
+
+        return (string) $token;
     }
 }

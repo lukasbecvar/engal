@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 /**
  * Class MaintenanceMiddleware
  *
- * This middleware is used to check if the application is in maintenance mode.
+ * This middleware is used to check if the application is in maintenance mode
  *
  * @package App\Service\Middleware
  */
@@ -23,7 +23,11 @@ class MaintenanceMiddleware
     }
 
     /**
-     * Check if the application is in maintenance mode.
+     * Check if the application is in maintenance mode
+     *
+     * @param RequestEvent $event The request event
+     *
+     * @return void
      */
     public function onKernelRequest(RequestEvent $event): void
     {

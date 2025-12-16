@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use getID3;
+use Exception;
 use App\Manager\LogManager;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
@@ -81,7 +82,7 @@ class UploadController extends AbstractController
      *
      * Upload files function for upload singe or multiple media(image/video) to gallery
      *
-     * @param Request $request The current request object.
+     * @param Request $request The current request object
      * @param Security $security The security component for user authentication
      *
      * @return JsonResponse
@@ -117,7 +118,7 @@ class UploadController extends AbstractController
         $uploadedFiles = $request->files->get('files');
 
         // get gallery name from request
-        $galleryName = $request->get('gallery_name');
+        $galleryName = $request->request->get('gallery_name');
 
         // check gallery name set
         if (empty($galleryName)) {
@@ -198,10 +199,12 @@ class UploadController extends AbstractController
                 // default video length
                 $videoLength = '00:00';
 
-                // get video length
-                if ($file instanceof UploadedFile && $file->getMimeType() === 'video/mp4') {
+                // get video length (best effort)
+                if ($file instanceof UploadedFile && str_contains((string) $file->getMimeType(), 'video')) {
                     $fileInfo = $getID3->analyze($file->getPathname());
-                    $videoLength = $fileInfo['playtime_string'];
+                    if (!empty($fileInfo['playtime_string'])) {
+                        $videoLength = $fileInfo['playtime_string'];
+                    }
                 }
 
                 // store media entity data
@@ -219,7 +222,7 @@ class UploadController extends AbstractController
             }
 
             $this->entityManager->commit(); // commit transaction
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->entityManager->rollback();
             $this->errorManager->handleError('error to upload media: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }

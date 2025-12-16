@@ -7,6 +7,13 @@ use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+/**
+ * Class User
+ *
+ * The User database table mapping entity
+ *
+ * @package App\Entity
+ */
 #[ORM\Table(name: 'users')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
@@ -140,6 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
+    #[\Deprecated('Method intentionally empty; keep for interface compatibility.')]
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use OpenApi\Attributes\Schema;
@@ -43,28 +44,28 @@ class ThumbnailController extends AbstractController
     }
 
     /**
-     * Retrieves the thumbnail of a media resource based on provided parameters.
+     * Retrieves the thumbnail of a media resource based on provided parameters
      *
      * Return minified media thumbnail for render in gallery browser
      *
-     * @param Security $security The security service for handling user authentication.
-     * @param Request $request The HTTP request object containing query parameters.
+     * @param Security $security The security service for handling user authentication
+     * @param Request $request The HTTP request object containing query parameters
      *
-     * @return ContentResponse The response containing the thumbnail image content.
+     * @return ContentResponse The response containing the thumbnail image content
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'The success photo thumbnail resource type jpg')]
     #[Response(response: 400, description: 'The token, width or height parameters not found in requets')]
     #[Response(response: 404, description: 'The media not found error')]
     #[Parameter(name: 'token', in: 'query', schema: new Schema(type: 'string'), description: 'Media token', required: true)]
-    #[Route(['/api/thumbnail'], methods: ['GET'], name: 'api_media_thumbnail')]
+    #[Route(path: '/api/thumbnail', methods: ['GET'], name: 'api_media_thumbnail')]
     public function getThumbnail(Security $security, Request $request): ContentResponse
     {
         // get logged user ID
         $userId = $this->userManager->getUserData($security)->getId();
 
         // get data from token
-        $token = $request->get('token');
+        $token = $request->query->get('token');
 
         // check if token set
         if (!isset($token)) {
@@ -88,36 +89,46 @@ class ThumbnailController extends AbstractController
         $content = $this->thumbnailManager->getMediaThumbnail($userId, $token);
 
         // create a streamed response with image thumbnail content
-        return new StreamedResponse(function () use ($content) {
+        $origin = $request->headers->get('Origin');
+
+        $response = new StreamedResponse(function () use ($content) {
             echo $content;
         }, ContentResponse::HTTP_OK, [
             'Content-Type' => 'image/jpg',
+            'Cache-Control' => 'public, max-age=604800',
         ]);
+
+        if (!empty($origin) && str_starts_with($origin, 'http://localhost')) {
+            $response->headers->set('Access-Control-Allow-Origin', $origin);
+            $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        }
+
+        return $response;
     }
 
     /**
-     * Preload app thumbnails.
+     * Preload app thumbnails
      *
      * Push thumbnails preload message to doctrine queue for async process
      *
-     * @param Request $request The HTTP request object containing query parameters.
-     * @param Security $security The security service for handling user authentication.
-     * @param MessageBusInterface $messageBus The symfony messenger async dispatcher.
+     * @param Request $request The HTTP request object containing query parameters
+     * @param Security $security The security service for handling user authentication
+     * @param MessageBusInterface $messageBus The symfony messenger async dispatcher
      *
-     * @return JsonResponse The JSON response indicating the status of the operation.
+     * @return JsonResponse The JSON response indicating the status of the operation
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'Preload command run success')]
     #[Response(response: 500, description: 'Preload command run error')]
     #[Parameter(name: 'gallery_name', in: 'query', schema: new Schema(type: 'string'), description: 'Gallery name for preload specific gallery thumbnails')]
-    #[Route(['/api/thumbnail/preload'], methods: ['GET'], name: 'api_media_preload_thumbnails')]
+    #[Route(path: '/api/thumbnail/preload', methods: ['GET'], name: 'api_media_preload_thumbnails')]
     public function preloadThumbnails(Request $request, Security $security, MessageBusInterface $messageBus): JsonResponse
     {
         // get logged user ID
         $userId = $this->userManager->getUserData($security)->getId();
 
         // get gallery name form request parameter
-        $galleryName = $request->get('gallery_name', null);
+        $galleryName = $request->query->get('gallery_name', null);
 
         // check if gallery exist
         if ($galleryName != null) {
@@ -141,7 +152,7 @@ class ThumbnailController extends AbstractController
                 'code' => JsonResponse::HTTP_OK,
                 'message' => 'thumbnails preload process started successfully'
             ], JsonResponse::HTTP_OK);
-        } catch (\Exception) {
+        } catch (Exception) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,

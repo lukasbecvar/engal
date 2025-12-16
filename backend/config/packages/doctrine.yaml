@@ -8,18 +8,16 @@ doctrine:
         user: '%env(resolve:DATABASE_USERNAME)%'
         password: '%env(resolve:DATABASE_PASSWORD)%'
         
-        # database server version
-        server_version: '8.0.31'
+        # server configuration
+        charset: utf8mb4
+        server_version: '%env(DATABASE_VERSION)%'
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
-        auto_generate_proxy_classes: true
-        enable_lazy_ghost_objects: true
-        report_fields_where_declared: true
-        validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
+        validate_xml_mapping: true
+        auto_mapping: false
         controller_resolver:
-            auto_mapping: true
+            auto_mapping: false
         mappings:
             App:
                 is_bundle: false

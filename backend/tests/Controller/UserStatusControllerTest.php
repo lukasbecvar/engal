@@ -9,19 +9,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class UserStatusControllerTest
  *
- * Unit test case for the UserStatusController class.
+ * Unit test case for the UserStatusController class
  *
  * @package App\Tests\Controller
  */
 class UserStatusControllerTest extends CustomCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
      */
@@ -32,10 +32,10 @@ class UserStatusControllerTest extends CustomCase
     }
 
     /**
-     * Tests the getUserStatus endpoint.
+     * Tests the getUserStatus endpoint
      *
      * This method tests the behavior of the getUserStatus endpoint by sending a GET request
-     * and asserting the response status code and content.
+     * and asserting the response status code and content
      *
      * @return void
      */
@@ -59,7 +59,7 @@ class UserStatusControllerTest extends CustomCase
     }
 
     /**
-     * Test retrieving user status when the user is not authenticated.
+     * Test retrieving user status when the user is not authenticated
      *
      * @return void
      */

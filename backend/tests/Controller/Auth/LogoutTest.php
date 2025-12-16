@@ -2,40 +2,41 @@
 
 namespace App\Tests\Auth;
 
+use App\Tests\CustomCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class LogoutTest
  *
- * This class contains unit tests for the logout functionality.
+ * This class contains unit tests for the logout functionality
  *
  * @package App\Tests\Auth
  */
-class LogoutTest extends WebTestCase
+class LogoutTest extends CustomCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
      */
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        $this->ensureTestUser();
         parent::setUp();
     }
 
     /**
-     * Test logout with valid JWT token.
+     * Test logout with valid JWT token
      *
-     * This test authenticates a testing user and obtains a JWT token.
-     * It then sends a logout request with the obtained token and asserts that the logout is successful.
+     * This test authenticates a testing user and obtains a JWT token
+     * It then sends a logout request with the obtained token and asserts that the logout is successful
      *
      * @return void
      */
@@ -59,12 +60,10 @@ class LogoutTest extends WebTestCase
 
         // check if login was successful
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
-        $this->assertArrayHasKey('token', $responseData);
+        $this->assertSame('success', $responseData['status']);
 
-        $token = $responseData['token'];
-
-        // make logout request with JWT token
-        $this->client->request('POST', '/api/logout', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
+        // make logout request; auth token is stored in cookie
+        $this->client->request('POST', '/api/logout');
 
         $logoutResponse = $this->client->getResponse();
         $logoutResponseData = json_decode($logoutResponse->getContent(), true);
@@ -78,9 +77,9 @@ class LogoutTest extends WebTestCase
     }
 
     /**
-     * Test logout with invalid JWT token.
+     * Test logout with invalid JWT token
      *
-     * This test sends a logout request with an invalid JWT token and asserts that the logout fails due to the invalid token.
+     * This test sends a logout request with an invalid JWT token and asserts that the logout fails due to the invalid token
      *
      * @return void
      */

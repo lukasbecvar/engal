@@ -5,16 +5,16 @@ namespace App\Util;
 /**
  * Class SiteUtil
  *
- * SiteUtil provides basic site-related methods.
+ * SiteUtil provides basic site-related methods
  *
  * @package App\Util
  */
 class SiteUtil
 {
     /**
-     * Check if the application is in maintenance mode.
+     * Check if the application is in maintenance mode
      *
-     * @return bool Whether the application is in maintenance mode.
+     * @return bool Whether the application is in maintenance mode
      */
     public function isMaintenance(): bool
     {
@@ -22,9 +22,9 @@ class SiteUtil
     }
 
     /**
-     * Check if the ssl only mode.
+     * Check if the ssl only mode
      *
-     * @return bool Whether the application is under ssl only mode.
+     * @return bool Whether the application is under ssl only mode
      */
     public function isSSLOnly(): bool
     {
@@ -32,9 +32,9 @@ class SiteUtil
     }
 
     /**
-     * Check if the current request is secure (SSL).
+     * Check if the current request is secure (SSL)
      *
-     * @return bool Whether the current request is secure.
+     * @return bool Whether the current request is secure
      */
     public function isSsl(): bool
     {

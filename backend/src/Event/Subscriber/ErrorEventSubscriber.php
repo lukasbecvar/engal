@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Class ErrorEventSubscriber
  *
- * Event subscriber for handling error events.
+ * Event subscriber for handling error events
  *
  * @package App\EventSubscriber
  */
@@ -23,9 +23,9 @@ class ErrorEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Returns an array of subscribed events that this object should listen to.
+     * Returns an array of subscribed events that this object should listen to
      *
-     * @return array<string> An array containing event names and corresponding methods to be called when events are dispatched.
+     * @return array<string> An array containing event names and corresponding methods to be called when events are dispatched
      */
     public static function getSubscribedEvents(): array
     {
@@ -35,9 +35,9 @@ class ErrorEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Method called when an error event is dispatched.
+     * Method called when an error event is dispatched
      *
-     * @param ErrorEvent $event The object representing the error event.
+     * @param ErrorEvent $event The object representing the error event
      *
      * @return void
      */

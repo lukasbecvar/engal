@@ -16,12 +16,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UploadControllerTest extends CustomCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
     */
@@ -32,7 +32,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test retrieving upload policy configuration.
+     * Test retrieving upload policy configuration
      *
      * @return void
      */
@@ -59,7 +59,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test retrieving upload policy configuration without authentication.
+     * Test retrieving upload policy configuration without authentication
      *
      * @return void
      */
@@ -78,7 +78,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test file upload with an empty gallery name.
+     * Test file upload with an empty gallery name
      *
      * @return void
      */
@@ -105,7 +105,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test file upload with a long gallery name.
+     * Test file upload with a long gallery name
      *
      * @return void
      */
@@ -133,7 +133,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test file upload with empty files.
+     * Test file upload with empty files
      *
      * @return void
      */
@@ -161,7 +161,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test successful file upload.
+     * Test successful file upload
      *
      * @return void
      */
@@ -196,7 +196,7 @@ class UploadControllerTest extends CustomCase
     }
 
     /**
-     * Test file upload without authentication.
+     * Test file upload without authentication
      *
      * @return void
      */

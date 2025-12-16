@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Class ErrorManager
  *
- * ErrorManager handles error messages and their dispatching.
+ * ErrorManager handles error messages and their dispatching
  *
  * @package App\Manager
  */
@@ -26,14 +26,14 @@ class ErrorManager
     }
 
     /**
-     * Handles errors by generating a JSON response and potentially dispatching an error event.
+     * Handles errors by generating a JSON response and potentially dispatching an error event
      *
      * This function returns void and kills the application process because it needs to be called outside of the main
-     * Symfony process and from void functions, hence this inelegant solution is used.
+     * Symfony process and from void functions, hence this inelegant solution is used
      *
-     * @param string $message The error message.
-     * @param int $code The error code.
-     * @param bool $msg_protect The error message protect (hide errors in prod env).
+     * @param string $message The error message
+     * @param int $code The error code
+     * @param bool $msg_protect The error message protect (hide errors in prod env)
      *
      * @return mixed
      */
@@ -55,10 +55,10 @@ class ErrorManager
     }
 
     /**
-     * Checks if an error message can be dispatched as an event.
+     * Checks if an error message can be dispatched as an event
      *
-     * @param string $errorMessage The error message to check.
-     * @return bool True if the error can be dispatched as an event, false otherwise.
+     * @param string $errorMessage The error message to check
+     * @return bool True if the error can be dispatched as an event, false otherwise
      */
     public function canBeEventDispatched(string $errorMessage): bool
     {

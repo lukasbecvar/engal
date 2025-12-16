@@ -2,42 +2,43 @@
 
 namespace App\Tests\Auth;
 
+use App\Tests\CustomCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class LoginTest
  *
- * This class contains unit tests for the login functionality.
+ * This class contains unit tests for the login functionality
  *
  * @package App\Tests\Auth
  */
-class LoginTest extends WebTestCase
+class LoginTest extends CustomCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
      */
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        $this->ensureTestUser();
         parent::setUp();
     }
 
     /**
-     * Test successful login with valid credentials.
+     * Test successful login with valid credentials
      *
-     * This test checks if a user can successfully log in with valid credentials.
-     * It sends a POST request to the login endpoint with valid username and password.
+     * This test checks if a user can successfully log in with valid credentials
+     * It sends a POST request to the login endpoint with valid username and password
      * Then, it asserts that the response status code is HTTP_OK (200),
-     * the response content is not empty, and it contains a 'token' key in the response data.
+     * the response content is not empty, and it contains a 'token' key in the response data
      *
      * @return void
      */
@@ -54,21 +55,31 @@ class LoginTest extends WebTestCase
         );
 
         // get response data
-        $responseContent = $this->client->getResponse()->getContent();
+        $response = $this->client->getResponse();
+        $responseContent = $response->getContent();
         $responseData = json_decode($responseContent, true);
+
+        $authCookie = null;
+        foreach ($response->headers->getCookies() as $cookie) {
+            if ($cookie->getName() === 'auth_token') {
+                $authCookie = $cookie;
+                break;
+            }
+        }
 
         // check response
         $this->assertResponseStatusCodeSame(JsonResponse::HTTP_OK);
         $this->assertNotEmpty($responseContent);
-        $this->assertArrayHasKey('token', $responseData);
-        $this->assertNotEmpty($responseData['token']);
+        $this->assertSame('success', $responseData['status']);
+        $this->assertNotNull($authCookie);
+        $this->assertNotEmpty($authCookie->getValue());
     }
 
     /**
-     * Test login failure with invalid credentials.
+     * Test login failure with invalid credentials
      *
-     * This test checks if a user cannot log in with invalid credentials.
-     * It sends a POST request to the login endpoint with invalid username and password.
+     * This test checks if a user cannot log in with invalid credentials
+     * It sends a POST request to the login endpoint with invalid username and password
      * Then, it asserts that the response status code is HTTP_UNAUTHORIZED (401)
      * and the response contains the expected error message 'Invalid credentials.'
      *

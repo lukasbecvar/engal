@@ -24,13 +24,14 @@ import './assets/css/scrollbar.css'
 export default function App() {
     // storage data
     let apiUrl = localStorage.getItem('api-url')
-    let loginToken = localStorage.getItem('login-token')
 
     // status states
+    const [viewportTooSmall, setViewportTooSmall] = useState(window.innerWidth < 210 || window.innerHeight < 150)
     const [isApiAvailableValue, setApiAvailable] = useState(false)
     const [appVersion, setAppVersion] = useState(null)
     const [apiError, setApiError] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [isAuthenticated, setAuthenticated] = useState(false)
 
     // check if api url seted
     if (apiUrl == null) {
@@ -73,9 +74,7 @@ export default function App() {
                 }
             })
             .finally(() => {
-                if (loginToken == null) {
-                    setLoading(false)
-                }
+                setLoading(false)
             })
     }, [apiUrl])
 
@@ -83,40 +82,41 @@ export default function App() {
     useEffect(() => {
         const fetchData = async () => {
             // check if user loggedin
-            if (loginToken != null) {
-                try {
-                    // build request
-                    const response = await fetch(apiUrl + '/api/user/status', {
-                        method: 'GET',
-                        headers: {
-                            'Accept': '*/*',
-                            'Authorization': 'Bearer ' + localStorage.getItem('login-token')
-                        },
-                    })
-    
-                    // get response data
-                    const data = await response.json()
+            try {
+                // build request
+                const response = await fetch(apiUrl + '/api/user/status', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': '*/*',
+                    },
+                })
 
-                    // check if user token is valid
-                    if (data.status != 'success') {
-                        localStorage.removeItem('login-token')
-                        window.location.reload()
-                    }
-                } catch (error) {
-                    if (DEV_MODE) {
-                        console.log('Error to fetch user status: ' + error)
-                    }
+                // get response data
+                const data = await response.json()
 
-                    // remove invalid token
-                    localStorage.removeItem('login-token')
-                    window.location.reload()
-                } finally {
-                    setLoading(false)
+                // check if user token is valid
+                setAuthenticated(data.status === 'success')
+            } catch (error) {
+                if (DEV_MODE) {
+                    console.log('Error to fetch user status: ' + error)
                 }
+                setAuthenticated(false)
+            } finally {
+                setLoading(false)
             }
         }
         fetchData()
-    }, [apiUrl, loginToken])
+    }, [apiUrl])
+
+    // listen to viewport resize to update support check
+    useEffect(() => {
+        const handleResize = () => {
+            setViewportTooSmall(window.innerWidth < 210 || window.innerHeight < 150)
+        }
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
     
     // show loading component
     if (loading) {
@@ -124,7 +124,7 @@ export default function App() {
     }
 
     // handle resolution error
-    if (window.innerWidth < 160 || window.innerHeight < 150) {
+    if (viewportTooSmall) {
         return <ErrorMessageComponent message="Your screen size is not supported"/>
     }
 
@@ -144,7 +144,7 @@ export default function App() {
     }
 
     // check if user is loggedin
-    if (localStorage.getItem('login-token') == null) {
+    if (!isAuthenticated) {
         return <AuthComponent/>
     }
 

@@ -6,7 +6,17 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LogRepository;
 
+/**
+ * Class Log
+ *
+ * The Log database table mapping entity
+ *
+ * @package App\Entity
+ */
 #[ORM\Table(name: 'logs')]
+#[ORM\Index(name: 'logs_name_idx', columns: ['name'])]
+#[ORM\Index(name: 'logs_time_idx', columns: ['time'])]
+#[ORM\Index(name: 'logs_status_idx', columns: ['status'])]
 #[ORM\Entity(repositoryClass: LogRepository::class)]
 class Log
 {

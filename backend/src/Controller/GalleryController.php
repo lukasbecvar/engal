@@ -36,9 +36,9 @@ class GalleryController extends AbstractController
     }
 
     /**
-     * Retrieves the gallery list for the logged-in user.
+     * Retrieves the gallery list for the logged-in user
      *
-     * Return gallery list from database by user ID from provided JWT auth token.
+     * Return gallery list from database by user ID from provided JWT auth token
      *
      * @param Security $security The security component for user authentication
      *
@@ -64,14 +64,14 @@ class GalleryController extends AbstractController
     }
 
     /**
-     * Retrieves a list of content by gallery name.
+     * Retrieves a list of content by gallery name
      *
      * Return gallery data from gallery_name in request parameter but only if logged user have permission to view data
      *
-     * @param Security $security The security context.
-     * @param Request $request The request object.
+     * @param Security $security The security context
+     * @param Request $request The request object
      *
-     * @return JsonResponse JSON response containing the gallery data or an error message.
+     * @return JsonResponse JSON response containing the gallery data or an error message
      */
     #[Tag(name: "Resources")]
     #[Response(response: 200, description: 'Get list of content by gallery name')]
@@ -85,7 +85,7 @@ class GalleryController extends AbstractController
         $userId = $this->userManager->getUserData($security)->getId();
 
         // get gallery name from request data
-        $galleryName = $request->get('gallery_name');
+        $galleryName = $request->query->get('gallery_name');
 
         // check if gallery name given
         if (!isset($galleryName)) {

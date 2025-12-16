@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * Class UserStatusController
  *
- * Controller handling user information.
+ * Controller handling user information
  *
  * @package App\Controller\User
  */
@@ -28,14 +28,14 @@ class UserStatusController extends AbstractController
     }
 
     /**
-     * Retrieves user status data.
+     * Retrieves user status data
      *
-     * This endpoint retrieves user status data and returns it in JSON format.
+     * This endpoint retrieves user status data and returns it in JSON format
      *
-     * @param UserManager $userManager The user manager service.
-     * @param Security $security The security service.
+     * @param UserManager $userManager The user manager service
+     * @param Security $security The security service
      *
-     * @return JsonResponse The JSON response containing user status data.
+     * @return JsonResponse The JSON response containing user status data
      */
     #[Tag(name: "User")]
     #[Response(response: 200, description: 'The user data json')]

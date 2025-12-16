@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 /**
  * Class LoginEventSubscriber
  *
- * Subscriber to handle events related to user login authentication success.
+ * Subscriber to handle events related to user login authentication success
  *
  * @package App\EventSubscriber
  */
@@ -29,7 +29,7 @@ class LoginEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Returns an array of event names this subscriber wants to listen to.
+     * Returns an array of event names this subscriber wants to listen to
      *
      * @return array<string> The event names to listen to
      */
@@ -41,9 +41,9 @@ class LoginEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Handles the authentication success event.
+     * Handles the authentication success event
      *
-     * @param AuthenticationSuccessEvent $event The authentication success event.
+     * @param AuthenticationSuccessEvent $event The authentication success event
      *
      * @return void
      */

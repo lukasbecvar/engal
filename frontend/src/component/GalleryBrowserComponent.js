@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 
 // light gallery styles
-import 'lightgallery/css/lg-zoom.css'
-import 'lightgallery/css/lg-autoplay.css'
-import 'lightgallery/css/lightgallery.css'
-import 'lightgallery/css/lightgallery.css'
-import 'lightgallery/css/lg-fullscreen.css'
+// Use bundle css without sourcemap references (avoids lightgallery SCSS warnings)
+import 'lightgallery/css/lightgallery-bundle.min.css'
 
 // light gallery components
 import LightGallery from 'lightgallery/react'
@@ -31,6 +28,7 @@ export default function GalleryBrowserComponent() {
     // get storage data
     const apiUrl = localStorage.getItem('api-url')
     const loginToken = localStorage.getItem('login-token')
+    const [galleryName, setGalleryName] = useState('')
 
     // set constants
     const itemsPerPage = ELEMENTS_PER_PAGE
@@ -49,15 +47,24 @@ export default function GalleryBrowserComponent() {
         const fetchData = async () => {
             setLoading(true)
             try {
-                const galleryName = new URLSearchParams(window.location.search).get('name')
-                const response = await fetch(`${apiUrl}/api/gallery/data?gallery_name=${galleryName}`, {
-                    headers: {
-                        'Authorization': `Bearer ${loginToken}`
-                    }
+                const currentGalleryName = new URLSearchParams(window.location.search).get('name')
+                if (!currentGalleryName) {
+                    setError('gallery name is required')
+                    return
+                }
+                setGalleryName(currentGalleryName)
+
+                const response = await fetch(`${apiUrl}/api/gallery/data?gallery_name=${currentGalleryName}`, {
+                    credentials: 'include',
                 })
+                if (!response.ok) {
+                    setError('Unable to load gallery (decryption/storage error).')
+                    return
+                }
                 const data = await response.json()
-                if (data.code == 404) {
-                    setError(data.message)
+                if (data.status !== 'success' || !Array.isArray(data.gallery_data)) {
+                    setError(data.message ?? 'unable to load gallery')
+                    return
                 }
                 const totalImages = data.gallery_data.length
                 const totalPages = Math.ceil(totalImages / itemsPerPage)
@@ -67,14 +74,13 @@ export default function GalleryBrowserComponent() {
                 if (DEV_MODE) {
                     console.error('Error fetching images: ' + error)
                 }
+                setError('unable to load gallery (connection/storage error)')
             } finally {
-                setTimeout(() => {
-                    setLoading(false)
-                }, ELEMENTS_PER_PAGE * 150)
+                setLoading(false)
             }
         }
         fetchData()
-    }, [currentPage])
+    }, [currentPage, apiUrl, loginToken])
 
     // load thumbnails list
     const loadImagesForPage = async (page, data) => {
@@ -84,15 +90,13 @@ export default function GalleryBrowserComponent() {
         const imagesPromises = currentPageData.map(async (item) => {
             try {
                 const thumbnailResponse = await fetch(`${apiUrl}/api/thumbnail?token=${item.token}`, {
-                    headers: {
-                        'Authorization': `Bearer ${loginToken}`
-                    }
+                    credentials: 'include',
                 });
     
                 if (!thumbnailResponse.ok) {
                     throw new Error('Thumbnail request failed');
                 }
-    
+
                 const thumbnailBlob = await thumbnailResponse.blob();
                 const thumbnailUrl = URL.createObjectURL(thumbnailBlob);
         
@@ -105,6 +109,7 @@ export default function GalleryBrowserComponent() {
                     length: item.length
                 };
             } catch (error) {
+                setError((prev) => prev ?? 'Unable to load gallery thumbnails (decryption/storage error).')
                 return { 
                     thumbnailUrl: "/default_thumbnail.jpg", // Use default thumbnail URL
                     token: item.token,
@@ -137,6 +142,56 @@ export default function GalleryBrowserComponent() {
         }
     }
 
+    const interceptDownload = useCallback(() => {
+        const handler = async (event) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            const href = event.currentTarget.getAttribute('href')
+            const filename = event.currentTarget.getAttribute('download') || 'download'
+
+            try {
+                const response = await fetch(href, { credentials: 'include' })
+                if (!response.ok) {
+                    throw new Error('download failed')
+                }
+                const blob = await response.blob()
+                const url = URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.href = url
+                link.download = filename
+                document.body.appendChild(link)
+                link.click()
+                link.remove()
+                URL.revokeObjectURL(url)
+            } catch (err) {
+                if (DEV_MODE) {
+                    console.error('Download failed: ' + err)
+                }
+                setError('unable to download file')
+            }
+        }
+
+        const downloadButtons = document.querySelectorAll('.lg-download')
+        downloadButtons.forEach((btn) => {
+            btn.removeEventListener('click', handler)
+            btn.addEventListener('click', handler)
+        })
+
+        return () => {
+            downloadButtons.forEach((btn) => btn.removeEventListener('click', handler))
+        }
+    }, [setError])
+
+    useEffect(() => {
+        const cleanup = interceptDownload()
+        return () => {
+            if (typeof cleanup === 'function') {
+                cleanup()
+            }
+        }
+    }, [images, interceptDownload])
+
     // show loading component
     if (loading) {
         return <LoadingComponent/>
@@ -153,11 +208,24 @@ export default function GalleryBrowserComponent() {
             <BreadcrumbComponent/>
             <div className="browser-component">
                 {/* LightGallery component */}
-                <LightGallery licenseKey={'open-source-license'} plugins={[lgZoom, lgFullscreen, lgAutoplay]}>
+                <LightGallery
+                    licenseKey={'open-source-license'}
+                    plugins={[lgZoom, lgFullscreen, lgAutoplay]}
+                    download={true}
+                    // speed/preload tuned for snappier slide switching
+                    speed={90}
+                    preload={6}
+                    slideEndAnimation={false}
+                >
                     {images.map((mediaData, index) => (
                         mediaData.type.includes('image') ? (
-                            <a key={index} href={apiUrl + "/api/media/content?auth_token=" + loginToken +"&media_token=" + mediaData.token} data-lg-type={mediaData.type}>
-                                <div className="media-container">
+                            <a
+                                key={index}
+                                href={apiUrl + "/api/media/content?media_token=" + mediaData.token}
+                                data-lg-type={mediaData.type}
+                                data-download-url={apiUrl + "/api/media/content?media_token=" + mediaData.token}
+                            >
+                                <div className="media-container image-item">
                                     <div className="media-overlay">{mediaData.name}</div>
                                     <img src={mediaData.thumbnailUrl} />
                                 </div>
@@ -168,35 +236,44 @@ export default function GalleryBrowserComponent() {
 
                 {/* video list */}
                 <div className="videos-title"></div>
-                {images.map((mediaData, index) => (
-                    !mediaData.type.includes('image') ? (
-                        <Link key={index} to={"/video?media_token=" + mediaData.token}>
-                            <div className="media-container">
-                                <div className="media-overlay">{mediaData.name} ({mediaData.length})</div>
-                                <img src={mediaData.thumbnailUrl}></img>
-                            </div>
-                        </Link>
-                    ) : null
-                ))}
+                <div className="video-list">
+                    {images.map((mediaData, index) => (
+                        !mediaData.type.includes('image') ? (
+                            <Link
+                                key={index}
+                                to={`/video?media_token=${mediaData.token}&gallery_name=${encodeURIComponent(galleryName)}&media_name=${encodeURIComponent(mediaData.name)}`}
+                            >
+                                <div className="media-container video-item">
+                                    <div className="media-overlay">{mediaData.name} ({mediaData.length})</div>
+                                    <img src={mediaData.thumbnailUrl}></img>
+                                </div>
+                            </Link>
+                        ) : null
+                    ))}
+                </div>
 
                 {/* pagination */}
-                <div className="pagination">
-                    <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </button>
-                    <div className="show-pages">
-                        {[...Array(totalPages).keys()].map((page) => (
-                            ((currentPage === totalPages && page >= Math.max(0, currentPage - 2)) || (page >= Math.max(0, currentPage - 1) && page <= Math.min(totalPages - 1, currentPage + 1))) && (
-                                <button key={page + 1} onClick={() => onPageChange(page + 1)} className={currentPage === page + 1 ? 'active' : ''}>
-                                    {page + 1}
-                                </button>
-                            )
-                        ))}
+                {totalPages > 1 ? (
+                    <div className="pagination">
+                        <button className="arrow-button" onClick={onPrevPage} disabled={currentPage === 1}>
+                            <FontAwesomeIcon icon={faArrowLeft} />
+                        </button>
+                        <div className="show-pages">
+                            {[...Array(totalPages).keys()].map((page) => (
+                                ((currentPage === totalPages && page >= Math.max(0, currentPage - 2)) || (page >= Math.max(0, currentPage - 1) && page <= Math.min(totalPages - 1, currentPage + 1))) && (
+                                    <button key={page + 1} onClick={() => onPageChange(page + 1)} className={currentPage === page + 1 ? 'active' : ''}>
+                                        {page + 1}
+                                    </button>
+                                )
+                            ))}
+                        </div>
+                        <button className="arrow-button" onClick={onNextPage} disabled={currentPage === totalPages}>
+                            <FontAwesomeIcon icon={faArrowRight} />
+                        </button>
                     </div>
-                    <button className="arrow-button" onClick={onNextPage} disabled={currentPage === totalPages}>
-                        <FontAwesomeIcon icon={faArrowRight} />
-                    </button>
-                </div>
+                ) : (
+                    <div className="pagination-spacer" />
+                )}
             </div>
         </div>
     )

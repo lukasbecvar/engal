@@ -5,7 +5,7 @@ namespace App\Message;
 /**
  * Class PreloadThumbnailsMessage
  *
- * Represents a message to preload thumbnails.
+ * Represents a message to preload thumbnails
  *
  * @package App\Message
  */
@@ -21,9 +21,9 @@ class PreloadThumbnailsMessage
     }
 
     /**
-     * Gets the owner id to preload.
+     * Gets the owner id to preload
      *
-     * @return int The owner id for preload.
+     * @return int The owner id for preload
      */
     public function getOwnerId(): int
     {
@@ -31,9 +31,9 @@ class PreloadThumbnailsMessage
     }
 
     /**
-     * Gets the gallery name to preload.
+     * Gets the gallery name to preload
      *
-     * @return string The gallery name for preload.
+     * @return string The gallery name for preload
      */
     public function getGalleryName(): ?string
     {

@@ -15,10 +15,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class IndexControllerTest extends WebTestCase
 {
     /**
-     * Test for the index action of IndexController.
+     * Test for the index action of IndexController
      *
      * This test verifies that the index action returns a successful JSON response
-     * with the expected structure and data.
+     * with the expected structure and data
      *
      * @return void
      */

@@ -19,16 +19,16 @@ services:
 
     # database container
     mysql:
-        image: mysql:latest
+        image: mysql:8.0.43
         container_name: engal_mysql
         restart: always
         environment:
             - MYSQL_ROOT_PASSWORD=root
         mem_limit: 1g
         volumes:
-            - ./_docker/configs/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
-            - ./_docker/services/mysql_database:/var/lib/mysql
-            - ./_docker/services/log:/var/log
+            - ./.docker/configs/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+            - ./.docker/services/mysql_database:/var/lib/mysql
+            - ./.docker/services/log:/var/log
         ports:
             - "3306:3306"
         networks:
@@ -38,18 +38,19 @@ services:
     php:
         build:
             context: .
-            dockerfile: ./_docker/Dockerfile
+            dockerfile: ./.docker/Dockerfile
         container_name: engal_backend_api
         restart: always
-        mem_limit: 2g
+        mem_limit: 4g
         depends_on:
             - mysql
+            - minio
         environment:
             - DATABASE_HOST=mysql
         volumes:
-            - ./_docker/configs/apache-api.conf:/etc/apache2/sites-available/000-default.conf
-            - ./_docker/configs/php.ini:/usr/local/etc/php/php.ini:ro
-            - ./_docker/services/log:/var/log
+            - ./.docker/configs/apache-api.conf:/etc/apache2/sites-available/000-default.conf
+            - ./.docker/configs/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./.docker/services/log:/var/log
             - ./backend/:/var/www
         ports:
             - "1337:80"
@@ -75,4 +76,37 @@ services:
             - mysql
             - php
         working_dir: /app 
-        command: npm start
+        command: npm start --loglevel=error
+
+    # minio s3-compatible object storage
+    minio:
+        image: minio/minio:latest
+        container_name: engal_minio
+        restart: always
+        environment:
+            - MINIO_ROOT_USER=engal
+            - MINIO_ROOT_PASSWORD=engalsecret
+            - MINIO_KMS_SECRET_KEY=minio-backend-key:xUj+nCB1PHDD0duxCfl8URGolPfKCwC9UDf1NBxcI+s=
+        volumes:
+            - ./.docker/services/minio-data:/data
+        ports:
+            - "9000:9000"  # S3 API
+            - "9001:9001"  # web console
+        networks:
+            - dev
+        command: server /data --console-address ":9001"
+
+    # helper to create bucket on start
+    minio-setup:
+        image: minio/mc:latest
+        container_name: engal_minio_setup
+        depends_on:
+            - minio
+        entrypoint: >
+            /bin/sh -c "
+            mc alias set engal-s3 http://minio:9000 engal engalsecret && 
+            mc mb --ignore-existing engal-s3/engal-media &&
+            mc mb --ignore-existing engal-s3/engal-media-test
+            exit 0"
+        networks:
+            - dev

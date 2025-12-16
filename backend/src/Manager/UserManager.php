@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use Exception;
 use App\Entity\User;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * Class UserManager
  *
- * Manages user-related operations such as updating user data on login.
+ * Manages user-related operations such as updating user data on login
  *
  * @package App\Manager
  */
@@ -39,7 +40,7 @@ class UserManager
     }
 
     /**
-     * Gets the user repository for the given username.
+     * Gets the user repository for the given username
      *
      * @param string $username The username to retrieve the repository for
      *
@@ -52,10 +53,10 @@ class UserManager
     }
 
     /**
-     * Retrieves a user entity by their IP address.
+     * Retrieves a user entity by their IP address
      *
-     * @param string $ipAddress The IP address of the user.
-     * @return object|null The user entity if found, or null if not found.
+     * @param string $ipAddress The IP address of the user
+     * @return object|null The user entity if found, or null if not found
      */
     public function getUserRepoByIP(string $ipAddress): ?object
     {
@@ -64,15 +65,15 @@ class UserManager
     }
 
     /**
-     * Updates user data on login.
+     * Updates user data on login
      *
-     * Finds the user by username and updates the last login time and IP address.
+     * Finds the user by username and updates the last login time and IP address
      *
      * @param string $identifier The username or identifier of the user
      *
      * @return void
      *
-     * @throws \Exception If there is an error while updating user data
+     * @throws Exception If there is an error while updating user data
      */
     public function updateUserDataOnLogin(string $identifier): void
     {
@@ -88,21 +89,21 @@ class UserManager
 
                 // flush user data
                 $this->entityManager->flush();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->errorManager->handleError('error to update user data with login: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
 
     /**
-     * Registers a new user.
+     * Registers a new user
      *
      * @param string $username The username of the new user
      * @param string $password The password of the new user
      *
      * @return void
      *
-     * @throws \Exception If there is an error while registering the user
+     * @throws Exception If there is an error while registering the user
      */
     public function registerUser(string $username, string $password): void
     {
@@ -129,14 +130,14 @@ class UserManager
 
                 // log action
                 $this->logManager->log('authenticator', 'new registration user: ' . $username);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->errorManager->handleError('error to register new user: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
 
     /**
-     * Checks if the specified user has the admin role.
+     * Checks if the specified user has the admin role
      *
      * @param string $username The username of the user to check
      *
@@ -155,13 +156,13 @@ class UserManager
     }
 
     /**
-     * Adds the admin role to a user.
+     * Adds the admin role to a user
      *
      * @param string $username The username of the user to add the admin role to
      *
-     * @return void
+     * @throws Exception If there is an error while adding the admin role
      *
-     * @throws \Exception If there is an error while adding the admin role
+     * @return void
      */
     public function addAdminRoleToUser(string $username): void
     {
@@ -179,19 +180,20 @@ class UserManager
 
                 // log action
                 $this->logManager->log('role-granted', 'role admin granted to user: ' . $username);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->errorManager->handleError('error to grant admin permissions: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
     }
 
     /**
-     * Retrieves user data based on the provided security context.
+     * Retrieves user data based on the provided security context
      *
-     * This method retrieves user data using the provided security context.
+     * This method retrieves user data using the provided security context
      *
-     * @param Security $security The security service providing the context for the user.
-     * @return object The user data object.
+     * @param Security $security The security service providing the context for the user
+     *
+     * @return object The user data object
      */
     public function getUserData(Security $security): object
     {

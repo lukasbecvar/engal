@@ -2,6 +2,7 @@
 
 namespace App\Middleware;
 
+use Exception;
 use App\Manager\ErrorManager;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class DatabaseOnlineMiddleware
  *
- * This middleware is used to check the availability of the database.
+ * This middleware is used to check the availability of the database
  *
  * @package App\Service\Middleware
  */
@@ -25,14 +26,16 @@ class DatabaseOnlineMiddleware
     }
 
     /**
-     * Check the availability of the database on each kernel request.
+     * Check the availability of the database on each kernel request
+     *
+     * @return void
      */
     public function onKernelRequest(): void
     {
         try {
             // select for connection try
             $this->doctrineConnection->executeQuery('SELECT 1');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // handle error if database not connected
             $this->errorManager->handleError('database connection error: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }

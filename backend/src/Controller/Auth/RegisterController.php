@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use Exception;
 use OpenApi\Attributes\Tag;
 use App\Manager\UserManager;
 use App\Util\VisitorInfoUtil;
@@ -16,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * Class RegisterController
  *
- * Controller handling user registration.
+ * Controller handling user registration
  *
  * @package App\Controller\Auth
  */
@@ -32,13 +33,13 @@ class RegisterController extends AbstractController
     }
 
     /**
-     * Registers a new user.
+     * Registers a new user
      *
      * Register new user with provided username and password in request parameters
      *
-     * @param Request $request The request object.
+     * @param Request $request The request object
      *
-     * @return JsonResponse The JSON response.
+     * @return JsonResponse The JSON response
      */
     #[Tag(name: "Auth")]
     #[Response(response: 200, description: 'The success user register message')]
@@ -60,8 +61,8 @@ class RegisterController extends AbstractController
         }
 
         // get data from request
-        $username = $request->get('username');
-        $password = $request->get('password');
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
 
         // get user ip
         $ipAddress = $this->visitorInfoUtil->getIP();
@@ -144,7 +145,7 @@ class RegisterController extends AbstractController
                 'code' => JsonResponse::HTTP_OK,
                 'message' => 'Registration success'
             ], JsonResponse::HTTP_OK);
-        } catch (\Exception) {
+        } catch (Exception) {
             return $this->json([
                 'status' => 'error',
                 'code' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,

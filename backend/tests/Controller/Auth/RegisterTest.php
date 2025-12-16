@@ -15,12 +15,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class RegisterTest extends WebTestCase
 {
     /**
-     * Instance for making requests.
+     * Instance for making requests
      */
     private KernelBrowser $client;
 
     /**
-     * Set up before each test.
+     * Set up before each test
      *
      * @return void
      */
@@ -31,7 +31,7 @@ class RegisterTest extends WebTestCase
     }
 
     /**
-     * Test registration with an empty password.
+     * Test registration with an empty password
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class RegisterTest extends WebTestCase
     }
 
     /**
-     * Test registration with a username shorter than the minimum length.
+     * Test registration with a username shorter than the minimum length
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class RegisterTest extends WebTestCase
     }
 
     /**
-     * Test registration with a username longer than the maximu length.
+     * Test registration with a username longer than the maximu length
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class RegisterTest extends WebTestCase
     }
 
     /**
-     * Test registration with a password shorter than the minimum length.
+     * Test registration with a password shorter than the minimum length
      *
      * @return void
      */
@@ -140,7 +140,7 @@ class RegisterTest extends WebTestCase
     }
 
     /**
-     * Test registration with a username that already exists.
+     * Test registration with a username that already exists
      *
      * @return void
      */
@@ -162,7 +162,7 @@ class RegisterTest extends WebTestCase
     }
 
     /**
-     * Test successful user registration.
+     * Test successful user registration
      *
      * @return void
      */

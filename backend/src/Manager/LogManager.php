@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use Exception;
 use App\Entity\Log;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class LogManager
  *
- * The LogManager class handles logging of messages.
+ * The LogManager class handles logging of messages
  *
  * @package App\Manager
  */
@@ -28,10 +29,10 @@ class LogManager
     }
 
     /**
-     * Logs a message with the given name and content.
+     * Logs a message with the given name and content
      *
-     * @param string $name The name of the log entry.
-     * @param string $message The content of the log entry.
+     * @param string $name The name of the log entry
+     * @param string $message The content of the log entry
      *
      * @return void
      */
@@ -50,7 +51,7 @@ class LogManager
         try {
             $this->entityManager->persist($log);
             $this->entityManager->flush();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->errorManager->handleError('log-error: ' . $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

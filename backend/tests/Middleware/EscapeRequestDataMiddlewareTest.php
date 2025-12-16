@@ -11,16 +11,16 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 /**
  * Class EscapeRequestDataMiddlewareTest
  *
- * Unit test class for the EscapeRequestDataMiddleware.
+ * Unit test class for the EscapeRequestDataMiddleware
  *
  * @package App\Tests\Middleware
  */
 class EscapeRequestDataMiddlewareTest extends TestCase
 {
     /**
-     * Test whether the middleware correctly escapes request data.
+     * Test whether the middleware correctly escapes request data
      *
-     * This test verifies that the middleware properly escapes data in the request.
+     * This test verifies that the middleware properly escapes data in the request
      *
      * @return void
      */

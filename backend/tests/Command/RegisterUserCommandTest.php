@@ -10,16 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 /**
  * Class RegisterUserCommandTest
  *
- * Unit test for the RegisterUserCommand.
+ * Unit test for the RegisterUserCommand
  *
  * @package App\Tests\Command
  */
 class RegisterUserCommandTest extends KernelTestCase
 {
     /**
-     * Test the execute method of the RegisterUserCommand class.
+     * Test the execute method of the RegisterUserCommand class
      *
-     * This test verifies that the command successfully registers a new user.
+     * This test verifies that the command successfully registers a new user
      *
      * @return void
      */

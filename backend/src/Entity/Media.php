@@ -5,7 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MediaRepository;
 
+/**
+ * Class Media
+ *
+ * The Media database table mapping entity
+ *
+ * @package App\Entity
+ */
 #[ORM\Table(name: 'media')]
+#[ORM\Index(name: 'media_token_idx', columns: ['token'])]
+#[ORM\Index(name: 'media_owner_id_idx', columns: ['owner_id'])]
+#[ORM\Index(name: 'media_gallery_name_idx', columns: ['gallery_name'])]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
 {

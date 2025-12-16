@@ -2,21 +2,21 @@
 
 namespace App\Tests\Command;
 
+use App\Tests\CustomCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 /**
  * Class GrantAdminRoleCommandTest
  *
- * Unit test for the GrantAdminRoleCommandTest.
+ * Unit test for the GrantAdminRoleCommandTest
  *
  * @package App\Tests\Command
  */
-class GrantAdminRoleCommandTest extends KernelTestCase
+class GrantAdminRoleCommandTest extends CustomCase
 {
     /**
-     * Test the execution of the "app:grant-admin" command.
+     * Test the execution of the "app:grant-admin" command
      *
      * @return void
      */
@@ -24,6 +24,9 @@ class GrantAdminRoleCommandTest extends KernelTestCase
     {
         // boot the Symfony kernel
         self::bootKernel();
+
+        // ensure baseline user
+        $this->ensureTestUser();
 
         // create an application instance
         $application = new Application(self::$kernel);

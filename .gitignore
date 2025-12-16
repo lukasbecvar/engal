@@ -1,5 +1,5 @@
 # common
-_docker/services
+.docker/services
 
 # frontend
 frontend/node_modules
@@ -16,5 +16,5 @@ backend/vendor
 backend/var
 backend/public/bundles
 backend/config/secrets/prod/prod.decrypt.private.php
-backend/storage/*
+backend/config/reference.php
 backend/.phpcs-cache

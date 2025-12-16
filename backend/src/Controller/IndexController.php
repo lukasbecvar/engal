@@ -18,15 +18,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class IndexController extends AbstractController
 {
     /**
-     * Index init action to return a JSON response.
+     * Index init action to return a JSON response
      *
      * Return backend status with basic app config
      *
-     * @return JsonResponse Returns a JSON response with status, code, and backend version.
+     * @return JsonResponse Returns a JSON response with status, code, and backend version
      */
     #[Tag(name: "Index")]
     #[Response(response: 200, description: 'The backend app version and status.')]
-    #[Route(['/', '/api'], methods: ['GET'], name: 'index')]
+    #[Route(path: '/', methods: ['GET'], name: 'index')]
+    #[Route(path: '/api', methods: ['GET'], name: 'index_api')]
     public function index(): JsonResponse
     {
         return $this->json([

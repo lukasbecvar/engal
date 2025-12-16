@@ -15,7 +15,7 @@ export default function NavigationComponent() {
             </div>
             <div className="right-content">
                 {/* upload button */}
-                <Link className="m-r-5" to="/upload">
+                <Link className="m-r-1" to="/upload">
                     <FontAwesomeIcon icon={faUpload}/>
                 </Link>
 

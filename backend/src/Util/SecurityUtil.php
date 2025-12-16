@@ -5,18 +5,18 @@ namespace App\Util;
 /**
  * Class SecurityUtil
  *
- * Utility class for security-related operations.
+ * Utility class for security-related operations
  *
  * @package App\Util
  */
 class SecurityUtil
 {
     /**
-     * Escapes a string to prevent XSS attacks.
+     * Escapes a string to prevent XSS attacks
      *
-     * @param string $string The string to escape.
+     * @param string $string The string to escape
      *
-     * @return string|null The escaped string.
+     * @return string|null The escaped string
      */
     public function escapeString(string $string): ?string
     {
@@ -24,70 +24,123 @@ class SecurityUtil
     }
 
     /**
-     * Encrypts data using AES encryption.
+     * Encrypt arbitrary string (deterministic) for storage
      *
-     * Encrypts the provided data using AES-256-CBC encryption algorithm if storage encryption is enabled.
-     * If encryption is not enabled, the data remains unchanged.
+     * @param string $data The data to encrypt
      *
-     * @param mixed $data The data to be encrypted.
-     *
-     * @return mixed The encrypted data, or the original data if encryption is not enabled.
+     * @return string The encrypted data
      */
-    public function encryptAES(mixed $data): mixed
+    public function encryptName(string $data): string
     {
-        // check if encryption is enabled
-        if ($_ENV['STORAGE_ENCRYPTION'] != 'true') {
+        if (!$this->isEncryptionEnabled()) {
             return $data;
         }
 
-        // get config values
-        $key = $_ENV['STORAGE_ENCRYPTION_KEY'];
-        $iv = $_ENV['ENCRYPTION_VECTOR'];
+        $key = $this->getKey();
+        if ($key === null) {
+            return $data;
+        }
 
-        // hash the encryption key
-        $key = hash('sha256', $key, true);
+        // deterministic IV derived from value (avoids extra columns for lookups)
+        $iv = substr(hash('sha256', $data . $key, true), 0, 12);
+        $tag = null;
 
-        // encrypt the data
-        $cipherText = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+        $cipher = openssl_encrypt($data, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
 
-        // return encrypted data
-        return $iv . $cipherText;
+        if ($cipher === false || !$tag || strlen($tag) !== 16) {
+            return $data;
+        }
+
+        return base64_encode($iv . $tag . $cipher);
     }
 
     /**
-     * Decrypts data encrypted using AES encryption.
+     * Decrypt string previously encrypted with encryptName (best effort)
      *
-     * Decrypts the provided data encrypted using AES-256-CBC encryption algorithm if storage encryption is enabled.
-     * If encryption is not enabled, the data remains unchanged.
+     * @param string $data The data to decrypt
      *
-     * @param mixed $data The data to be decrypted.
-     *
-     * @return mixed The decrypted data, or the original data if encryption is not enabled or decryption fails.
+     * @return string The decrypted data
      */
-    public function decryptAES(mixed $data): mixed
+    public function decryptName(string $data): string
     {
-        // check if encryption is enabled
-        if ($_ENV['STORAGE_ENCRYPTION'] != 'true') {
+        if (!$this->isEncryptionEnabled()) {
             return $data;
         }
 
-        // get config values
-        $key = $_ENV['STORAGE_ENCRYPTION_KEY'];
-        $iv = $_ENV['ENCRYPTION_VECTOR'];
+        $key = $this->getKey();
+        if ($key === null) {
+            return $data;
+        }
 
-        // hash the encryption key
-        $key = hash('sha256', $key, true);
+        $decoded = base64_decode($data, true);
+        if ($decoded === false || strlen($decoded) < 28) {
+            return $data; // not encrypted or malformed
+        }
 
-        // decrypt the data
-        $ivLength = openssl_cipher_iv_length('aes-256-cbc');
+        $iv = substr($decoded, 0, 12);
+        $tag = substr($decoded, 12, 16);
+        $ciphertext = substr($decoded, 28);
 
-        // extract the iv and cipher text
-        $iv = str_pad($iv, $ivLength, "\0");
+        $plain = openssl_decrypt($ciphertext, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
 
-        // decrypt the data
-        $cipherText = substr($data, $ivLength);
+        return $plain === false ? $data : $plain;
+    }
 
-        // decrypt the data
-        return openssl_decrypt($cipherText, 'aes-256-cbc', $key, 0, $iv);
+    /**
+     * Legacy aliases kept for backward compatibility
+     *
+     * @param mixed $data The data to encrypt
+     *
+     * @return mixed The encrypted data
+     */
+    public function encryptAES(mixed $data): mixed
+    {
+        if (!is_string($data)) {
+            return $data;
+        }
+
+        return $this->encryptName($data);
+    }
+
+    /**
+     * Legacy aliases kept for backward compatibility
+     *
+     * @param mixed $data The data to decrypt
+     *
+     * @return mixed The decrypted data
+     */
+    public function decryptAES(mixed $data): mixed
+    {
+        if (!is_string($data)) {
+            return $data;
+        }
+
+        return $this->decryptName($data);
+    }
+
+    /**
+     * Check if encryption is enabled
+     *
+     * @return bool True if encryption is enabled, false otherwise
+     */
+    private function isEncryptionEnabled(): bool
+    {
+        return ($_ENV['STORAGE_ENCRYPTION_ENABLED'] ?? 'false') === 'true';
+    }
+
+    /**
+     * Returns 32-byte key or null if missing
+     *
+     * @return string|null The 32-byte key
+     */
+    private function getKey(): ?string
+    {
+        $rawKey = $_ENV['STORAGE_ENCRYPTION_KEY'] ?? $_ENV['APP_SECRET'] ?? null;
+
+        if (empty($rawKey)) {
+            return null;
+        }
+
+        return hash('sha256', $rawKey, true);
     }
 }

@@ -27,46 +27,46 @@ export default function BreadcrumbComponent() {
     const [userData, setUserData] = useState([])
     const [loading, setLoading] = useState(true)
     const [stats, setStats] = useState(null)
+    const galleryName = urlParams.get('gallery_name') || urlParams.get('name')
+    const mediaName = urlParams.get('media_name')
     
     // fetch dashboard/user data
     useEffect(() => {
         const fetchUserData = async () => {
             // check if user loggedin
-            if (loginToken != null) {
-                try {
-                    // build request
-                    const response = await fetch(apiUrl + '/api/user/status', {
-                        method: 'GET',
-                        headers: {
-                            'Accept': '*/*',
-                            'Authorization': 'Bearer ' + localStorage.getItem('login-token')
-                        },
-                    })
+            try {
+                // build request
+                const response = await fetch(apiUrl + '/api/user/status', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': '*/*',
+                    },
+                })
 
-                    // get response data
-                    const data = await response.json()
-                        
-                    // check if user tokne is valid
-                    if (data.status == 'success') {
-                        setUserData({
-                            username: data.user_status.username,
-                            roles: data.user_status.roles,
-                        })
-                        setStats(data.stats)
-                    } else {
-                        return <ErrorMessageComponent message={data.message}/>                   
-                    }
-                } catch (error) {
-                    if (DEV_MODE) {
-                        console.log('Error to fetch user data: ' + error)
-                    }
-                } finally {
-                    setLoading(false)
+                // get response data
+                const data = await response.json()
+                    
+                // check if user token is valid
+                if (data.status == 'success') {
+                    setUserData({
+                        username: data.user_status.username,
+                        roles: data.user_status.roles,
+                    })
+                    setStats(data.stats)
+                } else {
+                    return <ErrorMessageComponent message={data.message}/>                   
                 }
+            } catch (error) {
+                if (DEV_MODE) {
+                    console.log('Error to fetch user data: ' + error)
+                }
+            } finally {
+                setLoading(false)
             }
         }
         fetchUserData()
-    }, [apiUrl, loginToken])
+    }, [apiUrl])
 
     // show loading
     if (loading) {
@@ -94,12 +94,20 @@ export default function BreadcrumbComponent() {
                         </span>
                     : null}
 
-                    {/* video payler navigation */}
+                    {/* video player navigation */}
                     {location.pathname == "/video" ? 
-                        <span>
-                            <span className="slash">/</span>
-                            <span className="sub-navigation-link">video</span> 
-                        </span>
+                        <>
+                            {galleryName && (
+                                <span>
+                                    <span className="slash">/</span>
+                                    <Link to={`/gallery?name=${galleryName}`} className="sub-navigation-link">{galleryName}</Link> 
+                                </span>
+                            )}
+                            <span>
+                                <span className="slash">/</span>
+                                <span className="sub-navigation-link">{mediaName || 'video'}</span> 
+                            </span>
+                        </>
                     : null}
 
                     {/* upload navigation */}

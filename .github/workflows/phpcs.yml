@@ -1,13 +1,11 @@
 name: PHP-CodeSniffer
 
-# specify when the workflow should be triggered
 on:
   push:
     branches:
       - main
       - dev
 
-# define the jobs to be executed in the workflow
 jobs:
   phpcs:
     name: PHP CodeSniffer
@@ -21,7 +19,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'
+        php-version: 8.5
 
     # install composer dependencies
     - name: Install dependencies

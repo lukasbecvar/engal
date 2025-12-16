@@ -5,16 +5,16 @@ namespace App\Util;
 /**
  * Class VisitorInfoUtil
  *
- * VisitorInfoUtil provides methods to get information about visitors.
+ * VisitorInfoUtil provides methods to get information about visitors
  *
  * @package App\Util
  */
 class VisitorInfoUtil
 {
     /**
-     * Retrieves the IP address of the visitor.
+     * Retrieves the IP address of the visitor
      *
-     * @return string|null The IP address of the visitor, or null if it cannot be determined.
+     * @return string|null The IP address of the visitor, or null if it cannot be determined
      */
     public function getIP(): ?string
     {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
-import React, { useEffect, useState } from 'react' 
+import React, { useEffect, useRef, useState } from 'react' 
 
 // engal component
 import LoadingComponent from './sub-component/LoadingComponent'
@@ -20,10 +20,10 @@ export default function UploadComponent() {
 
     // get storage data
     let apiUrl = localStorage.getItem('api-url')
-    let loginToken = localStorage.getItem('login-token')
 
     // upload file list
     const [files, setFiles] = useState([])
+    const fileInputRef = useRef(null)
 
     // upload state
     const [loading, setLoading] = useState(true)
@@ -44,9 +44,7 @@ export default function UploadComponent() {
         async function fetchGalleryNames() {
             try {
                 const response = await axios.get(apiUrl + '/api/gallery/list', {
-                    headers: {
-                        'Authorization': `Bearer ${loginToken}`
-                    },
+                    withCredentials: true,
                 })
                 setGalleryNames(response.data.gallery_list)
             } catch (error) {
@@ -59,7 +57,7 @@ export default function UploadComponent() {
             }
         }
         fetchGalleryNames()
-    }, [apiUrl, loginToken])
+    }, [apiUrl])
 
     // get backend upload policy config
     useEffect(() => {
@@ -67,9 +65,7 @@ export default function UploadComponent() {
             setLoading(true)
             try {
                 const response = await axios.get(apiUrl + '/api/upload/config/policy', {
-                    headers: {
-                        'Authorization': `Bearer ${loginToken}`
-                    },
+                    withCredentials: true,
                 })
                 setUploadPolicy(response.data.policy)
             } catch (error) {
@@ -82,7 +78,7 @@ export default function UploadComponent() {
             }
         }
         getPolicy()
-    }, [apiUrl, loginToken])
+    }, [apiUrl])
 
     // calculate max files size
     const MAX_FILE_LIST_SIZE_BYTES = uploadPolicy.MAX_FILES_SIZE * 1024 * 1024 * 1024
@@ -118,6 +114,11 @@ export default function UploadComponent() {
         }
     
         setFiles([...files, ...fileList])
+    }
+
+    // trigger native file browser once
+    const openFileBrowser = () => {
+        fileInputRef.current?.click()
     }
     
     // handle remove file from list
@@ -181,9 +182,7 @@ export default function UploadComponent() {
         // main upload process
         try {
             const response = await axios.post(apiUrl + '/api/upload', formData, {
-                headers: {
-                    'Authorization': `Bearer ${loginToken}`
-                },
+                withCredentials: true,
                 onUploadProgress: (progressEvent) => {
                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
                     setStatus('Uploading files ' + percentCompleted + '%')
@@ -201,9 +200,9 @@ export default function UploadComponent() {
                 try {
                     fetch(apiUrl + '/api/thumbnail/preload?gallery_name=' + final_gallery_name, {
                         method: 'GET',
+                        credentials: 'include',
                         headers: {
                             'Accept': '*/*',
-                            'Authorization': 'Bearer ' + localStorage.getItem('login-token')
                         },
                     })
                 } catch (error) {
@@ -248,12 +247,20 @@ export default function UploadComponent() {
                     {status && <p className="status-message">{status}</p>}
             
                     {/* progress bar */}
-                    {progress > 0 && 
-                        <progress className="progress-bar" value={progress} max="100" />
+                    {progress > 0 &&
+                        <div className="progress-wrapper" aria-label="Upload progress">
+                            <div className="progress-label">Uploading {progress}%</div>
+                            <div className="progress-track">
+                                <div
+                                    className="progress-fill"
+                                    style={{ width: `${Math.min(progress, 100)}%` }}
+                                />
+                            </div>
+                        </div>
                     }
         
                     {/* file input */}
-                    <div className="file-input-box">
+                    <div className="file-input-box" onClick={openFileBrowser}>
                         {/* file list container */}
                         {files.length >= 1 && 
                             <div className="file-list-container">
@@ -267,11 +274,11 @@ export default function UploadComponent() {
                                 ))}
                             </div>
                         }
-                        <div className="file-input" onDrop={handleFileDrop} onDragOver={handleDragOver} onClick={() => document.querySelector('.browser-file-input').click()}>
+                        <div className="file-input" onDrop={handleFileDrop} onDragOver={handleDragOver}>
                             <p>Drag & drop or click files here</p>
                         </div>
                         {/* button for selecting files through browser */}
-                        <input className="browser-file-input display-none" type="file" multiple onChange={handleFileChange} />
+                        <input ref={fileInputRef} className="browser-file-input display-none" type="file" multiple onChange={handleFileChange} />
                     </div>
             
                     {/* gallery select */}

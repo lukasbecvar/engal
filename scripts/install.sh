@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# install frontend
-cd ./frontend
+# install backend
+cd ./backend
 sh scripts/install.sh
 
-# install backend
-cd ../backend
+# install frontend
+cd ../frontend
 sh scripts/install.sh

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // engal utils
-import { isValidUrl } from '../util/UrlUtil'
+import { isValidUrl, normalizeUrl } from '../util/UrlUtil'
 import { getApiStatus, isApiAvailable } from '../util/ApiUtils'
 
 /**
@@ -18,20 +18,22 @@ export default function SetupComponent() {
     const handleSubmit = async (event) => {
         event.preventDefault()
 
+        const normalizedUrl = normalizeUrl(apiUrl)
+
         // check if url is valid
-        if (!isValidUrl(apiUrl)) {
+        if (!isValidUrl(normalizedUrl)) {
             setError('Invalid URL')
             return
         }
 
         // check if API is available
-        if (await isApiAvailable(apiUrl)) {
+        if (await isApiAvailable(normalizedUrl)) {
             // get api response
-            let apiResponse = await getApiStatus(apiUrl)
+            let apiResponse = await getApiStatus(normalizedUrl)
 
             // check response
             if (apiResponse.status == 'success') {
-                localStorage.setItem('api-url', apiUrl)
+                localStorage.setItem('api-url', normalizedUrl)
                 window.location.reload()
             } else {
                 setError(apiResponse.message)
@@ -45,7 +47,7 @@ export default function SetupComponent() {
     return (
         <div className="auth-container">
             <form onSubmit={handleSubmit} className="auth-form">
-                <h1 className="center-content m-b-3">Setup API URL</h1>
+                <h1 className="center-content m-b-3 color-white">Setup API URL</h1>
                 
                 {/* error box component */}
                 {error && <p className="color-red status-box">{error}</p>}

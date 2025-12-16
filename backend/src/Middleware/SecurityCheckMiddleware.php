@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class SecurityCheckMiddleware
  *
- * This middleware checks if the connection is secure.
+ * This middleware checks if the connection is secure
  *
  * @package App\Service\Middleware
  */
@@ -25,7 +25,9 @@ class SecurityCheckMiddleware
     }
 
     /**
-     * Check if the connection is secure.
+     * Check if the connection is secure
+     *
+     * @return void
      */
     public function onKernelRequest(): void
     {

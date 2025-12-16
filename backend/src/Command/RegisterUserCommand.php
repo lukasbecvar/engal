@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Manager\UserManager;
 use Symfony\Component\String\ByteString;
 use Symfony\Component\Console\Command\Command;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class RegisterUserCommand
  *
- * Command to register a new user.
+ * Command to register a new user
  *
  * @package App\Command
  */
@@ -30,7 +31,7 @@ class RegisterUserCommand extends Command
     }
 
     /**
-     * Configures the command arguments.
+     * Configures the command arguments
      */
     protected function configure(): void
     {
@@ -38,7 +39,7 @@ class RegisterUserCommand extends Command
     }
 
     /**
-     * Executes the command to register a new user.
+     * Executes the command to register a new user
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
@@ -74,7 +75,7 @@ class RegisterUserCommand extends Command
             // return success message
             $io->success('New user registred username: ' . $username . ' with password: ' . $password);
             return Command::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->success('error to register user: ' . $e->getMessage());
             return Command::FAILURE;
         }

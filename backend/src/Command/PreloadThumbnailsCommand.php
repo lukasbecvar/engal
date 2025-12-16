@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Manager\ThumbnailManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -12,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class PreloadThumbnailsCommand
  *
- * Command to preload app media thumbnails.
+ * Command to preload app media thumbnails
  *
  * @package App\Command
  */
@@ -28,7 +29,7 @@ class PreloadThumbnailsCommand extends Command
     }
 
     /**
-     * Executes the command to preload thumbnails list.
+     * Executes the command to preload thumbnails list
      *
      * @param InputInterface $input The input interface
      * @param OutputInterface $output The output interface
@@ -47,7 +48,7 @@ class PreloadThumbnailsCommand extends Command
             // return success output
             $io->success('Thumbnails preload success');
             return Command::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->error('error to preload thumbnails: ' . $e->getMessage());
             return Command::FAILURE;
         }

@@ -8,7 +8,3 @@ docker-compose run php bash -c "
     php bin/console doctrine:database:drop --force &&
     php bin/console doctrine:database:drop --env=test --force
 "
-
-# delete media files
-yellow_echo "[DB-Drop]: delete media files..."
-rm -r ./storage

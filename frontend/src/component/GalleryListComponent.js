@@ -16,7 +16,7 @@ export default function GalleryListComponent() {
     // status state
     const [loading, setLoading] = useState(true)
     const [galleryImages, setGalleryImages] = useState([])
-    const [allImagesLoaded, setAllImagesLoaded] = useState(false)
+    const [error, setError] = useState(null)
 
     // default gallery list
     const [galleryList, setGalleryList] = useState(null)
@@ -25,33 +25,41 @@ export default function GalleryListComponent() {
     useEffect(() => {
         const fetchGalleryList = async () => {
             // check if user logged in
-            if (loginToken != null) {
-                try {
-                    // build request
-                    const response = await fetch(apiUrl + '/api/gallery/list', {
-                        method: 'GET',
-                        headers: {
-                            'Accept': '*/*',
-                            'Authorization': 'Bearer ' + localStorage.getItem('login-token')
-                        },
-                    })
+            try {
+                // build request
+                const response = await fetch(apiUrl + '/api/gallery/list', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': '*/*'
+                    },
+                })
 
-                    // get response data
-                    const data = await response.json()
+                // get response data
+                const data = await response.json()
 
-                    // check if user token is valid
-                    if (data.status === 'success') {
-                        setGalleryList(data.gallery_list)
-                    } else {
-                        return <ErrorMessageComponent message={data.message}/>
-                    }
-                } catch (error) {
+                // check if user token is valid
+                if (response.ok && data.status === 'success') {
+                    setGalleryList(data.gallery_list)
+                    setGalleryImages(data.gallery_list.map((gallery) => ({ gallery, imageUrl: '/default_thumbnail.jpg' })))
+                } else {
+                    setError('Unable to load galleries (decryption/storage error).')
                     if (DEV_MODE) {
-                        console.log('Error to fetch gallery list: ' + error)
+                        console.log('Gallery list fetch error: ' + data.message)
                     }
-                } finally {
-                    setLoading(false)
+                    setGalleryList([])
+                    setGalleryImages([])
                 }
+            } catch (error) {
+                if (DEV_MODE) {
+                    console.log('Error to fetch gallery list: ' + error)
+                }
+                setLoading(false)
+                setError('Unable to load galleries (connection/storage error).')
+                setGalleryList([])
+                setGalleryImages([])
+            } finally {
+                setLoading(false)
             }
         }
         fetchGalleryList()
@@ -59,35 +67,24 @@ export default function GalleryListComponent() {
 
     // fetch gallery thumbnail
     useEffect(() => {
-        if (galleryList !== null) {
-            const fetchGalleryImages = async () => {
-                if (loginToken != null) {
-                    const images = await Promise.all(
-                        // fetch images for all galleries
-                        galleryList.map(async (gallery) => {
-                            const imageUrl = await fetchThumbnail(gallery.first_token)
-                            return { gallery, imageUrl }
-                        })
+        if (galleryList !== null && galleryList.length > 0) {
+            galleryList.forEach(async (gallery) => {
+                const imageUrl = await fetchThumbnail(gallery.first_token)
+                setGalleryImages((prev) =>
+                    prev.map((item) =>
+                        item.gallery.name === gallery.name ? { gallery: item.gallery, imageUrl } : item
                     )
-                    setGalleryImages(images)
-                    setAllImagesLoaded(true)
-                }
-            }
-            fetchGalleryImages()
+                )
+            })
         }
     }, [galleryList, loginToken])
 
     // fetch thumbnail resource
     const fetchThumbnail = async (token) => {
-        // build app header
-        const headers = {
-            'Authorization': `Bearer ${loginToken}`
-        }
-    
         try {
             const response = await fetch(apiUrl + '/api/thumbnail?token=' + token, {
                 method: 'GET',
-                headers: headers
+                credentials: 'include'
             })
     
             // return default thumbnail if status is 500
@@ -106,8 +103,12 @@ export default function GalleryListComponent() {
     }
 
     // show loading
-    if (loading || !allImagesLoaded) {
+    if (loading) {
         return <LoadingComponent/>
+    }
+
+    if (error) {
+        return <ErrorMessageComponent message={error}/>
     }
 
     return (
